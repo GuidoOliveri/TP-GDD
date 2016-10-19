@@ -16,5 +16,27 @@ namespace ClinicaFrba.Listados
         {
             InitializeComponent();
         }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblFiltro1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmdSeleccionar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // TODO: esta línea de código carga datos en la tabla 'gD2C2016DataSet.Maestra' Puede moverla o quitarla según sea necesario.
+            this.maestraTableAdapter.Fill(this.gD2C2016DataSet.Maestra);
+
+        }
     }
 }
