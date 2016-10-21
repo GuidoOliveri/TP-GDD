@@ -149,18 +149,16 @@ CREATE TABLE NEXTGDD.Administrativo (
 	)
    
 CREATE TABLE NEXTGDD.Tipo_Documento (
-    
-	id smallint PRIMARY KEY,
-	nombre varchar (255)
+	nro_documento numeric(18,0) PRIMARY KEY,
+	tipo_doc varchar (255)
 	)
 
 CREATE TABLE NEXTGDD.Profesional (
-    
-	matricula numeric (18,0) PRIMARY KEY,
+--SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION    
+	matricula numeric (18,0) IDENTITY(1,100) PRIMARY KEY,
 	nombre varchar (255),
 	apellido varchar (255),
-	tipo_doc smallint REFERENCES NEXTGDD.Tipo_Documento(id),
-	nro_doc numeric(18,0),
+	nro_documento numeric(18,0) REFERENCES NEXTGDD.Tipo_Documento(nro_documento),
 	domicilio varchar (255),
 	telefono numeric (18,0),
 	mail varchar (255),
@@ -189,12 +187,11 @@ CREATE TABLE NEXTGDD.Profesional_X_Especialidad (
    )
 
 CREATE TABLE NEXTGDD.Afiliado (
-
-	nro_afiliado numeric (18,0)  PRIMARY KEY, --asignado por sistema finaliza en: 01 afiliado principal, 02 conyuge, 03 y subsiguientes para el resto de la familia
+--SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION
+	nro_afiliado numeric (18,0) IDENTITY(1,100) PRIMARY KEY , --asignado por sistema finaliza en: 01 afiliado principal, 02 conyuge, 03 y subsiguientes para el resto de la familia
 	nombre varchar (255), 
 	apellido varchar (255),
-	tipo_doc smallint NOT NULL REFERENCES NEXTGDD.Tipo_Documento(id),
-	nro_doc numeric(18,0),
+	nro_documento numeric(18,0) REFERENCES NextGDD.Tipo_Documento(nro_documento),
 	domicilio varchar (255),
 	telefono numeric (18,0),
 	mail varchar (255),
@@ -207,18 +204,19 @@ CREATE TABLE NEXTGDD.Afiliado (
 	activo bit DEFAULT 1,
 	fecha_baja_logica datetime DEFAULT NULL,
 	--
-	UNIQUE (nro_doc,tipo_doc)
+	UNIQUE (nro_documento)
 
     )
 
 CREATE TABLE NEXTGDD.Bono_Consulta (
 
-    nro_bono numeric (18,0) PRIMARY KEY,
+    nro_bono numeric (18,0) IDENTITY(1,1) PRIMARY KEY,
     fecha_impresion datetime,
     compra_fecha datetime, 
     nro_consulta numeric (18,0),
-    cod_plan numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan) 
-    )
+    cod_plan numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan), 
+	nro_afiliado numeric (18,0) REFERENCES NextGDD.Afiliado(nro_afiliado) 
+    ) 
 
 CREATE TABLE NEXTGDD.Cancelacion (
 
@@ -312,16 +310,90 @@ CREATE TABLE NEXTGDD.Rango_Atencion (
 /************ Migracion *************/
 
 --select * from gd_esquema.Maestra
-/*
-INSERT NEXTGDD.Afiliado (nro_afiliado,nombre,apellido,tipo_doc,nro_doc,domicilio,telefono,mail,fecha_nac,sexo,estado_civil,cant_familiares,cod_plan)
-		(select 'nro autogenerado',
-				p1.Paciente_Nombre,p1.Paciente_Apellido,'DNI',p1.Paciente_Dni,p1.Paciente_Direccion,p1.Paciente_Mail,p1.Paciente_Fecha_Nac,
-		       null,null,
-			   (select count(*) from gd_esquema.Maestra p2 where p2.Paciente_Apellido=p1.Paciente_Apellido),
-			   p1.Plan_Med_Codigo
-		from gd_esquema.Maestra p1);
+
+
+INSERT NEXTGDD.Plan_Medico (cod_plan,descripcion,cuota,precio_bono_consulta,precio_bono_farmacia)
+	   (select Plan_Med_Codigo,Plan_Med_Descripcion,null,Plan_Med_Precio_Bono_Consulta,Plan_Med_Precio_Bono_Farmacia
+	   from gd_esquema.Maestra
+	   group by Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Consulta,Plan_Med_Precio_Bono_Farmacia);
 GO
-*/
+
+INSERT NEXTGDD.Enfermedad(enfermedad)
+	   (select Consulta_Enfermedades
+	   from gd_esquema.Maestra
+	   where not(Consulta_Enfermedades is null)
+	   group by Consulta_Enfermedades);
+GO
+
+INSERT NEXTGDD.Sintoma(sintoma)
+	   (select Consulta_Sintomas
+	   from gd_esquema.Maestra
+	   where not(Consulta_Sintomas is null)
+	   group by Consulta_Sintomas);
+GO
+
+INSERT NEXTGDD.Tipo_Especialidad (tipo_especialidad,descripcion)
+		(select Tipo_Especialidad_Codigo,Tipo_Especialidad_Descripcion
+		from gd_esquema.Maestra 
+		where ISNULL(Tipo_Especialidad_Codigo,0)<>0
+		group by Tipo_Especialidad_Codigo,Tipo_Especialidad_Descripcion);
+GO
+
+INSERT NEXTGDD.Especialidad (cod_especialidad,descripcion,tipo_especialidad)
+		(select Especialidad_Codigo,Especialidad_Descripcion,Tipo_Especialidad_Codigo
+		from gd_esquema.Maestra 
+		where ISNULL(Especialidad_Codigo,0)<>0
+		group by Especialidad_Codigo,Especialidad_Descripcion,Tipo_Especialidad_Codigo);
+GO
+
+INSERT NEXTGDD.Tipo_Documento (nro_documento,tipo_doc)
+		(select Paciente_Dni,'DNI'
+		 from gd_esquema.Maestra
+		 group by Paciente_Dni);
+GO
+
+INSERT NEXTGDD.Tipo_Documento (nro_documento,tipo_doc)
+		(select Medico_Dni,'DNI'
+		 from gd_esquema.Maestra
+		 where isnull(Medico_Dni,0)<>0
+		 group by Medico_Dni);
+GO
+
+INSERT NEXTGDD.Afiliado (nombre,apellido,nro_documento,domicilio,telefono,mail,fecha_nac,cod_plan)
+		(select Paciente_Nombre,Paciente_Apellido,Paciente_Dni,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo
+		from gd_esquema.Maestra 
+		group by Paciente_Dni,Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo);
+GO
+
+INSERT NEXTGDD.Profesional(nombre,apellido,nro_documento,domicilio,telefono,mail,fecha_nac)
+		(select Medico_Nombre,Medico_Apellido,Medico_Dni,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac
+		from gd_esquema.Maestra 
+		group by Medico_Nombre,Medico_Apellido,Medico_Dni,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac);
+GO
+
+INSERT NEXTGDD.Bono_Consulta(fecha_impresion,compra_fecha,nro_consulta,cod_plan,nro_afiliado)
+		(select Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Bono_Consulta_Numero,Plan_Med_Codigo,
+				(select nro_afiliado
+				from NEXTGDD.Afiliado 
+				where Paciente_Dni=nro_documento)
+		from gd_esquema.Maestra 
+		where not(ISNULL(Bono_Consulta_Fecha_Impresion,0)=0 and 
+				  ISNULL(Bono_Consulta_Numero,0)=0 and
+				  ISNULL(Compra_Bono_Fecha,0)=0)
+		group by Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Bono_Consulta_Numero,Plan_Med_Codigo,Paciente_Dni);
+GO
+
+
+INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,fecha)--FALTA CODIGO AGENDA
+       (select Turno_Numero,
+	           (select nro_afiliado
+				from NEXTGDD.Afiliado 
+				where Paciente_Dni=nro_documento),
+			   Turno_Fecha
+	    from gd_esquema.Maestra
+		where isnull(Turno_Numero,0)<>0
+		group by Turno_Numero,Turno_Fecha,Paciente_Dni);
+GO
 
 /************************************/
 
