@@ -10,6 +10,11 @@ END
 
 GO
 
+/*
+CREATE SCHEMA NEXTGDD AUTHORIZATION gd
+GO
+*/
+
 /******** VALIDACION DE TABLAS ********/
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Funcionalidad_X_Rol'))
@@ -304,6 +309,21 @@ CREATE TABLE NEXTGDD.Rango_Atencion (
    PRIMARY KEY (cod_agenda, rango_atencion) 
    )
 
+/************ Migracion *************/
+
+--select * from gd_esquema.Maestra
+/*
+INSERT NEXTGDD.Afiliado (nro_afiliado,nombre,apellido,tipo_doc,nro_doc,domicilio,telefono,mail,fecha_nac,sexo,estado_civil,cant_familiares,cod_plan)
+		(select 'nro autogenerado',
+				p1.Paciente_Nombre,p1.Paciente_Apellido,'DNI',p1.Paciente_Dni,p1.Paciente_Direccion,p1.Paciente_Mail,p1.Paciente_Fecha_Nac,
+		       null,null,
+			   (select count(*) from gd_esquema.Maestra p2 where p2.Paciente_Apellido=p1.Paciente_Apellido),
+			   p1.Plan_Med_Codigo
+		from gd_esquema.Maestra p1);
+GO
+*/
+
+/************************************/
 
 /****** Inserto el usuario admin *****/
 
@@ -313,12 +333,13 @@ SELECT @hash = HASHBYTES('SHA2_256', 'w23e')
 INSERT INTO NEXTGDD.Usuario(username, password)
 VALUES ('admin', @hash)
 
+GO
 
 /************************************/
 
 CREATE PROCEDURE NEXTGDD.login (@userName VARCHAR(255), @password VARBINARY(255)) 
- 
- AS BEGIN
+ AS 
+  BEGIN
 
   DECLARE @ret BIT
   DECLARE @logins_fallidos SMALLINT
@@ -358,6 +379,66 @@ CREATE PROCEDURE NEXTGDD.login (@userName VARCHAR(255), @password VARBINARY(255)
              AND U.username = @userName
              AND U.username = R_U.username 
 	 
-     END
+END
 
 GO
+
+CREATE PROCEDURE NEXTGDD.crearTurno (@nroAf numeric(18,0),@nombreEsp varchar(255),@nomProf varchar(255),@apellidoP varchar(255),@fecha datetime)
+AS
+BEGIN
+	DECLARE @nroTurno numeric(18,0)=(select isnull(count(*),0)+1 from NEXTGDD.Turno);
+	DECLARE @codAgenda numeric (18,0)=(select cod_agenda 
+									   from NEXTGDD.Agenda a,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e
+									   where p.nombre=@nomProf and p.apellido=@apellidoP and e.descripcion=@nombreEsp and
+									         pe.matricula=p.matricula and pe.cod_especialidad=e.cod_especialidad
+											 and a.cod_especialidad=pe.cod_especialidad and a.matricula=pe.matricula)
+	INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,cod_agenda,fecha,cod_cancelacion) values
+			(@nroTurno,@nroAf,@codAgenda,@fecha,null)
+END;
+GO
+
+
+CREATE TRIGGER NEXTGDD.pedirTurno ON NEXTGDD.Turno INSTEAD OF insert
+AS
+BEGIN
+	IF (select isnull(count(t.cod_agenda+t.fecha),0) 
+	    from inserted i,NEXTGDD.Turno t
+		where i.cod_agenda+i.fecha=t.cod_agenda+t.fecha
+		group by t.cod_agenda,t.fecha)=0 
+	BEGIN
+		IF GD2C2016.NEXTGDD.verificarRangoDeAtencion((select fecha from inserted),(select cod_agenda from inserted))=1
+		BEGIN
+			INSERT NEXTGDD.Turno (nro_turno,fecha,nro_afiliado,cod_agenda,cod_cancelacion) 
+			(select nro_turno,fecha,nro_afiliado,cod_agenda,cod_cancelacion
+			 from inserted)
+			RETURN
+		END
+		raiserror('El turno esta fuera del rango de atencion del profesional',1,1)
+		RETURN
+	END
+	raiserror('Ya hay un turno en ese horario',1,1)
+	RETURN
+END;
+GO 
+
+CREATE FUNCTION NEXTGDD.verificarRangoDeAtencion (@fecha datetime,@cod_agenda numeric(18,0))
+returns int
+AS
+BEGIN
+	RETURN (select isnull(count(cod_agenda+rango_atencion),0)
+			from NEXTGDD.Rango_Atencion 
+	        where cod_agenda=@cod_agenda
+				  and (SELECT DATEPART(HOUR, @fecha))<hora_final
+				  and (SELECT DATEPART(HOUR, @fecha))>hora_inicial
+				  /*FALTA VER DIA SEMANAL-->CAMBIAR DIA DE SEMANA POR NUMERO*/
+			group by cod_agenda,rango_atencion)
+			/*DEVUELVE 1 SI ESTA DENTRO DE ALGUN RANGO
+			  SINO DEVUELVE 0*/ 
+END;
+GO
+
+/*DROP FUNCTION NEXTGDD.verificarRangoDeAtencion*/
+/*DROP TRIGGER NEXTGDD.pedirTurno*/
+/*DROP PROCEDURE NEXTGDD.crearTurno*/
+
+
