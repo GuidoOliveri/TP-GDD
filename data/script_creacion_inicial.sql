@@ -3,10 +3,92 @@ GO
 
 /**** CREACION DE SCHEMA ****/
 
-/***POR PALABRA RESERVADA COLOCO 'NEXTGDD' **/
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'NEXTGDD')
+BEGIN
+    EXEC ('CREATE SCHEMA NEXTGDD AUTHORIZATION gd')
+END
 
-CREATE SCHEMA NEXTGDD AUTHORIZATION gd
 GO
+
+/******** VALIDACION DE TABLAS ********/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Funcionalidad_X_Rol'))
+    DROP TABLE NEXTGDD.Funcionalidad_X_Rol
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Usuario_X_Rol'))
+    DROP TABLE NEXTGDD.Usuario_x_Rol
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Usuario'))
+    DROP TABLE NEXTGDD.Usuario
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Rol'))
+    DROP TABLE NEXTGDD.Rol
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Funcionalidad'))
+    DROP TABLE NEXTGDD.Funcionalidad
+
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Rango_Atencion'))
+    DROP TABLE NEXTGDD.Rango_Atencion
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Agenda_X_Turno'))
+    DROP TABLE NEXTGDD.Agenda_X_Turno
+
+	
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Historial'))
+    DROP TABLE NEXTGDD.Historial
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Consulta'))
+    DROP TABLE NEXTGDD.Consulta
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Diagnostico'))
+    DROP TABLE NEXTGDD.Diagnostico
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Sintoma'))
+    DROP TABLE NEXTGDD.Sintoma
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Enfermedad'))
+    DROP TABLE NEXTGDD.Enfermedad
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Turno'))
+    DROP TABLE NEXTGDD.Turno
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Agenda'))
+    DROP TABLE NEXTGDD.Agenda
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Tipo_Cancelacion'))
+    DROP TABLE NEXTGDD.Tipo_Cancelacion
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Cancelacion'))
+    DROP TABLE NEXTGDD.Cancelacion
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Bono_Consulta'))
+    DROP TABLE NEXTGDD.Bono_Consulta
+	
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Afiliado'))
+    DROP TABLE NEXTGDD.Afiliado
+		
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Profesional_X_Especialidad'))
+    DROP TABLE NEXTGDD.Profesional_X_Especialidad
+	
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Especialidad'))
+    DROP TABLE NEXTGDD.Especialidad
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Tipo_Especialidad'))
+    DROP TABLE NEXTGDD.Tipo_Especialidad
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Profesional'))
+    DROP TABLE NEXTGDD.Profesional
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Tipo_Documento'))
+    DROP TABLE NEXTGDD.Tipo_Documento
+	
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Administrativo'))
+    DROP TABLE NEXTGDD.Administrativo
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Plan_Medico'))
+    DROP TABLE NEXTGDD.Plan_Medico
+
 
 /**** CREACION DE TABLAS ****/
 
@@ -20,12 +102,13 @@ CREATE TABLE NEXTGDD.Usuario (
 
 CREATE TABLE NEXTGDD.Rol (
 
-    id_rol int PRIMARY KEY CHECK (id_rol in (1,2,3)),  
+    id_rol int PRIMARY KEY CHECK (id_rol IN (1,2,3)),  
 	nombre varchar (255),
 	habilitado bit NOT NULL DEFAULT 1
-    )
+)
+    
 
-CREATE TABLE NEXTGDD.Usuario_x_Rol (
+CREATE TABLE NEXTGDD.Usuario_X_Rol (
 
     username varchar (255) REFERENCES NextGDD.Usuario(username),
     id_rol int REFERENCES NextGDD.Rol(id_rol),
@@ -59,27 +142,33 @@ CREATE TABLE NEXTGDD.Administrativo (
     
 	id_administrativo numeric (18,0) PRIMARY KEY
 	)
+   
+CREATE TABLE NEXTGDD.Tipo_Documento (
+    
+	id smallint PRIMARY KEY,
+	nombre varchar (255)
+	)
 
 CREATE TABLE NEXTGDD.Profesional (
     
 	matricula numeric (18,0) PRIMARY KEY,
 	nombre varchar (255),
 	apellido varchar (255),
-	tipo_doc varchar (255),
+	tipo_doc smallint REFERENCES NEXTGDD.Tipo_Documento(id),
 	nro_doc numeric(18,0),
 	domicilio varchar (255),
 	telefono numeric (18,0),
 	mail varchar (255),
 	fecha_nac datetime,
 	sexo varchar (255)
-	)
+    )
 
 CREATE TABLE NEXTGDD.Tipo_Especialidad (
    
    tipo_especialidad numeric (18,0) PRIMARY KEY,
    descripcion varchar (255)
-   )
-      
+      )
+
 CREATE TABLE NEXTGDD.Especialidad (
 
    cod_especialidad numeric (18,0) PRIMARY KEY,
@@ -93,12 +182,6 @@ CREATE TABLE NEXTGDD.Profesional_X_Especialidad (
    cod_especialidad numeric (18,0) REFERENCES NextGDD.Especialidad(cod_especialidad),
    PRIMARY KEY (matricula, cod_especialidad) 
    )
-
-CREATE TABLE NEXTGDD.Tipo_Documento (
-    
-	id smallint PRIMARY KEY,
-	nombre varchar (255)
-	)
 
 CREATE TABLE NEXTGDD.Afiliado (
 
@@ -139,13 +222,11 @@ CREATE TABLE NEXTGDD.Cancelacion (
 	motivo varchar (255)
    )
 
-/**
 CREATE TABLE NEXTGDD.Tipo_cancelacion (
 
     tipo_cancelacion int IDENTITY PRIMARY KEY, 
 	nombre varchar (255)
    )
-**/
 
 CREATE TABLE NEXTGDD.Agenda (
 
@@ -224,37 +305,59 @@ CREATE TABLE NEXTGDD.Rango_Atencion (
    )
 
 
-/*****
-***ENCRIPTAR PASSWORD**
-SELECT HASHBYTES('SHA2_256', 'CLAVE');
+/****** Inserto el usuario admin *****/
 
--- o bien así
-INSERT INTO SEGURIDAD VALUES HASHBYTES('SHA', 'CLAVE');
+DECLARE @hash VARBINARY(255);
+SELECT @hash = HASHBYTES('SHA2_256', 'w23e')
 
-***COMPARAR PASSWORD, DESPUES METERLO EN UNA FUNCION(BOTON INGRESAR)***
-
-IF (SELECT COLUMNA FROM SEGURIDAD WHERE ID=1) == (SELECT HASHBYTES('SHA', 'CLAVE')  
-BEGIN
-
---PRINT 'CORRECTO' --Ingresar al sistema
-
-END
-ELSE
-BEGIN
-
---PRINT 'INCORRECTO'
-UPDATE NEXTGDD.USUARIO
-SET int_fallidos= int_fallidos + 1
-WHERE username=@un_usuario
-END
+INSERT INTO NEXTGDD.Usuario(username, password)
+VALUES ('admin', @hash)
 
 
-IF int_fallidos >= 3
-BEGIN
+/************************************/
 
-inhabilitado = 1
+CREATE PROCEDURE NEXTGDD.login (@userName VARCHAR(255), @password VARBINARY(255)) 
+ 
+ AS BEGIN
 
-END
+  DECLARE @ret BIT
+  DECLARE @logins_fallidos SMALLINT
 
+  SELECT @ret=COUNT(*), @logins_fallidos=MAX(logins_fallidos)
+    FROM NEXTGDD.Usuario
+   WHERE username = @userName
+     AND password = HASHBYTES('SHA2_256', @password)
+     AND habilitado = 1
 
-***/
+  IF @ret = 0  BEGIN
+    --Agrego un login fallido
+    
+	UPDATE NEXTGDD.Usuario
+       SET logins_fallidos = logins_fallidos + 1
+     WHERE username = @userName
+    
+	--si ya tiene 3 logins fallidos dar de baja al usuario
+    
+	UPDATE NEXTGDD.Usuario
+       SET habilitado = 0
+     WHERE username = @userName
+       AND logins_fallidos = 3
+  END
+  
+     ELSE
+     --reseteo la cantidad de fallos
+	    UPDATE NEXTGDD.Usuario
+        SET logins_fallidos = 0
+        WHERE username = @userName
+
+     --Devuelvo los roles correspondientes al usuario 
+
+       SELECT @ret AS login_valido, R_U.id_rol, R.nombre
+       FROM NEXTGDD.Usuario_x_Rol R_U, NEXTGDD.ROl R, NEXTGDD.Usuario U
+       WHERE R_U.id_rol = R.id_rol
+             AND U.username = @userName
+             AND U.username = R_U.username 
+	 
+     END
+
+GO
