@@ -69,6 +69,9 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Cance
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Bono_Consulta'))
     DROP TABLE NEXTGDD.Bono_Consulta
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Tipo_Documento'))
+    DROP TABLE NEXTGDD.Tipo_Documento
 	
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Afiliado'))
     DROP TABLE NEXTGDD.Afiliado
@@ -84,9 +87,6 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Tipo_
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Profesional'))
     DROP TABLE NEXTGDD.Profesional
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Tipo_Documento'))
-    DROP TABLE NEXTGDD.Tipo_Documento
 	
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Administrativo'))
     DROP TABLE NEXTGDD.Administrativo
@@ -147,18 +147,12 @@ CREATE TABLE NEXTGDD.Administrativo (
     
 	id_administrativo numeric (18,0) PRIMARY KEY
 	)
-   
-CREATE TABLE NEXTGDD.Tipo_Documento (
-	nro_documento numeric(18,0) PRIMARY KEY,
-	tipo_doc varchar (255)
-	)
 
 CREATE TABLE NEXTGDD.Profesional (
 --SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION    
 	matricula numeric (18,0) IDENTITY(1,100) PRIMARY KEY,
 	nombre varchar (255),
 	apellido varchar (255),
-	nro_documento numeric(18,0) REFERENCES NEXTGDD.Tipo_Documento(nro_documento),
 	domicilio varchar (255),
 	telefono numeric (18,0),
 	mail varchar (255),
@@ -191,7 +185,6 @@ CREATE TABLE NEXTGDD.Afiliado (
 	nro_afiliado numeric (18,0) IDENTITY(1,100) PRIMARY KEY , --asignado por sistema finaliza en: 01 afiliado principal, 02 conyuge, 03 y subsiguientes para el resto de la familia
 	nombre varchar (255), 
 	apellido varchar (255),
-	nro_documento numeric(18,0) REFERENCES NextGDD.Tipo_Documento(nro_documento),
 	domicilio varchar (255),
 	telefono numeric (18,0),
 	mail varchar (255),
@@ -204,9 +197,16 @@ CREATE TABLE NEXTGDD.Afiliado (
 	activo bit DEFAULT 1,
 	fecha_baja_logica datetime DEFAULT NULL,
 	--
-	UNIQUE (nro_documento)
 
     )
+
+CREATE TABLE NEXTGDD.Tipo_Documento (
+	nro_documento numeric(18,0) NOT NULL,
+	tipo_doc varchar (255) NOT NULL,
+	nro_afiliado numeric(18,0) REFERENCES NEXTGDD.Afiliado(nro_afiliado),
+	matricula numeric(18,0) REFERENCES NEXTGDD.Profesional(matricula),
+	CONSTRAINT pk_Doc PRIMARY KEY (nro_documento,tipo_doc)
+	)
 
 CREATE TABLE NEXTGDD.Bono_Consulta (
 
@@ -346,36 +346,46 @@ INSERT NEXTGDD.Especialidad (cod_especialidad,descripcion,tipo_especialidad)
 		group by Especialidad_Codigo,Especialidad_Descripcion,Tipo_Especialidad_Codigo);
 GO
 
-INSERT NEXTGDD.Tipo_Documento (nro_documento,tipo_doc)
-		(select Paciente_Dni,'DNI'
-		 from gd_esquema.Maestra
-		 group by Paciente_Dni);
+INSERT NEXTGDD.Afiliado (nombre,apellido,domicilio,telefono,mail,fecha_nac,cod_plan)
+		(select Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo
+		from gd_esquema.Maestra 
+		group by Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo);
 GO
 
-INSERT NEXTGDD.Tipo_Documento (nro_documento,tipo_doc)
-		(select Medico_Dni,'DNI'
+INSERT NEXTGDD.Profesional(nombre,apellido,domicilio,telefono,mail,fecha_nac)
+		(select Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac
+		from gd_esquema.Maestra 
+		group by Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac);
+GO
+
+INSERT NEXTGDD.Tipo_Documento (nro_documento,tipo_doc,nro_afiliado)
+		(select Paciente_Dni,'DNI',
+				(select nro_afiliado
+				from NEXTGDD.Afiliado
+				where nombre+apellido+domicilio+mail =Paciente_Nombre+Paciente_Apellido+Paciente_Direccion+Paciente_Mail
+					  and telefono=Paciente_Telefono and fecha_nac=Paciente_Fecha_Nac
+				group by nro_afiliado)
+		 from gd_esquema.Maestra
+		 group by Paciente_Dni,Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac);
+GO
+
+INSERT NEXTGDD.Tipo_Documento (nro_documento,tipo_doc,matricula)
+		(select Medico_Dni,'DNI',
+				(select matricula
+				from NEXTGDD.Profesional
+				where nombre+apellido+domicilio+mail=Medico_Nombre+Medico_Apellido+Medico_Direccion+Medico_Mail
+				      and fecha_nac=Medico_Fecha_Nac and telefono=Medico_Telefono
+				group by matricula)
 		 from gd_esquema.Maestra
 		 where isnull(Medico_Dni,0)<>0
-		 group by Medico_Dni);
-GO
-
-INSERT NEXTGDD.Afiliado (nombre,apellido,nro_documento,domicilio,telefono,mail,fecha_nac,cod_plan)
-		(select Paciente_Nombre,Paciente_Apellido,Paciente_Dni,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo
-		from gd_esquema.Maestra 
-		group by Paciente_Dni,Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo);
-GO
-
-INSERT NEXTGDD.Profesional(nombre,apellido,nro_documento,domicilio,telefono,mail,fecha_nac)
-		(select Medico_Nombre,Medico_Apellido,Medico_Dni,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac
-		from gd_esquema.Maestra 
-		group by Medico_Nombre,Medico_Apellido,Medico_Dni,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac);
+		 group by Medico_Dni,Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac);
 GO
 
 INSERT NEXTGDD.Bono_Consulta(fecha_impresion,compra_fecha,nro_consulta,cod_plan,nro_afiliado)
 		(select Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Bono_Consulta_Numero,Plan_Med_Codigo,
-				(select nro_afiliado
-				from NEXTGDD.Afiliado 
-				where Paciente_Dni=nro_documento)
+				(select a.nro_afiliado
+				from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d
+				where a.nro_afiliado=d.nro_afiliado and Paciente_Dni=d.nro_documento)
 		from gd_esquema.Maestra 
 		where not(ISNULL(Bono_Consulta_Fecha_Impresion,0)=0 and 
 				  ISNULL(Bono_Consulta_Numero,0)=0 and
@@ -386,14 +396,18 @@ GO
 
 INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,fecha)--FALTA CODIGO AGENDA
        (select Turno_Numero,
-	           (select nro_afiliado
-				from NEXTGDD.Afiliado 
-				where Paciente_Dni=nro_documento),
+	           (select a.nro_afiliado
+				from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d
+				where a.nro_afiliado=d.nro_afiliado and Paciente_Dni=d.nro_documento),
 			   Turno_Fecha
 	    from gd_esquema.Maestra
 		where isnull(Turno_Numero,0)<>0
 		group by Turno_Numero,Turno_Fecha,Paciente_Dni);
 GO
+
+INSERT NEXTGDD.Rol (id_rol,nombre) values (1,'Administrador');
+INSERT NEXTGDD.Rol (id_rol,nombre) values (2,'Afiliado');
+INSERT NEXTGDD.Rol (id_rol,nombre) values (3,'Profesional');
 
 /************************************/
 
