@@ -263,7 +263,7 @@ CREATE TABLE NEXTGDD.Enfermedad (
 
 CREATE TABLE NEXTGDD.Diagnostico (
    
-   cod_diagnostico numeric (18,0) PRIMARY KEY,
+   cod_diagnostico numeric (18,0) IDENTITY PRIMARY KEY,
    descripcion varchar (255),
    sintoma varchar (255) REFERENCES NextGDD.Sintoma (sintoma),
    enfermedad varchar (255) REFERENCES NextGDD.Enfermedad (enfermedad),
@@ -271,7 +271,7 @@ CREATE TABLE NEXTGDD.Diagnostico (
 
 CREATE TABLE NEXTGDD.Consulta (
  
-   cod_consulta numeric (18,0) PRIMARY KEY,
+   cod_consulta numeric (18,0) IDENTITY PRIMARY KEY,
    cod_diagnostico numeric (18,0) REFERENCES NextGDD.Diagnostico(cod_diagnostico),
    nro_bono numeric (18,0) REFERENCES NextGDD.Bono_Consulta(nro_bono),
    nro_turno numeric (18,0) REFERENCES NextGDD.Turno(nro_turno)
@@ -349,12 +349,14 @@ GO
 INSERT NEXTGDD.Afiliado (nombre,apellido,domicilio,telefono,mail,fecha_nac,cod_plan)
 		(select Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo
 		from gd_esquema.Maestra 
+		where not(Paciente_Nombre IS NULL)
 		group by Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo);
 GO
 
 INSERT NEXTGDD.Profesional(nombre,apellido,domicilio,telefono,mail,fecha_nac)
 		(select Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac
 		from gd_esquema.Maestra 
+		where not(Medico_Nombre IS NULL)
 		group by Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac);
 GO
 
@@ -405,7 +407,57 @@ INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,fecha)--FALTA CODIGO AGENDA
 		group by Turno_Numero,Turno_Fecha,Paciente_Dni);
 GO
 
-INSERT NEXTGDD.Rol (id_rol,nombre) values (1,'Administrador');
+INSERT NEXTGDD.Profesional_X_Especialidad (matricula,cod_especialidad)
+		(select (select matricula 
+				 from NEXTGDD.Profesional
+				 where nombre+apellido+domicilio+mail=Medico_Nombre+Medico_Apellido+Medico_Direccion+Medico_Mail
+				      and fecha_nac=Medico_Fecha_Nac and telefono=Medico_Telefono),
+				Especialidad_Codigo
+		 from gd_esquema.Maestra
+		 where isnull(Especialidad_Codigo,0)<>0
+		 group by Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Mail,Medico_Fecha_Nac,Medico_Telefono,Especialidad_Codigo);
+GO
+
+INSERT NEXTGDD.Agenda (matricula, cod_especialidad)
+		(select matricula,cod_especialidad
+		 from NEXTGDD.Profesional_X_Especialidad);
+GO
+
+/*
+--Crea las consultas a partir de Diagnostico
+CREATE TRIGGER insertConsulta on NEXTGDD.Diagnostico after INSERT
+AS
+BEGIN
+	INSERT NEXTGDD.Consulta (cod_diagnostico,nro_bono,nro_turno)
+	       (select cod_diagnostico, 
+				   (select nro_bono 
+				    from NEXTGDD.Bono_Consulta
+					where fecha_impresion=Bono_Consulta_Fecha_Impresion and
+						  compra_fecha=Compra_Bono_Fecha and
+						  nro_consulta=Bono_Consulta_Numero and
+						  cod_plan= Plan_Med_Codigo and
+						  nro_afiliado= (select a.nro_afiliado 
+										from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d 
+										where Paciente_Dni=d.nro_documento and d.nro_afiliado=a.nro_afiliado)),
+					(select nro_turno
+				    from NEXTGDD.Turno
+					where fecha=Turno_fecha and
+						  nro_afiliado= (select a.nro_afiliado 
+										from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d 
+										where Paciente_Dni=d.nro_documento and d.nro_afiliado=a.nro_afiliado))
+		    from inserted,gd_esquema.Maestra)
+	RETURN
+END;
+GO
+*/
+
+INSERT NEXTGDD.Diagnostico (sintoma,enfermedad)
+		(select Consulta_Sintomas,Consulta_Enfermedades
+		 from gd_esquema.Maestra
+		 where not(Consulta_Sintomas IS NULL and Consulta_Enfermedades IS NULL));
+GO
+
+INSERT NEXTGDD.Rol (id_rol,nombre) values (1,'Administrativo');
 INSERT NEXTGDD.Rol (id_rol,nombre) values (2,'Afiliado');
 INSERT NEXTGDD.Rol (id_rol,nombre) values (3,'Profesional');
 
