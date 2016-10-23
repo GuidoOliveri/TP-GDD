@@ -395,18 +395,6 @@ INSERT NEXTGDD.Bono_Consulta(fecha_impresion,compra_fecha,nro_consulta,cod_plan,
 		group by Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Bono_Consulta_Numero,Plan_Med_Codigo,Paciente_Dni);
 GO
 
-
-INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,fecha)--FALTA CODIGO AGENDA
-       (select Turno_Numero,
-	           (select a.nro_afiliado
-				from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d
-				where a.nro_afiliado=d.nro_afiliado and Paciente_Dni=d.nro_documento),
-			   Turno_Fecha
-	    from gd_esquema.Maestra
-		where isnull(Turno_Numero,0)<>0
-		group by Turno_Numero,Turno_Fecha,Paciente_Dni);
-GO
-
 INSERT NEXTGDD.Profesional_X_Especialidad (matricula,cod_especialidad)
 		(select (select matricula 
 				 from NEXTGDD.Profesional
@@ -423,38 +411,63 @@ INSERT NEXTGDD.Agenda (matricula, cod_especialidad)
 		 from NEXTGDD.Profesional_X_Especialidad);
 GO
 
-/*
---Crea las consultas a partir de Diagnostico
-CREATE TRIGGER insertConsulta on NEXTGDD.Diagnostico after INSERT
-AS
-BEGIN
-	INSERT NEXTGDD.Consulta (cod_diagnostico,nro_bono,nro_turno)
-	       (select cod_diagnostico, 
-				   (select nro_bono 
-				    from NEXTGDD.Bono_Consulta
-					where fecha_impresion=Bono_Consulta_Fecha_Impresion and
-						  compra_fecha=Compra_Bono_Fecha and
-						  nro_consulta=Bono_Consulta_Numero and
-						  cod_plan= Plan_Med_Codigo and
-						  nro_afiliado= (select a.nro_afiliado 
-										from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d 
-										where Paciente_Dni=d.nro_documento and d.nro_afiliado=a.nro_afiliado)),
-					(select nro_turno
-				    from NEXTGDD.Turno
-					where fecha=Turno_fecha and
-						  nro_afiliado= (select a.nro_afiliado 
-										from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d 
-										where Paciente_Dni=d.nro_documento and d.nro_afiliado=a.nro_afiliado))
-		    from inserted,gd_esquema.Maestra)
-	RETURN
-END;
+INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,fecha,cod_agenda)
+       (select Turno_Numero,
+	           (select a.nro_afiliado
+				from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d
+				where a.nro_afiliado=d.nro_afiliado and Paciente_Dni=d.nro_documento),
+			   Turno_Fecha,
+			   (select a.cod_agenda
+			    from NEXTGDD.Agenda a,NEXTGDD.Profesional p
+				where a.cod_especialidad=Especialidad_Codigo and
+					  Medico_Dni = (select d.nro_documento
+									from NEXTGDD.Tipo_Documento d
+									where d.matricula=p.matricula and isnull(d.matricula,0)<>0) and
+					  a.matricula=p.matricula and 
+					  isnull(a.cod_agenda,0)<>0
+				group by a.cod_agenda)
+	    from gd_esquema.Maestra
+		where isnull(Turno_Numero,0)<>0
+		group by Turno_Numero,Turno_Fecha,Paciente_Dni,Especialidad_Codigo,Medico_Dni);
 GO
-*/
+
+
+INSERT NEXTGDD.Agenda_X_Turno (cod_agenda,fecha)
+		(select cod_agenda,fecha
+		 from NEXTGDD.Turno);
+GO	 
 
 INSERT NEXTGDD.Diagnostico (sintoma,enfermedad)
 		(select Consulta_Sintomas,Consulta_Enfermedades
 		 from gd_esquema.Maestra
 		 where not(Consulta_Sintomas IS NULL and Consulta_Enfermedades IS NULL));
+GO
+
+INSERT NEXTGDD.Consulta (nro_bono,nro_turno)
+	   (select (select b.nro_bono
+			    from NEXTGDD.Bono_Consulta b
+				where b.fecha_impresion=Bono_Consulta_Fecha_Impresion and
+					  isnull(b.compra_fecha,0)=isnull(Compra_Bono_Fecha,0) and
+					  b.nro_consulta=Bono_Consulta_Numero and
+					  b.cod_plan= Plan_Med_Codigo and
+					  b.nro_afiliado= (select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d where Paciente_Dni=d.nro_documento and d.nro_afiliado=a.nro_afiliado and ISNULL(d.matricula,0)=0)
+				group by b.nro_bono),
+			   (select t.nro_turno
+				from NEXTGDD.Turno t
+				where t.fecha=Turno_fecha and
+				  	  t.nro_afiliado= (select a.nro_afiliado 
+									   from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d 
+									   where Paciente_Dni=d.nro_documento and d.nro_afiliado=a.nro_afiliado and isnull(d.matricula,0)=0)
+					  and t.cod_agenda = (select a.cod_agenda
+					 					  from NEXTGDD.Agenda a,NEXTGDD.Profesional p,NEXTGDD.Tipo_Documento d
+										  where a.cod_especialidad=Especialidad_Codigo and a.matricula=p.matricula and (d.matricula=p.matricula and isnull(d.matricula,0)<>0) and d.nro_documento=Medico_Dni)			
+				group by t.nro_turno)
+		from gd_esquema.Maestra
+		where not(Consulta_Sintomas IS NULL and Consulta_Enfermedades IS NULL) );
+GO
+   
+UPDATE NEXTGDD.Consulta  
+SET cod_diagnostico= cod_consulta;
 GO
 
 INSERT NEXTGDD.Rol (id_rol,nombre) values (1,'Administrativo');
@@ -578,5 +591,3 @@ GO
 /*DROP FUNCTION NEXTGDD.verificarRangoDeAtencion*/
 /*DROP TRIGGER NEXTGDD.pedirTurno*/
 /*DROP PROCEDURE NEXTGDD.crearTurno*/
-
-
