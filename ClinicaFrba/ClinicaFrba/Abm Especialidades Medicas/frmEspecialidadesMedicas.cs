@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ClinicaFrba.Registro_Llegada
+namespace ClinicaFrba.Abm_Especialidades_Medicas
 {
-    public partial class Form1 : Form
+    public partial class frmEspecialidadesMedicas : Form
     {
-        public Form1()
+        public frmEspecialidadesMedicas()
         {
             InitializeComponent();
         }

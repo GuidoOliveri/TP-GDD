@@ -1,6 +1,6 @@
-﻿namespace ClinicaFrba.Registro_Llegada
+﻿namespace ClinicaFrba.Cancelar_Atencion
 {
-    partial class Form1
+    partial class frmCancelarAtencion
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // frmCancelarAtencion
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.Name = "frmCancelarAtencion";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Cancelar Atención";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

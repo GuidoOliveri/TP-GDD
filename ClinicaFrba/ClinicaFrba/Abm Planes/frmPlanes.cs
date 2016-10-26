@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ClinicaFrba.Cancelar_Atencion
+namespace ClinicaFrba.Abm_Planes
 {
-    public partial class Form1 : Form
+    public partial class frmPlanes : Form
     {
-        public Form1()
+        public frmPlanes()
         {
             InitializeComponent();
         }

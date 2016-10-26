@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba.Compra_Bono
 {
-    public partial class Form2 : Form
+    public partial class frmMontoAPagar : Form
     {
-        public Form2()
+        public frmMontoAPagar()
         {
             InitializeComponent();
         }

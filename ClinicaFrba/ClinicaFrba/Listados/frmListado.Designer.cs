@@ -1,6 +1,6 @@
 ﻿namespace ClinicaFrba.Listados
 {
-    partial class Form1
+    partial class frmListado
     {
          /// <summary>
         /// Required designer variable.
@@ -42,10 +42,7 @@
             this.lblFiltroTextoLibreExacto = new System.Windows.Forms.Label();
             this.lblFiltroTextoLibre = new System.Windows.Forms.Label();
             this.lblFiltroBusqueda = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.gD2C2016DataSet = new ClinicaFrba.GD2C2016DataSet();
-            this.maestraBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.maestraTableAdapter = new ClinicaFrba.GD2C2016DataSetTableAdapters.MaestraTableAdapter();
+            this.dataGridTablaFiltro = new System.Windows.Forms.DataGridView();
             this.pacienteNombreDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pacienteApellidoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pacienteDniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -75,10 +72,13 @@
             this.compraBonoFechaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bonoConsultaFechaImpresionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bonoConsultaNumeroDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.maestraBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.gD2C2016DataSet = new ClinicaFrba.GD2C2016DataSet();
+            this.maestraTableAdapter = new ClinicaFrba.GD2C2016DataSetTableAdapters.MaestraTableAdapter();
             this.pnlFiltroBusqueda.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridTablaFiltro)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet)).BeginInit();
             this.SuspendLayout();
             // 
             // btnLimpiar
@@ -207,11 +207,11 @@
             this.lblFiltroBusqueda.TabIndex = 3;
             this.lblFiltroBusqueda.Text = "Filtros de busqueda";
             // 
-            // dataGridView1
+            // dataGridTablaFiltro
             // 
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridTablaFiltro.AutoGenerateColumns = false;
+            this.dataGridTablaFiltro.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridTablaFiltro.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.pacienteNombreDataGridViewTextBoxColumn,
             this.pacienteApellidoDataGridViewTextBoxColumn,
             this.pacienteDniDataGridViewTextBoxColumn,
@@ -241,25 +241,11 @@
             this.compraBonoFechaDataGridViewTextBoxColumn,
             this.bonoConsultaFechaImpresionDataGridViewTextBoxColumn,
             this.bonoConsultaNumeroDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.maestraBindingSource;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 188);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(645, 143);
-            this.dataGridView1.TabIndex = 4;
-            // 
-            // gD2C2016DataSet
-            // 
-            this.gD2C2016DataSet.DataSetName = "GD2C2016DataSet";
-            this.gD2C2016DataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // maestraBindingSource
-            // 
-            this.maestraBindingSource.DataMember = "Maestra";
-            this.maestraBindingSource.DataSource = this.gD2C2016DataSet;
-            // 
-            // maestraTableAdapter
-            // 
-            this.maestraTableAdapter.ClearBeforeFill = true;
+            this.dataGridTablaFiltro.DataSource = this.maestraBindingSource;
+            this.dataGridTablaFiltro.Location = new System.Drawing.Point(12, 188);
+            this.dataGridTablaFiltro.Name = "dataGridTablaFiltro";
+            this.dataGridTablaFiltro.Size = new System.Drawing.Size(645, 143);
+            this.dataGridTablaFiltro.TabIndex = 4;
             // 
             // pacienteNombreDataGridViewTextBoxColumn
             // 
@@ -435,12 +421,26 @@
             this.bonoConsultaNumeroDataGridViewTextBoxColumn.HeaderText = "Bono_Consulta_Numero";
             this.bonoConsultaNumeroDataGridViewTextBoxColumn.Name = "bonoConsultaNumeroDataGridViewTextBoxColumn";
             // 
+            // maestraBindingSource
+            // 
+            this.maestraBindingSource.DataMember = "Maestra";
+            this.maestraBindingSource.DataSource = this.gD2C2016DataSet;
+            // 
+            // gD2C2016DataSet
+            // 
+            this.gD2C2016DataSet.DataSetName = "GD2C2016DataSet";
+            this.gD2C2016DataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // maestraTableAdapter
+            // 
+            this.maestraTableAdapter.ClearBeforeFill = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(665, 415);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataGridTablaFiltro);
             this.Controls.Add(this.lblFiltroBusqueda);
             this.Controls.Add(this.pnlFiltroBusqueda);
             this.Controls.Add(this.btnBorrar);
@@ -451,9 +451,9 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.pnlFiltroBusqueda.ResumeLayout(false);
             this.pnlFiltroBusqueda.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridTablaFiltro)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -474,7 +474,7 @@
         private System.Windows.Forms.Label lblSeleccioneUnaOpcion;
         private System.Windows.Forms.TextBox txtBusquedaEspecifica;
         private System.Windows.Forms.Button cmdSeleccionar;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridTablaFiltro;
         private GD2C2016DataSet gD2C2016DataSet;
         private System.Windows.Forms.BindingSource maestraBindingSource;
         private GD2C2016DataSetTableAdapters.MaestraTableAdapter maestraTableAdapter;

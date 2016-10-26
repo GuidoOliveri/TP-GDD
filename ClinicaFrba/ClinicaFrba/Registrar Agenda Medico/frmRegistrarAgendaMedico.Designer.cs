@@ -1,6 +1,6 @@
-﻿namespace ClinicaFrba.Abm_Profesional
+﻿namespace ClinicaFrba.Registrar_Agenta_Medico
 {
-    partial class Form1
+    partial class frmRegistrarAgendaMedico
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // frmRegistrarAgendaMedico
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(336, 262);
+            this.Name = "frmRegistrarAgendaMedico";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Registro de la agenda del médico";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
