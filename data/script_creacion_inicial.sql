@@ -94,7 +94,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Admin
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Plan_Medico'))
     DROP TABLE NEXTGDD.Plan_Medico
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Estado_Civil'))
+    DROP TABLE NEXTGDD.Estado_Civil
 
+GO
 /**** CREACION DE TABLAS ****/
 
 CREATE TABLE NEXTGDD.Usuario (
@@ -107,8 +110,8 @@ CREATE TABLE NEXTGDD.Usuario (
 
 CREATE TABLE NEXTGDD.Rol (
 
-    id_rol int PRIMARY KEY CHECK (id_rol IN (1,2,3)),  
-	nombre varchar (255),
+    id_rol int PRIMARY KEY IDENTITY,  
+	nombre varchar (255) NOT NULL,
 	habilitado bit NOT NULL DEFAULT 1
 )
     
@@ -157,7 +160,8 @@ CREATE TABLE NEXTGDD.Profesional (
 	telefono numeric (18,0),
 	mail varchar (255),
 	fecha_nac datetime,
-	sexo varchar (255)
+	sexo char (1),
+	constraint check_sexo check (sexo IN ('H',  'M','X')) 
     )
 
 CREATE TABLE NEXTGDD.Tipo_Especialidad (
@@ -180,6 +184,12 @@ CREATE TABLE NEXTGDD.Profesional_X_Especialidad (
    PRIMARY KEY (matricula, cod_especialidad) 
    )
 
+CREATE TABLE NEXTGDD.Estado_Civil (
+
+   id smallint PRIMARY KEY IDENTITY,
+   nombre varchar (50) 
+   ) 
+   
 CREATE TABLE NEXTGDD.Afiliado (
 --SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION
 	nro_afiliado numeric (18,0) IDENTITY(1,100) PRIMARY KEY , --asignado por sistema finaliza en: 01 afiliado principal, 02 conyuge, 03 y subsiguientes para el resto de la familia
@@ -189,16 +199,17 @@ CREATE TABLE NEXTGDD.Afiliado (
 	telefono numeric (18,0),
 	mail varchar (255),
 	fecha_nac datetime,
-	sexo varchar (255),
-	estado_civil varchar (255),
+	sexo char (1) not null default 'X',
+	estado_civil smallint default 6 references NEXTGDD.Estado_Civil(id),
 	cant_familiares numeric(18, 0),
 	cod_plan numeric(18,0) REFERENCES NextGDD.Plan_Medico(cod_plan),
 	--
 	activo bit DEFAULT 1,
 	fecha_baja_logica datetime DEFAULT NULL,
 	--
-
-    )
+	constraint check_s2 check (sexo IN ('H', 'M','X')),
+	
+	)
 
 CREATE TABLE NEXTGDD.Tipo_Documento (
 	nro_documento numeric(18,0) NOT NULL,
@@ -306,44 +317,48 @@ CREATE TABLE NEXTGDD.Rango_Atencion (
    dia_semanal_final varchar (255),
    PRIMARY KEY (cod_agenda, rango_atencion) 
    )
-
+GO
 /************ Migracion *************/
 
 --select * from gd_esquema.Maestra
+--SET STATISTICS TIME ON
+
+INSERT NEXTGDD.Estado_Civil(nombre)
+VALUES ('Soltero/a'),    --1
+       ('Casado/a'),     --2 
+	   ('Viudo/a'),      --3
+	   ('Concubinato'),  --4
+	   ('Divorciado/a'), --5
+	    ('X')            --6
 
 
 INSERT NEXTGDD.Plan_Medico (cod_plan,descripcion,cuota,precio_bono_consulta,precio_bono_farmacia)
-	   (select Plan_Med_Codigo,Plan_Med_Descripcion,null,Plan_Med_Precio_Bono_Consulta,Plan_Med_Precio_Bono_Farmacia
-	   from gd_esquema.Maestra
-	   group by Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Consulta,Plan_Med_Precio_Bono_Farmacia);
+	   (select  distinct Plan_Med_Codigo,Plan_Med_Descripcion,null,Plan_Med_Precio_Bono_Consulta,Plan_Med_Precio_Bono_Farmacia
+	   from gd_esquema.Maestra );
 GO
 
 INSERT NEXTGDD.Enfermedad(enfermedad)
-	   (select Consulta_Enfermedades
+	   (select distinct Consulta_Enfermedades
 	   from gd_esquema.Maestra
-	   where not(Consulta_Enfermedades is null)
-	   group by Consulta_Enfermedades);
+	   where not(Consulta_Enfermedades is null) );
 GO
 
 INSERT NEXTGDD.Sintoma(sintoma)
-	   (select Consulta_Sintomas
+	   (select distinct Consulta_Sintomas
 	   from gd_esquema.Maestra
-	   where not(Consulta_Sintomas is null)
-	   group by Consulta_Sintomas);
+	   where not(Consulta_Sintomas is null));
 GO
 
 INSERT NEXTGDD.Tipo_Especialidad (tipo_especialidad,descripcion)
-		(select Tipo_Especialidad_Codigo,Tipo_Especialidad_Descripcion
+		(select distinct Tipo_Especialidad_Codigo,Tipo_Especialidad_Descripcion
 		from gd_esquema.Maestra 
-		where ISNULL(Tipo_Especialidad_Codigo,0)<>0
-		group by Tipo_Especialidad_Codigo,Tipo_Especialidad_Descripcion);
+		where ISNULL(Tipo_Especialidad_Codigo,0)<>0	);
 GO
 
 INSERT NEXTGDD.Especialidad (cod_especialidad,descripcion,tipo_especialidad)
-		(select Especialidad_Codigo,Especialidad_Descripcion,Tipo_Especialidad_Codigo
+		(select distinct Especialidad_Codigo,Especialidad_Descripcion,Tipo_Especialidad_Codigo
 		from gd_esquema.Maestra 
-		where ISNULL(Especialidad_Codigo,0)<>0
-		group by Especialidad_Codigo,Especialidad_Descripcion,Tipo_Especialidad_Codigo);
+		where ISNULL(Especialidad_Codigo,0)<>0 );
 GO
 
 INSERT NEXTGDD.Afiliado (nombre,apellido,domicilio,telefono,mail,fecha_nac,cod_plan)
@@ -405,6 +420,7 @@ INSERT NEXTGDD.Profesional_X_Especialidad (matricula,cod_especialidad)
 		 where isnull(Especialidad_Codigo,0)<>0
 		 group by Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Mail,Medico_Fecha_Nac,Medico_Telefono,Especialidad_Codigo);
 GO
+
 
 INSERT NEXTGDD.Agenda (matricula, cod_especialidad)
 		(select matricula,cod_especialidad
@@ -470,9 +486,10 @@ UPDATE NEXTGDD.Consulta
 SET cod_diagnostico= cod_consulta;
 GO
 
-INSERT NEXTGDD.Rol (id_rol,nombre) values (1,'Administrativo');
-INSERT NEXTGDD.Rol (id_rol,nombre) values (2,'Afiliado');
-INSERT NEXTGDD.Rol (id_rol,nombre) values (3,'Profesional');
+INSERT NEXTGDD.Rol (nombre) values ('Administrativo');
+INSERT NEXTGDD.Rol (nombre) values ('Afiliado');
+INSERT NEXTGDD.Rol (nombre) values ('Profesional');
+
 
 /************************************/
 
@@ -486,9 +503,28 @@ VALUES ('admin', @hash)
 
 GO
 
-/************************************/
+/***************Validacion de Procedure, Function,Triggers*********************/
+/****las validaciones nos permite ejecutar todo el script,una vez ya ejecutado por primera vez****/
 
-CREATE PROCEDURE NEXTGDD.login (@userName VARCHAR(255), @password VARBINARY(255)) 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.ingreso'))
+    DROP PROCEDURE NEXTGDD.ingreso
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.crearTurno'))
+    DROP PROCEDURE NEXTGDD.crearTurno
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarRangoDeAtencion'))
+    DROP FUNCTION NEXTGDD.verificarRangoDeAtencion
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.pedirTurno'))
+    DROP TRIGGER NEXTGDD.pedirTurno
+
+GO
+/*********************Stored Procedure************************/
+
+--CREATE PROCEDURE NEXTGDD.logins (@userName VARCHAR(255), @password VARBINARY(255)) 
+ 
+CREATE PROCEDURE NEXTGDD.ingreso(@user VARCHAR(100), @pass VARBINARY(100))
+
  AS 
   BEGIN
 
@@ -497,8 +533,8 @@ CREATE PROCEDURE NEXTGDD.login (@userName VARCHAR(255), @password VARBINARY(255)
 
   SELECT @ret=COUNT(*), @logins_fallidos=MAX(logins_fallidos)
     FROM NEXTGDD.Usuario
-   WHERE username = @userName
-     AND password = HASHBYTES('SHA2_256', @password)
+   WHERE username = @user
+     AND password = HASHBYTES('SHA2_256', @pass)
      AND habilitado = 1
 
   IF @ret = 0  BEGIN
@@ -506,13 +542,13 @@ CREATE PROCEDURE NEXTGDD.login (@userName VARCHAR(255), @password VARBINARY(255)
     
 	UPDATE NEXTGDD.Usuario
        SET logins_fallidos = logins_fallidos + 1
-     WHERE username = @userName
+     WHERE username = @user
     
 	--si ya tiene 3 logins fallidos dar de baja al usuario
     
 	UPDATE NEXTGDD.Usuario
        SET habilitado = 0
-     WHERE username = @userName
+     WHERE username = @user
        AND logins_fallidos = 3
   END
   
@@ -520,19 +556,20 @@ CREATE PROCEDURE NEXTGDD.login (@userName VARCHAR(255), @password VARBINARY(255)
      --reseteo la cantidad de fallos
 	    UPDATE NEXTGDD.Usuario
         SET logins_fallidos = 0
-        WHERE username = @userName
+        WHERE username = @user
 
      --Devuelvo los roles correspondientes al usuario 
 
        SELECT @ret AS login_valido, R_U.id_rol, R.nombre
        FROM NEXTGDD.Usuario_x_Rol R_U, NEXTGDD.ROl R, NEXTGDD.Usuario U
        WHERE R_U.id_rol = R.id_rol
-             AND U.username = @userName
+             AND U.username = @user
              AND U.username = R_U.username 
-	 
+	
 END
 
 GO
+
 
 CREATE PROCEDURE NEXTGDD.crearTurno (@nroAf numeric(18,0),@nombreEsp varchar(255),@nomProf varchar(255),@apellidoP varchar(255),@fecha datetime)
 AS
