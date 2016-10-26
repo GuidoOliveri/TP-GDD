@@ -17,12 +17,34 @@ namespace ClinicaFrba.Abm_Afiliado
             InitializeComponent();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnLimpiar_Click(object sender, EventArgs e)
         {
+            // limpio txt
+            txtNombre.Text = string.Empty;
+            txtApellido.Text = string.Empty;
+            txtCantFam.Text = string.Empty;
+            txtMail.Text = string.Empty;
+            txtNroAfiliado.Text = string.Empty;
+            txtNroDoc.Text = string.Empty;
+            txtPlanMedico.Text = string.Empty;
+            txtTel.Text = string.Empty;
+
+            // limpio combo box
+            cboEstadoCivil.SelectedIndex = -1;
+            cboTipoDoc.SelectedIndex = -1;
+
+            //limpio radio button
+            optMasculino.Checked = false;
+            optFemenino.Checked = false;
 
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnRegistrar_Click(object sender, EventArgs e)
         {
 
         }
