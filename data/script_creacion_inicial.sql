@@ -97,6 +97,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Plan_
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Estado_Civil'))
     DROP TABLE NEXTGDD.Estado_Civil
 
+GO
 /**** CREACION DE TABLAS ****/
 
 CREATE TABLE NEXTGDD.Usuario (
@@ -316,7 +317,7 @@ CREATE TABLE NEXTGDD.Rango_Atencion (
    dia_semanal_final varchar (255),
    PRIMARY KEY (cod_agenda, rango_atencion) 
    )
-
+GO
 /************ Migracion *************/
 
 --select * from gd_esquema.Maestra
@@ -507,20 +508,17 @@ GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.ingreso'))
     DROP PROCEDURE NEXTGDD.ingreso
-GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.crearTurno'))
     DROP PROCEDURE NEXTGDD.crearTurno
-GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarRangoDeAtencion'))
     DROP FUNCTION NEXTGDD.verificarRangoDeAtencion
-GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.pedirTurno'))
     DROP TRIGGER NEXTGDD.pedirTurno
-GO
 
+GO
 /*********************Stored Procedure************************/
 
 --CREATE PROCEDURE NEXTGDD.logins (@userName VARCHAR(255), @password VARBINARY(255)) 
