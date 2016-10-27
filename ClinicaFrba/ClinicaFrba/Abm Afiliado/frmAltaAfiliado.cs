@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClinicaFrba.Clases;
+using System.Data.SqlClient;
+using ClinicaFrba.Abm_Afiliado;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
@@ -16,6 +19,11 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
         }
+
+        public String Operacion { get; set; }
+        //public Afiliado Afiliado { get; set; }
+        public String Miembro { get; set; }
+        //public Afiliado nuevoAfil { get; set; }
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
@@ -28,6 +36,8 @@ namespace ClinicaFrba.Abm_Afiliado
             txtNroDoc.Text = string.Empty;
             txtPlanMedico.Text = string.Empty;
             txtTel.Text = string.Empty;
+            txtPlanMedico.Text = string.Empty;
+            txtMotivo.Text = "";
 
             // limpio combo box
             cboEstadoCivil.SelectedIndex = -1;
@@ -39,6 +49,20 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
+        //analizo todos los campos 
+        private Boolean analizarCampos()
+        {
+            string mensaje = string.Empty;
+            if (txtNombre.Text.Trim() == string.Empty || txtApellido.Text.Trim() == string.Empty || txtNroDoc.Text.Trim() == "" || txtDir.Text.Trim() == "" || txtTel.Text.Trim() == "" || txtMail.Text.Trim() == "" || txtCantFam.Text.Trim() == "" || int.Parse(txtCantFam.Text.Trim()) < 0 || cboEstadoCivil.SelectedIndex==-1 || cboTipoDoc.SelectedIndex==-1 || dtpFecNac.Value>dtpFechaCambioPlan.Value)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -46,7 +70,27 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
+           
+        }
 
+        private void pnlDatosPersonales_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void txtMotivo_TextChanged(object sender, EventArgs e)
+        {
+      
+        }
+
+        private void cboEstadoCivil_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            this.Hide();
         }
 
       

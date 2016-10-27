@@ -44,6 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abm Afiliado\frmModifcarAfiliadoGrupo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\frmModifcarAfiliadoGrupo.Designer.cs">
+      <DependentUpon>frmModifcarAfiliadoGrupo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Afiliado\frmBajaAfiliado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\frmBajaAfiliado.Designer.cs">
+      <DependentUpon>frmBajaAfiliado.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Afiliado\frmAltaAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +92,7 @@
     <Compile Include="Cancelar Atencion\frmCancelarAtencion.Designer.cs">
       <DependentUpon>frmCancelarAtencion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Clases\Afiliado.cs" />
     <Compile Include="Compra Bono\frmCompraBonos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +116,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GD2C2016DataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="GD2C2016DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GD2C2016DataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Listados\frmListado.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,10 +135,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Registrar Agenta Medico\frmRegistrarAgendaMedico.cs">
+    <Compile Include="Registrar Agenda Medico\frmRegistrarAgendaMedico.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Registrar Agenta Medico\frmRegistrarAgendaMedico.Designer.cs">
+    <Compile Include="Registrar Agenda Medico\frmRegistrarAgendaMedico.Designer.cs">
       <DependentUpon>frmRegistrarAgendaMedico.cs</DependentUpon>
     </Compile>
     <Compile Include="Registro Llegada\frmRegistroLlegadaAfiliado.cs">
@@ -137,6 +155,12 @@
     </Compile>
     <EmbeddedResource Include="Abm Afiliado\frmAltaAfiliado.resx">
       <DependentUpon>frmAltaAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\frmBajaAfiliado.resx">
+      <DependentUpon>frmBajaAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\frmModifcarAfiliadoGrupo.resx">
+      <DependentUpon>frmModifcarAfiliadoGrupo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Especialidades Medicas\frmEspecialidadesMedicas.resx">
       <DependentUpon>frmEspecialidadesMedicas.cs</DependentUpon>
@@ -174,7 +198,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Registrar Agenta Medico\frmRegistrarAgendaMedico.resx">
+    <EmbeddedResource Include="Registrar Agenda Medico\frmRegistrarAgendaMedico.resx">
       <DependentUpon>frmRegistrarAgendaMedico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Registro Llegada\frmRegistroLlegadaAfiliado.resx">
@@ -193,6 +217,17 @@
     </None>
     <None Include="GD2C2016DataSet.xss">
       <DependentUpon>GD2C2016DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="GD2C2016DataSet1.xsc">
+      <DependentUpon>GD2C2016DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="GD2C2016DataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GD2C2016DataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="GD2C2016DataSet1.xss">
+      <DependentUpon>GD2C2016DataSet1.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
