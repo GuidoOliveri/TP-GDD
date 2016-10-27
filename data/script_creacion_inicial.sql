@@ -61,18 +61,18 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Turno
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Agenda'))
     DROP TABLE NEXTGDD.Agenda
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Tipo_Cancelacion'))
-    DROP TABLE NEXTGDD.Tipo_Cancelacion
-
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Cancelacion'))
     DROP TABLE NEXTGDD.Cancelacion
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Tipo_Cancelacion'))
+    DROP TABLE NEXTGDD.Tipo_Cancelacion
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Bono_Consulta'))
     DROP TABLE NEXTGDD.Bono_Consulta
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Tipo_Documento'))
-    DROP TABLE NEXTGDD.Tipo_Documento
-	
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Compra_Bono'))
+    DROP TABLE NEXTGDD.Compra_Bono
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Afiliado'))
     DROP TABLE NEXTGDD.Afiliado
 		
@@ -94,23 +94,61 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Admin
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Plan_Medico'))
     DROP TABLE NEXTGDD.Plan_Medico
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Persona'))
+    DROP TABLE 	NEXTGDD.Persona
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Estado_Civil'))
     DROP TABLE NEXTGDD.Estado_Civil
 
 GO
+
 /**** CREACION DE TABLAS ****/
+
+CREATE TABLE NEXTGDD.Estado_Civil (
+
+   id tinyint PRIMARY KEY IDENTITY,
+   nombre varchar (50) 
+   ) 
+
+CREATE TABLE NEXTGDD.Persona (
+
+	id_persona int PRIMARY KEY identity,
+	nombre varchar (255) not null, 
+	apellido varchar (255) not null,
+	domicilio varchar (255) not null ,
+	telefono numeric (18,0) not null,
+	mail varchar (255) not null,
+	fecha_nac datetime not null,
+	sexo char (1) not null default 'X',
+	estado_civil tinyint not null default 6 REFERENCES NEXTGDD.Estado_Civil(id),
+	nro_documento numeric(18,0) NOT NULL,
+	tipo_doc varchar (50) NOT NULL,
+
+	/*me tira error por fk, tendriamos que agregar la constraint despues de crear las tablas,
+	por ahora lo anulo, despues lo agrego.
+
+	nro_afiliado numeric(18,0) default null REFERENCES NEXTGDD.Afiliado(nro_afiliado),
+	nro_matricula numeric(18,0) default null REFERENCES NEXTGDD.Profesional(matricula),
+	id_administrador numeric(18,0) default null REFERENCES NEXTGDD.Profesional(matricula),
+	*/
+
+	CONSTRAINT check_s2 check (sexo IN ('H', 'M','X')),
+	CONSTRAINT unique_tipo_nro_Doc unique (nro_documento,tipo_doc)
+	)
+
 
 CREATE TABLE NEXTGDD.Usuario (
    
     username varchar (255) PRIMARY KEY,
     password varbinary (255) NOT NULL,   --OK en SHA 256 
 	logins_fallidos smallint NOT NULL DEFAULT 0,
-	habilitado bit NOT NULL DEFAULT 1
+	habilitado bit NOT NULL DEFAULT 1,
+	id_persona int REFERENCES NEXTGDD.Persona(id_persona)
     )
 
 CREATE TABLE NEXTGDD.Rol (
 
-    id_rol int PRIMARY KEY IDENTITY,  
+    id_rol tinyint PRIMARY KEY IDENTITY,  
 	nombre varchar (255) NOT NULL,
 	habilitado bit NOT NULL DEFAULT 1
 )
@@ -119,21 +157,21 @@ CREATE TABLE NEXTGDD.Rol (
 CREATE TABLE NEXTGDD.Usuario_X_Rol (
 
     username varchar (255) REFERENCES NextGDD.Usuario(username),
-    id_rol int REFERENCES NextGDD.Rol(id_rol),
+    id_rol tinyint REFERENCES NextGDD.Rol(id_rol),
     PRIMARY KEY (username, id_rol)
     )
 
 
 CREATE TABLE NextGDD.Funcionalidad (
 
-   id_funcionalidad numeric (18,0) PRIMARY KEY,
-   descripcion varchar (255) 
+   id_funcionalidad tinyint PRIMARY KEY,
+   nombre varchar (255) not null
     )
 
  CREATE TABLE NEXTGDD.Funcionalidad_X_Rol (
 
-    id_rol int REFERENCES NextGDD.Rol(id_rol),
-    id_funcionalidad numeric (18,0) REFERENCES NextGDD.Funcionalidad(id_funcionalidad),
+    id_rol tinyint REFERENCES NextGDD.Rol(id_rol),
+    id_funcionalidad tinyint REFERENCES NextGDD.Funcionalidad(id_funcionalidad),
     PRIMARY KEY (id_rol, id_funcionalidad)
     )
 	
@@ -148,20 +186,14 @@ CREATE TABLE NEXTGDD.Plan_Medico (
 
 CREATE TABLE NEXTGDD.Administrativo (
     
-	id_administrativo numeric (18,0) PRIMARY KEY
+	id_administrativo int PRIMARY KEY IDENTITY,
+	id_persona int REFERENCES NEXTGDD.Persona(id_persona)
 	)
 
 CREATE TABLE NEXTGDD.Profesional (
 --SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION    
-	matricula numeric (18,0) IDENTITY(1,100) PRIMARY KEY,
-	nombre varchar (255),
-	apellido varchar (255),
-	domicilio varchar (255),
-	telefono numeric (18,0),
-	mail varchar (255),
-	fecha_nac datetime,
-	sexo char (1),
-	constraint check_sexo check (sexo IN ('H',  'M','X')) 
+	matricula numeric (18,0) IDENTITY(1000,1) PRIMARY KEY,
+	id_persona int REFERENCES NEXTGDD.Persona(id_persona)
     )
 
 CREATE TABLE NEXTGDD.Tipo_Especialidad (
@@ -183,40 +215,25 @@ CREATE TABLE NEXTGDD.Profesional_X_Especialidad (
    cod_especialidad numeric (18,0) REFERENCES NextGDD.Especialidad(cod_especialidad),
    PRIMARY KEY (matricula, cod_especialidad) 
    )
-
-CREATE TABLE NEXTGDD.Estado_Civil (
-
-   id smallint PRIMARY KEY IDENTITY,
-   nombre varchar (50) 
-   ) 
    
 CREATE TABLE NEXTGDD.Afiliado (
 --SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION
-	nro_afiliado numeric (18,0) IDENTITY(1,100) PRIMARY KEY , --asignado por sistema finaliza en: 01 afiliado principal, 02 conyuge, 03 y subsiguientes para el resto de la familia
-	nombre varchar (255), 
-	apellido varchar (255),
-	domicilio varchar (255),
-	telefono numeric (18,0),
-	mail varchar (255),
-	fecha_nac datetime,
-	sexo char (1) not null default 'X',
-	estado_civil smallint default 6 references NEXTGDD.Estado_Civil(id),
-	cant_familiares numeric(18, 0),
+	nro_afiliado numeric (18,0) IDENTITY(100,1) PRIMARY KEY , 
+	cant_familiares tinyint,
 	cod_plan numeric(18,0) REFERENCES NextGDD.Plan_Medico(cod_plan),
 	--
 	activo bit DEFAULT 1,
 	fecha_baja_logica datetime DEFAULT NULL,
-	--
-	constraint check_s2 check (sexo IN ('H', 'M','X')),
-	
+	id_persona int REFERENCES NEXTGDD.Persona(id_persona),
+	nro_raiz_afiliado numeric (18,0) ,
+	tipo_afiliado numeric (2,0)
 	)
-
-CREATE TABLE NEXTGDD.Tipo_Documento (
-	nro_documento numeric(18,0) NOT NULL,
-	tipo_doc varchar (255) NOT NULL,
-	nro_afiliado numeric(18,0) REFERENCES NEXTGDD.Afiliado(nro_afiliado),
-	matricula numeric(18,0) REFERENCES NEXTGDD.Profesional(matricula),
-	CONSTRAINT pk_Doc PRIMARY KEY (nro_documento,tipo_doc)
+	 
+CREATE TABLE NEXTGDD.Compra_Bono (
+	id_compra int PRIMARY KEY identity, 
+	cant smallint,
+	id_afiliado numeric(18,0) REFERENCES NextGDD.Afiliado,
+	precio_total int 
 	)
 
 CREATE TABLE NEXTGDD.Bono_Consulta (
@@ -228,18 +245,18 @@ CREATE TABLE NEXTGDD.Bono_Consulta (
     cod_plan numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan), 
 	nro_afiliado numeric (18,0) REFERENCES NextGDD.Afiliado(nro_afiliado) 
     ) 
+	
+CREATE TABLE NEXTGDD.Tipo_cancelacion (
+
+    tipo_cancelacion tinyint IDENTITY PRIMARY KEY, 
+	nombre varchar (255)
+   )
 
 CREATE TABLE NEXTGDD.Cancelacion (
 
     cod_cancelacion numeric (18,0) PRIMARY KEY, 
-	tipo_cancelacion varchar (255),
+	tipo_cancelacion tinyint REFERENCES NEXTGDD.Tipo_cancelacion(tipo_cancelacion) ,
 	motivo varchar (255)
-   )
-
-CREATE TABLE NEXTGDD.Tipo_cancelacion (
-
-    tipo_cancelacion int IDENTITY PRIMARY KEY, 
-	nombre varchar (255)
    )
 
 CREATE TABLE NEXTGDD.Agenda (
@@ -360,7 +377,7 @@ INSERT NEXTGDD.Especialidad (cod_especialidad,descripcion,tipo_especialidad)
 		from gd_esquema.Maestra 
 		where ISNULL(Especialidad_Codigo,0)<>0 );
 GO
-
+/*
 INSERT NEXTGDD.Afiliado (nombre,apellido,domicilio,telefono,mail,fecha_nac,cod_plan)
 		(select Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo
 		from gd_esquema.Maestra 
@@ -374,18 +391,20 @@ INSERT NEXTGDD.Profesional(nombre,apellido,domicilio,telefono,mail,fecha_nac)
 		where not(Medico_Nombre IS NULL)
 		group by Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac);
 GO
+*/
 
-INSERT NEXTGDD.Tipo_Documento (nro_documento,tipo_doc,nro_afiliado)
-		(select Paciente_Dni,'DNI',
-				(select nro_afiliado
-				from NEXTGDD.Afiliado
-				where nombre+apellido+domicilio+mail =Paciente_Nombre+Paciente_Apellido+Paciente_Direccion+Paciente_Mail
-					  and telefono=Paciente_Telefono and fecha_nac=Paciente_Fecha_Nac
-				group by nro_afiliado)
-		 from gd_esquema.Maestra
-		 group by Paciente_Dni,Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac);
+/*
+INSERT NEXTGDD.Persona(nro_documento,tipo_doc, nombre, apellido, domicilio, telefono,mail,fecha_nac)
+		(select distinct Medico_Dni,'DNI', Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac
+		 from gd_esquema.Maestra where Medico_Dni is not null )
+		 
 GO
 
+INSERT NEXTGDD.Persona(nro_documento,tipo_doc, nombre, apellido, domicilio, telefono,mail,fecha_nac)
+		(select distinct Paciente_Dni,'DNI', Paciente_Nombre,Paciente_Apellido, Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac
+		 from gd_esquema.Maestra where Paciente_Dni is not null )
+
+GO*/
 INSERT NEXTGDD.Tipo_Documento (nro_documento,tipo_doc,matricula)
 		(select Medico_Dni,'DNI',
 				(select matricula
