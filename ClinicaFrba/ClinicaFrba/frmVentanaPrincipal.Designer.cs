@@ -1,6 +1,6 @@
 ﻿namespace ClinicaFrba
 {
-    partial class Form1
+    partial class frmVentanaPrincipal
     {
         /// <summary>
         /// Variable del diseñador requerida.

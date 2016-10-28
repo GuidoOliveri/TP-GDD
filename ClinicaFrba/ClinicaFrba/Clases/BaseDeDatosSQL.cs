@@ -1,0 +1,121 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using System.Collections;
+using System.Configuration;
+using System.Data;
+using System.Data.Sql;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
+using System.Data.OleDb;
+using System.Linq;
+
+
+namespace ClinicaFrba.Clases
+{
+    class BaseDeDatosSQL
+    {
+        private static SqlConnection _conexion = new SqlConnection();
+        public static SqlConnection ObtenerConexion()
+        {
+            if (_conexion.State == ConnectionState.Closed)
+            {
+                _conexion.ConnectionString = ConfigurationSettings.AppSettings["ConnectionString"];
+                _conexion.Open();
+            }
+            return _conexion;
+        }
+
+        public static SqlDataReader ObtenerDataReader(string commandtext, string commandtype, List<SqlParameter> ListaParametro)
+        {
+
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = ObtenerConexion();
+            comando.CommandText = commandtext;
+            foreach (SqlParameter elemento in ListaParametro)
+            {
+                comando.Parameters.Add(elemento);
+            }
+            switch (commandtype)
+            {
+                case "T":
+                    comando.CommandType = CommandType.Text;
+                    break;
+                case "TD":
+                    comando.CommandType = CommandType.TableDirect;
+                    break;
+                case "SP":
+                    comando.CommandType = CommandType.StoredProcedure;
+                    break;
+            }
+            return comando.ExecuteReader();
+        }
+
+
+        public static bool EscribirEnBase(string commandtext, string commandtype, List<SqlParameter> ListaParametro)
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = ObtenerConexion();
+            comando.CommandText = commandtext;
+            foreach (SqlParameter elemento in ListaParametro)
+            {
+                comando.Parameters.Add(elemento);
+            }
+            switch (commandtype)
+            {
+                case "T":
+                    comando.CommandType = CommandType.Text;
+                    break;
+                case "SP":
+                    comando.CommandType = CommandType.StoredProcedure;
+                    break;
+            }
+            try
+            {
+                comando.ExecuteNonQuery();
+                return true;
+            }
+            catch
+            { return false; }
+        }
+
+        public static bool ObtenerCampo(int codigo, string tabla, string campo)
+        {
+            try
+            {
+                SqlCommand comando = new SqlCommand();
+                comando.Connection = ObtenerConexion();
+                comando.CommandText = "select " + campo + "from " + tabla + "where codigo= " + codigo;
+                object objeto = comando.ExecuteScalar();
+                return true;
+            }
+            catch
+            { return false; }
+        }
+
+        public static decimal ExecStoredProcedure(string commandtext, List<SqlParameter> ListaParametro)
+        {
+            try
+            {
+                SqlCommand comando = new SqlCommand();
+                comando.Connection = ObtenerConexion();
+                comando.CommandText = commandtext;
+                comando.CommandType = CommandType.StoredProcedure;
+
+                foreach (SqlParameter elemento in ListaParametro)
+                {
+                    comando.Parameters.Add(elemento);
+                }
+
+                comando.ExecuteNonQuery();
+                return (decimal)comando.Parameters["@ret"].Value;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+    }
+}

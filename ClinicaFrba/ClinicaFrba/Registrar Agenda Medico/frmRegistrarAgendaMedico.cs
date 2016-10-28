@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ClinicaFrba.Registrar_Agenta_Medico
+namespace ClinicaFrba.Registrar_Agenda_Medico
 {
     public partial class frmRegistrarAgendaMedico : Form
     {

@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abm Afiliado\frmHistorialCambios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\frmHistorialCambios.Designer.cs">
+      <DependentUpon>frmHistorialCambios.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Afiliado\frmModifcarAfiliadoGrupo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +99,9 @@
       <DependentUpon>frmCancelarAtencion.cs</DependentUpon>
     </Compile>
     <Compile Include="Clases\Afiliado.cs" />
+    <Compile Include="Clases\BaseDeDatosSQL.cs" />
+    <Compile Include="Clases\Persona.cs" />
+    <Compile Include="Clases\Usuario.cs" />
     <Compile Include="Compra Bono\frmCompraBonos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,11 +114,11 @@
     <Compile Include="Compra Bono\frmMontoAPagar.Designer.cs">
       <DependentUpon>frmMontoAPagar.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="frmVentanaPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="frmVentanaPrincipal.Designer.cs">
+      <DependentUpon>frmVentanaPrincipal.cs</DependentUpon>
     </Compile>
     <Compile Include="GD2C2016DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -121,11 +130,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GD2C2016DataSet1.xsd</DependentUpon>
     </Compile>
+    <Compile Include="GD2C2016DataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GD2C2016DataSet2.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Listados\frmListado.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Listados\frmListado.Designer.cs">
       <DependentUpon>frmListado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\frmLogin.Designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
     </Compile>
     <Compile Include="Pedir Turno\frmSeleccionDeTurno.cs">
       <SubType>Form</SubType>
@@ -159,6 +179,9 @@
     <EmbeddedResource Include="Abm Afiliado\frmBajaAfiliado.resx">
       <DependentUpon>frmBajaAfiliado.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\frmHistorialCambios.resx">
+      <DependentUpon>frmHistorialCambios.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\frmModifcarAfiliadoGrupo.resx">
       <DependentUpon>frmModifcarAfiliadoGrupo.cs</DependentUpon>
     </EmbeddedResource>
@@ -185,6 +208,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Listados\frmListado.resx">
       <DependentUpon>frmListado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pedir Turno\frmSeleccionDeTurno.resx">
       <DependentUpon>frmSeleccionDeTurno.cs</DependentUpon>
@@ -228,6 +254,17 @@
     </None>
     <None Include="GD2C2016DataSet1.xss">
       <DependentUpon>GD2C2016DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="GD2C2016DataSet2.xsc">
+      <DependentUpon>GD2C2016DataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="GD2C2016DataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GD2C2016DataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="GD2C2016DataSet2.xss">
+      <DependentUpon>GD2C2016DataSet2.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

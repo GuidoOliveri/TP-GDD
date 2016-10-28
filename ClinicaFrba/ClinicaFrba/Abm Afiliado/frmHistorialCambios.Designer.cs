@@ -1,6 +1,6 @@
 ﻿namespace ClinicaFrba.Abm_Afiliado
 {
-    partial class frmModifcarAfiliadoGrupo
+    partial class frmHistorialCambios
     {
         /// <summary>
         /// Required designer variable.
@@ -29,19 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.pnlFiltroBusqueda = new System.Windows.Forms.Panel();
-            this.dtpFecNacFilt = new System.Windows.Forms.DateTimePicker();
-            this.lblFecNacFiltrado = new System.Windows.Forms.Label();
-            this.txtDniFiltrado = new System.Windows.Forms.TextBox();
-            this.txtApeFiltrado = new System.Windows.Forms.TextBox();
-            this.txtNomFiltrado = new System.Windows.Forms.TextBox();
-            this.lblDniFiltrado = new System.Windows.Forms.Label();
-            this.lblApellido = new System.Windows.Forms.Label();
-            this.lblNombreFiltrado = new System.Windows.Forms.Label();
-            this.lblFiltroBusqueda = new System.Windows.Forms.Label();
+            this.pnlFiltroParaBuscarHistorial = new System.Windows.Forms.Panel();
+            this.lblSeleccionarFiltro = new System.Windows.Forms.Label();
+            this.lblNroGrupo = new System.Windows.Forms.Label();
+            this.lblNroAfiliado = new System.Windows.Forms.Label();
+            this.txtNroGrupo = new System.Windows.Forms.TextBox();
+            this.txtNroAfiliado = new System.Windows.Forms.TextBox();
             this.btnLimpiar = new System.Windows.Forms.Button();
-            this.btnBorrar = new System.Windows.Forms.Button();
-            this.dgvModificacionPacientes = new System.Windows.Forms.DataGridView();
+            this.btnBuscar = new System.Windows.Forms.Button();
+            this.gD2C2016DataSet2 = new ClinicaFrba.GD2C2016DataSet2();
+            this.maestraBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.maestraTableAdapter = new ClinicaFrba.GD2C2016DataSet2TableAdapters.MaestraTableAdapter();
+            this.dgvGrillaDeHistorialDeCambios = new System.Windows.Forms.DataGridView();
             this.pacienteNombreDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pacienteApellidoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pacienteDniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -71,130 +70,107 @@
             this.compraBonoFechaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bonoConsultaFechaImpresionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bonoConsultaNumeroDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.maestraBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.gD2C2016DataSet1 = new ClinicaFrba.GD2C2016DataSet1();
-            this.maestraTableAdapter = new ClinicaFrba.GD2C2016DataSet1TableAdapters.MaestraTableAdapter();
-            this.btnModificarFamilia = new System.Windows.Forms.Button();
-            this.btnVolver = new System.Windows.Forms.Button();
-            this.pnlFiltroBusqueda.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvModificacionPacientes)).BeginInit();
+            this.gD2C2016DataSet21 = new ClinicaFrba.GD2C2016DataSet2();
+            this.maestraBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.btnAceptarYVolver = new System.Windows.Forms.Button();
+            this.pnlFiltroParaBuscarHistorial.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvGrillaDeHistorialDeCambios)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet21)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
-            // pnlFiltroBusqueda
+            // pnlFiltroParaBuscarHistorial
             // 
-            this.pnlFiltroBusqueda.Controls.Add(this.dtpFecNacFilt);
-            this.pnlFiltroBusqueda.Controls.Add(this.lblFecNacFiltrado);
-            this.pnlFiltroBusqueda.Controls.Add(this.txtDniFiltrado);
-            this.pnlFiltroBusqueda.Controls.Add(this.txtApeFiltrado);
-            this.pnlFiltroBusqueda.Controls.Add(this.txtNomFiltrado);
-            this.pnlFiltroBusqueda.Controls.Add(this.lblDniFiltrado);
-            this.pnlFiltroBusqueda.Controls.Add(this.lblApellido);
-            this.pnlFiltroBusqueda.Controls.Add(this.lblNombreFiltrado);
-            this.pnlFiltroBusqueda.Controls.Add(this.lblFiltroBusqueda);
-            this.pnlFiltroBusqueda.Location = new System.Drawing.Point(26, 12);
-            this.pnlFiltroBusqueda.Name = "pnlFiltroBusqueda";
-            this.pnlFiltroBusqueda.Size = new System.Drawing.Size(535, 111);
-            this.pnlFiltroBusqueda.TabIndex = 0;
+            this.pnlFiltroParaBuscarHistorial.Controls.Add(this.txtNroAfiliado);
+            this.pnlFiltroParaBuscarHistorial.Controls.Add(this.txtNroGrupo);
+            this.pnlFiltroParaBuscarHistorial.Controls.Add(this.lblNroAfiliado);
+            this.pnlFiltroParaBuscarHistorial.Controls.Add(this.lblNroGrupo);
+            this.pnlFiltroParaBuscarHistorial.Controls.Add(this.lblSeleccionarFiltro);
+            this.pnlFiltroParaBuscarHistorial.Location = new System.Drawing.Point(12, 12);
+            this.pnlFiltroParaBuscarHistorial.Name = "pnlFiltroParaBuscarHistorial";
+            this.pnlFiltroParaBuscarHistorial.Size = new System.Drawing.Size(424, 120);
+            this.pnlFiltroParaBuscarHistorial.TabIndex = 0;
             // 
-            // dtpFecNacFilt
+            // lblSeleccionarFiltro
             // 
-            this.dtpFecNacFilt.Location = new System.Drawing.Point(300, 60);
-            this.dtpFecNacFilt.Name = "dtpFecNacFilt";
-            this.dtpFecNacFilt.Size = new System.Drawing.Size(201, 20);
-            this.dtpFecNacFilt.TabIndex = 8;
+            this.lblSeleccionarFiltro.AutoSize = true;
+            this.lblSeleccionarFiltro.Location = new System.Drawing.Point(24, 0);
+            this.lblSeleccionarFiltro.Name = "lblSeleccionarFiltro";
+            this.lblSeleccionarFiltro.Size = new System.Drawing.Size(167, 13);
+            this.lblSeleccionarFiltro.TabIndex = 0;
+            this.lblSeleccionarFiltro.Text = "Filtro para el historial de busqueda";
             // 
-            // lblFecNacFiltrado
+            // lblNroGrupo
             // 
-            this.lblFecNacFiltrado.AutoSize = true;
-            this.lblFecNacFiltrado.Location = new System.Drawing.Point(198, 63);
-            this.lblFecNacFiltrado.Name = "lblFecNacFiltrado";
-            this.lblFecNacFiltrado.Size = new System.Drawing.Size(96, 13);
-            this.lblFecNacFiltrado.TabIndex = 7;
-            this.lblFecNacFiltrado.Text = "Fecha Nacimiento:";
+            this.lblNroGrupo.AutoSize = true;
+            this.lblNroGrupo.Location = new System.Drawing.Point(34, 29);
+            this.lblNroGrupo.Name = "lblNroGrupo";
+            this.lblNroGrupo.Size = new System.Drawing.Size(59, 13);
+            this.lblNroGrupo.TabIndex = 1;
+            this.lblNroGrupo.Text = "Nro Grupo:";
             // 
-            // txtDniFiltrado
+            // lblNroAfiliado
             // 
-            this.txtDniFiltrado.Location = new System.Drawing.Point(300, 24);
-            this.txtDniFiltrado.Name = "txtDniFiltrado";
-            this.txtDniFiltrado.Size = new System.Drawing.Size(201, 20);
-            this.txtDniFiltrado.TabIndex = 6;
+            this.lblNroAfiliado.AutoSize = true;
+            this.lblNroAfiliado.Location = new System.Drawing.Point(34, 76);
+            this.lblNroAfiliado.Name = "lblNroAfiliado";
+            this.lblNroAfiliado.Size = new System.Drawing.Size(64, 13);
+            this.lblNroAfiliado.TabIndex = 2;
+            this.lblNroAfiliado.Text = "Nro Afiliado:";
             // 
-            // txtApeFiltrado
+            // txtNroGrupo
             // 
-            this.txtApeFiltrado.Location = new System.Drawing.Point(60, 63);
-            this.txtApeFiltrado.Name = "txtApeFiltrado";
-            this.txtApeFiltrado.Size = new System.Drawing.Size(114, 20);
-            this.txtApeFiltrado.TabIndex = 5;
+            this.txtNroGrupo.Location = new System.Drawing.Point(149, 29);
+            this.txtNroGrupo.Name = "txtNroGrupo";
+            this.txtNroGrupo.Size = new System.Drawing.Size(183, 20);
+            this.txtNroGrupo.TabIndex = 3;
             // 
-            // txtNomFiltrado
+            // txtNroAfiliado
             // 
-            this.txtNomFiltrado.Location = new System.Drawing.Point(60, 24);
-            this.txtNomFiltrado.Name = "txtNomFiltrado";
-            this.txtNomFiltrado.Size = new System.Drawing.Size(114, 20);
-            this.txtNomFiltrado.TabIndex = 4;
-            // 
-            // lblDniFiltrado
-            // 
-            this.lblDniFiltrado.AutoSize = true;
-            this.lblDniFiltrado.Location = new System.Drawing.Point(237, 27);
-            this.lblDniFiltrado.Name = "lblDniFiltrado";
-            this.lblDniFiltrado.Size = new System.Drawing.Size(26, 13);
-            this.lblDniFiltrado.TabIndex = 3;
-            this.lblDniFiltrado.Text = "Dni:";
-            // 
-            // lblApellido
-            // 
-            this.lblApellido.AutoSize = true;
-            this.lblApellido.Location = new System.Drawing.Point(7, 63);
-            this.lblApellido.Name = "lblApellido";
-            this.lblApellido.Size = new System.Drawing.Size(47, 13);
-            this.lblApellido.TabIndex = 2;
-            this.lblApellido.Text = "Apellido:";
-            // 
-            // lblNombreFiltrado
-            // 
-            this.lblNombreFiltrado.AutoSize = true;
-            this.lblNombreFiltrado.Location = new System.Drawing.Point(7, 27);
-            this.lblNombreFiltrado.Name = "lblNombreFiltrado";
-            this.lblNombreFiltrado.Size = new System.Drawing.Size(47, 13);
-            this.lblNombreFiltrado.TabIndex = 1;
-            this.lblNombreFiltrado.Text = "Nombre:";
-            // 
-            // lblFiltroBusqueda
-            // 
-            this.lblFiltroBusqueda.AutoSize = true;
-            this.lblFiltroBusqueda.Location = new System.Drawing.Point(28, 0);
-            this.lblFiltroBusqueda.Name = "lblFiltroBusqueda";
-            this.lblFiltroBusqueda.Size = new System.Drawing.Size(95, 13);
-            this.lblFiltroBusqueda.TabIndex = 0;
-            this.lblFiltroBusqueda.Text = "Filtro de Busqueda";
-            this.lblFiltroBusqueda.Click += new System.EventHandler(this.lblFiltroBusqueda_Click);
+            this.txtNroAfiliado.Location = new System.Drawing.Point(149, 69);
+            this.txtNroAfiliado.Name = "txtNroAfiliado";
+            this.txtNroAfiliado.Size = new System.Drawing.Size(183, 20);
+            this.txtNroAfiliado.TabIndex = 4;
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(111, 138);
+            this.btnLimpiar.Location = new System.Drawing.Point(49, 142);
             this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(118, 23);
+            this.btnLimpiar.Size = new System.Drawing.Size(96, 29);
             this.btnLimpiar.TabIndex = 1;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
             // 
-            // btnBorrar
+            // btnBuscar
             // 
-            this.btnBorrar.Location = new System.Drawing.Point(326, 138);
-            this.btnBorrar.Name = "btnBorrar";
-            this.btnBorrar.Size = new System.Drawing.Size(118, 23);
-            this.btnBorrar.TabIndex = 2;
-            this.btnBorrar.Text = "Borrar";
-            this.btnBorrar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Location = new System.Drawing.Point(309, 142);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(96, 29);
+            this.btnBuscar.TabIndex = 2;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = true;
             // 
-            // dgvModificacionPacientes
+            // gD2C2016DataSet2
             // 
-            this.dgvModificacionPacientes.AutoGenerateColumns = false;
-            this.dgvModificacionPacientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvModificacionPacientes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.gD2C2016DataSet2.DataSetName = "GD2C2016DataSet2";
+            this.gD2C2016DataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // maestraBindingSource
+            // 
+            this.maestraBindingSource.DataMember = "Maestra";
+            this.maestraBindingSource.DataSource = this.gD2C2016DataSet2;
+            // 
+            // maestraTableAdapter
+            // 
+            this.maestraTableAdapter.ClearBeforeFill = true;
+            // 
+            // dgvGrillaDeHistorialDeCambios
+            // 
+            this.dgvGrillaDeHistorialDeCambios.AutoGenerateColumns = false;
+            this.dgvGrillaDeHistorialDeCambios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvGrillaDeHistorialDeCambios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.pacienteNombreDataGridViewTextBoxColumn,
             this.pacienteApellidoDataGridViewTextBoxColumn,
             this.pacienteDniDataGridViewTextBoxColumn,
@@ -224,11 +200,11 @@
             this.compraBonoFechaDataGridViewTextBoxColumn,
             this.bonoConsultaFechaImpresionDataGridViewTextBoxColumn,
             this.bonoConsultaNumeroDataGridViewTextBoxColumn});
-            this.dgvModificacionPacientes.DataSource = this.maestraBindingSource;
-            this.dgvModificacionPacientes.Location = new System.Drawing.Point(36, 187);
-            this.dgvModificacionPacientes.Name = "dgvModificacionPacientes";
-            this.dgvModificacionPacientes.Size = new System.Drawing.Size(525, 157);
-            this.dgvModificacionPacientes.TabIndex = 3;
+            this.dgvGrillaDeHistorialDeCambios.DataSource = this.maestraBindingSource1;
+            this.dgvGrillaDeHistorialDeCambios.Location = new System.Drawing.Point(12, 187);
+            this.dgvGrillaDeHistorialDeCambios.Name = "dgvGrillaDeHistorialDeCambios";
+            this.dgvGrillaDeHistorialDeCambios.Size = new System.Drawing.Size(424, 114);
+            this.dgvGrillaDeHistorialDeCambios.TabIndex = 3;
             // 
             // pacienteNombreDataGridViewTextBoxColumn
             // 
@@ -404,81 +380,64 @@
             this.bonoConsultaNumeroDataGridViewTextBoxColumn.HeaderText = "Bono_Consulta_Numero";
             this.bonoConsultaNumeroDataGridViewTextBoxColumn.Name = "bonoConsultaNumeroDataGridViewTextBoxColumn";
             // 
-            // maestraBindingSource
+            // gD2C2016DataSet21
             // 
-            this.maestraBindingSource.DataMember = "Maestra";
-            this.maestraBindingSource.DataSource = this.gD2C2016DataSet1;
+            this.gD2C2016DataSet21.DataSetName = "GD2C2016DataSet2";
+            this.gD2C2016DataSet21.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // gD2C2016DataSet1
+            // maestraBindingSource1
             // 
-            this.gD2C2016DataSet1.DataSetName = "GD2C2016DataSet1";
-            this.gD2C2016DataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.maestraBindingSource1.DataMember = "Maestra";
+            this.maestraBindingSource1.DataSource = this.gD2C2016DataSet21;
             // 
-            // maestraTableAdapter
+            // btnAceptarYVolver
             // 
-            this.maestraTableAdapter.ClearBeforeFill = true;
+            this.btnAceptarYVolver.Location = new System.Drawing.Point(142, 319);
+            this.btnAceptarYVolver.Name = "btnAceptarYVolver";
+            this.btnAceptarYVolver.Size = new System.Drawing.Size(151, 32);
+            this.btnAceptarYVolver.TabIndex = 4;
+            this.btnAceptarYVolver.Text = "Aceptar y Regresar";
+            this.btnAceptarYVolver.UseVisualStyleBackColor = true;
             // 
-            // btnModificarFamilia
-            // 
-            this.btnModificarFamilia.Location = new System.Drawing.Point(60, 361);
-            this.btnModificarFamilia.Name = "btnModificarFamilia";
-            this.btnModificarFamilia.Size = new System.Drawing.Size(178, 32);
-            this.btnModificarFamilia.TabIndex = 4;
-            this.btnModificarFamilia.Text = "Modificar grupo familiar";
-            this.btnModificarFamilia.UseVisualStyleBackColor = true;
-            // 
-            // btnVolver
-            // 
-            this.btnVolver.Location = new System.Drawing.Point(349, 361);
-            this.btnVolver.Name = "btnVolver";
-            this.btnVolver.Size = new System.Drawing.Size(178, 32);
-            this.btnVolver.TabIndex = 5;
-            this.btnVolver.Text = "Volver";
-            this.btnVolver.UseVisualStyleBackColor = true;
-            this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
-            // 
-            // frmModifcarAfiliadoGrupo
+            // frmHistorialCambios
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 402);
-            this.Controls.Add(this.btnVolver);
-            this.Controls.Add(this.btnModificarFamilia);
-            this.Controls.Add(this.dgvModificacionPacientes);
-            this.Controls.Add(this.btnBorrar);
+            this.ClientSize = new System.Drawing.Size(465, 396);
+            this.Controls.Add(this.btnAceptarYVolver);
+            this.Controls.Add(this.dgvGrillaDeHistorialDeCambios);
+            this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.btnLimpiar);
-            this.Controls.Add(this.pnlFiltroBusqueda);
-            this.Name = "frmModifcarAfiliadoGrupo";
+            this.Controls.Add(this.pnlFiltroParaBuscarHistorial);
+            this.Name = "frmHistorialCambios";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Modificacion Afiliado ";
-            this.Load += new System.EventHandler(this.frmModifcarAfiliadoGrupo_Load);
-            this.pnlFiltroBusqueda.ResumeLayout(false);
-            this.pnlFiltroBusqueda.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvModificacionPacientes)).EndInit();
+            this.Text = "Historial de Cambios ";
+            this.Load += new System.EventHandler(this.frmHistorialCambios_Load);
+            this.pnlFiltroParaBuscarHistorial.ResumeLayout(false);
+            this.pnlFiltroParaBuscarHistorial.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvGrillaDeHistorialDeCambios)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet21)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel pnlFiltroBusqueda;
-        private System.Windows.Forms.Label lblFiltroBusqueda;
-        private System.Windows.Forms.DateTimePicker dtpFecNacFilt;
-        private System.Windows.Forms.Label lblFecNacFiltrado;
-        private System.Windows.Forms.TextBox txtDniFiltrado;
-        private System.Windows.Forms.TextBox txtApeFiltrado;
-        private System.Windows.Forms.TextBox txtNomFiltrado;
-        private System.Windows.Forms.Label lblDniFiltrado;
-        private System.Windows.Forms.Label lblApellido;
-        private System.Windows.Forms.Label lblNombreFiltrado;
+        private System.Windows.Forms.Panel pnlFiltroParaBuscarHistorial;
+        private System.Windows.Forms.TextBox txtNroAfiliado;
+        private System.Windows.Forms.TextBox txtNroGrupo;
+        private System.Windows.Forms.Label lblNroAfiliado;
+        private System.Windows.Forms.Label lblNroGrupo;
+        private System.Windows.Forms.Label lblSeleccionarFiltro;
         private System.Windows.Forms.Button btnLimpiar;
-        private System.Windows.Forms.Button btnBorrar;
-        private System.Windows.Forms.DataGridView dgvModificacionPacientes;
-        private GD2C2016DataSet1 gD2C2016DataSet1;
+        private System.Windows.Forms.Button btnBuscar;
+        private GD2C2016DataSet2 gD2C2016DataSet2;
         private System.Windows.Forms.BindingSource maestraBindingSource;
-        private GD2C2016DataSet1TableAdapters.MaestraTableAdapter maestraTableAdapter;
+        private GD2C2016DataSet2TableAdapters.MaestraTableAdapter maestraTableAdapter;
+        private System.Windows.Forms.DataGridView dgvGrillaDeHistorialDeCambios;
         private System.Windows.Forms.DataGridViewTextBoxColumn pacienteNombreDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn pacienteApellidoDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn pacienteDniDataGridViewTextBoxColumn;
@@ -508,7 +467,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn compraBonoFechaDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn bonoConsultaFechaImpresionDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn bonoConsultaNumeroDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Button btnModificarFamilia;
-        private System.Windows.Forms.Button btnVolver;
+        private GD2C2016DataSet2 gD2C2016DataSet21;
+        private System.Windows.Forms.BindingSource maestraBindingSource1;
+        private System.Windows.Forms.Button btnAceptarYVolver;
     }
 }

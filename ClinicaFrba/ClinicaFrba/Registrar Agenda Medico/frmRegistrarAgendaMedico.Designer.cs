@@ -1,4 +1,4 @@
-﻿namespace ClinicaFrba.Registrar_Agenta_Medico
+﻿namespace ClinicaFrba.Registrar_Agenda_Medico
 {
     partial class frmRegistrarAgendaMedico
     {
