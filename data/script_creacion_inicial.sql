@@ -122,7 +122,7 @@ CREATE TABLE NEXTGDD.Persona (
 	sexo char (1) not null default 'X',
 	estado_civil tinyint not null default 6 REFERENCES NEXTGDD.Estado_Civil(id),
 	nro_documento numeric(18,0) NOT NULL,
-	tipo_doc varchar (50) NOT NULL,
+	tipo_doc varchar (50) NOT NULL DEFAULT 'DNI',
 
 	/*me tira error por fk, tendriamos que agregar la constraint despues de crear las tablas,
 	por ahora lo anulo, despues lo agrego.
@@ -164,7 +164,7 @@ CREATE TABLE NEXTGDD.Usuario_X_Rol (
 
 CREATE TABLE NextGDD.Funcionalidad (
 
-   id_funcionalidad tinyint PRIMARY KEY,
+   id_funcionalidad tinyint PRIMARY KEY identity,
    nombre varchar (255) not null
     )
 
@@ -225,8 +225,8 @@ CREATE TABLE NEXTGDD.Afiliado (
 	activo bit DEFAULT 1,
 	fecha_baja_logica datetime DEFAULT NULL,
 	id_persona int REFERENCES NEXTGDD.Persona(id_persona),
-	nro_raiz_afiliado numeric (18,0) ,
-	tipo_afiliado numeric (2,0)
+	grupo_afiliado numeric (18,0) ,        --numero raiz de afiliado 
+	integrante_grupo numeric (2,0)         --01:principal, 02: conyuge, 03:hijo
 	)
 	 
 CREATE TABLE NEXTGDD.Compra_Bono (
@@ -340,6 +340,42 @@ GO
 --select * from gd_esquema.Maestra
 --SET STATISTICS TIME ON
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes'))
+    DROP VIEW NEXTGDD.Pacientes
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Medicos'))
+    DROP VIEW NEXTGDD.Medicos	
+GO
+
+CREATE VIEW NEXTGDD.Pacientes AS
+	SELECT DISTINCT Paciente_Dni,Paciente_Nombre, Paciente_Apellido,
+					Paciente_Fecha_Nac,
+					Paciente_Direccion, Paciente_Telefono, Paciente_Mail,
+					Plan_Med_Codigo
+	FROM gd_esquema.Maestra
+	WHERE Paciente_Dni IS NOT NULL
+GO 
+
+CREATE VIEW NEXTGDD.Medicos AS
+	SELECT DISTINCT Medico_Dni,Medico_Nombre, Medico_Apellido,
+					Medico_Fecha_Nac,
+					Medico_Direccion, Medico_Telefono, Medico_Mail
+	FROM gd_esquema.Maestra
+	WHERE Medico_Nombre IS NOT NULL
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregar_funcionalidad'))
+    DROP PROCEDURE NEXTGDD.agregar_funcionalidad
+GO
+
+CREATE PROCEDURE NEXTGDD.agregar_funcionalidad(@rol varchar(255), @func varchar(255)) AS
+BEGIN
+	INSERT INTO NEXTGDD.Funcionalidad_X_Rol(id_rol,id_funcionalidad )
+		VALUES ((SELECT id_rol FROM NEXTGDD.Rol WHERE nombre = @rol),
+		        (SELECT id_funcionalidad FROM NEXTGDD.Funcionalidad WHERE nombre = @func))
+END
+GO
+
 INSERT NEXTGDD.Estado_Civil(nombre)
 VALUES ('Soltero/a'),    --1
        ('Casado/a'),     --2 
@@ -377,45 +413,93 @@ INSERT NEXTGDD.Especialidad (cod_especialidad,descripcion,tipo_especialidad)
 		from gd_esquema.Maestra 
 		where ISNULL(Especialidad_Codigo,0)<>0 );
 GO
-/*
-INSERT NEXTGDD.Afiliado (nombre,apellido,domicilio,telefono,mail,fecha_nac,cod_plan)
-		(select Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo
-		from gd_esquema.Maestra 
-		where not(Paciente_Nombre IS NULL)
-		group by Paciente_Nombre,Paciente_Apellido,Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac,Plan_Med_Codigo);
+
+SET IDENTITY_INSERT NEXTGDD.Persona ON
+
+INSERT INTO NEXTGDD.Persona (id_persona, nombre, apellido, nro_documento, fecha_nac, domicilio, telefono, mail)
+	SELECT Paciente_Dni, Paciente_Nombre, Paciente_Apellido, Paciente_Dni, Paciente_Fecha_Nac, Paciente_Direccion, 
+	       Paciente_Telefono, Paciente_Mail
+	FROM NEXTGDD.Pacientes
+
+INSERT INTO NEXTGDD.Persona (id_persona, nombre, apellido, nro_documento, fecha_nac, domicilio, telefono, mail)
+	SELECT Medico_Dni, Medico_Nombre, Medico_Apellido, Medico_Dni,
+	       Medico_Fecha_Nac, Medico_Direccion, Medico_Telefono,
+	       Medico_Mail
+	FROM NEXTGDD.Medicos
+
+SET IDENTITY_INSERT NEXTGDD.Persona OFF
+
+INSERT INTO NEXTGDD.Afiliado (id_persona, grupo_afiliado, integrante_grupo, cant_familiares)
+	SELECT id_persona, id_persona, 01,0
+	FROM NEXTGDD.Persona
+	WHERE nro_documento IN (SELECT Paciente_Dni FROM NEXTGDD.Pacientes)
+
+
+INSERT INTO NEXTGDD.Profesional (id_persona)
+	SELECT id_persona
+	FROM NEXTGDD.Persona
+	WHERE nro_documento IN (SELECT Medico_Dni FROM NEXTGDD.Medicos)
+
+SET IDENTITY_INSERT NEXTGDD.Profesional ON
+
 GO
 
-INSERT NEXTGDD.Profesional(nombre,apellido,domicilio,telefono,mail,fecha_nac)
-		(select Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac
-		from gd_esquema.Maestra 
-		where not(Medico_Nombre IS NULL)
-		group by Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac);
-GO
-*/
+INSERT NEXTGDD.Rol (nombre) values ('Administrativo');
+INSERT NEXTGDD.Rol (nombre) values ('Afiliado');
+INSERT NEXTGDD.Rol (nombre) values ('Profesional');
 
-/*
-INSERT NEXTGDD.Persona(nro_documento,tipo_doc, nombre, apellido, domicilio, telefono,mail,fecha_nac)
-		(select distinct Medico_Dni,'DNI', Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac
-		 from gd_esquema.Maestra where Medico_Dni is not null )
-		 
-GO
+INSERT INTO NEXTGDD.Funcionalidad (nombre)
+	VALUES ('ABM de roles'),
+	       ('ABM de afiliados'),
+	       ('ABM de profesionales'),
+	       ('ABM de especialidades medicas'),
+	       ('ABM de planes'),
+		   ('Compra de bonos'),
+	       ('Pedido de turno'),
+	       ('Registrar agenda profesional'),		 
+	       ('Registro de llegada para atencion medica'),
+	       ('Registro de resultado para atencion medica'),
+	       ('Registrar diagnostico'),
+	       ('Cancelar atencion medica'),
+	       ('Confeccionar receta medica'),
+	       ('Consultar listado estadistico')
 
-INSERT NEXTGDD.Persona(nro_documento,tipo_doc, nombre, apellido, domicilio, telefono,mail,fecha_nac)
-		(select distinct Paciente_Dni,'DNI', Paciente_Nombre,Paciente_Apellido, Paciente_Direccion,Paciente_Telefono,Paciente_Mail,Paciente_Fecha_Nac
-		 from gd_esquema.Maestra where Paciente_Dni is not null )
 
-GO*/
-INSERT NEXTGDD.Tipo_Documento (nro_documento,tipo_doc,matricula)
-		(select Medico_Dni,'DNI',
-				(select matricula
-				from NEXTGDD.Profesional
-				where nombre+apellido+domicilio+mail=Medico_Nombre+Medico_Apellido+Medico_Direccion+Medico_Mail
-				      and fecha_nac=Medico_Fecha_Nac and telefono=Medico_Telefono
-				group by matricula)
-		 from gd_esquema.Maestra
-		 where isnull(Medico_Dni,0)<>0
-		 group by Medico_Dni,Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Telefono,Medico_Mail,Medico_Fecha_Nac);
-GO
+EXEC NEXTGDD.agregar_funcionalidad  @rol = 'Administrativo' , @func = 'ABM de roles';
+
+EXEC NEXTGDD.agregar_funcionalidad  @rol = 'Administrativo' , @func = 'ABM de afiliados';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'ABM de profesionales';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'ABM de especialidades medicas';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'ABM de planes';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Registrar agenda profesional';
+
+EXEC NEXTGDD.agregar_funcionalidad	@rol = 'Profesional', @func = 'Registrar agenda profesional';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Compra de bonos';	
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Afiliado', @func = 'Compra de bonos';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Pedido de turno';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Afiliado', @func = 'Pedido de turno';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Registro de llegada para atencion medica';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Profesional', @func = 'Registro de resultado para atencion medica';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Cancelar atencion medica';
+
+EXEC NEXTGDD.agregar_funcionalidad	@rol = 'Afiliado', @func = 'Cancelar atencion medica';
+
+EXEC NEXTGDD.agregar_funcionalidad	@rol = 'Profesional', @func = 'Cancelar atencion medica';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Consultar listado estadistico';
+	       
+GO 
 
 INSERT NEXTGDD.Bono_Consulta(fecha_impresion,compra_fecha,nro_consulta,cod_plan,nro_afiliado)
 		(select Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Bono_Consulta_Numero,Plan_Med_Codigo,
@@ -504,11 +588,6 @@ GO
 UPDATE NEXTGDD.Consulta  
 SET cod_diagnostico= cod_consulta;
 GO
-
-INSERT NEXTGDD.Rol (nombre) values ('Administrativo');
-INSERT NEXTGDD.Rol (nombre) values ('Afiliado');
-INSERT NEXTGDD.Rol (nombre) values ('Profesional');
-
 
 /************************************/
 
