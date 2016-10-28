@@ -94,6 +94,25 @@ namespace ClinicaFrba.Clases
             { return false; }
         }
 
+        public static List<String> ObtenerLista(string queryString, string connectionString, string campo)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+                List<String> resultados = new List<String>();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        resultados.Add(String.Format("{0}", reader[campo]));
+                    }
+                }
+                return resultados;
+            }
+        }
+
         public static decimal ExecStoredProcedure(string commandtext, List<SqlParameter> ListaParametro)
         {
             try
