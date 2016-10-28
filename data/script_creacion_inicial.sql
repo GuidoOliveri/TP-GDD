@@ -376,6 +376,17 @@ BEGIN
 END
 GO
 
+SET IDENTITY_INSERT NEXTGDD.Tipo_Cancelacion ON
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (1, 'Percance')
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (2, 'Problemas con la suegra')
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (3, 'Problemas con el auto')
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (4, 'Skype desactualizado')
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (5, 'el bondi esta de paro')
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (6, 'otro')
+SET IDENTITY_INSERT NEXTGDD.Tipo_Cancelacion OFF
+
+GO
+
 INSERT NEXTGDD.Estado_Civil(nombre)
 VALUES ('Soltero/a'),    --1
        ('Casado/a'),     --2 
@@ -461,7 +472,6 @@ INSERT INTO NEXTGDD.Funcionalidad (nombre)
 	       ('Registro de resultado para atencion medica'),
 	       ('Registrar diagnostico'),
 	       ('Cancelar atencion medica'),
-	       ('Confeccionar receta medica'),
 	       ('Consultar listado estadistico')
 
 
