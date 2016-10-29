@@ -94,6 +94,56 @@ namespace ClinicaFrba.Clases
             { return false; }
         }
 
+        public static List<String> ObtenerLista(string queryString, string connectionString, string campo)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+                List<String> resultados = new List<String>();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        resultados.Add(String.Format("{0}", reader[campo]));
+                    }
+                }
+                return resultados;
+            }
+        }
+        /* VER DE UNIR AL RESTO ************/
+        public static Boolean validarCampo(string queryString, string connectionString)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+                command.ExecuteNonQuery();
+                int num = (int)command.ExecuteScalar();
+                if (num>0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        public static void ExecStoredProcedure2(string commandtext,string connectionString)
+        {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand comando = new SqlCommand(commandtext,connection);
+                    comando.Connection.Open();
+                    comando.CommandText = commandtext;
+                    comando.ExecuteNonQuery();
+                }
+        }
+
+
+        /*****************************/
         public static decimal ExecStoredProcedure(string commandtext, List<SqlParameter> ListaParametro)
         {
             try

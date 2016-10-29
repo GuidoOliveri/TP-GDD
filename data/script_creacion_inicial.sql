@@ -377,11 +377,11 @@ END
 GO
 
 SET IDENTITY_INSERT NEXTGDD.Tipo_Cancelacion ON
-INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (1, 'Percance')
-INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (2, 'Problemas con la suegra')
-INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (3, 'Problemas con el auto')
-INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (4, 'Skype desactualizado')
-INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (5, 'el bondi esta de paro')
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (1, 'Nada')
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (2, 'Problemas Familiares')
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (3, 'Percance')
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (4, 'Paro Nacional')
+INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (5, 'Asueto')
 INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (6, 'otro')
 SET IDENTITY_INSERT NEXTGDD.Tipo_Cancelacion OFF
 
@@ -451,8 +451,15 @@ INSERT INTO NEXTGDD.Profesional (id_persona)
 	FROM NEXTGDD.Persona
 	WHERE nro_documento IN (SELECT Medico_Dni FROM NEXTGDD.Medicos)
 
-SET IDENTITY_INSERT NEXTGDD.Profesional ON
+SET IDENTITY_INSERT NEXTGDD.Profesional ON --De esta manera lo dejamos para que se ingrese la matricula manualmente
 
+GO
+
+
+INSERT NEXTGDD.Profesional_X_Especialidad (cod_especialidad,matricula)
+		(select distinct Especialidad_Codigo, (SELECT matricula FROM NEXTGDD.Profesional where id_persona = Medico_Dni )
+		from gd_esquema.Maestra
+		where ISNULL(Especialidad_Codigo,0)<>0 )
 GO
 
 INSERT NEXTGDD.Rol (nombre) values ('Administrativo');
@@ -511,18 +518,51 @@ EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Consultar 
 	       
 GO 
 
-INSERT NEXTGDD.Bono_Consulta(fecha_impresion,compra_fecha,nro_consulta,cod_plan,nro_afiliado)
-		(select Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Bono_Consulta_Numero,Plan_Med_Codigo,
-				(select a.nro_afiliado
-				from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d
-				where a.nro_afiliado=d.nro_afiliado and Paciente_Dni=d.nro_documento)
+SET IDENTITY_INSERT NEXTGDD.Profesional OFF
+
+SET IDENTITY_INSERT NEXTGDD.Bono_Consulta ON
+
+INSERT NEXTGDD.Bono_Consulta (nro_bono,nro_afiliado,fecha_impresion,compra_fecha,cod_plan,nro_consulta)
+		
+		(select Bono_Consulta_Numero,(select nro_afiliado from NEXTGDD.Afiliado WHERE id_persona= Paciente_Dni), Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha, Plan_Med_Codigo,null  
 		from gd_esquema.Maestra 
-		where not(ISNULL(Bono_Consulta_Fecha_Impresion,0)=0 and 
-				  ISNULL(Bono_Consulta_Numero,0)=0 and
-				  ISNULL(Compra_Bono_Fecha,0)=0)
-		group by Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Bono_Consulta_Numero,Plan_Med_Codigo,Paciente_Dni);
+		where Bono_Consulta_Fecha_Impresion is not null and Compra_Bono_Fecha is not null)
+
+SET IDENTITY_INSERT NEXTGDD.Bono_Consulta OFF
+
+SET IDENTITY_INSERT NEXTGDD.Profesional ON
+
 GO
 
+INSERT NEXTGDD.Turno (nro_turno,fecha,nro_afiliado) --Faltaria Codigo agenda
+		
+		(select Turno_Numero,Turno_Fecha,(select nro_afiliado from NEXTGDD.Afiliado WHERE id_persona= Paciente_Dni)
+		from gd_esquema.Maestra 
+		where Bono_Consulta_Fecha_Impresion is null and Compra_Bono_Fecha is  null )
+
+GO
+SET IDENTITY_INSERT NEXTGDD.Profesional OFF
+
+SET IDENTITY_INSERT NEXTGDD.Diagnostico ON
+
+INSERT NEXTGDD.Diagnostico (cod_diagnostico, descripcion,sintoma,enfermedad)
+	   (select Bono_Consulta_Numero, NULL, Consulta_Sintomas, Consulta_Enfermedades
+		from gd_esquema.Maestra
+		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
+GO
+
+SET IDENTITY_INSERT NEXTGDD.Diagnostico OFF
+
+SET IDENTITY_INSERT NEXTGDD.Profesional ON
+
+INSERT NEXTGDD.Consulta (cod_diagnostico, nro_bono, nro_turno)
+	   (select Bono_Consulta_Numero, Bono_Consulta_Numero, Turno_Numero
+		from gd_esquema.Maestra
+		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
+GO
+
+/*
+select * from NEXTGDD.Consulta
 INSERT NEXTGDD.Profesional_X_Especialidad (matricula,cod_especialidad)
 		(select (select matricula 
 				 from NEXTGDD.Profesional
@@ -533,31 +573,11 @@ INSERT NEXTGDD.Profesional_X_Especialidad (matricula,cod_especialidad)
 		 where isnull(Especialidad_Codigo,0)<>0
 		 group by Medico_Nombre,Medico_Apellido,Medico_Direccion,Medico_Mail,Medico_Fecha_Nac,Medico_Telefono,Especialidad_Codigo);
 GO
-
+*/
 
 INSERT NEXTGDD.Agenda (matricula, cod_especialidad)
 		(select matricula,cod_especialidad
 		 from NEXTGDD.Profesional_X_Especialidad);
-GO
-
-INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,fecha,cod_agenda)
-       (select Turno_Numero,
-	           (select a.nro_afiliado
-				from NEXTGDD.Afiliado a,NEXTGDD.Tipo_Documento d
-				where a.nro_afiliado=d.nro_afiliado and Paciente_Dni=d.nro_documento),
-			   Turno_Fecha,
-			   (select a.cod_agenda
-			    from NEXTGDD.Agenda a,NEXTGDD.Profesional p
-				where a.cod_especialidad=Especialidad_Codigo and
-					  Medico_Dni = (select d.nro_documento
-									from NEXTGDD.Tipo_Documento d
-									where d.matricula=p.matricula and isnull(d.matricula,0)<>0) and
-					  a.matricula=p.matricula and 
-					  isnull(a.cod_agenda,0)<>0
-				group by a.cod_agenda)
-	    from gd_esquema.Maestra
-		where isnull(Turno_Numero,0)<>0
-		group by Turno_Numero,Turno_Fecha,Paciente_Dni,Especialidad_Codigo,Medico_Dni);
 GO
 
 
@@ -566,12 +586,15 @@ INSERT NEXTGDD.Agenda_X_Turno (cod_agenda,fecha)
 		 from NEXTGDD.Turno);
 GO	 
 
+/*
 INSERT NEXTGDD.Diagnostico (sintoma,enfermedad)
 		(select Consulta_Sintomas,Consulta_Enfermedades
 		 from gd_esquema.Maestra
 		 where not(Consulta_Sintomas IS NULL and Consulta_Enfermedades IS NULL));
 GO
-
+*/
+/*
+select * from gd_esquema.Maestra
 INSERT NEXTGDD.Consulta (nro_bono,nro_turno)
 	   (select (select b.nro_bono
 			    from NEXTGDD.Bono_Consulta b
@@ -594,11 +617,7 @@ INSERT NEXTGDD.Consulta (nro_bono,nro_turno)
 		from gd_esquema.Maestra
 		where not(Consulta_Sintomas IS NULL and Consulta_Enfermedades IS NULL) );
 GO
-   
-UPDATE NEXTGDD.Consulta  
-SET cod_diagnostico= cod_consulta;
-GO
-
+*/
 /************************************/
 
 /****** Inserto el usuario admin *****/
