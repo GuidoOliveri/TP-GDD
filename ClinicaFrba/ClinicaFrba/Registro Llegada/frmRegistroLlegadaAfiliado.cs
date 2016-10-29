@@ -15,6 +15,12 @@ namespace ClinicaFrba.Registro_Llegada
         public frmRegistroLlegadaAfiliado()
         {
             InitializeComponent();
+            cmbEspecialidad.Enabled = false;
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

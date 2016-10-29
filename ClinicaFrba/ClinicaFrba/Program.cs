@@ -16,7 +16,7 @@ namespace ClinicaFrba
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Pedir_Turno.frmSeleccionDeTurno());
+            Application.Run(new Registro_Llegada.frmRegistroLlegadaAfiliado());
         }
     }
 }
