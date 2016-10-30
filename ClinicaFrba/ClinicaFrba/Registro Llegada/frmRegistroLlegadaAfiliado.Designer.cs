@@ -29,16 +29,18 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cmbBono = new System.Windows.Forms.ComboBox();
+            this.cmbTurno = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
+            this.rbBusqueda = new System.Windows.Forms.RadioButton();
+            this.cmbProfesional = new System.Windows.Forms.ComboBox();
+            this.btnIngresar = new System.Windows.Forms.Button();
+            this.warning1 = new System.Windows.Forms.Label();
+            this.warning2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -48,8 +50,8 @@
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cmbEspecialidad);
-            this.groupBox1.Controls.Add(this.radioButton1);
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.rbBusqueda);
+            this.groupBox1.Controls.Add(this.cmbProfesional);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(358, 221);
@@ -57,80 +59,19 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Registro de llegada";
             // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(163, 29);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(189, 21);
-            this.comboBox1.TabIndex = 0;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(163, 56);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(189, 17);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Refinar busqueda por especialidad";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // cmbEspecialidad
-            // 
-            this.cmbEspecialidad.FormattingEnabled = true;
-            this.cmbEspecialidad.Location = new System.Drawing.Point(163, 79);
-            this.cmbEspecialidad.Name = "cmbEspecialidad";
-            this.cmbEspecialidad.Size = new System.Drawing.Size(189, 21);
-            this.cmbEspecialidad.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 32);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Seleccione un profesional:";
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(163, 31);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(189, 21);
-            this.comboBox3.TabIndex = 4;
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
-            // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.warning1);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.comboBox4);
-            this.groupBox2.Controls.Add(this.comboBox3);
+            this.groupBox2.Controls.Add(this.cmbBono);
+            this.groupBox2.Controls.Add(this.cmbTurno);
             this.groupBox2.Location = new System.Drawing.Point(0, 106);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(358, 114);
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Turno";
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(163, 74);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(189, 21);
-            this.comboBox4.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 34);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(150, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Eliga el turno correspondiente:";
             // 
             // label3
             // 
@@ -141,45 +82,133 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Bonos disponibles:";
             // 
-            // button1
+            // label2
             // 
-            this.button1.Location = new System.Drawing.Point(152, 248);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Ingresar";
-            this.button1.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 34);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(150, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Eliga el turno correspondiente:";
+            // 
+            // cmbBono
+            // 
+            this.cmbBono.FormattingEnabled = true;
+            this.cmbBono.Location = new System.Drawing.Point(163, 74);
+            this.cmbBono.Name = "cmbBono";
+            this.cmbBono.Size = new System.Drawing.Size(189, 21);
+            this.cmbBono.TabIndex = 5;
+            // 
+            // cmbTurno
+            // 
+            this.cmbTurno.FormattingEnabled = true;
+            this.cmbTurno.Location = new System.Drawing.Point(163, 31);
+            this.cmbTurno.Name = "cmbTurno";
+            this.cmbTurno.Size = new System.Drawing.Size(189, 21);
+            this.cmbTurno.TabIndex = 4;
+            this.cmbTurno.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 32);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(132, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Seleccione un profesional:";
+            // 
+            // cmbEspecialidad
+            // 
+            this.cmbEspecialidad.FormattingEnabled = true;
+            this.cmbEspecialidad.Location = new System.Drawing.Point(163, 79);
+            this.cmbEspecialidad.Name = "cmbEspecialidad";
+            this.cmbEspecialidad.Size = new System.Drawing.Size(189, 21);
+            this.cmbEspecialidad.TabIndex = 2;
+            // 
+            // rbBusqueda
+            // 
+            this.rbBusqueda.AutoSize = true;
+            this.rbBusqueda.Location = new System.Drawing.Point(163, 56);
+            this.rbBusqueda.Name = "rbBusqueda";
+            this.rbBusqueda.Size = new System.Drawing.Size(189, 17);
+            this.rbBusqueda.TabIndex = 1;
+            this.rbBusqueda.TabStop = true;
+            this.rbBusqueda.Text = "Refinar busqueda por especialidad";
+            this.rbBusqueda.UseVisualStyleBackColor = true;
+            // 
+            // cmbProfesional
+            // 
+            this.cmbProfesional.FormattingEnabled = true;
+            this.cmbProfesional.Location = new System.Drawing.Point(163, 29);
+            this.cmbProfesional.Name = "cmbProfesional";
+            this.cmbProfesional.Size = new System.Drawing.Size(189, 21);
+            this.cmbProfesional.TabIndex = 0;
+            // 
+            // btnIngresar
+            // 
+            this.btnIngresar.Location = new System.Drawing.Point(153, 252);
+            this.btnIngresar.Name = "btnIngresar";
+            this.btnIngresar.Size = new System.Drawing.Size(75, 23);
+            this.btnIngresar.TabIndex = 1;
+            this.btnIngresar.Text = "Ingresar";
+            this.btnIngresar.UseVisualStyleBackColor = true;
+            // 
+            // warning1
+            // 
+            this.warning1.AutoSize = true;
+            this.warning1.ForeColor = System.Drawing.Color.Red;
+            this.warning1.Location = new System.Drawing.Point(153, 55);
+            this.warning1.Name = "warning1";
+            this.warning1.Size = new System.Drawing.Size(199, 13);
+            this.warning1.TabIndex = 8;
+            this.warning1.Text = "El turno ya fue utilizado. Seleccione otro.";
+            // 
+            // warning2
+            // 
+            this.warning2.AutoSize = true;
+            this.warning2.ForeColor = System.Drawing.Color.Red;
+            this.warning2.Location = new System.Drawing.Point(9, 257);
+            this.warning2.Name = "warning2";
+            this.warning2.Size = new System.Drawing.Size(133, 13);
+            this.warning2.TabIndex = 2;
+            this.warning2.Text = "Faltan seleccionar campos";
+            this.warning2.Click += new System.EventHandler(this.label4_Click);
             // 
             // frmRegistroLlegadaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(382, 287);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.warning2);
+            this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmRegistroLlegadaAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro llegada de afiliado";
+            this.Load += new System.EventHandler(this.frmRegistroLlegadaAfiliado_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox cmbTurno;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbEspecialidad;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.RadioButton rbBusqueda;
+        private System.Windows.Forms.ComboBox cmbProfesional;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox cmbBono;
+        private System.Windows.Forms.Button btnIngresar;
+        private System.Windows.Forms.Label warning1;
+        private System.Windows.Forms.Label warning2;
     }
 }

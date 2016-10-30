@@ -94,6 +94,7 @@ namespace ClinicaFrba.Clases
             { return false; }
         }
 
+        /* VER DE UNIR AL RESTO ************/
         public static List<String> ObtenerLista(string queryString, string connectionString, string campo)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -112,7 +113,7 @@ namespace ClinicaFrba.Clases
                 return resultados;
             }
         }
-        /* VER DE UNIR AL RESTO ************/
+        
         public static Boolean validarCampo(string queryString, string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
