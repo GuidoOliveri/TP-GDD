@@ -534,6 +534,7 @@ SET IDENTITY_INSERT NEXTGDD.Profesional ON
 
 GO
 
+
 INSERT NEXTGDD.Turno (nro_turno,fecha,nro_afiliado) --Faltaria Codigo agenda
 		
 		(select Turno_Numero,Turno_Fecha,(select nro_afiliado from NEXTGDD.Afiliado WHERE id_persona= Paciente_Dni)
@@ -561,6 +562,13 @@ INSERT NEXTGDD.Consulta (cod_diagnostico, nro_bono, nro_turno)
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
 GO
 
+---
+select  Paciente_Dni,Bono_Consulta_Numero -- count (Bono_Consulta_Numero)
+		from gd_esquema.Maestra
+		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null
+		order by Paciente_Dni
+
+		group by Paciente_Dni
 /*
 select * from NEXTGDD.Consulta
 INSERT NEXTGDD.Profesional_X_Especialidad (matricula,cod_especialidad)
@@ -581,11 +589,29 @@ INSERT NEXTGDD.Agenda (matricula, cod_especialidad)
 GO
 
 
+
+select Paciente_Dni, Turno_Numero, Turno_Fecha, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha, Plan_Med_Codigo
+from gd_esquema.Maestra order by Paciente_Dni, Turno_Numero, Bono_Consulta_Numero
+
+select Paciente_Dni, Turno_Numero, Turno_Fecha,Consulta_Enfermedades,Consulta_Sintomas, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha
+from gd_esquema.Maestra 
+where Turno_Numero  is not null
+order by Turno_Numero, Bono_Consulta_Numero
+
+select  Paciente_Dni, Turno_Numero, Turno_Fecha,Consulta_Enfermedades,Consulta_Sintomas, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha 
+from gd_esquema.Maestra
+where turno_numero is  null
+order by Turno_Numero
+
+select * from NEXTGDD.Turno
+
+---tira error ; ver como solucionarlo
+/*
 INSERT NEXTGDD.Agenda_X_Turno (cod_agenda,fecha)
 		(select cod_agenda,fecha
 		 from NEXTGDD.Turno);
 GO	 
-
+*/
 /*
 INSERT NEXTGDD.Diagnostico (sintoma,enfermedad)
 		(select Consulta_Sintomas,Consulta_Enfermedades
