@@ -217,7 +217,7 @@ CREATE TABLE NEXTGDD.Afiliado (
 	nro_afiliado numeric (18,0) PRIMARY KEY , 
 	cant_familiares tinyint,
 	cod_plan numeric(18,0) REFERENCES NextGDD.Plan_Medico(cod_plan),
-	--
+    nro_consulta int,
 	activo bit DEFAULT 1,
 	fecha_baja_logica datetime DEFAULT NULL,
 	id_persona int REFERENCES NEXTGDD.Persona(id_persona),
@@ -237,7 +237,6 @@ CREATE TABLE NEXTGDD.Bono_Consulta (
     nro_bono numeric (18,0) IDENTITY(1,1) PRIMARY KEY,
     fecha_impresion datetime,
     compra_fecha datetime, 
-    nro_consulta numeric (18,0),
     cod_plan numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan), 
 	nro_afiliado numeric (18,0) REFERENCES NextGDD.Afiliado(nro_afiliado) 
     ) 
@@ -335,8 +334,8 @@ GO
 /***************Validacion de Procedure, Function,Triggers*********************/
 /****las validaciones nos permite ejecutar todo el script,una vez ya ejecutado por primera vez****/
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.ingreso'))
-    DROP PROCEDURE NEXTGDD.ingreso
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.login'))
+    DROP PROCEDURE NEXTGDD.login
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.crearTurno'))
     DROP PROCEDURE NEXTGDD.crearTurno
@@ -368,22 +367,8 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Medic
     DROP VIEW NEXTGDD.Medicos	
 GO
 
-/************ Migracion *************/
-/*
-select nro_afiliado,count (nro_turno) 
-from NEXTGDD.Turno
-group by nro_afiliado
-order by nro_afiliado
-*/
 
-/*
-select nro_afiliado, count (nro_bono) 
-from NEXTGDD.Bono_Consulta
-group by nro_afiliado
-order by nro_afiliado
-*/
-
---SET STATISTICS TIME ON
+/*********************Creacion de Stored Procedure, Function,Triggers, vistas************************/
 
 CREATE VIEW NEXTGDD.Pacientes AS
 	SELECT DISTINCT Paciente_Dni,Paciente_Nombre, Paciente_Apellido,
@@ -401,6 +386,121 @@ CREATE VIEW NEXTGDD.Medicos AS
 	FROM gd_esquema.Maestra
 	WHERE Medico_Dni IS NOT NULL
 GO
+ 
+
+CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100))
+ AS 
+  BEGIN
+
+  IF EXISTS( SELECT * FROM NEXTGDD.Usuario   WHERE username = @user AND habilitado = 1)
+  
+     BEGIN
+
+	      IF ( SELECT password FROM NEXTGDD.Usuario WHERE username = @user) = HASHBYTES('SHA2_256', @pass)
+		    BEGIN
+			  UPDATE NEXTGDD.Usuario
+              SET logins_fallidos = 0
+              WHERE username = @user
+				 
+			  SELECT  R_U.id_rol, R.nombre
+              FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U
+              WHERE R_U.id_rol = R.id_rol
+              AND U.username = @user
+              AND U.username = R_U.username 	     
+			END
+           
+		  ELSE
+		   BEGIN 
+			PRINT 'CONTRASENA INCORRECTA'	   
+			--Agrego un login fallido
+            UPDATE NEXTGDD.Usuario
+            SET logins_fallidos = logins_fallidos + 1
+            WHERE username = @user
+    
+	        --si ya tiene 3 logins fallidos dar de baja al usuario
+    
+	       UPDATE NEXTGDD.Usuario
+           SET habilitado = 0
+           WHERE username = @user
+           AND logins_fallidos = 3
+		   END
+        END
+
+   ELSE
+	    PRINT 'NO EXISTE EL USUARIO o EL USUARIO ESTA INHABILITADO'
+
+END
+GO
+
+/*
+update NEXTGDD.Usuario
+set habilitado=1
+where username = 'admiN'
+
+exec NEXTGDD.login 'admion', 'w23oe'
+
+select * from NEXTGDD.Usuario
+*/
+
+/*
+CREATE PROCEDURE NEXTGDD.crearTurno (@nroAf numeric(18,0),@nombreEsp varchar(255),@nomProf varchar(255),@apellidoP varchar(255),@fecha datetime)
+AS
+BEGIN
+	DECLARE @nroTurno numeric(18,0)=(select isnull(count(*),0)+1 from NEXTGDD.Turno);
+	DECLARE @codAgenda numeric (18,0)=(select cod_agenda 
+									   from NEXTGDD.Agenda a,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e
+									   where p.nombre=@nomProf and p.apellido=@apellidoP and e.descripcion=@nombreEsp and
+									         pe.matricula=p.matricula and pe.cod_especialidad=e.cod_especialidad
+											 and a.cod_especialidad=pe.cod_especialidad and a.matricula=pe.matricula)
+	INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,cod_agenda,fecha,cod_cancelacion) values
+			(@nroTurno,@nroAf,@codAgenda,@fecha,null)
+END;
+GO
+*/
+/*
+CREATE TRIGGER NEXTGDD.pedirTurno ON NEXTGDD.Turno INSTEAD OF insert
+AS
+BEGIN
+	IF (select isnull(count(t.cod_agenda+t.fecha),0) 
+	    from inserted i,NEXTGDD.Turno t
+		where i.cod_agenda+i.fecha=t.cod_agenda+t.fecha
+		group by t.cod_agenda,t.fecha)=0 
+	BEGIN
+		IF GD2C2016.NEXTGDD.verificarRangoDeAtencion((select fecha from inserted),(select cod_agenda from inserted))=1
+		BEGIN
+			INSERT NEXTGDD.Turno (nro_turno,fecha,nro_afiliado,cod_agenda,cod_cancelacion) 
+			(select nro_turno,fecha,nro_afiliado,cod_agenda,cod_cancelacion
+			 from inserted)
+			RETURN
+		END
+		raiserror('El turno esta fuera del rango de atencion del profesional',1,1)
+		RETURN
+	END
+	raiserror('Ya hay un turno en ese horario',1,1)
+	RETURN
+END;
+GO 
+
+CREATE FUNCTION NEXTGDD.verificarRangoDeAtencion (@fecha datetime,@cod_agenda numeric(18,0))
+returns int
+AS
+BEGIN
+	RETURN (select isnull(count(cod_agenda+rango_atencion),0)
+			from NEXTGDD.Rango_Atencion 
+	        where cod_agenda=@cod_agenda
+				  and (SELECT DATEPART(HOUR, @fecha))<hora_final
+				  and (SELECT DATEPART(HOUR, @fecha))>hora_inicial
+				  */--FALTA VER DIA SEMANAL-->CAMBIAR DIA DE SEMANA POR NUMERO
+			--group by cod_agenda,rango_atencion)
+			/*DEVUELVE 1 SI ESTA DENTRO DE ALGUN RANGO
+			  SINO DEVUELVE 0*/ 
+--END;
+--GO
+
+/*DROP FUNCTION NEXTGDD.verificarRangoDeAtencion*/
+/*DROP TRIGGER NEXTGDD.pedirTurno*/
+/*DROP PROCEDURE NEXTGDD.crearTurno*/
+
 
 CREATE PROCEDURE NEXTGDD.agregar_funcionalidad(@rol varchar(255), @func varchar(255)) AS
 BEGIN
@@ -423,6 +523,25 @@ BEGIN
 		VALUES (@usuario, HASHBYTES('SHA2_256', @contrasena), @id_persona)
 END
 GO
+
+
+
+/************ Migracion *************/
+/*
+select nro_afiliado,count (nro_turno) 
+from NEXTGDD.Turno
+group by nro_afiliado
+order by nro_afiliado
+*/
+
+/*
+select nro_afiliado, count (nro_bono) 
+from NEXTGDD.Bono_Consulta
+group by nro_afiliado
+order by nro_afiliado
+*/
+
+--SET STATISTICS TIME ON
 
 SET IDENTITY_INSERT NEXTGDD.Tipo_Cancelacion ON
 INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (1, 'Nada')
@@ -499,14 +618,22 @@ cast(grupo_afiliado as varchar)  + cast('intergrante_grupo' as varchar)
 cuando damos de alta un afiliado cualquiera.
 */
 
+/*
 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, id_persona, cod_plan, grupo_afiliado, integrante_grupo, cant_familiares)
 	SELECT cast(id_persona as varchar)  + '01',id_persona, Plan_Med_Codigo, id_persona, 01,0
 	FROM NEXTGDD.Persona , NEXTGDD.Pacientes
 	WHERE nro_documento = Paciente_Dni 
+*/
 
---Select * from NEXTGDD.Afiliado
+INSERT INTO NEXTGDD.Afiliado (nro_afiliado, id_persona, cod_plan, nro_consulta, grupo_afiliado, integrante_grupo, cant_familiares)
+	SELECT cast(id_persona as varchar)  + '01',id_persona, Plan_Med_Codigo, count(distinct Bono_Consulta_Numero), id_persona, 01,0
+	FROM NEXTGDD.Persona , gd_esquema.Maestra
+	WHERE nro_documento = Paciente_Dni 
+	group by id_persona, Plan_Med_Codigo, Paciente_Dni
+	
 
---SET IDENTITY_INSERT NEXTGDD.Afiliado OFF
+select * from NEXTGDD.Afiliado	
+	--order by count(distinct Bono_Consulta_Numero)
 
 INSERT INTO NEXTGDD.Profesional (id_persona)
 	SELECT id_persona
@@ -519,11 +646,11 @@ GO
 
 INSERT NEXTGDD.Profesional_X_Especialidad (cod_especialidad,matricula)
 		(select distinct Especialidad_Codigo, (SELECT matricula FROM NEXTGDD.Profesional where id_persona = Medico_Dni )
-		from gd_esquema.Maestra
+		from gd_esquema.Maestra 
 		where ISNULL(Especialidad_Codigo,0)<>0 )
 GO
 
-EXEC NEXTGDD.agregar_Rol @nombreRol = 'Administrativo', @ret = 0
+EXEC NEXTGDD.agregar_Rol @nombreRol = 'Administrativo', @ret = 0 
 
 EXEC NEXTGDD.agregar_Rol @nombreRol = 'Afiliado', @ret = 0
 
@@ -591,9 +718,9 @@ SET IDENTITY_INSERT NEXTGDD.Profesional OFF
 
 SET IDENTITY_INSERT NEXTGDD.Bono_Consulta ON
 
-INSERT NEXTGDD.Bono_Consulta (nro_bono,nro_afiliado,fecha_impresion,compra_fecha,cod_plan,nro_consulta)
+INSERT NEXTGDD.Bono_Consulta (nro_bono,nro_afiliado,fecha_impresion,compra_fecha,cod_plan)
 		
-		(select Bono_Consulta_Numero,(select nro_afiliado from NEXTGDD.Afiliado WHERE id_persona= Paciente_Dni), Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha, Plan_Med_Codigo,null  
+		(select Bono_Consulta_Numero,(select nro_afiliado from NEXTGDD.Afiliado WHERE id_persona= Paciente_Dni), Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha, Plan_Med_Codigo 
 		from gd_esquema.Maestra 
 		where Bono_Consulta_Fecha_Impresion is not null and Compra_Bono_Fecha is not null)
 
@@ -622,8 +749,8 @@ SET IDENTITY_INSERT NEXTGDD.Profesional OFF
 
 SET IDENTITY_INSERT NEXTGDD.Diagnostico ON
 
-INSERT NEXTGDD.Diagnostico (cod_diagnostico, descripcion,sintoma,enfermedad)
-	   (select Bono_Consulta_Numero, NULL, Consulta_Sintomas, Consulta_Enfermedades
+INSERT NEXTGDD.Diagnostico (cod_diagnostico,sintoma,enfermedad)
+	   (select Bono_Consulta_Numero, Consulta_Sintomas, Consulta_Enfermedades
 		from gd_esquema.Maestra
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
 GO
@@ -639,13 +766,21 @@ INSERT NEXTGDD.Consulta (cod_diagnostico, nro_bono, nro_turno)
 GO
 
 /***pruebas
-select  Paciente_Dni,Bono_Consulta_Numero -- count (Bono_Consulta_Numero)
-		from gd_esquema.Maestra
-		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null
-		order by Paciente_Dni
 
-		group by Paciente_Dni
+select distinct dds.Paciente_Dni, cant_bonos_X_afil,Turno_Numero,Turno_Fecha, Bono_Consulta_Numero ,Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Consulta_Sintomas, Consulta_Enfermedades
+from (select Paciente_Dni, count (Bono_Consulta_Numero) cant_bonos_X_afil from gd_esquema.Maestra g1--g JOIN NEXTGDD.Afiliado a ON (g.Paciente_Dni= a.id_persona) 
+		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null group by Paciente_Dni) dds, (Select Paciente_Dni,Turno_Numero,Turno_Fecha, Bono_Consulta_Numero ,Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Consulta_Sintomas, Consulta_Enfermedades
+		        from gd_esquema.Maestra g2 where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null) tot
 
+		where dds.Paciente_Dni= tot.Paciente_Dni
+		order by cant_bonos_X_afil
+
+select b.nro_afiliado, count (distinct b.nro_bono)
+from NEXTGDD.Bono_Consulta b JOIN NEXTGDD.Consulta c ON (b.nro_bono= c.nro_bono)
+group by nro_afiliado
+order by count (b.nro_bono)
+*/
+/*
 select Paciente_Dni, Turno_Numero, Turno_Fecha, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha, Plan_Med_Codigo
 from gd_esquema.Maestra order by Paciente_Dni, Turno_Numero, Bono_Consulta_Numero
 
@@ -674,125 +809,11 @@ where Bono_Consulta_Fecha_Impresion is null and Compra_Bono_Fecha is  null
 
 -- 1) FALTARIA VER LA CANTIDAD DE CONSULTAS POR AFILIADO 
 -- 2) LA CARGA DE DATOS DE LA TABLA RANGO ATENCION MEDIANTE LA VISTA (APP)
--- 3)
+-- 3) Ver como va incrementando el integrante_grupo, como validarlo
 
 /************************************/
 
 /****** Inserto el usuario admin *****/
 
---DECLARE @hash VARBINARY(255);
---SELECT @hash = HASHBYTES('SHA2_256', 'w23e')
-
 EXEC NEXTGDD.agregar_usuario @usuario = 'admin', @contrasena = 'w23e', @id_persona = null
 GO
-
-/*********************Stored Procedure************************/
-
---CREATE PROCEDURE NEXTGDD.logins (@userName VARCHAR(255), @password VARBINARY(255)) 
- 
-CREATE PROCEDURE NEXTGDD.ingreso(@user VARCHAR(100), @pass VARBINARY(100))
-
- AS 
-  BEGIN
-
-  DECLARE @ret BIT
-  DECLARE @logins_fallidos SMALLINT
-
-  SELECT @ret=COUNT(*), @logins_fallidos=MAX(logins_fallidos)
-    FROM NEXTGDD.Usuario
-   WHERE username = @user
-     AND password = HASHBYTES('SHA2_256', @pass)
-     AND habilitado = 1
-
-  IF @ret = 0  BEGIN
-    --Agrego un login fallido
-    
-	UPDATE NEXTGDD.Usuario
-       SET logins_fallidos = logins_fallidos + 1
-     WHERE username = @user
-    
-	--si ya tiene 3 logins fallidos dar de baja al usuario
-    
-	UPDATE NEXTGDD.Usuario
-       SET habilitado = 0
-     WHERE username = @user
-       AND logins_fallidos = 3
-  END
-  
-     ELSE
-     --reseteo la cantidad de fallos
-	    UPDATE NEXTGDD.Usuario
-        SET logins_fallidos = 0
-        WHERE username = @user
-
-     --Devuelvo los roles correspondientes al usuario 
-
-       SELECT @ret AS login_valido, R_U.id_rol, R.nombre
-       FROM NEXTGDD.Usuario_x_Rol R_U, NEXTGDD.ROl R, NEXTGDD.Usuario U
-       WHERE R_U.id_rol = R.id_rol
-             AND U.username = @user
-             AND U.username = R_U.username 
-	
-END
-
-GO
-
-
-CREATE PROCEDURE NEXTGDD.crearTurno (@nroAf numeric(18,0),@nombreEsp varchar(255),@nomProf varchar(255),@apellidoP varchar(255),@fecha datetime)
-AS
-BEGIN
-	DECLARE @nroTurno numeric(18,0)=(select isnull(count(*),0)+1 from NEXTGDD.Turno);
-	DECLARE @codAgenda numeric (18,0)=(select cod_agenda 
-									   from NEXTGDD.Agenda a,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e
-									   where p.nombre=@nomProf and p.apellido=@apellidoP and e.descripcion=@nombreEsp and
-									         pe.matricula=p.matricula and pe.cod_especialidad=e.cod_especialidad
-											 and a.cod_especialidad=pe.cod_especialidad and a.matricula=pe.matricula)
-	INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,cod_agenda,fecha,cod_cancelacion) values
-			(@nroTurno,@nroAf,@codAgenda,@fecha,null)
-END;
-GO
-
-
-CREATE TRIGGER NEXTGDD.pedirTurno ON NEXTGDD.Turno INSTEAD OF insert
-AS
-BEGIN
-	IF (select isnull(count(t.cod_agenda+t.fecha),0) 
-	    from inserted i,NEXTGDD.Turno t
-		where i.cod_agenda+i.fecha=t.cod_agenda+t.fecha
-		group by t.cod_agenda,t.fecha)=0 
-	BEGIN
-		IF GD2C2016.NEXTGDD.verificarRangoDeAtencion((select fecha from inserted),(select cod_agenda from inserted))=1
-		BEGIN
-			INSERT NEXTGDD.Turno (nro_turno,fecha,nro_afiliado,cod_agenda,cod_cancelacion) 
-			(select nro_turno,fecha,nro_afiliado,cod_agenda,cod_cancelacion
-			 from inserted)
-			RETURN
-		END
-		raiserror('El turno esta fuera del rango de atencion del profesional',1,1)
-		RETURN
-	END
-	raiserror('Ya hay un turno en ese horario',1,1)
-	RETURN
-END;
-GO 
-
-CREATE FUNCTION NEXTGDD.verificarRangoDeAtencion (@fecha datetime,@cod_agenda numeric(18,0))
-returns int
-AS
-BEGIN
-	RETURN (select isnull(count(cod_agenda+rango_atencion),0)
-			from NEXTGDD.Rango_Atencion 
-	        where cod_agenda=@cod_agenda
-				  and (SELECT DATEPART(HOUR, @fecha))<hora_final
-				  and (SELECT DATEPART(HOUR, @fecha))>hora_inicial
-				  /*FALTA VER DIA SEMANAL-->CAMBIAR DIA DE SEMANA POR NUMERO*/
-			group by cod_agenda,rango_atencion)
-			/*DEVUELVE 1 SI ESTA DENTRO DE ALGUN RANGO
-			  SINO DEVUELVE 0*/ 
-END;
-GO
-
-
-/*DROP FUNCTION NEXTGDD.verificarRangoDeAtencion*/
-/*DROP TRIGGER NEXTGDD.pedirTurno*/
-/*DROP PROCEDURE NEXTGDD.crearTurno*/
