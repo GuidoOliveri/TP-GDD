@@ -437,7 +437,7 @@ update NEXTGDD.Usuario
 set habilitado=1
 where username = 'admiN'
 
-exec NEXTGDD.login 'admion', 'w23oe'
+exec NEXTGDD.login 'admin', 'w23e'
 
 select * from NEXTGDD.Usuario
 */
@@ -516,15 +516,40 @@ AS BEGIN
 	SET @ret = SCOPE_IDENTITY()
 END
 GO
-
-CREATE PROCEDURE NEXTGDD.agregar_usuario (@usuario varchar(50), @contrasena varchar(20), @id_persona int ) AS
+/*
+CREATE PROCEDURE NEXTGDD.agregar_usuario (@usuario varchar(50), @contrasena varchar(20),) AS
 BEGIN
 	INSERT INTO NEXTGDD.Usuario(username, password, id_persona)
 		VALUES (@usuario, HASHBYTES('SHA2_256', @contrasena), @id_persona)
 END
 GO
+*/
+CREATE PROCEDURE NEXTGDD.agregar_usuario (@username VARCHAR(50), @password VARCHAR(255), @codigo_rol TINYINT, @habilitado BIT,  @id_persona INT) 
+AS BEGIN
+  /* Intenta crear un usuario con los datos especificados Para eso debe crear una entrada en la tabla Usuario y una en la table Usuario_X_Rol
+     Si alguna de las dos inserciones falla, todo se vuelve para atras Devuelve el codigo del nuevo usuario o -1 en caso de error */
+  BEGIN TRY
+	BEGIN TRANSACTION
+			
+		INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos)
+		VALUES (@username, HASHBYTES('SHA2_256', @password), @habilitado, 0)
 
 
+		INSERT INTO NEXTGDD.Usuario_X_Rol(id_rol, username)
+		VALUES (@codigo_rol, @username)
+
+	COMMIT TRANSACTION
+    RETURN 0
+  END TRY
+  
+  BEGIN CATCH
+    ROLLBACK TRANSACTION
+    -- No hago nada si hubo un error (el username está duplicado)
+    RETURN -1
+  END CATCH
+
+END
+GO
 
 /************ Migracion *************/
 /*
@@ -631,10 +656,6 @@ INSERT INTO NEXTGDD.Afiliado (nro_afiliado, id_persona, cod_plan, nro_consulta, 
 	WHERE nro_documento = Paciente_Dni 
 	group by id_persona, Plan_Med_Codigo, Paciente_Dni
 	
-
-select * from NEXTGDD.Afiliado	
-	--order by count(distinct Bono_Consulta_Numero)
-
 INSERT INTO NEXTGDD.Profesional (id_persona)
 	SELECT id_persona
 	FROM NEXTGDD.Persona
@@ -815,5 +836,18 @@ where Bono_Consulta_Fecha_Impresion is null and Compra_Bono_Fecha is  null
 
 /****** Inserto el usuario admin *****/
 
-EXEC NEXTGDD.agregar_usuario @usuario = 'admin', @contrasena = 'w23e', @id_persona = null
+EXEC NEXTGDD.agregar_usuario @username = 'admin', @password = 'w23e',@codigo_rol= 1, @habilitado= 1, @id_persona = null
 GO
+
+/*
+INSERT NEXTGDD.Usuario_X_Rol (username, id_rol)
+VALUES ('admin', 1)
+
+GO
+*/
+
+/*
+exec NEXTGDD.agregar_usuario 'afiliado', 'hola', 2, 1,null
+
+select * from NEXTGDD.Usuario_X_Rol
+*/
