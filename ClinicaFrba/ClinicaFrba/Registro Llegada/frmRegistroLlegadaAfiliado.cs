@@ -162,5 +162,10 @@ namespace ClinicaFrba.Registro_Llegada
         {
 
         }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

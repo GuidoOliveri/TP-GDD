@@ -30,6 +30,7 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.warning1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbBono = new System.Windows.Forms.ComboBox();
@@ -39,7 +40,6 @@
             this.rbBusqueda = new System.Windows.Forms.RadioButton();
             this.cmbProfesional = new System.Windows.Forms.ComboBox();
             this.btnIngresar = new System.Windows.Forms.Button();
-            this.warning1 = new System.Windows.Forms.Label();
             this.warning2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -58,6 +58,7 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Registro de llegada";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // groupBox2
             // 
@@ -72,6 +73,16 @@
             this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Turno";
+            // 
+            // warning1
+            // 
+            this.warning1.AutoSize = true;
+            this.warning1.ForeColor = System.Drawing.Color.Red;
+            this.warning1.Location = new System.Drawing.Point(153, 55);
+            this.warning1.Name = "warning1";
+            this.warning1.Size = new System.Drawing.Size(199, 13);
+            this.warning1.TabIndex = 8;
+            this.warning1.Text = "El turno ya fue utilizado. Seleccione otro.";
             // 
             // label3
             // 
@@ -152,16 +163,6 @@
             this.btnIngresar.TabIndex = 1;
             this.btnIngresar.Text = "Ingresar";
             this.btnIngresar.UseVisualStyleBackColor = true;
-            // 
-            // warning1
-            // 
-            this.warning1.AutoSize = true;
-            this.warning1.ForeColor = System.Drawing.Color.Red;
-            this.warning1.Location = new System.Drawing.Point(153, 55);
-            this.warning1.Name = "warning1";
-            this.warning1.Size = new System.Drawing.Size(199, 13);
-            this.warning1.TabIndex = 8;
-            this.warning1.Text = "El turno ya fue utilizado. Seleccione otro.";
             // 
             // warning2
             // 
