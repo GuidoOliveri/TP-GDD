@@ -158,14 +158,14 @@ namespace ClinicaFrba.Abm_Profesional
                     }
                     if (Operacion == "Registrar Agenda")
                     {
-                        frmRegistroLlegadaAfiliado formAgenda = new frmRegistroLlegadaAfiliado();
+                        frmRegistroLlegadaAfiliado formAgenda = new frmRegistroLlegadaAfiliado(new Clases.BaseDeDatosSQL());
                         formAgenda.unProfesional = unProfesional;
                         formAgenda.Show();
                         this.Close();
                     }
                     if (Operacion == "Consultar Agenda")
                     {
-                        frmRegistrarAgendaMedico formAgenda = new frmRegistrarAgendaMedico();
+                        frmRegistrarAgendaMedico formAgenda = new frmRegistrarAgendaMedico(new Clases.BaseDeDatosSQL());
                         formAgenda.unProfesional = unProfesional;
                         formAgenda.Show();
                         this.Close();

@@ -16,12 +16,13 @@ namespace ClinicaFrba
         [STAThread]
         static void Main()
         {
-            SqlConnection s=new SqlConnection();
+            Clases.BaseDeDatosSQL bdd = new Clases.BaseDeDatosSQL();
+            bdd.abrirConexion();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-
-            Application.Run(new Pedir_Turno.frmSeleccionDeTurno());
+            Application.Run(new Registrar_Agenda_Medico.frmRegistrarAgendaMedico(bdd));
         }
     }
 }

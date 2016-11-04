@@ -13,27 +13,30 @@ namespace ClinicaFrba.Registro_Resultado
 
     public partial class frmRegistroResultado : Form
     {
+        Clases.BaseDeDatosSQL bdd;
         string comando = "";
-        string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
         string consulta = "";
         string fecha = "";
         string hora = "";
         string sintoma = "";
         string enfermedad = "";
-        string descripcion = "";
+        //string descripcion = "";
 
-        public frmRegistroResultado()
+        public frmRegistroResultado(Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
+
+            this.bdd = bdd;
+
             warning1.Visible = false;
             warning2.Visible = false;
             warning3.Visible = false;
 
             comando = "select sintoma from NEXTGDD.Sintoma ";
-            cargar (Clases.BaseDeDatosSQL.ObtenerLista(comando,conexion,"sintoma"),cmbSintoma);
+            cargar (bdd.ObtenerLista(comando,"sintoma"),cmbSintoma);
 
             comando = "select enfermedad from NEXTGDD.Enfermedad";
-            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "enfermedad"), cmbEnfermedad);
+            cargar(bdd.ObtenerLista(comando, "enfermedad"), cmbEnfermedad);
 
             //VER COMO CARGAR CONSULTAS DE UN MEDICO LOGUEADO
 
@@ -59,7 +62,7 @@ namespace ClinicaFrba.Registro_Resultado
             {
                 //FALTA CREAR EL STORED PROCEDURE
 
-                frmRegistroResultado NewForm = new frmRegistroResultado();
+                frmRegistroResultado NewForm = new frmRegistroResultado(bdd);
                 NewForm.Show();
                 this.Dispose(false);
 
