@@ -22,7 +22,8 @@ namespace ClinicaFrba
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new Registrar_Agenda_Medico.frmRegistrarAgendaMedico(bdd));
+
+            Application.Run(new Registro_Llegada.frmRegistroLlegadaAfiliado(bdd));
         }
     }
 }

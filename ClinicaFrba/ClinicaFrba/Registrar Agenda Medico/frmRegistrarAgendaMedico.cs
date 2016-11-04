@@ -13,16 +13,16 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 {
     public partial class frmRegistrarAgendaMedico : Form
     {
-        Clases.BaseDeDatosSQL bdd;
-        string comando = "";
-        string especialidad = "";
-        string profesional = "";
-        string diaDesde = "";
-        string diaHasta = "";
-        string horaDesde = "";
-        string horaHasta = "";
-        List<string> horarios = new List<string>();
-        List<string> dias = new List<string>();
+        private Clases.BaseDeDatosSQL bdd;
+        private string comando = "";
+        private string especialidad = "";
+        private string profesional = "";
+        private string diaDesde = "";
+        private string diaHasta = "";
+        private string horaDesde = "";
+        private string horaHasta = "";
+        private List<string> horarios = new List<string>();
+        private List<string> dias = new List<string>();
 
         public frmRegistrarAgendaMedico(Clases.BaseDeDatosSQL bdd)
         {

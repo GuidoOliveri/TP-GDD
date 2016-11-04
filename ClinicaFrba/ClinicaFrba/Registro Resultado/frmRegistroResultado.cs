@@ -13,13 +13,13 @@ namespace ClinicaFrba.Registro_Resultado
 
     public partial class frmRegistroResultado : Form
     {
-        Clases.BaseDeDatosSQL bdd;
-        string comando = "";
-        string consulta = "";
-        string fecha = "";
-        string hora = "";
-        string sintoma = "";
-        string enfermedad = "";
+        private Clases.BaseDeDatosSQL bdd;
+        private string comando = "";
+        private string consulta = "";
+        private string fecha = "";
+        private string hora = "";
+        private string sintoma = "";
+        private string enfermedad = "";
         //string descripcion = "";
 
         public frmRegistroResultado(Clases.BaseDeDatosSQL bdd)

@@ -14,11 +14,11 @@ namespace ClinicaFrba.Pedir_Turno
     public partial class frmSeleccionDeTurno : Form
     {
         private Clases.BaseDeDatosSQL bdd;
-        string comando = "";
-        string nroAfiliado = "";
-        string especialidad = "";
-        string profesional = "";
-        string fecha = "";
+        private string comando = "";
+        private string nroAfiliado = "";
+        private string especialidad = "";
+        private string profesional = "";
+        private string fecha = "";
 
         public frmSeleccionDeTurno(Clases.BaseDeDatosSQL bdd)
         {
