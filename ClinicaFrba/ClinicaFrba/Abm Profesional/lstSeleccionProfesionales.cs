@@ -179,7 +179,7 @@ namespace ClinicaFrba.Abm_Profesional
                     }
                     if (Operacion == "Registrar Atencion")
                     {
-                        frmModifcarAfiliadoGrupo formAfil = new frmModifcarAfiliadoGrupo();
+                        frmModifcarAfiliado formAfil = new frmModifcarAfiliado();
                         formAfil.Operacion = "Seleccion";
                         formAfil.profesional = unProfesional;
                         formAfil.Show();
