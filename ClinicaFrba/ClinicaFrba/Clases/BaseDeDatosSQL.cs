@@ -14,9 +14,11 @@ using System.Linq;
 
 namespace ClinicaFrba.Clases
 {
-    class BaseDeDatosSQL
+    public class BaseDeDatosSQL
     {
         private static SqlConnection _conexion = new SqlConnection();
+        private SqlConnection conexion = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+
         public static SqlConnection ObtenerConexion()
         {
             if (_conexion.State == ConnectionState.Closed)
@@ -96,6 +98,53 @@ namespace ClinicaFrba.Clases
         }
 
         /* VER DE UNIR AL RESTO ************/
+
+        public void abrirConexion()
+        {
+            conexion.Open();
+        }
+
+        public void cerrarConexion()
+        {
+            conexion.Close();
+        }
+
+        public List<String> ObtenerLista(string queryString, string campo)
+        {
+            SqlCommand command = new SqlCommand(queryString, conexion);
+            command.ExecuteNonQuery();
+            List<String> resultados = new List<String>();
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    resultados.Add(String.Format("{0}", reader[campo]));
+                }
+            }
+            return resultados;
+        }
+
+        public Boolean validarCampo(string queryString)
+        {
+            SqlCommand command = new SqlCommand(queryString, conexion);
+            command.ExecuteNonQuery();
+            int num = (int)command.ExecuteScalar();
+            if (num > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public void ExecStoredProcedure2(string commandtext)
+        {
+            SqlCommand comando = new SqlCommand(commandtext, conexion);
+            comando.CommandText = commandtext;
+            comando.ExecuteNonQuery();
+        }
+        /*
         public static List<String> ObtenerLista(string queryString, string connectionString, string campo)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -143,7 +192,7 @@ namespace ClinicaFrba.Clases
                     comando.ExecuteNonQuery();
                 }
         }
-
+        */
 
         /*****************************/
         public static decimal ExecStoredProcedure(string commandtext, List<SqlParameter> ListaParametro)

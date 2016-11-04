@@ -16,12 +16,18 @@ namespace ClinicaFrba
         [STAThread]
         static void Main()
         {
-            SqlConnection s=new SqlConnection();
+            Clases.BaseDeDatosSQL bdd = new Clases.BaseDeDatosSQL();
+            bdd.abrirConexion();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
 
+<<<<<<< HEAD
             Application.Run(new Login.frmLogin());
+=======
+            Application.Run(new Registro_Llegada.frmRegistroLlegadaAfiliado(bdd));
+>>>>>>> 28c0e526f8b5e630da42aeee1c76c116aa70109c
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ClinicaFrba.Abm_Afiliado
 {
-    partial class frmModifcarAfiliadoGrupo
+    partial class frmModifcarAfiliado
     {
         /// <summary>
         /// Required designer variable.
@@ -40,7 +40,7 @@
             this.lblNombreFiltrado = new System.Windows.Forms.Label();
             this.lblFiltroBusqueda = new System.Windows.Forms.Label();
             this.btnLimpiar = new System.Windows.Forms.Button();
-            this.btnBorrar = new System.Windows.Forms.Button();
+            this.btnBuscar = new System.Windows.Forms.Button();
             this.dgvModificacionPacientes = new System.Windows.Forms.DataGridView();
             this.pacienteNombreDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pacienteApellidoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -74,7 +74,7 @@
             this.maestraBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.gD2C2016DataSet1 = new ClinicaFrba.GD2C2016DataSet1();
             this.maestraTableAdapter = new ClinicaFrba.GD2C2016DataSet1TableAdapters.MaestraTableAdapter();
-            this.btnModificarFamilia = new System.Windows.Forms.Button();
+            this.btnModificarAfiliado = new System.Windows.Forms.Button();
             this.btnVolver = new System.Windows.Forms.Button();
             this.pnlFiltroBusqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvModificacionPacientes)).BeginInit();
@@ -181,14 +181,14 @@
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
             // 
-            // btnBorrar
+            // btnBuscar
             // 
-            this.btnBorrar.Location = new System.Drawing.Point(326, 138);
-            this.btnBorrar.Name = "btnBorrar";
-            this.btnBorrar.Size = new System.Drawing.Size(118, 23);
-            this.btnBorrar.TabIndex = 2;
-            this.btnBorrar.Text = "Borrar";
-            this.btnBorrar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Location = new System.Drawing.Point(326, 138);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(118, 23);
+            this.btnBuscar.TabIndex = 2;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = true;
             // 
             // dgvModificacionPacientes
             // 
@@ -418,14 +418,14 @@
             // 
             this.maestraTableAdapter.ClearBeforeFill = true;
             // 
-            // btnModificarFamilia
+            // btnModificarAfiliado
             // 
-            this.btnModificarFamilia.Location = new System.Drawing.Point(60, 361);
-            this.btnModificarFamilia.Name = "btnModificarFamilia";
-            this.btnModificarFamilia.Size = new System.Drawing.Size(178, 32);
-            this.btnModificarFamilia.TabIndex = 4;
-            this.btnModificarFamilia.Text = "Modificar grupo familiar";
-            this.btnModificarFamilia.UseVisualStyleBackColor = true;
+            this.btnModificarAfiliado.Location = new System.Drawing.Point(60, 361);
+            this.btnModificarAfiliado.Name = "btnModificarAfiliado";
+            this.btnModificarAfiliado.Size = new System.Drawing.Size(178, 32);
+            this.btnModificarAfiliado.TabIndex = 4;
+            this.btnModificarAfiliado.Text = "ModificarAfiliado";
+            this.btnModificarAfiliado.UseVisualStyleBackColor = true;
             // 
             // btnVolver
             // 
@@ -437,18 +437,18 @@
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
-            // frmModifcarAfiliadoGrupo
+            // frmModifcarAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 402);
             this.Controls.Add(this.btnVolver);
-            this.Controls.Add(this.btnModificarFamilia);
+            this.Controls.Add(this.btnModificarAfiliado);
             this.Controls.Add(this.dgvModificacionPacientes);
-            this.Controls.Add(this.btnBorrar);
+            this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.pnlFiltroBusqueda);
-            this.Name = "frmModifcarAfiliadoGrupo";
+            this.Name = "frmModifcarAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modificacion Afiliado ";
             this.Load += new System.EventHandler(this.frmModifcarAfiliadoGrupo_Load);
@@ -474,7 +474,7 @@
         private System.Windows.Forms.Label lblApellido;
         private System.Windows.Forms.Label lblNombreFiltrado;
         private System.Windows.Forms.Button btnLimpiar;
-        private System.Windows.Forms.Button btnBorrar;
+        private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.DataGridView dgvModificacionPacientes;
         private GD2C2016DataSet1 gD2C2016DataSet1;
         private System.Windows.Forms.BindingSource maestraBindingSource;
@@ -508,7 +508,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn compraBonoFechaDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn bonoConsultaFechaImpresionDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn bonoConsultaNumeroDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Button btnModificarFamilia;
+        private System.Windows.Forms.Button btnModificarAfiliado;
         private System.Windows.Forms.Button btnVolver;
     }
 }

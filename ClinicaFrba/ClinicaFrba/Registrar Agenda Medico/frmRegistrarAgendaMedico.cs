@@ -13,25 +13,24 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 {
     public partial class frmRegistrarAgendaMedico : Form
     {
-        string comando = "";
-        string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
-        string especialidad = "";
-        string profesional = "";
-        string diaDesde = "";
-        string diaHasta = "";
-        string horaDesde = "";
-        string horaHasta = "";
-        List<string> horarios = new List<string>();
-        List<string> dias = new List<string>();
-        SqlConnection s = new SqlConnection();
+        private Clases.BaseDeDatosSQL bdd;
+        private string comando = "";
+        private string especialidad = "";
+        private string profesional = "";
+        private string diaDesde = "";
+        private string diaHasta = "";
+        private string horaDesde = "";
+        private string horaHasta = "";
+        private List<string> horarios = new List<string>();
+        private List<string> dias = new List<string>();
 
-        public frmRegistrarAgendaMedico(SqlConnection s)
+        public frmRegistrarAgendaMedico(Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
             warning1.Visible=false;
             warning2.Visible = false;
 
-            this.s = s;
+            this.bdd = bdd;
 
             cargarDias();
             cargarHorarios();
@@ -41,7 +40,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             cargar(horarios, cmbHorarioDesde);
             cargar(horarios, cmbHorarioHasta);
             comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona order by (p.nombre+' '+p.apellido) ASC";
-            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "nombre"), cmbProfesional);
+            cargar(bdd.ObtenerLista(comando,"nombre"), cmbProfesional);
 
             cmbProfesional.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbEspecialidad.SelectedIndexChanged += OnSelectedIndexChanged;
@@ -86,20 +85,20 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 
         private void OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbProfesional.SelectedItem != null && cmbProfesional.SelectedItem!=profesional)
+            if (cmbProfesional.SelectedItem != null && (string)cmbProfesional.SelectedItem!=profesional)
             {
                 cmbEspecialidad.Items.Clear();
                 cmbEspecialidad.Text = "";
                 profesional = (string) cmbProfesional.SelectedItem;
                 comando = "select e.descripcion as descripcion from NEXTGDD.Persona persona,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e where (persona.nombre+' '+persona.apellido) LIKE '"+profesional+"' and persona.id_persona=p.id_persona and pe.matricula=p.matricula and e.cod_especialidad=pe.cod_especialidad order by e.descripcion ASC;";
-                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "descripcion"), cmbEspecialidad);
+                cargar(bdd.ObtenerLista(comando, "descripcion"), cmbEspecialidad);
             }
-            if (cmbDiaDesde.SelectedItem != null && cmbDiaDesde.SelectedItem!=diaDesde)
+            if (cmbDiaDesde.SelectedItem != null && (string)cmbDiaDesde.SelectedItem!=diaDesde)
             {
                 diaDesde = (string)cmbDiaDesde.SelectedItem;
                 filtrarFechas(cmbDiaDesde, cmbDiaHasta, dias);
             }
-            if (cmbHorarioDesde.SelectedItem != null && cmbHorarioDesde.SelectedItem != horaDesde)
+            if (cmbHorarioDesde.SelectedItem != null && (string)cmbHorarioDesde.SelectedItem != horaDesde)
             {
                 horaDesde = (string)cmbHorarioDesde.SelectedItem;
                 filtrarFechas(cmbHorarioDesde, cmbHorarioHasta, horarios);
@@ -129,7 +128,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 //FALTA CREAR EL STORED PROCEDURE
                 //Clases.BaseDeDatosSQL.ExecStoredProcedure2(comando, conexion);
 
-                frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(s);
+                frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(bdd);
                 NewForm.Show();
                 this.Dispose(false);
 

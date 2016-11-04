@@ -16,5 +16,15 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
         }
+
+        private void frmBajaAfiliado_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblIngresaFechas_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

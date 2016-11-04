@@ -10,25 +10,29 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba.Pedir_Turno
 {
+
     public partial class frmSeleccionDeTurno : Form
     {
-        string comando = "";
-        string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
-        string nroAfiliado = "";
-        string especialidad = "";
-        string profesional = "";
-        string fecha = "";
+        private Clases.BaseDeDatosSQL bdd;
+        private string comando = "";
+        private string nroAfiliado = "";
+        private string especialidad = "";
+        private string profesional = "";
+        private string fecha = "";
 
-        public frmSeleccionDeTurno()
+        public frmSeleccionDeTurno(Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
+
+            this.bdd = bdd;
+
             warning1.Visible=false;
             warning2.Visible = false;
             warning3.Visible = false;
             warning4.Visible = false;
 
             comando = "select descripcion from NEXTGDD.Especialidad order by descripcion ASC";
-            List<string> lista = Clases.BaseDeDatosSQL.ObtenerLista(comando,conexion,"descripcion");
+            List<string> lista = bdd.ObtenerLista(comando,"descripcion");
             for(int i=0;i<lista.Count;i++){
                 cmbEspecialidad.Items.Add(lista.ElementAt(i));
             }
@@ -54,7 +58,7 @@ namespace ClinicaFrba.Pedir_Turno
             if (/*nroAfiliado.Length < 8 && */nroAfiliado!="")
             {
                 comando = "select isnull(count(*),0) from NEXTGDD.Afiliado where nro_afiliado LIKE " + nroAfiliado;
-                if (Clases.BaseDeDatosSQL.validarCampo(comando, conexion))
+                if (bdd.validarCampo(comando))
                 {
                     warning4.Visible = false;
                 }
@@ -72,7 +76,7 @@ namespace ClinicaFrba.Pedir_Turno
         private void OnSelectedIndexChanged(object sender, EventArgs e)
         {
             //nroAfiliado = txtNroAfiliado.Text;
-            if (cmbEspecialidad.SelectedItem!=null && cmbEspecialidad.SelectedItem!=especialidad)
+            if (cmbEspecialidad.SelectedItem!=null && (string) cmbEspecialidad.SelectedItem!=especialidad)
             {
                 warning3.Visible = false;
                 verificarTextbox();   
@@ -81,7 +85,7 @@ namespace ClinicaFrba.Pedir_Turno
                 cmbProfesional.Text = "";
                 cmbProfesional.Items.Clear();
                 comando = "select pers.nombre+' '+pers.apellido as nombre from NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e,NEXTGDD.Persona pers where pers.id_persona=p.id_persona and p.matricula=pe.matricula and pe.cod_especialidad=e.cod_especialidad and e.descripcion LIKE '" + cmbEspecialidad.SelectedItem + "' order by pers.nombre+' '+pers.apellido ASC";
-                List<string> lista2 = Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "nombre");
+                List<string> lista2 = bdd.ObtenerLista(comando, "nombre");
                 for (int i = 0; i < lista2.Count; i++)
                 {
                     cmbProfesional.Items.Add(lista2.ElementAt(i));
@@ -98,7 +102,7 @@ namespace ClinicaFrba.Pedir_Turno
                 fecha= (string) dtpFecha.Value.ToString("yyyy-MM-dd") + " "+ (string) cmbHorario.SelectedItem+":00.000";
                 comando = "select isnull(count(*),0) from NEXTGDD.Turno t,NEXTGDD.Agenda a, NEXTGDD.Profesional p,NEXTGDD.Persona pers where t.fecha LIKE CONVERT(datetime,'" + fecha + "', 120) and (pers.nombre+' '+pers.apellido) LIKE '" + profesional + "' and pers.id_persona=p.id_persona and a.matricula=p.matricula and t.cod_agenda=a.cod_agenda";
                 Console.Write(comando);
-                if(!Clases.BaseDeDatosSQL.validarCampo(comando,conexion))
+                if(!bdd.validarCampo(comando))
                 {
                     warning2.Visible=false;
                 }
@@ -117,9 +121,9 @@ namespace ClinicaFrba.Pedir_Turno
             if (nroAfiliado != "" && warning4.Visible==false && especialidad != "" && profesional != "" && fecha != "")
             {
                 comando = "EXECUTE NEXTGDD.crearTurno @nroAf='"+nroAfiliado+"', @nombreEsp='"+especialidad+"', @nomProf='"+profesional+"', @fecha='"+fecha+"'";
-                Clases.BaseDeDatosSQL.ExecStoredProcedure2(comando, conexion);
+                bdd.ExecStoredProcedure2(comando);
 
-                frmSeleccionDeTurno NewForm=new frmSeleccionDeTurno();
+                frmSeleccionDeTurno NewForm=new frmSeleccionDeTurno(bdd);
                 NewForm.Show();
                 this.Dispose(false);
 
