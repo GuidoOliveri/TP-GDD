@@ -25,7 +25,7 @@ namespace ClinicaFrba.Login
                 if (txtUsuario.Text != "" && txtPassword.Text != "")
                 {
                     Usuario user = new Usuario(txtUsuario.Text);
-                    if ((user.Codigo_Persona != -1 && user.Codigo_Persona != 0) || (user.Codigo_Persona == -1 && (txtUsuario.Text == "admin" || txtUsuario.Text == "administrador")))
+                    if ((user.Codigo_Persona != -1 && user.Codigo_Persona != 0) || (user.Codigo_Persona == -1 && (txtUsuario.Text == "admin")))
                     {
 
                         //comienza el hasheo de la pass

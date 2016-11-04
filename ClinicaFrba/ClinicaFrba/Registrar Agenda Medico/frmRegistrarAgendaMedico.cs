@@ -151,5 +151,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         {
 
         }
+
+        public Clases.Profesional unProfesional { get; set; }
     }
 }

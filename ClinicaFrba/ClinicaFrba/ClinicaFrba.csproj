@@ -68,6 +68,18 @@
     <Compile Include="Abm Afiliado\frmAltaAfiliado.Designer.cs">
       <DependentUpon>frmAltaAfiliado.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Profesional\frmProfesional.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Profesional\frmProfesional.Designer.cs">
+      <DependentUpon>frmProfesional.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Profesional\lstSeleccionProfesionales.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Profesional\lstSeleccionProfesionales.Designer.cs">
+      <DependentUpon>lstSeleccionProfesionales.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Especialidades Medicas\frmEspecialidadesMedicas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,12 +91,6 @@
     </Compile>
     <Compile Include="Abm Planes\frmPlanes.Designer.cs">
       <DependentUpon>frmPlanes.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Profesional\frmAltaProfesional.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Profesional\frmAltaProfesional.Designer.cs">
-      <DependentUpon>frmAltaProfesional.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\frmRol.cs">
       <SubType>Form</SubType>
@@ -100,8 +106,16 @@
     </Compile>
     <Compile Include="Clases\Afiliado.cs" />
     <Compile Include="Clases\BaseDeDatosSQL.cs" />
+    <Compile Include="Clases\Especialidad.cs" />
+    <Compile Include="Clases\Especialidades.cs" />
     <Compile Include="Clases\Persona.cs" />
+    <Compile Include="Clases\Profesional.cs" />
+    <Compile Include="Clases\Profesionales.cs" />
+    <Compile Include="Clases\Sexo.cs" />
+    <Compile Include="Clases\TipoDoc.cs" />
+    <Compile Include="Clases\TiposDoc.cs" />
     <Compile Include="Clases\Usuario.cs" />
+    <Compile Include="Clases\Utiles.cs" />
     <Compile Include="Compra Bono\frmCompraBonos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,14 +199,17 @@
     <EmbeddedResource Include="Abm Afiliado\frmModifcarAfiliadoGrupo.resx">
       <DependentUpon>frmModifcarAfiliadoGrupo.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Abm Profesional\frmProfesional.resx">
+      <DependentUpon>frmProfesional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Profesional\lstSeleccionProfesionales.resx">
+      <DependentUpon>lstSeleccionProfesionales.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Abm Especialidades Medicas\frmEspecialidadesMedicas.resx">
       <DependentUpon>frmEspecialidadesMedicas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Planes\frmPlanes.resx">
       <DependentUpon>frmPlanes.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Profesional\frmAltaProfesional.resx">
-      <DependentUpon>frmAltaProfesional.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\frmRol.resx">
       <DependentUpon>frmRol.cs</DependentUpon>

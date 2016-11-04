@@ -12,12 +12,12 @@ namespace ClinicaFrba.Registro_Llegada
 {
     public partial class frmRegistroLlegadaAfiliado : Form
     {
-        string comando = "";
-        string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
-        string profesional = "";
-        string especialidad = "";
-        string turno = "";//muestra fecha del turno
-        string bono = "";//nro bono
+        public string comando = "";
+        public string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
+        public string profesional = "";
+        public string especialidad = "";
+        public string turno = "";//muestra fecha del turno
+        public string bono = "";//nro bono
 
         public frmRegistroLlegadaAfiliado()
         {
@@ -167,5 +167,7 @@ namespace ClinicaFrba.Registro_Llegada
         {
 
         }
+
+        public Clases.Profesional unProfesional { get; set; }
     }
 }

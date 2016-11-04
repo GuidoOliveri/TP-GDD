@@ -16,5 +16,7 @@ namespace ClinicaFrba.Cancelar_Atencion
         {
             InitializeComponent();
         }
+
+        public Clases.Profesional unProfesional { get; set; }
     }
 }

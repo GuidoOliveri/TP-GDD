@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ClinicaFrba.Abm_Afiliado
+namespace ClinicaFrba.Abm_Profesional
 {
     public partial class frmModifcarAfiliadoGrupo : Form
     {
@@ -33,5 +33,9 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             this.Hide();
         }
+
+        public string Operacion { get; set; }
+
+        public Clases.Profesional profesional { get; set; }
     }
 }

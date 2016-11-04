@@ -37,6 +37,7 @@ namespace ClinicaFrba.Clases
             {
                 comando.Parameters.Add(elemento);
             }
+            // lean esto que es importante para saber que es cada cosa 
             switch (commandtype)
             {
                 case "T":

@@ -25,7 +25,7 @@ namespace ClinicaFrba.Clases
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
             ListaParametros.Add(new SqlParameter("@userName", userName));
 
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT * FROM mario_killers.Usuario where nombre=@userName", "T", ListaParametros);
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT * FROM NEXTGDD.Usuario where nombre=@userName", "T", ListaParametros);
             if (lector.HasRows)
             {
                 lector.Read();
@@ -51,11 +51,11 @@ namespace ClinicaFrba.Clases
             //VER ESTO COMO SP
             if (CantFallidos == 2)
             {
-                return Clases.BaseDeDatosSQL.EscribirEnBase("update mario_killers.Usuario set activo=0, intentos_login=@intentos_login where nombre=@nombre", "T", Lista);
+                return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD..Usuario set activo=0, intentos_login=@intentos_login where nombre=@nombre", "T", Lista);
             }
             else
             {
-                return Clases.BaseDeDatosSQL.EscribirEnBase("update mario_killers.Usuario set intentos_login=@intentos_login where nombre=@nombre", "T", Lista);
+                return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Usuario set intentos_login=@intentos_login where nombre=@nombre", "T", Lista);
             }
         }
 
@@ -63,7 +63,7 @@ namespace ClinicaFrba.Clases
         {
             List<SqlParameter> Lista = new List<SqlParameter>();
             Lista.Add(new SqlParameter("@nombre", Name));
-            return Clases.BaseDeDatosSQL.EscribirEnBase("update mario_killers.Usuario set intentos_login=0 where nombre=@nombre", "T", Lista);
+            return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Usuario set intentos_login=0 where nombre=@nombre", "T", Lista);
         }
     }
 }
