@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.Sql;
+using System.Data.SqlClient;
 
 namespace ClinicaFrba
 {
@@ -14,9 +16,12 @@ namespace ClinicaFrba
         [STAThread]
         static void Main()
         {
+            SqlConnection s=new SqlConnection();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Registrar_Agenda_Medico.frmRegistrarAgendaMedico());
+
+
+            Application.Run(new Pedir_Turno.frmSeleccionDeTurno());
         }
     }
 }

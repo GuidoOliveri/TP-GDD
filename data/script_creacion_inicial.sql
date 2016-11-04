@@ -442,22 +442,29 @@ exec NEXTGDD.login 'admin', 'w23e'
 select * from NEXTGDD.Usuario
 */
 
-/*
-CREATE PROCEDURE NEXTGDD.crearTurno (@nroAf numeric(18,0),@nombreEsp varchar(255),@nomProf varchar(255),@apellidoP varchar(255),@fecha datetime)
+
+CREATE PROCEDURE NEXTGDD.crearTurno (@nroAf numeric(18,0),@nombreEsp varchar(255),@nomProf varchar(255),@fecha datetime)
 AS
 BEGIN
-	DECLARE @nroTurno numeric(18,0)=(select isnull(count(*),0)+1 from NEXTGDD.Turno);
+	DECLARE @nroTurno numeric(18,0)=(select top 1 nro_turno from NEXTGDD.Turno order by nro_turno DESC)+1;
 	DECLARE @codAgenda numeric (18,0)=(select cod_agenda 
-									   from NEXTGDD.Agenda a,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e
-									   where p.nombre=@nomProf and p.apellido=@apellidoP and e.descripcion=@nombreEsp and
+									   from NEXTGDD.Agenda a,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e,NEXTGDD.Persona persona
+									   where (persona.nombre+' '+persona.apellido)=@nomProf and persona.id_persona=p.id_persona
+											 and e.descripcion=@nombreEsp and
 									         pe.matricula=p.matricula and pe.cod_especialidad=e.cod_especialidad
 											 and a.cod_especialidad=pe.cod_especialidad and a.matricula=pe.matricula)
 	INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,cod_agenda,fecha,cod_cancelacion) values
 			(@nroTurno,@nroAf,@codAgenda,@fecha,null)
 END;
 GO
-*/
 /*
+EXEC NEXTGDD.crearTurno @nroAF='113347201', @nombreEsp='Neurología', @nomProf='Caleb Villalba', @fecha='2016/11/4 17:30:00.000';
+select * from NEXTGDD.Turno where year(fecha)=2016
+select nro_afiliado from NEXTGDD.Afiliado where nro_afiliado LIKE '113347201'
+select isnull(count(*),0) from NEXTGDD.Afiliado where nro_afiliado LIKE '113347201'
+select pers.nombre+' '+pers.apellido as nombre from NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e,NEXTGDD.Persona pers where pers.id_persona=p.id_persona and p.matricula=pe.matricula and pe.cod_especialidad=e.cod_especialidad and e.descripcion LIKE 'Neurología' order by (pers.nombre+' '+pers.apellido) ASC
+select isnull(count(*),0) from NEXTGDD.Turno t,NEXTGDD.Agenda a, NEXTGDD.Profesional p,NEXTGDD.Persona pers where t.fecha LIKE CONVERT(datetime,'" + fecha + "', 120) and (pers.nombre+' '+pers.apellido) LIKE '" + profesional + "' and pers.id_persona=p.id_persona and a.matricula=p.matricula and t.cod_agenda=a.cod_agenda
+
 CREATE TRIGGER NEXTGDD.pedirTurno ON NEXTGDD.Turno INSTEAD OF insert
 AS
 BEGIN

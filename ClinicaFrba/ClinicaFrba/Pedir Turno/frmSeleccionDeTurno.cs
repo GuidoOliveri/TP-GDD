@@ -51,9 +51,9 @@ namespace ClinicaFrba.Pedir_Turno
         private void verificarTextbox()
         {
             nroAfiliado = txtNroAfiliado.Text;
-            if (nroAfiliado.Length < 8 && nroAfiliado!="")
+            if (/*nroAfiliado.Length < 8 && */nroAfiliado!="")
             {
-                comando = "select isnull(count(*),0) from NEXTGDD.Afiliado where nro_afiliado=" + nroAfiliado;
+                comando = "select isnull(count(*),0) from NEXTGDD.Afiliado where nro_afiliado LIKE " + nroAfiliado;
                 if (Clases.BaseDeDatosSQL.validarCampo(comando, conexion))
                 {
                     warning4.Visible = false;
@@ -80,7 +80,7 @@ namespace ClinicaFrba.Pedir_Turno
                 especialidad = (string) cmbEspecialidad.SelectedItem;
                 cmbProfesional.Text = "";
                 cmbProfesional.Items.Clear();
-                comando = "select p.nombre+' '+p.apellido as nombre from NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e where p.matricula=pe.matricula and pe.cod_especialidad=e.cod_especialidad and e.descripcion LIKE '" + cmbEspecialidad.SelectedItem + "' order by descripcion ASC";
+                comando = "select pers.nombre+' '+pers.apellido as nombre from NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e,NEXTGDD.Persona pers where pers.id_persona=p.id_persona and p.matricula=pe.matricula and pe.cod_especialidad=e.cod_especialidad and e.descripcion LIKE '" + cmbEspecialidad.SelectedItem + "' order by pers.nombre+' '+pers.apellido ASC";
                 List<string> lista2 = Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "nombre");
                 for (int i = 0; i < lista2.Count; i++)
                 {
@@ -96,7 +96,7 @@ namespace ClinicaFrba.Pedir_Turno
             {
                 warning3.Visible = false;
                 fecha= (string) dtpFecha.Value.ToString("yyyy-MM-dd") + " "+ (string) cmbHorario.SelectedItem+":00.000";
-                comando = "select isnull(count(*),0) from NEXTGDD.Agenda_X_Turno at,NEXTGDD.Agenda a, NEXTGDD.Profesional p where at.fecha LIKE CONVERT(datetime,'" + fecha + "', 120) and (p.nombre+' '+p.apellido) LIKE '" + profesional + "'  and a.matricula=p.matricula and at.cod_agenda=a.cod_agenda";
+                comando = "select isnull(count(*),0) from NEXTGDD.Turno t,NEXTGDD.Agenda a, NEXTGDD.Profesional p,NEXTGDD.Persona pers where t.fecha LIKE CONVERT(datetime,'" + fecha + "', 120) and (pers.nombre+' '+pers.apellido) LIKE '" + profesional + "' and pers.id_persona=p.id_persona and a.matricula=p.matricula and t.cod_agenda=a.cod_agenda";
                 Console.Write(comando);
                 if(!Clases.BaseDeDatosSQL.validarCampo(comando,conexion))
                 {

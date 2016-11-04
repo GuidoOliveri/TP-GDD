@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace ClinicaFrba.Registrar_Agenda_Medico
 {
@@ -22,12 +23,15 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         string horaHasta = "";
         List<string> horarios = new List<string>();
         List<string> dias = new List<string>();
+        SqlConnection s = new SqlConnection();
 
-        public frmRegistrarAgendaMedico()
+        public frmRegistrarAgendaMedico(SqlConnection s)
         {
             InitializeComponent();
             warning1.Visible=false;
             warning2.Visible = false;
+
+            this.s = s;
 
             cargarDias();
             cargarHorarios();
@@ -125,7 +129,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 //FALTA CREAR EL STORED PROCEDURE
                 //Clases.BaseDeDatosSQL.ExecStoredProcedure2(comando, conexion);
 
-                frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico();
+                frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(s);
                 NewForm.Show();
                 this.Dispose(false);
 
