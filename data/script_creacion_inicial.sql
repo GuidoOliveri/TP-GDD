@@ -352,6 +352,9 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregar_usuario'))
     DROP PROCEDURE NEXTGDD.agregar_usuario
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado'))
+    DROP PROCEDURE NEXTGDD.Modificar_Afiliado
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarRangoDeAtencion'))
     DROP FUNCTION NEXTGDD.verificarRangoDeAtencion
 
@@ -387,6 +390,16 @@ CREATE VIEW NEXTGDD.Medicos AS
 	WHERE Medico_Dni IS NOT NULL
 GO
  
+
+ CREATE PROCEDURE NEXTGDD.Modificar_Afiliado(@id numeric(18,0) ,@nom_atrib VARCHAR(50), @valor_atrib varchar(100))
+ AS
+ BEGIN
+ UPDATE NEXTGDD.Afiliado
+ SET  @nom_atrib= @valor_atrib
+ WHERE nro_afiliado = @id
+ END
+ GO
+
 
 CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100))
  AS 

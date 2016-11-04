@@ -31,8 +31,6 @@
             this.btnRegistrar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.pnlDatosPersonales = new System.Windows.Forms.Panel();
-            this.lblGrupoFamiliar = new System.Windows.Forms.Label();
-            this.lblGrupoFam = new System.Windows.Forms.Label();
             this.txtCantFam = new System.Windows.Forms.TextBox();
             this.lblCantFam = new System.Windows.Forms.Label();
             this.cboEstadoCivil = new System.Windows.Forms.ComboBox();
@@ -98,8 +96,6 @@
             // 
             // pnlDatosPersonales
             // 
-            this.pnlDatosPersonales.Controls.Add(this.lblGrupoFamiliar);
-            this.pnlDatosPersonales.Controls.Add(this.lblGrupoFam);
             this.pnlDatosPersonales.Controls.Add(this.txtCantFam);
             this.pnlDatosPersonales.Controls.Add(this.lblCantFam);
             this.pnlDatosPersonales.Controls.Add(this.cboEstadoCivil);
@@ -128,24 +124,6 @@
             this.pnlDatosPersonales.Size = new System.Drawing.Size(640, 201);
             this.pnlDatosPersonales.TabIndex = 2;
             this.pnlDatosPersonales.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlDatosPersonales_Paint);
-            // 
-            // lblGrupoFamiliar
-            // 
-            this.lblGrupoFamiliar.AutoSize = true;
-            this.lblGrupoFamiliar.Location = new System.Drawing.Point(455, 178);
-            this.lblGrupoFamiliar.Name = "lblGrupoFamiliar";
-            this.lblGrupoFamiliar.Size = new System.Drawing.Size(35, 13);
-            this.lblGrupoFamiliar.TabIndex = 23;
-            this.lblGrupoFamiliar.Text = "XXXX";
-            // 
-            // lblGrupoFam
-            // 
-            this.lblGrupoFam.AutoSize = true;
-            this.lblGrupoFam.Location = new System.Drawing.Point(364, 178);
-            this.lblGrupoFam.Name = "lblGrupoFam";
-            this.lblGrupoFam.Size = new System.Drawing.Size(77, 13);
-            this.lblGrupoFam.TabIndex = 22;
-            this.lblGrupoFam.Text = "Grupo Familiar:";
             // 
             // txtCantFam
             // 
@@ -560,8 +538,6 @@
         private System.Windows.Forms.Button btnHijo;
         private System.Windows.Forms.Label lblAltaFamiliar;
         private System.Windows.Forms.Button btnVolver;
-        private System.Windows.Forms.Label lblGrupoFamiliar;
-        private System.Windows.Forms.Label lblGrupoFam;
         private System.Windows.Forms.Label lblFechaCambioPlan;
         private System.Windows.Forms.TextBox txtMotivo;
         private System.Windows.Forms.Label lblMotivoCambio;
