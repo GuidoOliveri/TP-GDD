@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ClinicaFrba.Abm_Profesional;
+using ClinicaFrba.Abm_Afiliado;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 

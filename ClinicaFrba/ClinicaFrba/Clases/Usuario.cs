@@ -7,7 +7,7 @@ using ClinicaFrba.Clase_Persona;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
-using ClinicaFrba.Abm_Profesional;
+using ClinicaFrba.Abm_Afiliado;
 
 
 namespace ClinicaFrba.Clases

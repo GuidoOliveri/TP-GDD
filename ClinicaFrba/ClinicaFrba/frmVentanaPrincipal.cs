@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.AbmRol;
 using ClinicaFrba.Clases;
-using ClinicaFrba.Abm_Profesional;
+using ClinicaFrba.Abm_Afiliado;
 using ClinicaFrba.Registrar_Agenda_Medico;
 using ClinicaFrba.Cancelar_Atencion;
 using ClinicaFrba.Registro_Llegada;

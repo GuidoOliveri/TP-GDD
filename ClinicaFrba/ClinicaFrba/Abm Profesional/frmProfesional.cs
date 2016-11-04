@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using ClinicaFrba.Clases;
 
-namespace ClinicaFrba.Abm_Profesional
+namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmAltaProfesional : Form
     {

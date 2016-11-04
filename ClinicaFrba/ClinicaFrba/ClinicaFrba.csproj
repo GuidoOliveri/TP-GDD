@@ -74,12 +74,6 @@
     <Compile Include="Abm Profesional\frmProfesional.Designer.cs">
       <DependentUpon>frmProfesional.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Profesional\lstSeleccionProfesionales.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Profesional\lstSeleccionProfesionales.Designer.cs">
-      <DependentUpon>lstSeleccionProfesionales.cs</DependentUpon>
-    </Compile>
     <Compile Include="Abm Especialidades Medicas\frmEspecialidadesMedicas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -201,9 +195,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Profesional\frmProfesional.resx">
       <DependentUpon>frmProfesional.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Profesional\lstSeleccionProfesionales.resx">
-      <DependentUpon>lstSeleccionProfesionales.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Especialidades Medicas\frmEspecialidadesMedicas.resx">
       <DependentUpon>frmEspecialidadesMedicas.cs</DependentUpon>

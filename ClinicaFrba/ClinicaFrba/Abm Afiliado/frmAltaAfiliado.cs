@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Clases;
 using System.Data.SqlClient;
-using ClinicaFrba.Abm_Profesional;
+using ClinicaFrba.Abm_Afiliado;
 
-namespace ClinicaFrba.Abm_Profesional
+namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmAltaAfiliado : Form
     {
