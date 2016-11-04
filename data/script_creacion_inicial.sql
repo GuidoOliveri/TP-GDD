@@ -107,7 +107,7 @@ CREATE TABLE NEXTGDD.Estado_Civil (
 
 CREATE TABLE NEXTGDD.Persona (
 
-	id_persona int PRIMARY KEY identity,
+	id_persona numeric (18,0) PRIMARY KEY identity,
 	nombre varchar (255) not null, 
 	apellido varchar (255) not null,
 	domicilio varchar (255) not null ,
@@ -138,7 +138,7 @@ CREATE TABLE NEXTGDD.Usuario (
     password varbinary (255) NOT NULL,   --OK en SHA 256 
 	logins_fallidos smallint NOT NULL DEFAULT 0,
 	habilitado bit NOT NULL DEFAULT 1,
-	id_persona int REFERENCES NEXTGDD.Persona(id_persona)
+	id_persona numeric (18,0) REFERENCES NEXTGDD.Persona(id_persona)
     )
 
 CREATE TABLE NEXTGDD.Rol (
@@ -182,13 +182,13 @@ CREATE TABLE NEXTGDD.Plan_Medico (
 CREATE TABLE NEXTGDD.Administrativo (
     
 	id_administrativo int PRIMARY KEY IDENTITY,
-	id_persona int REFERENCES NEXTGDD.Persona(id_persona)
+	id_persona numeric (18,0) REFERENCES NEXTGDD.Persona(id_persona)
 	)
 
 CREATE TABLE NEXTGDD.Profesional (
 --SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION    
 	matricula numeric (18,0) IDENTITY(1000,1) PRIMARY KEY,
-	id_persona int REFERENCES NEXTGDD.Persona(id_persona),
+	id_persona numeric (18,0) REFERENCES NEXTGDD.Persona(id_persona),
     activo bit DEFAULT 0
 	)
 
@@ -214,13 +214,13 @@ CREATE TABLE NEXTGDD.Profesional_X_Especialidad (
    
 CREATE TABLE NEXTGDD.Afiliado (
 --SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION
-	nro_afiliado numeric (18,0) PRIMARY KEY , 
+	nro_afiliado numeric (20,0) PRIMARY KEY , 
 	cant_familiares tinyint,
 	cod_plan numeric(18,0) REFERENCES NextGDD.Plan_Medico(cod_plan),
     nro_consulta int,
 	activo bit DEFAULT 1,
 	fecha_baja_logica datetime DEFAULT NULL,
-	id_persona int REFERENCES NEXTGDD.Persona(id_persona),
+	id_persona numeric (18,0) REFERENCES NEXTGDD.Persona(id_persona),
 	grupo_afiliado numeric (18,0) ,        --numero raiz de afiliado 
 	integrante_grupo numeric (2,0)         --01:principal, 02: conyuge, 03:hijo
 	)
@@ -228,7 +228,7 @@ CREATE TABLE NEXTGDD.Afiliado (
 CREATE TABLE NEXTGDD.Compra_Bono (
 	id_compra int PRIMARY KEY IDENTITY (1000,1), 
 	cant smallint,
-	id_afiliado numeric(18,0) REFERENCES NextGDD.Afiliado,
+	id_afiliado numeric(20,0) REFERENCES NextGDD.Afiliado,
 	precio_total int 
 	)
 
@@ -238,7 +238,7 @@ CREATE TABLE NEXTGDD.Bono_Consulta (
     fecha_impresion datetime,
     compra_fecha datetime, 
     cod_plan numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan), 
-	nro_afiliado numeric (18,0) REFERENCES NextGDD.Afiliado(nro_afiliado) 
+	nro_afiliado numeric (20,0) REFERENCES NextGDD.Afiliado(nro_afiliado) 
     ) 
 	
 CREATE TABLE NEXTGDD.Tipo_cancelacion (
@@ -266,7 +266,7 @@ CREATE TABLE NEXTGDD.Turno (
 
    nro_turno numeric (18,0) PRIMARY KEY,
    fecha datetime,
-   nro_afiliado numeric (18,0) REFERENCES NextGDD.afiliado(nro_afiliado),
+   nro_afiliado numeric (20,0) REFERENCES NextGDD.afiliado(nro_afiliado),
    cod_agenda numeric (18,0) REFERENCES NextGDD.Agenda(cod_agenda),
    cod_cancelacion numeric (18,0) REFERENCES NextGDD.Cancelacion(cod_cancelacion)
    )
@@ -305,7 +305,7 @@ CREATE TABLE NEXTGDD.Historial (
    nro_historial numeric (18,0) PRIMARY KEY,
    fecha_modificacion datetime,
    motivo_modificacion varchar (255),
-   nro_afiliado numeric (18,0) REFERENCES NextGDD.afiliado(nro_afiliado),
+   nro_afiliado numeric (20,0) REFERENCES NextGDD.afiliado(nro_afiliado),
    cod_plan_viejo numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan),
     cod_plan_nuevo numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan)  
    )
@@ -349,14 +349,20 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agreg
     DROP PROCEDURE NEXTGDD.agregar_Rol
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoFamilia'))
+    DROP PROCEDURE NEXTGDD.agregarAfiliadoFamilia
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregar_usuario'))
     DROP PROCEDURE NEXTGDD.agregar_usuario
+GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado'))
     DROP PROCEDURE NEXTGDD.Modificar_Afiliado
+GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarRangoDeAtencion'))
     DROP FUNCTION NEXTGDD.verificarRangoDeAtencion
+GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.pedirTurno'))
     DROP TRIGGER NEXTGDD.pedirTurno
@@ -365,6 +371,7 @@ GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes'))
     DROP VIEW NEXTGDD.Pacientes
+GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Medicos'))
     DROP VIEW NEXTGDD.Medicos	
@@ -415,7 +422,7 @@ CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100))
               SET logins_fallidos = 0
               WHERE username = @user
 				 
-			  SELECT  R_U.id_rol, R.nombre
+			  SELECT  R_U.id_rol
               FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U
               WHERE R_U.id_rol = R.id_rol
               AND U.username = @user
@@ -570,6 +577,55 @@ AS BEGIN
 
 END
 GO
+
+--DEVUELVE EL NUMERO DE AFILIADO SI EL INSERT FUE CORRECTO O -1 SI FUE INCORRECTO
+
+CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc numeric(18,0),
+                                               @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
+                                               @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0),@grupo_afiliado numeric(18,0), 
+											   @ret numeric(20,0) output)
+AS
+
+DECLARE @integrante_grupo numeric(2,0);
+DECLARE @pers numeric (18,0)
+DECLARE @nro_afiliado numeric (20,0) 
+DECLARE @usr VARCHAR(255)
+
+ BEGIN TRY
+	BEGIN TRANSACTION
+			
+		INSERT INTO NEXTGDD.Persona (nombre, apellido, nro_documento, fecha_nac, domicilio , telefono, mail, tipo_doc, sexo)
+	                         VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo)
+
+SET @pers = SCOPE_IDENTITY()
+
+SET @integrante_grupo= (select max(integrante_grupo)from Afiliado where grupo_afiliado = @grupo_afiliado) + 1
+SET @nro_afiliado =  cast (@pers as varchar)+ cast (@integrante_grupo as varchar)
+
+		 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	                VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
+	
+SET @usr = CONVERT(VARCHAR(255),@nrodocumento)
+
+--utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
+
+EXEC NEXTGDD.agregar_usuario  @usr, @nro_afiliado, 2, 1, @pers
+
+	  COMMIT TRANSACTION
+	  SET @ret= @nro_afiliado
+    RETURN @ret
+ END TRY
+  
+   BEGIN CATCH
+     ROLLBACK TRANSACTION
+       -- No hago nada si hubo un error ( duplicado)
+      SET @ret= -1
+     
+	 RETURN @ret
+   END CATCH
+
+GO
+
 
 /************ Migracion *************/
 /*
