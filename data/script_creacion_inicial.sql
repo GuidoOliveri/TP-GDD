@@ -360,6 +360,14 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modif
     DROP PROCEDURE NEXTGDD.Modificar_Afiliado
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoPrincipal'))
+    DROP PROCEDURE NEXTGDD.agregarAfiliadoPrincipal
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.mostrarHistorial'))
+    DROP PROCEDURE NEXTGDD.mostrarHistorial
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarRangoDeAtencion'))
     DROP FUNCTION NEXTGDD.verificarRangoDeAtencion
 GO
@@ -398,7 +406,7 @@ CREATE VIEW NEXTGDD.Medicos AS
 GO
  
 
- CREATE PROCEDURE NEXTGDD.Modificar_Afiliado(@id numeric(18,0) ,@nom_atrib VARCHAR(50), @valor_atrib varchar(100))
+ CREATE PROCEDURE NEXTGDD.Modificar_Afiliado(@id numeric(20,0) ,@nom_atrib VARCHAR(255), @valor_atrib varchar(100))
  AS
  BEGIN
  UPDATE NEXTGDD.Afiliado
@@ -551,6 +559,8 @@ BEGIN
 END
 GO
 */
+
+
 CREATE PROCEDURE NEXTGDD.agregar_usuario (@username VARCHAR(50), @password VARCHAR(255), @codigo_rol TINYINT, @habilitado BIT,  @id_persona INT) 
 AS BEGIN
   /* Intenta crear un usuario con los datos especificados Para eso debe crear una entrada en la tabla Usuario y una en la table Usuario_X_Rol
@@ -577,6 +587,54 @@ AS BEGIN
 
 END
 GO
+
+
+--DEVUELVE EL NUMERO DE AFILIADO SI EL INSERT FUE CORRECTO O -1 SI FUE INCORRECTO
+
+CREATE PROCEDURE NEXTGDD.agregarAfiliadoPrincipal(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc numeric(18,0),
+                                               @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
+                                               @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0), @ret numeric(20,0) output)
+AS
+
+DECLARE @integrante_grupo numeric(2,0);
+DECLARE @pers numeric (18,0)
+DECLARE @nro_afiliado numeric (20,0) 
+DECLARE @usr VARCHAR(255)
+
+ BEGIN TRY
+	BEGIN TRANSACTION
+			
+		INSERT INTO NEXTGDD.Persona (nombre, apellido, nro_documento, fecha_nac, domicilio , telefono, mail, tipo_doc, sexo)
+	                         VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo)
+
+SET @pers = SCOPE_IDENTITY()
+SET @integrante_grupo = 01
+SET @nro_afiliado =  cast (@pers as varchar)+ cast (@integrante_grupo as varchar)
+
+		 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	                VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @pers, @integrante_grupo) 
+	
+SET @usr = CONVERT(VARCHAR(255),@nrodocumento)
+
+--utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
+
+EXEC NEXTGDD.agregar_usuario  @usr, @nro_afiliado, 2, 1, @pers
+
+	  COMMIT TRANSACTION
+	  SET @ret= @nro_afiliado
+    RETURN @ret
+ END TRY
+  
+   BEGIN CATCH
+     ROLLBACK TRANSACTION
+       -- No hago nada si hubo un error ( duplicado)
+      SET @ret= -1
+     
+	 RETURN @ret
+   END CATCH
+
+GO
+
 
 --DEVUELVE EL NUMERO DE AFILIADO SI EL INSERT FUE CORRECTO O -1 SI FUE INCORRECTO
 
@@ -626,6 +684,17 @@ EXEC NEXTGDD.agregar_usuario  @usr, @nro_afiliado, 2, 1, @pers
 
 GO
 
+--en base a un numero de afiliado muestra todo el historial del grupo familiar 
+--ver la pantalla
+CREATE PROCEDURE NEXTGDD.mostrarHistorial(@nroafiliado numeric(20,0) )
+AS
+BEGIN
+
+SELECT nro_historial,fecha_modificacion,motivo_modificacion, nro_afiliado, cod_plan_viejo, cod_plan_nuevo
+FROM NEXTGDD.Historial
+WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.grupo_afiliado= (SELECT d.grupo_afiliado FROM Afiliado d WHERE d.nro_afiliado= @nroafiliado ))
+
+END
 
 /************ Migracion *************/
 /*
