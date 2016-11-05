@@ -19,37 +19,38 @@ namespace ClinicaFrba.Login
             InitializeComponent();
         }
 
+        private SqlConnection conn = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
-            string cadenaConex = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
-            
-            SqlConnection conn = new SqlConnection(cadenaConex);
-            
+            conn.Open();
+            string uname = txtUsuario.Text;
+            string upass = txtPassword.Text;
+
             SqlCommand command = new SqlCommand("NEXTGDD.login", conn);
             command.CommandType = CommandType.StoredProcedure;
 
-            SqlParameter pUsuario = new SqlParameter("@user",SqlDbType.VarChar);
-            pUsuario.Direction = ParameterDirection.Input;
-            command.Parameters.Add(pUsuario);
+            SqlParameter parUser = new SqlParameter("@user",uname);
+            SqlParameter parContra = new SqlParameter("@pass", upass);
 
-            SqlParameter pContrasenia = new SqlParameter("@pass", SqlDbType.VarChar);
-            pContrasenia.Direction = ParameterDirection.Input;
-            command.Parameters.Add(pContrasenia);
+            command.Parameters.Add(parUser);
+            command.Parameters.Add(parContra);
 
-            pUsuario.Value = txtUsuario.Text;
-            pContrasenia.Value = txtPassword.Text;
+            SqlDataReader dr = command.ExecuteReader();
+            dr.Read();
 
-            try
+            if (dr.HasRows)
             {
-                conn.Open();
-                command.ExecuteNonQuery();
-                conn.Close();
-                MessageBox.Show("Usuario correcto", "Aviso", MessageBoxButtons.OK);
+                MessageBox.Show("Logueo exitoso! Entrando al sistema...", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                AbmRol.frmElegirAccionRol elegiaccion = new AbmRol.frmElegirAccionRol();
+                this.Hide();
+                elegiaccion.Show();
             }
-            catch (Exception)
+            else
             {
-                MessageBox.Show("Usuario incorrecto o inabilitado para acceder al sistema", "Error!", MessageBoxButtons.OK);
+                MessageBox.Show("Usuario o contrasenia incorrecta", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            conn.Close();
         }
             
     }

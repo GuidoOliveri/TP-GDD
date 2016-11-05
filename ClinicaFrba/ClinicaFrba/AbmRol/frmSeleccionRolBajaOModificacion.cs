@@ -41,6 +41,7 @@ namespace ClinicaFrba.AbmRol
             catch{ MessageBox.Show("No existe rol con esas caracteristicas", "Error!", MessageBoxButtons.OK);}
         }
 
+
         private void lstSeleccionRol_Load(object sender, EventArgs e)
         {
             //genero las columnas de la grilla
@@ -118,6 +119,11 @@ namespace ClinicaFrba.AbmRol
             frmElegirAccionRol elegiUna = new frmElegirAccionRol();
             this.Hide();
             elegiUna.Show();
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
 
         }
     }

@@ -53,7 +53,7 @@ namespace ClinicaFrba.AbmRol
 
         private void cmdAgregar_Click(object sender, EventArgs e)
         {
-            //SI EL NOMBRE ES DISTINTO, LO MODIFCO
+            //SI EL NOMBRE ES DISTINTO, LO MODIFICO
             if(unRol.Nombre != txtRol.Text)
             {
                 Roles.ModificarNombre(txtRol.Text, unRol.Id);

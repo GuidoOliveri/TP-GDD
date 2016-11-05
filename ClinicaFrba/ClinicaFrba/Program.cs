@@ -23,7 +23,7 @@ namespace ClinicaFrba
             Application.SetCompatibleTextRenderingDefault(false);
 
 
-            Application.Run(new Registro_Llegada.frmRegistroLlegadaAfiliado(bdd));
+            Application.Run(new Login.frmLogin());
         }
     }
 }

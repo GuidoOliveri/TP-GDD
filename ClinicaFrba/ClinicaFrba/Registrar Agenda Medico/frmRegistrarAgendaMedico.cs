@@ -156,5 +156,10 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         }
 
         public Clases.Profesional unProfesional { get; set; }
+
+        private void btnIngresar_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
