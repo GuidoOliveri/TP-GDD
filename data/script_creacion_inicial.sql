@@ -356,8 +356,16 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agreg
     DROP PROCEDURE NEXTGDD.agregar_usuario
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado'))
-    DROP PROCEDURE NEXTGDD.Modificar_Afiliado
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado_Domic'))
+    DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Domic
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado_Telef'))
+    DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Telef
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado_Mail'))
+    DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Mail
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoPrincipal'))
@@ -405,15 +413,107 @@ CREATE VIEW NEXTGDD.Medicos AS
 	WHERE Medico_Dni IS NOT NULL
 GO
  
+ /*Es de suponer que un afiliado a lo largo de su historia puede sufrir modificaciones
+en alguno de sus datos, como ser su dirección, teléfono, mail, plan médico, etc (no así
+su nombre, apellido, dni y fecha de nacimiento). Si fuese necesario modificar el plan del
+afiliado, es necesario que se registre cuando se ha producido dicha modificación y el
+motivo que la originó, de manera de poder obtener un historial de dichos cambios.
+Dicho historial debe poder ser consultado de alguna manera dentro del sistema.*/
 
- CREATE PROCEDURE NEXTGDD.Modificar_Afiliado(@id numeric(20,0) ,@nom_atrib VARCHAR(255), @valor_atrib varchar(100))
- AS
- BEGIN
- UPDATE NEXTGDD.Afiliado
- SET  @nom_atrib= @valor_atrib
- WHERE nro_afiliado = @id
- END
- GO
+ CREATE PROCEDURE NEXTGDD.Modificar_Afiliado_Domic(@id numeric(20,0), @nuevo_dom varchar(255))
+  AS BEGIN
+  
+DECLARE @pers numeric (18,0)
+
+ IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
+    BEGIN TRY
+	  BEGIN TRANSACTION   
+         	SET @pers = (SELECT id_persona FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id )
+
+            UPDATE NEXTGDD.Persona
+            SET  domicilio = @nuevo_dom
+            WHERE  id_persona= @pers
+           
+
+	COMMIT TRANSACTION
+    RETURN 0
+  END TRY
+  
+  BEGIN CATCH
+    ROLLBACK TRANSACTION
+    
+    RETURN -1
+  END CATCH
+
+ELSE
+  RETURN -1
+
+END
+GO
+
+ 
+ CREATE PROCEDURE NEXTGDD.Modificar_Afiliado_Telef(@id numeric(20,0), @nuevo_telef numeric(18,0))
+ AS BEGIN
+  
+DECLARE @pers numeric (18,0)
+
+ IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
+    BEGIN TRY
+	  BEGIN TRANSACTION   
+         	SET @pers = (SELECT id_persona FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id )
+
+            UPDATE NEXTGDD.Persona
+            SET  telefono = @nuevo_telef
+            WHERE  id_persona= @pers
+           
+
+	COMMIT TRANSACTION
+    RETURN 0
+  END TRY
+  
+  BEGIN CATCH
+    ROLLBACK TRANSACTION
+    
+    RETURN -1
+  END CATCH
+
+ELSE
+  RETURN -1
+
+END
+GO
+
+
+ CREATE PROCEDURE NEXTGDD.Modificar_Afiliado_Mail(@id numeric(20,0), @nuevo_mail varchar(255))
+ AS BEGIN
+  
+DECLARE @pers numeric (18,0)
+
+ IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
+    BEGIN TRY
+	  BEGIN TRANSACTION   
+         	SET @pers = (SELECT id_persona FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id )
+
+            UPDATE NEXTGDD.Persona
+            SET  mail = @nuevo_mail
+            WHERE  id_persona= @pers
+           
+
+	COMMIT TRANSACTION
+    RETURN 0
+  END TRY
+  
+  BEGIN CATCH
+    ROLLBACK TRANSACTION 
+    RETURN -1
+   END CATCH
+
+ ELSE
+    RETURN -1
+	
+END
+GO
+
 
 
 CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100))
