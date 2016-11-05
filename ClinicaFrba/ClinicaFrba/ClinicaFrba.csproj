@@ -167,10 +167,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GD2C2016DataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="GD2C2016DataSet2.Designer.cs">
+    <Compile Include="HistorialDeCambios.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GD2C2016DataSet2.xsd</DependentUpon>
+      <DependentUpon>HistorialDeCambios.xsd</DependentUpon>
     </Compile>
     <Compile Include="ListaDeAfiliados.cs">
       <DependentUpon>ListaDeAfiliados.xsd</DependentUpon>
@@ -305,16 +305,16 @@
     <None Include="GD2C2016DataSet.xss">
       <DependentUpon>GD2C2016DataSet.xsd</DependentUpon>
     </None>
-    <None Include="GD2C2016DataSet2.xsc">
-      <DependentUpon>GD2C2016DataSet2.xsd</DependentUpon>
+    <None Include="HistorialDeCambios.xsc">
+      <DependentUpon>HistorialDeCambios.xsd</DependentUpon>
     </None>
-    <None Include="GD2C2016DataSet2.xsd">
+    <None Include="HistorialDeCambios.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>GD2C2016DataSet2.Designer.cs</LastGenOutput>
+      <LastGenOutput>HistorialDeCambios.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="GD2C2016DataSet2.xss">
-      <DependentUpon>GD2C2016DataSet2.xsd</DependentUpon>
+    <None Include="HistorialDeCambios.xss">
+      <DependentUpon>HistorialDeCambios.xsd</DependentUpon>
     </None>
     <None Include="ListaDeAfiliados.xsc">
       <DependentUpon>ListaDeAfiliados.xsd</DependentUpon>

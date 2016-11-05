@@ -30,55 +30,28 @@
         {
             this.components = new System.ComponentModel.Container();
             this.pnlFiltroParaBuscarHistorial = new System.Windows.Forms.Panel();
-            this.lblSeleccionarFiltro = new System.Windows.Forms.Label();
-            this.lblNroGrupo = new System.Windows.Forms.Label();
-            this.lblNroAfiliado = new System.Windows.Forms.Label();
-            this.txtNroGrupo = new System.Windows.Forms.TextBox();
             this.txtNroAfiliado = new System.Windows.Forms.TextBox();
+            this.txtNroGrupo = new System.Windows.Forms.TextBox();
+            this.lblNroAfiliado = new System.Windows.Forms.Label();
+            this.lblNroGrupo = new System.Windows.Forms.Label();
+            this.lblSeleccionarFiltro = new System.Windows.Forms.Label();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
-            this.gD2C2016DataSet2 = new ClinicaFrba.GD2C2016DataSet2();
-            this.maestraBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.maestraTableAdapter = new ClinicaFrba.GD2C2016DataSet2TableAdapters.MaestraTableAdapter();
-            this.dgvGrillaDeHistorialDeCambios = new System.Windows.Forms.DataGridView();
-            this.pacienteNombreDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pacienteApellidoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pacienteDniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pacienteDireccionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pacienteTelefonoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pacienteMailDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pacienteFechaNacDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.planMedCodigoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.planMedDescripcionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.planMedPrecioBonoConsultaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.planMedPrecioBonoFarmaciaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.turnoNumeroDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.turnoFechaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.consultaSintomasDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.consultaEnfermedadesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.medicoNombreDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.medicoApellidoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.medicoDniDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.medicoDireccionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.medicoTelefonoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.medicoMailDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.medicoFechaNacDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.especialidadCodigoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.especialidadDescripcionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tipoEspecialidadCodigoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tipoEspecialidadDescripcionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.compraBonoFechaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bonoConsultaFechaImpresionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bonoConsultaNumeroDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.gD2C2016DataSet21 = new ClinicaFrba.GD2C2016DataSet2();
-            this.maestraBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.btnAceptarYVolver = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.historialDeCambios = new ClinicaFrba.HistorialDeCambios();
+            this.historialBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.historialTableAdapter = new ClinicaFrba.HistorialDeCambiosTableAdapters.HistorialTableAdapter();
+            this.nrohistorialDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fechamodificacionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.motivomodificacionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nroafiliadoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.codplanviejoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.codplannuevoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlFiltroParaBuscarHistorial.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvGrillaDeHistorialDeCambios)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet21)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historialDeCambios)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historialBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlFiltroParaBuscarHistorial
@@ -93,23 +66,19 @@
             this.pnlFiltroParaBuscarHistorial.Size = new System.Drawing.Size(424, 120);
             this.pnlFiltroParaBuscarHistorial.TabIndex = 0;
             // 
-            // lblSeleccionarFiltro
+            // txtNroAfiliado
             // 
-            this.lblSeleccionarFiltro.AutoSize = true;
-            this.lblSeleccionarFiltro.Location = new System.Drawing.Point(24, 0);
-            this.lblSeleccionarFiltro.Name = "lblSeleccionarFiltro";
-            this.lblSeleccionarFiltro.Size = new System.Drawing.Size(167, 13);
-            this.lblSeleccionarFiltro.TabIndex = 0;
-            this.lblSeleccionarFiltro.Text = "Filtro para el historial de busqueda";
+            this.txtNroAfiliado.Location = new System.Drawing.Point(149, 69);
+            this.txtNroAfiliado.Name = "txtNroAfiliado";
+            this.txtNroAfiliado.Size = new System.Drawing.Size(183, 20);
+            this.txtNroAfiliado.TabIndex = 4;
             // 
-            // lblNroGrupo
+            // txtNroGrupo
             // 
-            this.lblNroGrupo.AutoSize = true;
-            this.lblNroGrupo.Location = new System.Drawing.Point(34, 29);
-            this.lblNroGrupo.Name = "lblNroGrupo";
-            this.lblNroGrupo.Size = new System.Drawing.Size(59, 13);
-            this.lblNroGrupo.TabIndex = 1;
-            this.lblNroGrupo.Text = "Nro Grupo:";
+            this.txtNroGrupo.Location = new System.Drawing.Point(149, 29);
+            this.txtNroGrupo.Name = "txtNroGrupo";
+            this.txtNroGrupo.Size = new System.Drawing.Size(183, 20);
+            this.txtNroGrupo.TabIndex = 3;
             // 
             // lblNroAfiliado
             // 
@@ -120,19 +89,23 @@
             this.lblNroAfiliado.TabIndex = 2;
             this.lblNroAfiliado.Text = "Nro Afiliado:";
             // 
-            // txtNroGrupo
+            // lblNroGrupo
             // 
-            this.txtNroGrupo.Location = new System.Drawing.Point(149, 29);
-            this.txtNroGrupo.Name = "txtNroGrupo";
-            this.txtNroGrupo.Size = new System.Drawing.Size(183, 20);
-            this.txtNroGrupo.TabIndex = 3;
+            this.lblNroGrupo.AutoSize = true;
+            this.lblNroGrupo.Location = new System.Drawing.Point(34, 29);
+            this.lblNroGrupo.Name = "lblNroGrupo";
+            this.lblNroGrupo.Size = new System.Drawing.Size(59, 13);
+            this.lblNroGrupo.TabIndex = 1;
+            this.lblNroGrupo.Text = "Nro Grupo:";
             // 
-            // txtNroAfiliado
+            // lblSeleccionarFiltro
             // 
-            this.txtNroAfiliado.Location = new System.Drawing.Point(149, 69);
-            this.txtNroAfiliado.Name = "txtNroAfiliado";
-            this.txtNroAfiliado.Size = new System.Drawing.Size(183, 20);
-            this.txtNroAfiliado.TabIndex = 4;
+            this.lblSeleccionarFiltro.AutoSize = true;
+            this.lblSeleccionarFiltro.Location = new System.Drawing.Point(24, 0);
+            this.lblSeleccionarFiltro.Name = "lblSeleccionarFiltro";
+            this.lblSeleccionarFiltro.Size = new System.Drawing.Size(167, 13);
+            this.lblSeleccionarFiltro.TabIndex = 0;
+            this.lblSeleccionarFiltro.Text = "Filtro para el historial de busqueda";
             // 
             // btnLimpiar
             // 
@@ -152,244 +125,6 @@
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
             // 
-            // gD2C2016DataSet2
-            // 
-            this.gD2C2016DataSet2.DataSetName = "GD2C2016DataSet2";
-            this.gD2C2016DataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // maestraBindingSource
-            // 
-            this.maestraBindingSource.DataMember = "Maestra";
-            this.maestraBindingSource.DataSource = this.gD2C2016DataSet2;
-            // 
-            // maestraTableAdapter
-            // 
-            this.maestraTableAdapter.ClearBeforeFill = true;
-            // 
-            // dgvGrillaDeHistorialDeCambios
-            // 
-            this.dgvGrillaDeHistorialDeCambios.AutoGenerateColumns = false;
-            this.dgvGrillaDeHistorialDeCambios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvGrillaDeHistorialDeCambios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.pacienteNombreDataGridViewTextBoxColumn,
-            this.pacienteApellidoDataGridViewTextBoxColumn,
-            this.pacienteDniDataGridViewTextBoxColumn,
-            this.pacienteDireccionDataGridViewTextBoxColumn,
-            this.pacienteTelefonoDataGridViewTextBoxColumn,
-            this.pacienteMailDataGridViewTextBoxColumn,
-            this.pacienteFechaNacDataGridViewTextBoxColumn,
-            this.planMedCodigoDataGridViewTextBoxColumn,
-            this.planMedDescripcionDataGridViewTextBoxColumn,
-            this.planMedPrecioBonoConsultaDataGridViewTextBoxColumn,
-            this.planMedPrecioBonoFarmaciaDataGridViewTextBoxColumn,
-            this.turnoNumeroDataGridViewTextBoxColumn,
-            this.turnoFechaDataGridViewTextBoxColumn,
-            this.consultaSintomasDataGridViewTextBoxColumn,
-            this.consultaEnfermedadesDataGridViewTextBoxColumn,
-            this.medicoNombreDataGridViewTextBoxColumn,
-            this.medicoApellidoDataGridViewTextBoxColumn,
-            this.medicoDniDataGridViewTextBoxColumn,
-            this.medicoDireccionDataGridViewTextBoxColumn,
-            this.medicoTelefonoDataGridViewTextBoxColumn,
-            this.medicoMailDataGridViewTextBoxColumn,
-            this.medicoFechaNacDataGridViewTextBoxColumn,
-            this.especialidadCodigoDataGridViewTextBoxColumn,
-            this.especialidadDescripcionDataGridViewTextBoxColumn,
-            this.tipoEspecialidadCodigoDataGridViewTextBoxColumn,
-            this.tipoEspecialidadDescripcionDataGridViewTextBoxColumn,
-            this.compraBonoFechaDataGridViewTextBoxColumn,
-            this.bonoConsultaFechaImpresionDataGridViewTextBoxColumn,
-            this.bonoConsultaNumeroDataGridViewTextBoxColumn});
-            this.dgvGrillaDeHistorialDeCambios.DataSource = this.maestraBindingSource1;
-            this.dgvGrillaDeHistorialDeCambios.Location = new System.Drawing.Point(12, 187);
-            this.dgvGrillaDeHistorialDeCambios.Name = "dgvGrillaDeHistorialDeCambios";
-            this.dgvGrillaDeHistorialDeCambios.Size = new System.Drawing.Size(424, 114);
-            this.dgvGrillaDeHistorialDeCambios.TabIndex = 3;
-            // 
-            // pacienteNombreDataGridViewTextBoxColumn
-            // 
-            this.pacienteNombreDataGridViewTextBoxColumn.DataPropertyName = "Paciente_Nombre";
-            this.pacienteNombreDataGridViewTextBoxColumn.HeaderText = "Paciente_Nombre";
-            this.pacienteNombreDataGridViewTextBoxColumn.Name = "pacienteNombreDataGridViewTextBoxColumn";
-            // 
-            // pacienteApellidoDataGridViewTextBoxColumn
-            // 
-            this.pacienteApellidoDataGridViewTextBoxColumn.DataPropertyName = "Paciente_Apellido";
-            this.pacienteApellidoDataGridViewTextBoxColumn.HeaderText = "Paciente_Apellido";
-            this.pacienteApellidoDataGridViewTextBoxColumn.Name = "pacienteApellidoDataGridViewTextBoxColumn";
-            // 
-            // pacienteDniDataGridViewTextBoxColumn
-            // 
-            this.pacienteDniDataGridViewTextBoxColumn.DataPropertyName = "Paciente_Dni";
-            this.pacienteDniDataGridViewTextBoxColumn.HeaderText = "Paciente_Dni";
-            this.pacienteDniDataGridViewTextBoxColumn.Name = "pacienteDniDataGridViewTextBoxColumn";
-            // 
-            // pacienteDireccionDataGridViewTextBoxColumn
-            // 
-            this.pacienteDireccionDataGridViewTextBoxColumn.DataPropertyName = "Paciente_Direccion";
-            this.pacienteDireccionDataGridViewTextBoxColumn.HeaderText = "Paciente_Direccion";
-            this.pacienteDireccionDataGridViewTextBoxColumn.Name = "pacienteDireccionDataGridViewTextBoxColumn";
-            // 
-            // pacienteTelefonoDataGridViewTextBoxColumn
-            // 
-            this.pacienteTelefonoDataGridViewTextBoxColumn.DataPropertyName = "Paciente_Telefono";
-            this.pacienteTelefonoDataGridViewTextBoxColumn.HeaderText = "Paciente_Telefono";
-            this.pacienteTelefonoDataGridViewTextBoxColumn.Name = "pacienteTelefonoDataGridViewTextBoxColumn";
-            // 
-            // pacienteMailDataGridViewTextBoxColumn
-            // 
-            this.pacienteMailDataGridViewTextBoxColumn.DataPropertyName = "Paciente_Mail";
-            this.pacienteMailDataGridViewTextBoxColumn.HeaderText = "Paciente_Mail";
-            this.pacienteMailDataGridViewTextBoxColumn.Name = "pacienteMailDataGridViewTextBoxColumn";
-            // 
-            // pacienteFechaNacDataGridViewTextBoxColumn
-            // 
-            this.pacienteFechaNacDataGridViewTextBoxColumn.DataPropertyName = "Paciente_Fecha_Nac";
-            this.pacienteFechaNacDataGridViewTextBoxColumn.HeaderText = "Paciente_Fecha_Nac";
-            this.pacienteFechaNacDataGridViewTextBoxColumn.Name = "pacienteFechaNacDataGridViewTextBoxColumn";
-            // 
-            // planMedCodigoDataGridViewTextBoxColumn
-            // 
-            this.planMedCodigoDataGridViewTextBoxColumn.DataPropertyName = "Plan_Med_Codigo";
-            this.planMedCodigoDataGridViewTextBoxColumn.HeaderText = "Plan_Med_Codigo";
-            this.planMedCodigoDataGridViewTextBoxColumn.Name = "planMedCodigoDataGridViewTextBoxColumn";
-            // 
-            // planMedDescripcionDataGridViewTextBoxColumn
-            // 
-            this.planMedDescripcionDataGridViewTextBoxColumn.DataPropertyName = "Plan_Med_Descripcion";
-            this.planMedDescripcionDataGridViewTextBoxColumn.HeaderText = "Plan_Med_Descripcion";
-            this.planMedDescripcionDataGridViewTextBoxColumn.Name = "planMedDescripcionDataGridViewTextBoxColumn";
-            // 
-            // planMedPrecioBonoConsultaDataGridViewTextBoxColumn
-            // 
-            this.planMedPrecioBonoConsultaDataGridViewTextBoxColumn.DataPropertyName = "Plan_Med_Precio_Bono_Consulta";
-            this.planMedPrecioBonoConsultaDataGridViewTextBoxColumn.HeaderText = "Plan_Med_Precio_Bono_Consulta";
-            this.planMedPrecioBonoConsultaDataGridViewTextBoxColumn.Name = "planMedPrecioBonoConsultaDataGridViewTextBoxColumn";
-            // 
-            // planMedPrecioBonoFarmaciaDataGridViewTextBoxColumn
-            // 
-            this.planMedPrecioBonoFarmaciaDataGridViewTextBoxColumn.DataPropertyName = "Plan_Med_Precio_Bono_Farmacia";
-            this.planMedPrecioBonoFarmaciaDataGridViewTextBoxColumn.HeaderText = "Plan_Med_Precio_Bono_Farmacia";
-            this.planMedPrecioBonoFarmaciaDataGridViewTextBoxColumn.Name = "planMedPrecioBonoFarmaciaDataGridViewTextBoxColumn";
-            // 
-            // turnoNumeroDataGridViewTextBoxColumn
-            // 
-            this.turnoNumeroDataGridViewTextBoxColumn.DataPropertyName = "Turno_Numero";
-            this.turnoNumeroDataGridViewTextBoxColumn.HeaderText = "Turno_Numero";
-            this.turnoNumeroDataGridViewTextBoxColumn.Name = "turnoNumeroDataGridViewTextBoxColumn";
-            // 
-            // turnoFechaDataGridViewTextBoxColumn
-            // 
-            this.turnoFechaDataGridViewTextBoxColumn.DataPropertyName = "Turno_Fecha";
-            this.turnoFechaDataGridViewTextBoxColumn.HeaderText = "Turno_Fecha";
-            this.turnoFechaDataGridViewTextBoxColumn.Name = "turnoFechaDataGridViewTextBoxColumn";
-            // 
-            // consultaSintomasDataGridViewTextBoxColumn
-            // 
-            this.consultaSintomasDataGridViewTextBoxColumn.DataPropertyName = "Consulta_Sintomas";
-            this.consultaSintomasDataGridViewTextBoxColumn.HeaderText = "Consulta_Sintomas";
-            this.consultaSintomasDataGridViewTextBoxColumn.Name = "consultaSintomasDataGridViewTextBoxColumn";
-            // 
-            // consultaEnfermedadesDataGridViewTextBoxColumn
-            // 
-            this.consultaEnfermedadesDataGridViewTextBoxColumn.DataPropertyName = "Consulta_Enfermedades";
-            this.consultaEnfermedadesDataGridViewTextBoxColumn.HeaderText = "Consulta_Enfermedades";
-            this.consultaEnfermedadesDataGridViewTextBoxColumn.Name = "consultaEnfermedadesDataGridViewTextBoxColumn";
-            // 
-            // medicoNombreDataGridViewTextBoxColumn
-            // 
-            this.medicoNombreDataGridViewTextBoxColumn.DataPropertyName = "Medico_Nombre";
-            this.medicoNombreDataGridViewTextBoxColumn.HeaderText = "Medico_Nombre";
-            this.medicoNombreDataGridViewTextBoxColumn.Name = "medicoNombreDataGridViewTextBoxColumn";
-            // 
-            // medicoApellidoDataGridViewTextBoxColumn
-            // 
-            this.medicoApellidoDataGridViewTextBoxColumn.DataPropertyName = "Medico_Apellido";
-            this.medicoApellidoDataGridViewTextBoxColumn.HeaderText = "Medico_Apellido";
-            this.medicoApellidoDataGridViewTextBoxColumn.Name = "medicoApellidoDataGridViewTextBoxColumn";
-            // 
-            // medicoDniDataGridViewTextBoxColumn
-            // 
-            this.medicoDniDataGridViewTextBoxColumn.DataPropertyName = "Medico_Dni";
-            this.medicoDniDataGridViewTextBoxColumn.HeaderText = "Medico_Dni";
-            this.medicoDniDataGridViewTextBoxColumn.Name = "medicoDniDataGridViewTextBoxColumn";
-            // 
-            // medicoDireccionDataGridViewTextBoxColumn
-            // 
-            this.medicoDireccionDataGridViewTextBoxColumn.DataPropertyName = "Medico_Direccion";
-            this.medicoDireccionDataGridViewTextBoxColumn.HeaderText = "Medico_Direccion";
-            this.medicoDireccionDataGridViewTextBoxColumn.Name = "medicoDireccionDataGridViewTextBoxColumn";
-            // 
-            // medicoTelefonoDataGridViewTextBoxColumn
-            // 
-            this.medicoTelefonoDataGridViewTextBoxColumn.DataPropertyName = "Medico_Telefono";
-            this.medicoTelefonoDataGridViewTextBoxColumn.HeaderText = "Medico_Telefono";
-            this.medicoTelefonoDataGridViewTextBoxColumn.Name = "medicoTelefonoDataGridViewTextBoxColumn";
-            // 
-            // medicoMailDataGridViewTextBoxColumn
-            // 
-            this.medicoMailDataGridViewTextBoxColumn.DataPropertyName = "Medico_Mail";
-            this.medicoMailDataGridViewTextBoxColumn.HeaderText = "Medico_Mail";
-            this.medicoMailDataGridViewTextBoxColumn.Name = "medicoMailDataGridViewTextBoxColumn";
-            // 
-            // medicoFechaNacDataGridViewTextBoxColumn
-            // 
-            this.medicoFechaNacDataGridViewTextBoxColumn.DataPropertyName = "Medico_Fecha_Nac";
-            this.medicoFechaNacDataGridViewTextBoxColumn.HeaderText = "Medico_Fecha_Nac";
-            this.medicoFechaNacDataGridViewTextBoxColumn.Name = "medicoFechaNacDataGridViewTextBoxColumn";
-            // 
-            // especialidadCodigoDataGridViewTextBoxColumn
-            // 
-            this.especialidadCodigoDataGridViewTextBoxColumn.DataPropertyName = "Especialidad_Codigo";
-            this.especialidadCodigoDataGridViewTextBoxColumn.HeaderText = "Especialidad_Codigo";
-            this.especialidadCodigoDataGridViewTextBoxColumn.Name = "especialidadCodigoDataGridViewTextBoxColumn";
-            // 
-            // especialidadDescripcionDataGridViewTextBoxColumn
-            // 
-            this.especialidadDescripcionDataGridViewTextBoxColumn.DataPropertyName = "Especialidad_Descripcion";
-            this.especialidadDescripcionDataGridViewTextBoxColumn.HeaderText = "Especialidad_Descripcion";
-            this.especialidadDescripcionDataGridViewTextBoxColumn.Name = "especialidadDescripcionDataGridViewTextBoxColumn";
-            // 
-            // tipoEspecialidadCodigoDataGridViewTextBoxColumn
-            // 
-            this.tipoEspecialidadCodigoDataGridViewTextBoxColumn.DataPropertyName = "Tipo_Especialidad_Codigo";
-            this.tipoEspecialidadCodigoDataGridViewTextBoxColumn.HeaderText = "Tipo_Especialidad_Codigo";
-            this.tipoEspecialidadCodigoDataGridViewTextBoxColumn.Name = "tipoEspecialidadCodigoDataGridViewTextBoxColumn";
-            // 
-            // tipoEspecialidadDescripcionDataGridViewTextBoxColumn
-            // 
-            this.tipoEspecialidadDescripcionDataGridViewTextBoxColumn.DataPropertyName = "Tipo_Especialidad_Descripcion";
-            this.tipoEspecialidadDescripcionDataGridViewTextBoxColumn.HeaderText = "Tipo_Especialidad_Descripcion";
-            this.tipoEspecialidadDescripcionDataGridViewTextBoxColumn.Name = "tipoEspecialidadDescripcionDataGridViewTextBoxColumn";
-            // 
-            // compraBonoFechaDataGridViewTextBoxColumn
-            // 
-            this.compraBonoFechaDataGridViewTextBoxColumn.DataPropertyName = "Compra_Bono_Fecha";
-            this.compraBonoFechaDataGridViewTextBoxColumn.HeaderText = "Compra_Bono_Fecha";
-            this.compraBonoFechaDataGridViewTextBoxColumn.Name = "compraBonoFechaDataGridViewTextBoxColumn";
-            // 
-            // bonoConsultaFechaImpresionDataGridViewTextBoxColumn
-            // 
-            this.bonoConsultaFechaImpresionDataGridViewTextBoxColumn.DataPropertyName = "Bono_Consulta_Fecha_Impresion";
-            this.bonoConsultaFechaImpresionDataGridViewTextBoxColumn.HeaderText = "Bono_Consulta_Fecha_Impresion";
-            this.bonoConsultaFechaImpresionDataGridViewTextBoxColumn.Name = "bonoConsultaFechaImpresionDataGridViewTextBoxColumn";
-            // 
-            // bonoConsultaNumeroDataGridViewTextBoxColumn
-            // 
-            this.bonoConsultaNumeroDataGridViewTextBoxColumn.DataPropertyName = "Bono_Consulta_Numero";
-            this.bonoConsultaNumeroDataGridViewTextBoxColumn.HeaderText = "Bono_Consulta_Numero";
-            this.bonoConsultaNumeroDataGridViewTextBoxColumn.Name = "bonoConsultaNumeroDataGridViewTextBoxColumn";
-            // 
-            // gD2C2016DataSet21
-            // 
-            this.gD2C2016DataSet21.DataSetName = "GD2C2016DataSet2";
-            this.gD2C2016DataSet21.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // maestraBindingSource1
-            // 
-            this.maestraBindingSource1.DataMember = "Maestra";
-            this.maestraBindingSource1.DataSource = this.gD2C2016DataSet21;
-            // 
             // btnAceptarYVolver
             // 
             this.btnAceptarYVolver.Location = new System.Drawing.Point(142, 319);
@@ -399,13 +134,80 @@
             this.btnAceptarYVolver.Text = "Aceptar y Regresar";
             this.btnAceptarYVolver.UseVisualStyleBackColor = true;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.nrohistorialDataGridViewTextBoxColumn,
+            this.fechamodificacionDataGridViewTextBoxColumn,
+            this.motivomodificacionDataGridViewTextBoxColumn,
+            this.nroafiliadoDataGridViewTextBoxColumn,
+            this.codplanviejoDataGridViewTextBoxColumn,
+            this.codplannuevoDataGridViewTextBoxColumn});
+            this.dataGridView1.DataSource = this.historialBindingSource;
+            this.dataGridView1.Location = new System.Drawing.Point(12, 177);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(424, 136);
+            this.dataGridView1.TabIndex = 5;
+            // 
+            // historialDeCambios
+            // 
+            this.historialDeCambios.DataSetName = "HistorialDeCambios";
+            this.historialDeCambios.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // historialBindingSource
+            // 
+            this.historialBindingSource.DataMember = "Historial";
+            this.historialBindingSource.DataSource = this.historialDeCambios;
+            // 
+            // historialTableAdapter
+            // 
+            this.historialTableAdapter.ClearBeforeFill = true;
+            // 
+            // nrohistorialDataGridViewTextBoxColumn
+            // 
+            this.nrohistorialDataGridViewTextBoxColumn.DataPropertyName = "nro_historial";
+            this.nrohistorialDataGridViewTextBoxColumn.HeaderText = "nro_historial";
+            this.nrohistorialDataGridViewTextBoxColumn.Name = "nrohistorialDataGridViewTextBoxColumn";
+            // 
+            // fechamodificacionDataGridViewTextBoxColumn
+            // 
+            this.fechamodificacionDataGridViewTextBoxColumn.DataPropertyName = "fecha_modificacion";
+            this.fechamodificacionDataGridViewTextBoxColumn.HeaderText = "fecha_modificacion";
+            this.fechamodificacionDataGridViewTextBoxColumn.Name = "fechamodificacionDataGridViewTextBoxColumn";
+            // 
+            // motivomodificacionDataGridViewTextBoxColumn
+            // 
+            this.motivomodificacionDataGridViewTextBoxColumn.DataPropertyName = "motivo_modificacion";
+            this.motivomodificacionDataGridViewTextBoxColumn.HeaderText = "motivo_modificacion";
+            this.motivomodificacionDataGridViewTextBoxColumn.Name = "motivomodificacionDataGridViewTextBoxColumn";
+            // 
+            // nroafiliadoDataGridViewTextBoxColumn
+            // 
+            this.nroafiliadoDataGridViewTextBoxColumn.DataPropertyName = "nro_afiliado";
+            this.nroafiliadoDataGridViewTextBoxColumn.HeaderText = "nro_afiliado";
+            this.nroafiliadoDataGridViewTextBoxColumn.Name = "nroafiliadoDataGridViewTextBoxColumn";
+            // 
+            // codplanviejoDataGridViewTextBoxColumn
+            // 
+            this.codplanviejoDataGridViewTextBoxColumn.DataPropertyName = "cod_plan_viejo";
+            this.codplanviejoDataGridViewTextBoxColumn.HeaderText = "cod_plan_viejo";
+            this.codplanviejoDataGridViewTextBoxColumn.Name = "codplanviejoDataGridViewTextBoxColumn";
+            // 
+            // codplannuevoDataGridViewTextBoxColumn
+            // 
+            this.codplannuevoDataGridViewTextBoxColumn.DataPropertyName = "cod_plan_nuevo";
+            this.codplannuevoDataGridViewTextBoxColumn.HeaderText = "cod_plan_nuevo";
+            this.codplannuevoDataGridViewTextBoxColumn.Name = "codplannuevoDataGridViewTextBoxColumn";
+            // 
             // frmHistorialCambios
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(465, 396);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnAceptarYVolver);
-            this.Controls.Add(this.dgvGrillaDeHistorialDeCambios);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.pnlFiltroParaBuscarHistorial);
@@ -415,11 +217,9 @@
             this.Load += new System.EventHandler(this.frmHistorialCambios_Load);
             this.pnlFiltroParaBuscarHistorial.ResumeLayout(false);
             this.pnlFiltroParaBuscarHistorial.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvGrillaDeHistorialDeCambios)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet21)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historialDeCambios)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historialBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -434,41 +234,16 @@
         private System.Windows.Forms.Label lblSeleccionarFiltro;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.Button btnBuscar;
-        private GD2C2016DataSet2 gD2C2016DataSet2;
-        private System.Windows.Forms.BindingSource maestraBindingSource;
-        private GD2C2016DataSet2TableAdapters.MaestraTableAdapter maestraTableAdapter;
-        private System.Windows.Forms.DataGridView dgvGrillaDeHistorialDeCambios;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pacienteNombreDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pacienteApellidoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pacienteDniDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pacienteDireccionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pacienteTelefonoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pacienteMailDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pacienteFechaNacDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn planMedCodigoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn planMedDescripcionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn planMedPrecioBonoConsultaDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn planMedPrecioBonoFarmaciaDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn turnoNumeroDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn turnoFechaDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn consultaSintomasDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn consultaEnfermedadesDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn medicoNombreDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn medicoApellidoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn medicoDniDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn medicoDireccionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn medicoTelefonoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn medicoMailDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn medicoFechaNacDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn especialidadCodigoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn especialidadDescripcionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tipoEspecialidadCodigoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tipoEspecialidadDescripcionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn compraBonoFechaDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bonoConsultaFechaImpresionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn bonoConsultaNumeroDataGridViewTextBoxColumn;
-        private GD2C2016DataSet2 gD2C2016DataSet21;
-        private System.Windows.Forms.BindingSource maestraBindingSource1;
         private System.Windows.Forms.Button btnAceptarYVolver;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private HistorialDeCambios historialDeCambios;
+        private System.Windows.Forms.BindingSource historialBindingSource;
+        private HistorialDeCambiosTableAdapters.HistorialTableAdapter historialTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nrohistorialDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fechamodificacionDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn motivomodificacionDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nroafiliadoDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn codplanviejoDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn codplannuevoDataGridViewTextBoxColumn;
     }
 }
