@@ -28,7 +28,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             //SE CARGAN LOS TURNOS
 
             comando = "select nro_turno as 'Numero De Turno', fecha as 'Fecha' from NEXTGDD.Turno where nro_afiliado =" + "replace with nro afiliado";
-            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "Fecha"), cmbSeleccionTurno);
+            //cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "Fecha"), cmbSeleccionTurno);
 
         }
 
