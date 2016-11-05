@@ -19,10 +19,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmHistorialCambios_Load(object sender, EventArgs e)
         {
-            // TODO: esta línea de código carga datos en la tabla 'gD2C2016DataSet21.Maestra' Puede moverla o quitarla según sea necesario.
-            this.maestraTableAdapter.Fill(this.gD2C2016DataSet21.Maestra);
-            // TODO: esta línea de código carga datos en la tabla 'gD2C2016DataSet2.Maestra' Puede moverla o quitarla según sea necesario.
-            this.maestraTableAdapter.Fill(this.gD2C2016DataSet2.Maestra);
+            // TODO: esta línea de código carga datos en la tabla 'historialDeCambios.Historial' Puede moverla o quitarla según sea necesario.
+            this.historialTableAdapter.Fill(this.historialDeCambios.Historial);
 
         }
     }

@@ -375,7 +375,9 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.mostrarHistorial'))
     DROP PROCEDURE NEXTGDD.mostrarHistorial
 GO
-
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.darDeBajaAfiliado'))
+    DROP PROCEDURE NEXTGDD.darDeBajaAfiliado
+GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarRangoDeAtencion'))
     DROP FUNCTION NEXTGDD.verificarRangoDeAtencion
 GO
@@ -574,17 +576,59 @@ select * from NEXTGDD.Usuario
 CREATE PROCEDURE NEXTGDD.crearTurno (@nroAf numeric(18,0),@nombreEsp varchar(255),@nomProf varchar(255),@fecha datetime)
 AS
 BEGIN
-	DECLARE @nroTurno numeric(18,0)=(select top 1 nro_turno from NEXTGDD.Turno order by nro_turno DESC)+1;
 	DECLARE @codAgenda numeric (18,0)=(select cod_agenda 
 									   from NEXTGDD.Agenda a,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e,NEXTGDD.Persona persona
 									   where (persona.nombre+' '+persona.apellido)=@nomProf and persona.id_persona=p.id_persona
 											 and e.descripcion=@nombreEsp and
 									         pe.matricula=p.matricula and pe.cod_especialidad=e.cod_especialidad
 											 and a.cod_especialidad=pe.cod_especialidad and a.matricula=pe.matricula)
-	INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,cod_agenda,fecha,cod_cancelacion) values
-			(@nroTurno,@nroAf,@codAgenda,@fecha,null)
+	INSERT NEXTGDD.Turno (nro_afiliado,cod_agenda,fecha) values
+			(@nroAf,@codAgenda,@fecha)
 END;
 GO
+
+CREATE PROCEDURE NEXTGDD.registrarConsulta (@nomProf varchar(255),@fechaTurno datetime,@nroBono numeric(18,0))
+AS
+BEGIN
+	DECLARE @nro_turno numeric(18,0)=(select t.nro_turno
+									  from NEXTGDD.Turno t,NEXTGDD.Agenda ag,NEXTGDD.Profesional pr,NEXTGDD.Persona p
+									  where t.fecha=@fechaTurno and 
+											p.nombre+' '+p.apellido LIKE @nomProf and
+											p.id_persona=pr.id_persona and pr.matricula=ag.matricula and
+											t.cod_agenda=ag.cod_agenda)
+	INSERT NEXTGDD.Consulta (nro_bono,nro_turno) values
+			(@nroBono,@nro_turno)
+END;
+GO
+
+CREATE PROCEDURE NEXTGDD.registrarDiagnostico (@medico numeric(18,0),@fechaConsulta datetime,@fechaAtencion datetime,@enfermedad varchar(255),@sintoma varchar(255),@descripcion varchar(255))
+AS
+BEGIN
+	DECLARE @diagnostico numeric(18,0)
+	INSERT NEXTGDD.Diagnostico (descripcion,sintoma,enfermedad) values
+			(@descripcion,@sintoma,@enfermedad)
+	SET @diagnostico=(select top 1 cod_diagnostico from NEXTGDD.Diagnostico order by cod_diagnostico DESC)
+	UPDATE NEXTGDD.Consulta
+			SET cod_diagnostico=@diagnostico
+			WHERE nro_turno=(select distinct t.nro_turno 
+							from NEXTGDD.Turno t,NEXTGDD.Agenda a,NEXTGDD.Profesional pr
+							where t.fecha=@fechaConsulta and
+								  t.cod_agenda=a.cod_agenda and
+								  a.matricula=pr.matricula and pr.id_persona=@medico)
+END;
+GO
+
+CREATE PROCEDURE NEXTGDD.registrarAgenda (@nomProfesional varchar(255),@nomEspecialidad varchar(255),@diaDesde varchar(255),@diaHasta varchar(255),@horaDesde numeric(18,0),@horaHasta numeric(18,0))
+AS
+BEGIN
+	DECLARE @cod_agenda numeric (18,0)
+	--HACER TRIGGER POR SI NO EXISTE UNA AGENDA QUE CREE UNA
+	INSERT NEXTGDD.Rango_Atencion (cod_agenda,hora_final,dia_semanal_inicial,dia_semanal_final) values
+			(@cod_agenda,@horaDesde,@horaHasta,@diaDesde,@diaHasta)
+END;
+GO
+
+
 /*
 EXEC NEXTGDD.crearTurno @nroAF='113347201', @nombreEsp='Neurología', @nomProf='Caleb Villalba', @fecha='2016/11/4 17:30:00.000';
 select * from NEXTGDD.Turno where year(fecha)=2016
@@ -732,10 +776,6 @@ END
 GO
 
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoFamilia'))
-    DROP PROCEDURE NEXTGDD.agregarAfiliadoFamilia
-GO
-
 CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
                                                @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
                                                @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0),@nro_afiliado_princ numeric(18,0), 
@@ -855,7 +895,33 @@ FROM NEXTGDD.Historial
 WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.grupo_afiliado= (SELECT d.grupo_afiliado FROM Afiliado d WHERE d.nro_afiliado= @nroafiliado ))
 
 END
+GO
 
+CREATE PROCEDURE NEXTGDD.darDeBajaAfiliado(@nro_afiliado numeric(20,0))
+AS BEGIN
+
+    BEGIN TRY
+	  BEGIN TRANSACTION   
+          UPDATE NEXTGDD.Afiliado 
+	      SET  activo = 0, fecha_baja_logica = GETDATE()
+	      WHERE nro_afiliado = @nro_afiliado
+              
+	  COMMIT TRANSACTION
+      RETURN 0
+    END TRY
+  
+   BEGIN CATCH
+    ROLLBACK TRANSACTION
+    
+    RETURN -1
+  END CATCH
+
+END
+GO
+/*
+EXEC NEXTGDD.darDeBajaAfiliado 112396001
+select * from NEXTGDD.Afiliado WHERE nro_afiliado= 112396001
+*/
 /************ Migracion *************/
 
 
