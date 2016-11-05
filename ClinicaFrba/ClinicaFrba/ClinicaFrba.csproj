@@ -86,11 +86,35 @@
     <Compile Include="Abm Planes\frmPlanes.Designer.cs">
       <DependentUpon>frmPlanes.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\frmRol.cs">
+    <Compile Include="AbmRol\frmAgregarNuevoRol.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\frmRol.Designer.cs">
-      <DependentUpon>frmRol.cs</DependentUpon>
+    <Compile Include="AbmRol\frmAgregarNuevoRol.Designer.cs">
+      <DependentUpon>frmAgregarNuevoRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\frmElegirAccionRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\frmElegirAccionRol.Designer.cs">
+      <DependentUpon>frmElegirAccionRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\frmSeleccionarRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\frmSeleccionarRol.Designer.cs">
+      <DependentUpon>frmSeleccionarRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\frmModificacionRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\frmModificacionRol.Designer.cs">
+      <DependentUpon>frmModificacionRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\frmSeleccionRolBajaOModificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\frmSeleccionRolBajaOModificacion.Designer.cs">
+      <DependentUpon>frmSeleccionRolBajaOModificacion.cs</DependentUpon>
     </Compile>
     <Compile Include="Cancelar Atencion\frmCancelarAtencion.cs">
       <SubType>Form</SubType>
@@ -102,9 +126,13 @@
     <Compile Include="Clases\BaseDeDatosSQL.cs" />
     <Compile Include="Clases\Especialidad.cs" />
     <Compile Include="Clases\Especialidades.cs" />
+    <Compile Include="Clases\Funcionalidad.cs" />
+    <Compile Include="Clases\Funcionalidades.cs" />
     <Compile Include="Clases\Persona.cs" />
     <Compile Include="Clases\Profesional.cs" />
     <Compile Include="Clases\Profesionales.cs" />
+    <Compile Include="Clases\Rol.cs" />
+    <Compile Include="Clases\Roles.cs" />
     <Compile Include="Clases\Sexo.cs" />
     <Compile Include="Clases\TipoDoc.cs" />
     <Compile Include="Clases\TiposDoc.cs" />
@@ -202,8 +230,20 @@
     <EmbeddedResource Include="Abm Planes\frmPlanes.resx">
       <DependentUpon>frmPlanes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRol\frmRol.resx">
-      <DependentUpon>frmRol.cs</DependentUpon>
+    <EmbeddedResource Include="AbmRol\frmAgregarNuevoRol.resx">
+      <DependentUpon>frmAgregarNuevoRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\frmElegirAccionRol.resx">
+      <DependentUpon>frmElegirAccionRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\frmSeleccionarRol.resx">
+      <DependentUpon>frmSeleccionarRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\frmModificacionRol.resx">
+      <DependentUpon>frmModificacionRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\frmSeleccionRolBajaOModificacion.resx">
+      <DependentUpon>frmSeleccionRolBajaOModificacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cancelar Atencion\frmCancelarAtencion.resx">
       <DependentUpon>frmCancelarAtencion.cs</DependentUpon>

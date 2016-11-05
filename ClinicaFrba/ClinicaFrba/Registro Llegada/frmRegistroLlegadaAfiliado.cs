@@ -12,16 +12,6 @@ namespace ClinicaFrba.Registro_Llegada
 {
     public partial class frmRegistroLlegadaAfiliado : Form
     {
-<<<<<<< HEAD
-        string comando = "";
-        string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
-        string profesional = "";
-        string especialidad = "";
-        string turno = "";//muestra fecha del turno
-        string bono = "";//nro bono
-
-        public frmRegistroLlegadaAfiliado()
-=======
         private Clases.BaseDeDatosSQL bdd;
         private string comando = "";
         private string profesional = "";
@@ -30,7 +20,6 @@ namespace ClinicaFrba.Registro_Llegada
         private string bono = "";//nro bono
 
         public frmRegistroLlegadaAfiliado(Clases.BaseDeDatosSQL bdd)
->>>>>>> 28c0e526f8b5e630da42aeee1c76c116aa70109c
         {
             InitializeComponent();
 
