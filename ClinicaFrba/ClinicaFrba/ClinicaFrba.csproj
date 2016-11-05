@@ -116,11 +116,17 @@
     <Compile Include="AbmRol\frmSeleccionRolBajaOModificacion.Designer.cs">
       <DependentUpon>frmSeleccionRolBajaOModificacion.cs</DependentUpon>
     </Compile>
-    <Compile Include="Cancelar Atencion\frmCancelarAtencion.cs">
+    <Compile Include="Cancelar Atencion\frmCancelarAtencionMedico.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Cancelar Atencion\frmCancelarAtencion.Designer.cs">
-      <DependentUpon>frmCancelarAtencion.cs</DependentUpon>
+    <Compile Include="Cancelar Atencion\frmCancelarAtencionMedico.Designer.cs">
+      <DependentUpon>frmCancelarAtencionMedico.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cancelar Atencion\frmCancelarAtencionPaciente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cancelar Atencion\frmCancelarAtencionPaciente.Designer.cs">
+      <DependentUpon>frmCancelarAtencionPaciente.cs</DependentUpon>
     </Compile>
     <Compile Include="Clases\Afiliado.cs" />
     <Compile Include="Clases\BaseDeDatosSQL.cs" />
@@ -161,15 +167,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GD2C2016DataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="GD2C2016DataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GD2C2016DataSet1.xsd</DependentUpon>
-    </Compile>
     <Compile Include="GD2C2016DataSet2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GD2C2016DataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ListaDeAfiliados.cs">
+      <DependentUpon>ListaDeAfiliados.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ListaDeAfiliados.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ListaDeAfiliados.xsd</DependentUpon>
     </Compile>
     <Compile Include="Listados\frmListado.cs">
       <SubType>Form</SubType>
@@ -245,8 +255,11 @@
     <EmbeddedResource Include="AbmRol\frmSeleccionRolBajaOModificacion.resx">
       <DependentUpon>frmSeleccionRolBajaOModificacion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Cancelar Atencion\frmCancelarAtencion.resx">
-      <DependentUpon>frmCancelarAtencion.cs</DependentUpon>
+    <EmbeddedResource Include="Cancelar Atencion\frmCancelarAtencionMedico.resx">
+      <DependentUpon>frmCancelarAtencionMedico.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cancelar Atencion\frmCancelarAtencionPaciente.resx">
+      <DependentUpon>frmCancelarAtencionPaciente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Compra Bono\frmCompraBonos.resx">
       <DependentUpon>frmCompraBonos.cs</DependentUpon>
@@ -292,17 +305,6 @@
     <None Include="GD2C2016DataSet.xss">
       <DependentUpon>GD2C2016DataSet.xsd</DependentUpon>
     </None>
-    <None Include="GD2C2016DataSet1.xsc">
-      <DependentUpon>GD2C2016DataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="GD2C2016DataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>GD2C2016DataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="GD2C2016DataSet1.xss">
-      <DependentUpon>GD2C2016DataSet1.xsd</DependentUpon>
-    </None>
     <None Include="GD2C2016DataSet2.xsc">
       <DependentUpon>GD2C2016DataSet2.xsd</DependentUpon>
     </None>
@@ -313,6 +315,17 @@
     </None>
     <None Include="GD2C2016DataSet2.xss">
       <DependentUpon>GD2C2016DataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="ListaDeAfiliados.xsc">
+      <DependentUpon>ListaDeAfiliados.xsd</DependentUpon>
+    </None>
+    <None Include="ListaDeAfiliados.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ListaDeAfiliados.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ListaDeAfiliados.xss">
+      <DependentUpon>ListaDeAfiliados.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -38,12 +38,12 @@
             this.btnIngresarTurno = new System.Windows.Forms.Button();
             this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
             this.Turno = new System.Windows.Forms.GroupBox();
+            this.warning4 = new System.Windows.Forms.Label();
             this.warning2 = new System.Windows.Forms.Label();
             this.warning1 = new System.Windows.Forms.Label();
             this.cmbHorario = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.warning3 = new System.Windows.Forms.Label();
-            this.warning4 = new System.Windows.Forms.Label();
             this.Turno.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -150,6 +150,16 @@
             this.Turno.Text = "Turno";
             this.Turno.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // warning4
+            // 
+            this.warning4.AutoSize = true;
+            this.warning4.ForeColor = System.Drawing.Color.Red;
+            this.warning4.Location = new System.Drawing.Point(254, 41);
+            this.warning4.Name = "warning4";
+            this.warning4.Size = new System.Drawing.Size(154, 13);
+            this.warning4.TabIndex = 14;
+            this.warning4.Text = "No existe el numero de afiliado.";
+            // 
             // warning2
             // 
             this.warning2.AutoSize = true;
@@ -226,21 +236,11 @@
             this.warning3.TabIndex = 11;
             this.warning3.Text = "Faltan completar campos";
             // 
-            // warning4
-            // 
-            this.warning4.AutoSize = true;
-            this.warning4.ForeColor = System.Drawing.Color.Red;
-            this.warning4.Location = new System.Drawing.Point(254, 41);
-            this.warning4.Name = "warning4";
-            this.warning4.Size = new System.Drawing.Size(154, 13);
-            this.warning4.TabIndex = 14;
-            this.warning4.Text = "No existe el numero de afiliado.";
-            // 
             // frmSeleccionDeTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(442, 255);
+            this.ClientSize = new System.Drawing.Size(442, 260);
             this.Controls.Add(this.warning3);
             this.Controls.Add(this.Turno);
             this.Controls.Add(this.btnIngresarTurno);
