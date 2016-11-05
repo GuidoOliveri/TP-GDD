@@ -375,7 +375,9 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.mostrarHistorial'))
     DROP PROCEDURE NEXTGDD.mostrarHistorial
 GO
-
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.darDeBajaAfiliado'))
+    DROP PROCEDURE NEXTGDD.darDeBajaAfiliado
+GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarRangoDeAtencion'))
     DROP FUNCTION NEXTGDD.verificarRangoDeAtencion
 GO
@@ -732,10 +734,6 @@ END
 GO
 
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoFamilia'))
-    DROP PROCEDURE NEXTGDD.agregarAfiliadoFamilia
-GO
-
 CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
                                                @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
                                                @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0),@nro_afiliado_princ numeric(18,0), 
@@ -855,7 +853,33 @@ FROM NEXTGDD.Historial
 WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.grupo_afiliado= (SELECT d.grupo_afiliado FROM Afiliado d WHERE d.nro_afiliado= @nroafiliado ))
 
 END
+GO
 
+CREATE PROCEDURE NEXTGDD.darDeBajaAfiliado(@nro_afiliado numeric(20,0))
+AS BEGIN
+
+    BEGIN TRY
+	  BEGIN TRANSACTION   
+          UPDATE NEXTGDD.Afiliado 
+	      SET  activo = 0, fecha_baja_logica = GETDATE()
+	      WHERE nro_afiliado = @nro_afiliado
+              
+	  COMMIT TRANSACTION
+      RETURN 0
+    END TRY
+  
+   BEGIN CATCH
+    ROLLBACK TRANSACTION
+    
+    RETURN -1
+  END CATCH
+
+END
+GO
+/*
+EXEC NEXTGDD.darDeBajaAfiliado 112396001
+select * from NEXTGDD.Afiliado WHERE nro_afiliado= 112396001
+*/
 /************ Migracion *************/
 
 
