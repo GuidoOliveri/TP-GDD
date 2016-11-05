@@ -156,5 +156,10 @@ namespace ClinicaFrba.Registro_Resultado
         {
 
         }
+
+        private void btnIngresar_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

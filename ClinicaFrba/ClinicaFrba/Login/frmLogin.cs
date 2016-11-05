@@ -18,19 +18,28 @@ namespace ClinicaFrba.Login
         {
             InitializeComponent();
         }
-
+        private int intentosFallidos = 0;
         private SqlConnection conn = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
-            conn.Open();
+
             string uname = txtUsuario.Text;
             string upass = txtPassword.Text;
+       
+
+            if (uname == "" || uname == null || upass == "" || upass == "")
+            {
+                warning.Visible = true;
+                return;
+            }
+
+            conn.Open();
 
             SqlCommand command = new SqlCommand("NEXTGDD.login", conn);
             command.CommandType = CommandType.StoredProcedure;
 
-            SqlParameter parUser = new SqlParameter("@user",uname);
+            SqlParameter parUser = new SqlParameter("@user", uname);
             SqlParameter parContra = new SqlParameter("@pass", upass);
 
             command.Parameters.Add(parUser);
@@ -38,6 +47,7 @@ namespace ClinicaFrba.Login
 
             SqlDataReader dr = command.ExecuteReader();
             dr.Read();
+
 
             if (dr.HasRows)
             {
@@ -48,10 +58,20 @@ namespace ClinicaFrba.Login
             }
             else
             {
-                MessageBox.Show("Usuario o contrasenia incorrecta", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                intentosFallidos++;
+                if (intentosFallidos >= 3)
+                {
+                    MessageBox.Show("Quedaste inhabilitado por fallar 3 veces la contraseña", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Usuario o contrasenia incorrecta", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
             }
+
             conn.Close();
+
         }
-            
     }
 }

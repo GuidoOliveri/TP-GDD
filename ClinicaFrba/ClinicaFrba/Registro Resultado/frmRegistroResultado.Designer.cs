@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbAfiliado = new System.Windows.Forms.ComboBox();
             this.rbFiltrarFecha = new System.Windows.Forms.RadioButton();
             this.warning2 = new System.Windows.Forms.Label();
             this.warning1 = new System.Windows.Forms.Label();
@@ -47,7 +48,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning3 = new System.Windows.Forms.Label();
-            this.cmbAfiliado = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -71,6 +71,14 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Registro de Diagnóstico";
+            // 
+            // cmbAfiliado
+            // 
+            this.cmbAfiliado.FormattingEnabled = true;
+            this.cmbAfiliado.Location = new System.Drawing.Point(36, 91);
+            this.cmbAfiliado.Name = "cmbAfiliado";
+            this.cmbAfiliado.Size = new System.Drawing.Size(173, 21);
+            this.cmbAfiliado.TabIndex = 10;
             // 
             // rbFiltrarFecha
             // 
@@ -226,6 +234,7 @@
             this.btnIngresar.TabIndex = 1;
             this.btnIngresar.Text = "Ingresar";
             this.btnIngresar.UseVisualStyleBackColor = true;
+            this.btnIngresar.Click += new System.EventHandler(this.btnIngresar_Click_1);
             // 
             // warning3
             // 
@@ -236,14 +245,6 @@
             this.warning3.Size = new System.Drawing.Size(114, 13);
             this.warning3.TabIndex = 10;
             this.warning3.Text = "Faltan completar datos";
-            // 
-            // cmbAfiliado
-            // 
-            this.cmbAfiliado.FormattingEnabled = true;
-            this.cmbAfiliado.Location = new System.Drawing.Point(36, 91);
-            this.cmbAfiliado.Name = "cmbAfiliado";
-            this.cmbAfiliado.Size = new System.Drawing.Size(173, 21);
-            this.cmbAfiliado.TabIndex = 10;
             // 
             // frmRegistroResultado
             // 
