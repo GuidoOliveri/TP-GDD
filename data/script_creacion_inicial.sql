@@ -749,6 +749,101 @@ END
 GO
 
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoFamilia'))
+    DROP PROCEDURE NEXTGDD.agregarAfiliadoFamilia
+GO
+
+CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
+                                               @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
+                                               @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0),@nro_afiliado_princ numeric(18,0), 
+											   @nro_afiliado_integrante numeric(2,0),@ret numeric(20,0) output)
+AS BEGIN
+
+DECLARE @integrante_grupo numeric(2,0);
+DECLARE @pers numeric (18,0)
+DECLARE @nro_afiliado numeric (20,0) 
+DECLARE @usr VARCHAR(255)
+DECLARE @grupo_afiliado numeric (18,0)
+DECLARE @pass varchar (100)
+DECLARE @TransactionName varchar (50)= 'Transaccion1'
+ BEGIN TRY
+	BEGIN TRANSACTION
+			
+		INSERT INTO NEXTGDD.Persona (nombre, apellido, nro_documento, fecha_nac, domicilio , telefono, mail, tipo_doc, sexo)
+	                         VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo)
+
+SET @pers = SCOPE_IDENTITY()
+
+SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado_princ
+
+ --select * from NEXTGDD.Afiliado 
+
+   IF @nro_afiliado_integrante = 1
+         BEGIN
+		   SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ '02'
+		
+		   INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	                VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, 02) 
+	
+       
+          END  
+	  ELSE BEGIN
+		   
+	     SET @integrante_grupo = (SELECT max(integrante_grupo) FROM NEXTGDD.Afiliado WHERE grupo_afiliado= @grupo_afiliado)
+		   
+		    IF   @integrante_grupo < 03  BEGIN
+	            
+		       SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ '03'
+		       
+			   INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	           VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, 03) 
+	         END
+	        
+	        	ELSE IF  ((@integrante_grupo >= 03)  AND ( @integrante_grupo < 9) ) BEGIN
+		        
+		           SET @integrante_grupo = @integrante_grupo + 1 
+		           SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+'0' +cast (@integrante_grupo as varchar)
+
+		           INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	               VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
+			    END
+
+				   ELSE  BEGIN
+		        
+		            SET @integrante_grupo = @integrante_grupo + 1
+		            SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ cast (@integrante_grupo as varchar)
+
+		            INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	                VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
+			       END
+
+		   END	
+  SET @usr = CONVERT(VARCHAR(255),@nrodocumento)
+  SET @pass = CONVERT(VARCHAR(255),@nro_afiliado)
+--utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
+
+  INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos)
+  VALUES (@usr, HASHBYTES('SHA2_256', @pass), 1, 0)
+
+
+  INSERT INTO NEXTGDD.Usuario_X_Rol(id_rol, username)
+  VALUES (2, @usr)
+
+  SET @ret= @nro_afiliado
+     
+  COMMIT TRANSACTION @TransactionName
+                	    
+ END TRY
+  
+      BEGIN CATCH
+         -- No hago nada si hubo un error ( duplicado)
+      SET @ret= -1
+     		 
+      ROLLBACK TRANSACTION @TransactionName
+      END CATCH
+END
+GO
+
 /*
 select * from NEXTGDD.Afiliado where id_persona = 99988865
 SELECT * from NEXTGDD.Persona WHERE nro_documento =8343243242
@@ -762,52 +857,23 @@ exec NEXTGDD.agregarAfiliadoPrincipal 'David','tito','18/06/1992', 'H', 'DNI', 8
 PRINT @ret 
 --DEVUELVE EL NUMERO DE AFILIADO SI EL INSERT FUE CORRECTO O -1 SI FUE INCORRECTO
 */
-CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
-                                               @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
-                                               @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0),@grupo_afiliado numeric(18,0), 
-											   @ret numeric(20,0) output)
-AS
+/*
+DECLARE @ret NUMERIC (20,0)
+exec NEXTGDD.agregarAfiliadoFamilia 'Jesica','XX','18/06/2000', 'M', 'DNI', 2000009, 'MEDRANO 950',4646550517, 1,'DSFDSF@SSADA',3,555555,7470058801,1, @ret OUTPUT
+PRINT @ret 
 
-DECLARE @integrante_grupo numeric(2,0);
-DECLARE @pers numeric (18,0)
-DECLARE @nro_afiliado numeric (20,0) 
-DECLARE @usr VARCHAR(255)
+ SELECT * FROM NEXTGDD.Afiliado WHERE grupo_afiliado=(SELECT grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado= 7470058801)
 
- BEGIN TRY
-	BEGIN TRANSACTION
-			
-		INSERT INTO NEXTGDD.Persona (nombre, apellido, nro_documento, fecha_nac, domicilio , telefono, mail, tipo_doc, sexo)
-	                         VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo)
+ SELECT * from NEXTGDD.Persona
 
-SET @pers = SCOPE_IDENTITY()
+ DELETE FROM NEXTGDD.Afiliado WHERE id_persona= (SELECT id_persona FROM NEXTGDD.Persona WHERE nro_documento= 2000007)
 
-SET @integrante_grupo= (select max(integrante_grupo)from Afiliado where grupo_afiliado = @grupo_afiliado) + 1
-SET @nro_afiliado =  cast (@pers as varchar)+ cast (@integrante_grupo as varchar)
-
-		 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	                VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
-	
-SET @usr = CONVERT(VARCHAR(255),@nrodocumento)
-
---utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
-
-EXEC NEXTGDD.agregar_usuario  @usr, @nro_afiliado, 2, 1, @pers
-
-	  COMMIT TRANSACTION
-	  SET @ret= @nro_afiliado
-    RETURN @ret
- END TRY
+ DELETE FROM NEXTGDD.Persona WHERE nro_documento= 2000007
   
-   BEGIN CATCH
-     ROLLBACK TRANSACTION
-       -- No hago nada si hubo un error ( duplicado)
-      SET @ret= -1
-     
-	 RETURN @ret
-   END CATCH
+ DELETE FROM NEXTGDD.Usuario_X_Rol WHERE username = '2000007'
 
-GO
-
+ DELETE FROM NEXTGDD.Usuario WHERE username = '2000007'
+ */
 --en base a un numero de afiliado muestra todo el historial del grupo familiar 
 --ver la pantalla
 CREATE PROCEDURE NEXTGDD.mostrarHistorial(@nroafiliado numeric(20,0) )
