@@ -18,7 +18,7 @@ namespace ClinicaFrba.Clases
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
             ListaParametros.Add(new SqlParameter("@txt", "%" + filtro + "%"));
 
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id, nombre, activo FROM NEXTGDD.Rol WHERE nombre like @txt", "T", ListaParametros);
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id_rol, nombre, habilitado FROM NEXTGDD.Rol WHERE nombre like @txt", "T", ListaParametros);
 
             if (lector.HasRows)
             {
@@ -27,7 +27,7 @@ namespace ClinicaFrba.Clases
                     Rol unRol = new Rol();
                     unRol.Id = (int)(decimal)lector["id"];
                     unRol.Nombre = (string)lector["nombre"];
-                    unRol.Habilitado = (bool)lector["activo"];
+                    unRol.Habilitado = (bool)lector["habilitado"];
                     listaDeRoles.Add(unRol);
                 }
             }
@@ -41,7 +41,7 @@ namespace ClinicaFrba.Clases
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
             ListaParametros.Add(new SqlParameter("@txt", "%" + filtro + "%"));
 
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id, nombre FROM NEXTGDD.Rol WHERE activo=1AND nombre like @txt", "T", ListaParametros);
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id_rol, nombre FROM NEXTGDD.Rol WHERE habilitado=1AND nombre like @txt", "T", ListaParametros);
 
             if (lector.HasRows)
             {
@@ -50,7 +50,7 @@ namespace ClinicaFrba.Clases
                     Rol unRol = new Rol();
                     unRol.Id = (int)(decimal)lector["id"];
                     unRol.Nombre = (string)lector["nombre"];
-                    unRol.Habilitado = (bool)lector["activo"];
+                    unRol.Habilitado = (bool)lector["habilitado"];
                     listaDeRoles.Add(unRol);
                 }
             }
@@ -63,7 +63,7 @@ namespace ClinicaFrba.Clases
             {
                 List<SqlParameter> ListaParametros = new List<SqlParameter>();
                 ListaParametros.Add(new SqlParameter("@id", id));
-                return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Rol set Activo =0 where id=@id", "T", ListaParametros);
+                return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Rol set habilitado =0 where id_rol=@id", "T", ListaParametros);
             }
             catch { return false; }
         }
@@ -75,7 +75,7 @@ namespace ClinicaFrba.Clases
                 List<SqlParameter> ListaParametros = new List<SqlParameter>();
                 ListaParametros.Add(new SqlParameter("@id", idRol));
                 ListaParametros.Add(new SqlParameter("@nombre", nombre));
-                return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Rol set nombre =@nombre where id=@id", "T", ListaParametros);
+                return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Rol set nombre =@nombre where id_rol=@id", "T", ListaParametros);
             }
             catch { return false; }
         }
@@ -87,7 +87,7 @@ namespace ClinicaFrba.Clases
                 List<SqlParameter> ListaParametros = new List<SqlParameter>();
                 ListaParametros.Add(new SqlParameter("@id", idRol));
                 ListaParametros.Add(new SqlParameter("@estado", estado));
-                return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Rol set activo =@estado where id=@id", "T", ListaParametros);
+                return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Rol set habilitado=@estado where id_rol=@id", "T", ListaParametros);
             }
             catch { return false; }
         }
@@ -102,8 +102,8 @@ namespace ClinicaFrba.Clases
                 paramRet.Direction = System.Data.ParameterDirection.Output;
                 ListaParametros.Add(paramRet);
 
-                //INSERTA EL ROL EN LA BASE DE DATOS
-                int ret = (int)Clases.BaseDeDatosSQL.ExecStoredProcedure("NEXTGDD.agregarRol", ListaParametros);
+                //INSERTA EL ROL EN LA BASE DE DATOS, CHEQUEAR EL NOMBRE DEL STORED PROCEDURE 
+                int ret = (int)Clases.BaseDeDatosSQL.ExecStoredProcedure("NEXTGDD.agregar_Rol", ListaParametros);
 
                 if (ret != -1)
                 {
@@ -126,7 +126,7 @@ namespace ClinicaFrba.Clases
 
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
 
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id, nombre, activo FROM NEXTGDD.Rol", "T", ListaParametros);
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id_rol, nombre, habilitado FROM NEXTGDD.Rol", "T", ListaParametros);
 
             if (lector.HasRows)
             {
@@ -135,7 +135,7 @@ namespace ClinicaFrba.Clases
                     Rol unRol = new Rol();
                     unRol.Id = ((int)(decimal)lector["id"]);
                     unRol.Nombre = (string)lector["nombre"];
-                    unRol.Habilitado = (bool)lector["activo"];
+                    unRol.Habilitado = (bool)lector["habilitado"];
                     listaDeRoles.Add(unRol);
                 }
             }
@@ -148,7 +148,7 @@ namespace ClinicaFrba.Clases
 
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
 
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id, nombre, activo FROM NEXTGDD.Rol WHERE activo=1", "T", ListaParametros);
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id_rol, nombre, habilitado FROM NEXTGDD.Rol WHERE habilitado=1", "T", ListaParametros);
 
             if (lector.HasRows)
             {
@@ -157,7 +157,7 @@ namespace ClinicaFrba.Clases
                     Rol unRol = new Rol();
                     unRol.Id = ((int)(decimal)lector["id"]);
                     unRol.Nombre = (string)lector["nombre"];
-                    unRol.Habilitado = (bool)lector["activo"];
+                    unRol.Habilitado = (bool)lector["habilitado"];
                     listaDeRoles.Add(unRol);
                 }
             }

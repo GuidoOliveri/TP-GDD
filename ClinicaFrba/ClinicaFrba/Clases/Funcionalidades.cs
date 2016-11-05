@@ -37,7 +37,7 @@ namespace ClinicaFrba.Clases
 
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
             ListaParametros.Add(new SqlParameter("@txt", filtro));
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id, nombre FROM NEXTGDD.Funcionalidad WHERE nombre LIKE '%' + @txt + '%' ", "T", ListaParametros);
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id_funcionalidad, nombre FROM NEXTGDD.Funcionalidad WHERE nombre LIKE '%' + @txt + '%' ", "T", ListaParametros);
 
             if (lector.HasRows)
             {
@@ -58,7 +58,7 @@ namespace ClinicaFrba.Clases
 
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
             ListaParametros.Add(new SqlParameter("@rol", idRol));
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT F.id, F.nombre FROM NEXTGDD.Rol R JOIN NEXTGDD.Funcionalidad_Rol FM ON R.id = FM.rol JOIN NEXTGDD.Funcionalidad F ON FM.funcionalidad = F.id WHERE R.id = @rol", "T", ListaParametros);
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT F.id_rol, F.nombre FROM NEXTGDD.Rol R JOIN NEXTGDD.Funcionalidad_X_Rol FM ON R.id_rol = FM.id_rol JOIN NEXTGDD.Funcionalidad F ON FM.id_funcionalidad = F.id_funcionalidad WHERE R.id_rol = @rol", "T", ListaParametros);
 
             if (lector.HasRows)
             {
@@ -79,7 +79,7 @@ namespace ClinicaFrba.Clases
 
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
             ListaParametros.Add(new SqlParameter("@rol", idRol));
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT F.id, F.nombre FROM NEXTGDD.Rol R JOIN NEXTGDD.Funcionalidad_Rol FM ON R.id = FM.rol JOIN NEXTGDD.Funcionalidad F ON FM.funcionalidad = F.id WHERE R.id = @rol", "T", ListaParametros);
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT F.id_rol, F.nombre FROM NEXTGDD.Rol R JOIN NEXTGDD.Funcionalidad_X_Rol FM ON R.id_rol = FM.id_rol JOIN NEXTGDD.Funcionalidad F ON FM.id_funcionalidad = F.id_funcionalidad WHERE R.id_rol = @rol", "T", ListaParametros);
 
             if (lector.HasRows)
             {
@@ -101,7 +101,7 @@ namespace ClinicaFrba.Clases
             ListaParametros.Add(new SqlParameter("@idFunc", unaFunc.Id));
 
             //ver que necesito para eliminar una func.
-            return Clases.BaseDeDatosSQL.EscribirEnBase("delete from NEXTGDD.Funcionalidad_Rol where (rol=@idRol AND funcionalidad=@idFunc)", "T", ListaParametros);
+            return Clases.BaseDeDatosSQL.EscribirEnBase("delete from NEXTGDD.Funcionalidad_X_Rol where (id_rol=@idRol AND id_funcionalidad=@idFunc)", "T", ListaParametros);
 
         }
 
@@ -111,7 +111,7 @@ namespace ClinicaFrba.Clases
             ListaParametros.Add(new SqlParameter("@idRol", idRol));
             ListaParametros.Add(new SqlParameter("@idFunc", unaFunc.Id));
 
-            return Clases.BaseDeDatosSQL.EscribirEnBase("INSERT INTO NEXTGDD.Funcionalidad_Rol (rol, funcionalidad) VALUES (@idRol, @idFunc)", "T", ListaParametros);
+            return Clases.BaseDeDatosSQL.EscribirEnBase("INSERT INTO NEXTGDD.Funcionalidad_X_Rol (id_rol, id_funcionalidad) VALUES (@idRol, @idFunc)", "T", ListaParametros);
         }
     }
 }

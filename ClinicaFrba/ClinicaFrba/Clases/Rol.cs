@@ -19,13 +19,13 @@ namespace ClinicaFrba.Clases
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
             ListaParametros.Add(new SqlParameter("@idRol", id));
 
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT * FROM NEXTGDD.Rol where id=@idRol and activo=1", "T", ListaParametros);
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT * FROM NEXTGDD.Rol where id_rol=@idRol and habilitado=1", "T", ListaParametros);
             if (lector.HasRows)
             {
                 lector.Read();
                 Id = id;
                 Nombre = ((string)lector["nombre"]);
-                Habilitado = (bool)lector["activo"];
+                Habilitado = (bool)lector["habilitado"];
                 ListaFuncionalidades = Funcionalidades.ObtenerFuncionalidades(Id);
             }
         }
