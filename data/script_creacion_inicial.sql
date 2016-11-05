@@ -690,55 +690,79 @@ GO
 
 
 --DEVUELVE EL NUMERO DE AFILIADO SI EL INSERT FUE CORRECTO O -1 SI FUE INCORRECTO
-
-CREATE PROCEDURE NEXTGDD.agregarAfiliadoPrincipal(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc numeric(18,0),
+/*
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoPrincipal'))
+    DROP PROCEDURE NEXTGDD.agregarAfiliadoPrincipal
+GO
+*/
+CREATE PROCEDURE NEXTGDD.agregarAfiliadoPrincipal(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
                                                @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
                                                @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0), @ret numeric(20,0) output)
-AS
+AS BEGIN
 
-DECLARE @integrante_grupo numeric(2,0);
+--DECLARE @integrante_grupo varchar (2);
 DECLARE @pers numeric (18,0)
 DECLARE @nro_afiliado numeric (20,0) 
 DECLARE @usr VARCHAR(255)
+DECLARE @TransactionName varchar (20)= 'Transaccion1'
+--SET @fecha_nac= convert(datetime,@fecha_nac)
 
  BEGIN TRY
-	BEGIN TRANSACTION
+	BEGIN TRANSACTION @TransactionName
 			
 		INSERT INTO NEXTGDD.Persona (nombre, apellido, nro_documento, fecha_nac, domicilio , telefono, mail, tipo_doc, sexo)
 	                         VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo)
 
 SET @pers = SCOPE_IDENTITY()
-SET @integrante_grupo = 01
-SET @nro_afiliado =  cast (@pers as varchar)+ cast (@integrante_grupo as varchar)
-
+--SET @integrante_grupo = 01
+SET @nro_afiliado =  cast (@pers as varchar)+ '01'
+--DECLARE @integrante_grupo2 numeric (2,0)
+--SET @integrante_grupo2 = 01
 		 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	                VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @pers, @integrante_grupo) 
+	                VALUES ( @nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @pers, 01 ) 
 	
-SET @usr = CONVERT(VARCHAR(255),@nrodocumento)
-
+     SET @usr = CONVERT(VARCHAR(255),@nrodocumento)
+	 DECLARE @pass varchar (100)
+	 SET @pass = CONVERT(VARCHAR(100),@nro_afiliado)
 --utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
 
-EXEC NEXTGDD.agregar_usuario  @usr, @nro_afiliado, 2, 1, @pers
+     	INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos)
+		VALUES (@usr, HASHBYTES('SHA2_256', @pass), 1, 0)
 
-	  COMMIT TRANSACTION
+
+		INSERT INTO NEXTGDD.Usuario_X_Rol(id_rol, username)
+		VALUES (2, @usr)
+
 	  SET @ret= @nro_afiliado
-    RETURN @ret
+     
+	  COMMIT TRANSACTION @TransactionName
+
  END TRY
   
-   BEGIN CATCH
-     ROLLBACK TRANSACTION
-       -- No hago nada si hubo un error ( duplicado)
+      BEGIN CATCH
+         -- No hago nada si hubo un error ( duplicado)
       SET @ret= -1
-     
-	 RETURN @ret
-   END CATCH
-
+     		 
+      ROLLBACK TRANSACTION @TransactionName
+      END CATCH
+END
 GO
 
 
---DEVUELVE EL NUMERO DE AFILIADO SI EL INSERT FUE CORRECTO O -1 SI FUE INCORRECTO
+/*
+select * from NEXTGDD.Afiliado where id_persona = 99988865
+SELECT * from NEXTGDD.Persona WHERE nro_documento =8343243242
 
-CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc numeric(18,0),
+INSERT INTO NEXTGDD.Persona (nombre,apellido, domicilio,telefono,mail,fecha_nac,nro_documento,tipo_doc,sexo)
+VALUES   ('david','tito','VICTOR HUGO 2176',46460517,'DSFDSF@SSADA', '18/06/1992', 37065907, 'DNI','H')
+
+DECLARE @ret NUMERIC (20,0)
+--@RET = NULL
+exec NEXTGDD.agregarAfiliadoPrincipal 'David','tito','18/06/1992', 'H', 'DNI', 834324592,'VICTOR HUGO 2176',46460517, 1,'DSFDSF@SSADA',3,555555, @ret OUTPUT
+PRINT @ret 
+--DEVUELVE EL NUMERO DE AFILIADO SI EL INSERT FUE CORRECTO O -1 SI FUE INCORRECTO
+*/
+CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
                                                @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
                                                @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0),@grupo_afiliado numeric(18,0), 
 											   @ret numeric(20,0) output)
