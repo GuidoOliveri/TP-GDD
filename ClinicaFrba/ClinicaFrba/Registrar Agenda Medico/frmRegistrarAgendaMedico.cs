@@ -87,6 +87,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         {
             if (cmbProfesional.SelectedItem != null && (string)cmbProfesional.SelectedItem!=profesional)
             {
+                warning2.Visible = false;
                 cmbEspecialidad.Items.Clear();
                 cmbEspecialidad.Text = "";
                 profesional = (string) cmbProfesional.SelectedItem;
@@ -95,11 +96,13 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             }
             if (cmbDiaDesde.SelectedItem != null && (string)cmbDiaDesde.SelectedItem!=diaDesde)
             {
+                warning2.Visible = false;
                 diaDesde = (string)cmbDiaDesde.SelectedItem;
                 filtrarFechas(cmbDiaDesde, cmbDiaHasta, dias);
             }
             if (cmbHorarioDesde.SelectedItem != null && (string)cmbHorarioDesde.SelectedItem != horaDesde)
             {
+                warning2.Visible = false;
                 horaDesde = (string)cmbHorarioDesde.SelectedItem;
                 filtrarFechas(cmbHorarioDesde, cmbHorarioHasta, horarios);
             }
@@ -123,7 +126,9 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             especialidad = (string) cmbEspecialidad.SelectedItem;
             diaHasta = (string)cmbDiaHasta.SelectedItem;
             horaHasta = (string)cmbHorarioHasta.SelectedItem;
-            if (especialidad != "" && profesional != "" && diaDesde != "" && diaHasta!="" && horaDesde!="" && horaHasta!="")
+            verificarRangoHospital();
+            verificarQueNoExista();
+            if (especialidad != "" && profesional != "" && diaDesde != "" && diaHasta!="" && horaDesde!="" && horaHasta!="" && warning1.Visible==false && warning2.Visible==false)
             {
                 //FALTA CREAR EL STORED PROCEDURE
                 //Clases.BaseDeDatosSQL.ExecStoredProcedure2(comando, conexion);
@@ -138,6 +143,41 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 warning2.Visible = true;
             }
 
+        }
+
+
+        //0:Lunes 1:Martes 2:Miercoles 3:Jueves 4:Viernes 5:Sabado 
+        private void verificarRangoHospital()
+        {
+            if (cmbDiaHasta.SelectedIndex <= 4)
+            {
+                warning1.Visible = false;
+            }
+            else 
+            {
+                if (DateTime.Compare(DateTime.Parse("2000/02/20 " + horaDesde+":00"),DateTime.Parse("2000/02/20 10:00:00"))>0
+                    && DateTime.Compare(DateTime.Parse("2000/02/20 " + horaHasta+":00"), DateTime.Parse("2000/02/20 15:00:00"))<0)
+                {
+                    warning1.Visible = false;
+                }
+                else
+                {
+                    warning1.Visible = true;
+                }
+            }
+        }
+
+        private void verificarQueNoExista()
+        {
+            comando = "select isnull(count(*),0) from NEXTGDD.Rango_Atencion r,NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p where (p.nombre+' '+p.apellido) LIKE '"+profesional+"' and p.id_persona=pr.id_persona and a.matricula=pr.matricula and r.cod_agenda=a.cod_agenda and r.dia_semanal_inicial LIKE '"+diaDesde+"' and r.dia_semanal_final LIKE '"+diaHasta+"' and hora_inicial LIKE '"+horaDesde+"' and hora_final LIKE '"+horaHasta+"'";
+            if (bdd.validarCampo(comando))
+            {
+                warning1.Visible = true;
+            }
+            else
+            {
+                warning1.Visible=false;
+            }
         }
 
         private void frmRegistrarAgendaMedico_Load(object sender, EventArgs e)
