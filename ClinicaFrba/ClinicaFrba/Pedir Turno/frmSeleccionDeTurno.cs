@@ -32,10 +32,8 @@ namespace ClinicaFrba.Pedir_Turno
             warning4.Visible = false;
 
             comando = "select descripcion from NEXTGDD.Especialidad order by descripcion ASC";
-            List<string> lista = bdd.ObtenerLista(comando,"descripcion");
-            for(int i=0;i<lista.Count;i++){
-                cmbEspecialidad.Items.Add(lista.ElementAt(i));
-            }
+            cargar(bdd.ObtenerLista(comando, "descripcion"), cmbEspecialidad);
+
             cmbEspecialidad.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbProfesional.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbHorario.SelectedIndexChanged += OnSelectedIndexChanged;
@@ -50,6 +48,14 @@ namespace ClinicaFrba.Pedir_Turno
         private void label2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cargar(List<string> lista, ComboBox cmb)
+        {
+            foreach (string elemento in lista)
+            {
+                cmb.Items.Add(elemento);
+            }
         }
 
         private void verificarTextbox()
@@ -75,7 +81,6 @@ namespace ClinicaFrba.Pedir_Turno
 
         private void OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            //nroAfiliado = txtNroAfiliado.Text;
             if (cmbEspecialidad.SelectedItem!=null && (string) cmbEspecialidad.SelectedItem!=especialidad)
             {
                 warning3.Visible = false;
@@ -85,11 +90,7 @@ namespace ClinicaFrba.Pedir_Turno
                 cmbProfesional.Text = "";
                 cmbProfesional.Items.Clear();
                 comando = "select pers.nombre+' '+pers.apellido as nombre from NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e,NEXTGDD.Persona pers where pers.id_persona=p.id_persona and p.matricula=pe.matricula and pe.cod_especialidad=e.cod_especialidad and e.descripcion LIKE '" + cmbEspecialidad.SelectedItem + "' order by pers.nombre+' '+pers.apellido ASC";
-                List<string> lista2 = bdd.ObtenerLista(comando, "nombre");
-                for (int i = 0; i < lista2.Count; i++)
-                {
-                    cmbProfesional.Items.Add(lista2.ElementAt(i));
-                }
+                cargar(bdd.ObtenerLista(comando, "nombre"), cmbProfesional);
             }
             if (cmbProfesional.SelectedItem != null)
             {
@@ -101,7 +102,6 @@ namespace ClinicaFrba.Pedir_Turno
                 warning3.Visible = false;
                 fecha= (string) dtpFecha.Value.ToString("yyyy-MM-dd") + " "+ (string) cmbHorario.SelectedItem+":00.000";
                 comando = "select isnull(count(*),0) from NEXTGDD.Turno t,NEXTGDD.Agenda a, NEXTGDD.Profesional p,NEXTGDD.Persona pers where t.fecha LIKE CONVERT(datetime,'" + fecha + "', 120) and (pers.nombre+' '+pers.apellido) LIKE '" + profesional + "' and pers.id_persona=p.id_persona and a.matricula=p.matricula and t.cod_agenda=a.cod_agenda";
-                Console.Write(comando);
                 if(!bdd.validarCampo(comando))
                 {
                     warning2.Visible=false;

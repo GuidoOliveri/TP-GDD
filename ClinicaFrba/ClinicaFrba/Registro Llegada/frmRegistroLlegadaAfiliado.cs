@@ -53,6 +53,7 @@ namespace ClinicaFrba.Registro_Llegada
         {
             if (cmbProfesional.SelectedItem != null && (string) cmbProfesional.SelectedItem!=profesional)
             {
+                warning2.Visible = false;
                 profesional = (string)cmbProfesional.SelectedItem;
                 cmbTurno.Items.Clear();
                 cmbTurno.Text = "";
@@ -61,11 +62,17 @@ namespace ClinicaFrba.Registro_Llegada
             }
             if (cmbProfesional.SelectedItem != null && especialidad != "")
             {
+                warning2.Visible = false;
                 profesional = (string)cmbProfesional.SelectedItem;
             }
             if (cmbEspecialidad.SelectedItem != null && (string) cmbEspecialidad.SelectedItem!=especialidad)
             {
+                warning2.Visible = false;
                 especialidad = (string) cmbEspecialidad.SelectedItem;
+                cmbTurno.Items.Clear();
+                cmbTurno.Text = "";
+                cmbBono.Items.Clear();
+                cmbBono.Text = "";
                 cmbProfesional.Items.Clear();
                 cmbProfesional.Text = "";
                 cmbTurno.Items.Clear();
@@ -75,6 +82,7 @@ namespace ClinicaFrba.Registro_Llegada
             }
             if (cmbTurno.SelectedItem !=null)
             {
+                warning2.Visible = false;
                 /*
                  * POR AHORA SE COMENTA ->YA SE USARON TODOS LOS TURNOS, VERIFICAR TURNO DEVUELVE FALSE SIEMPRE
                 if (!verificarTurno())
@@ -130,7 +138,7 @@ namespace ClinicaFrba.Registro_Llegada
         private void btnIngresar_Click(object sender, EventArgs e)
         {
             bono = (string) cmbBono.SelectedItem;
-            if (profesional != "" && turno != "" && bono != "")
+            if (profesional != null && turno != null && bono != null && warning2.Visible!=true)
             {
                 //FALTA CREAR EL STORED PROCEDURE
                 //comando = "EXECUTE NEXTGDD.registrarConsulta @nomProf='" + profesional + "', @fechaTurno='" +turno + "', @nroBono='" + bono+ "'";
