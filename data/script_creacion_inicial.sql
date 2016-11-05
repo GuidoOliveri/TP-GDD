@@ -264,7 +264,7 @@ CREATE TABLE NEXTGDD.Agenda (
 
 CREATE TABLE NEXTGDD.Turno (
 
-   nro_turno numeric (18,0) PRIMARY KEY,
+   nro_turno numeric (18,0) PRIMARY KEY IDENTITY,
    fecha datetime,
    nro_afiliado numeric (20,0) REFERENCES NextGDD.afiliado(nro_afiliado),
    cod_agenda numeric (18,0) REFERENCES NextGDD.Agenda(cod_agenda),
@@ -446,7 +446,7 @@ DECLARE @pers numeric (18,0)
   END CATCH
 
 ELSE
-  RETURN -1
+  RETURN -2
 
 END
 GO
@@ -478,7 +478,7 @@ DECLARE @pers numeric (18,0)
   END CATCH
 
 ELSE
-  RETURN -1
+  RETURN -2
 
 END
 GO
@@ -509,7 +509,7 @@ DECLARE @pers numeric (18,0)
    END CATCH
 
  ELSE
-    RETURN -1
+    RETURN -2
 	
 END
 GO
@@ -651,14 +651,6 @@ AS BEGIN
 	SET @ret = SCOPE_IDENTITY()
 END
 GO
-/*
-CREATE PROCEDURE NEXTGDD.agregar_usuario (@usuario varchar(50), @contrasena varchar(20),) AS
-BEGIN
-	INSERT INTO NEXTGDD.Usuario(username, password, id_persona)
-		VALUES (@usuario, HASHBYTES('SHA2_256', @contrasena), @id_persona)
-END
-GO
-*/
 
 
 CREATE PROCEDURE NEXTGDD.agregar_usuario (@username VARCHAR(50), @password VARCHAR(255), @codigo_rol TINYINT, @habilitado BIT,  @id_persona INT) 
@@ -689,23 +681,15 @@ END
 GO
 
 
---DEVUELVE EL NUMERO DE AFILIADO SI EL INSERT FUE CORRECTO O -1 SI FUE INCORRECTO
-/*
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoPrincipal'))
-    DROP PROCEDURE NEXTGDD.agregarAfiliadoPrincipal
-GO
-*/
 CREATE PROCEDURE NEXTGDD.agregarAfiliadoPrincipal(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
                                                @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
                                                @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0), @ret numeric(20,0) output)
 AS BEGIN
 
---DECLARE @integrante_grupo varchar (2);
 DECLARE @pers numeric (18,0)
 DECLARE @nro_afiliado numeric (20,0) 
 DECLARE @usr VARCHAR(255)
 DECLARE @TransactionName varchar (20)= 'Transaccion1'
---SET @fecha_nac= convert(datetime,@fecha_nac)
 
  BEGIN TRY
 	BEGIN TRANSACTION @TransactionName
@@ -714,16 +698,15 @@ DECLARE @TransactionName varchar (20)= 'Transaccion1'
 	                         VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo)
 
 SET @pers = SCOPE_IDENTITY()
---SET @integrante_grupo = 01
 SET @nro_afiliado =  cast (@pers as varchar)+ '01'
---DECLARE @integrante_grupo2 numeric (2,0)
---SET @integrante_grupo2 = 01
+
 		 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
 	                VALUES ( @nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @pers, 01 ) 
 	
      SET @usr = CONVERT(VARCHAR(255),@nrodocumento)
 	 DECLARE @pass varchar (100)
 	 SET @pass = CONVERT(VARCHAR(100),@nro_afiliado)
+
 --utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
 
      	INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos)
@@ -772,12 +755,12 @@ DECLARE @TransactionName varchar (50)= 'Transaccion1'
 		INSERT INTO NEXTGDD.Persona (nombre, apellido, nro_documento, fecha_nac, domicilio , telefono, mail, tipo_doc, sexo)
 	                         VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo)
 
+
 SET @pers = SCOPE_IDENTITY()
 
 SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado_princ
 
  --select * from NEXTGDD.Afiliado 
-
    IF @nro_afiliado_integrante = 1
          BEGIN
 		   SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ '02'
@@ -845,19 +828,6 @@ END
 GO
 
 /*
-select * from NEXTGDD.Afiliado where id_persona = 99988865
-SELECT * from NEXTGDD.Persona WHERE nro_documento =8343243242
-
-INSERT INTO NEXTGDD.Persona (nombre,apellido, domicilio,telefono,mail,fecha_nac,nro_documento,tipo_doc,sexo)
-VALUES   ('david','tito','VICTOR HUGO 2176',46460517,'DSFDSF@SSADA', '18/06/1992', 37065907, 'DNI','H')
-
-DECLARE @ret NUMERIC (20,0)
---@RET = NULL
-exec NEXTGDD.agregarAfiliadoPrincipal 'David','tito','18/06/1992', 'H', 'DNI', 834324592,'VICTOR HUGO 2176',46460517, 1,'DSFDSF@SSADA',3,555555, @ret OUTPUT
-PRINT @ret 
---DEVUELVE EL NUMERO DE AFILIADO SI EL INSERT FUE CORRECTO O -1 SI FUE INCORRECTO
-*/
-/*
 DECLARE @ret NUMERIC (20,0)
 exec NEXTGDD.agregarAfiliadoFamilia 'Jesica','XX','18/06/2000', 'M', 'DNI', 2000009, 'MEDRANO 950',4646550517, 1,'DSFDSF@SSADA',3,555555,7470058801,1, @ret OUTPUT
 PRINT @ret 
@@ -887,21 +857,7 @@ WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.gru
 END
 
 /************ Migracion *************/
-/*
-select nro_afiliado,count (nro_turno) 
-from NEXTGDD.Turno
-group by nro_afiliado
-order by nro_afiliado
-*/
 
-/*
-select nro_afiliado, count (nro_bono) 
-from NEXTGDD.Bono_Consulta
-group by nro_afiliado
-order by nro_afiliado
-*/
-
---SET STATISTICS TIME ON
 
 SET IDENTITY_INSERT NEXTGDD.Tipo_Cancelacion ON
 INSERT INTO NEXTGDD.Tipo_Cancelacion (tipo_cancelacion, nombre) VALUES (1, 'Nada')
@@ -1082,7 +1038,6 @@ INSERT NEXTGDD.Bono_Consulta (nro_bono,nro_afiliado,fecha_impresion,compra_fecha
 
 SET IDENTITY_INSERT NEXTGDD.Bono_Consulta OFF
 
-SET IDENTITY_INSERT NEXTGDD.Profesional ON
 
 GO
 
@@ -1090,6 +1045,10 @@ INSERT NEXTGDD.Agenda (matricula, cod_especialidad)
 		(select matricula,cod_especialidad
 		 from NEXTGDD.Profesional_X_Especialidad);
 GO
+
+
+
+SET IDENTITY_INSERT NEXTGDD.Turno ON
 
 INSERT NEXTGDD.Turno (nro_turno,fecha,nro_afiliado,cod_agenda) 
 	(  select Turno_Numero,  Turno_Fecha,  (select nro_afiliado from NEXTGDD.Afiliado WHERE id_persona= Paciente_Dni),
@@ -1101,9 +1060,12 @@ INSERT NEXTGDD.Turno (nro_turno,fecha,nro_afiliado,cod_agenda)
 
 GO
 
-SET IDENTITY_INSERT NEXTGDD.Profesional OFF
+SET IDENTITY_INSERT NEXTGDD.Turno OFF
+
+
 
 SET IDENTITY_INSERT NEXTGDD.Diagnostico ON
+
 
 INSERT NEXTGDD.Diagnostico (cod_diagnostico,sintoma,enfermedad)
 	   (select Bono_Consulta_Numero, Consulta_Sintomas, Consulta_Enfermedades
@@ -1173,16 +1135,3 @@ where Bono_Consulta_Fecha_Impresion is null and Compra_Bono_Fecha is  null
 
 EXEC NEXTGDD.agregar_usuario @username = 'admin', @password = 'w23e',@codigo_rol= 1, @habilitado= 1, @id_persona = null
 GO
-
-/*
-INSERT NEXTGDD.Usuario_X_Rol (username, id_rol)
-VALUES ('admin', 1)
-
-GO
-*/
-
-/*
-exec NEXTGDD.agregar_usuario 'afiliado', 'hola', 2, 1,null
-
-select * from NEXTGDD.Usuario_X_Rol
-*/
