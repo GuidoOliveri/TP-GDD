@@ -576,17 +576,59 @@ select * from NEXTGDD.Usuario
 CREATE PROCEDURE NEXTGDD.crearTurno (@nroAf numeric(18,0),@nombreEsp varchar(255),@nomProf varchar(255),@fecha datetime)
 AS
 BEGIN
-	DECLARE @nroTurno numeric(18,0)=(select top 1 nro_turno from NEXTGDD.Turno order by nro_turno DESC)+1;
 	DECLARE @codAgenda numeric (18,0)=(select cod_agenda 
 									   from NEXTGDD.Agenda a,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e,NEXTGDD.Persona persona
 									   where (persona.nombre+' '+persona.apellido)=@nomProf and persona.id_persona=p.id_persona
 											 and e.descripcion=@nombreEsp and
 									         pe.matricula=p.matricula and pe.cod_especialidad=e.cod_especialidad
 											 and a.cod_especialidad=pe.cod_especialidad and a.matricula=pe.matricula)
-	INSERT NEXTGDD.Turno (nro_turno,nro_afiliado,cod_agenda,fecha,cod_cancelacion) values
-			(@nroTurno,@nroAf,@codAgenda,@fecha,null)
+	INSERT NEXTGDD.Turno (nro_afiliado,cod_agenda,fecha) values
+			(@nroAf,@codAgenda,@fecha)
 END;
 GO
+
+CREATE PROCEDURE NEXTGDD.registrarConsulta (@nomProf varchar(255),@fechaTurno datetime,@nroBono numeric(18,0))
+AS
+BEGIN
+	DECLARE @nro_turno numeric(18,0)=(select t.nro_turno
+									  from NEXTGDD.Turno t,NEXTGDD.Agenda ag,NEXTGDD.Profesional pr,NEXTGDD.Persona p
+									  where t.fecha=@fechaTurno and 
+											p.nombre+' '+p.apellido LIKE @nomProf and
+											p.id_persona=pr.id_persona and pr.matricula=ag.matricula and
+											t.cod_agenda=ag.cod_agenda)
+	INSERT NEXTGDD.Consulta (nro_bono,nro_turno) values
+			(@nroBono,@nro_turno)
+END;
+GO
+
+CREATE PROCEDURE NEXTGDD.registrarDiagnostico (@medico numeric(18,0),@fechaConsulta datetime,@fechaAtencion datetime,@enfermedad varchar(255),@sintoma varchar(255),@descripcion varchar(255))
+AS
+BEGIN
+	DECLARE @diagnostico numeric(18,0)
+	INSERT NEXTGDD.Diagnostico (descripcion,sintoma,enfermedad) values
+			(@descripcion,@sintoma,@enfermedad)
+	SET @diagnostico=(select top 1 cod_diagnostico from NEXTGDD.Diagnostico order by cod_diagnostico DESC)
+	UPDATE NEXTGDD.Consulta
+			SET cod_diagnostico=@diagnostico
+			WHERE nro_turno=(select distinct t.nro_turno 
+							from NEXTGDD.Turno t,NEXTGDD.Agenda a,NEXTGDD.Profesional pr
+							where t.fecha=@fechaConsulta and
+								  t.cod_agenda=a.cod_agenda and
+								  a.matricula=pr.matricula and pr.id_persona=@medico)
+END;
+GO
+
+CREATE PROCEDURE NEXTGDD.registrarAgenda (@nomProfesional varchar(255),@nomEspecialidad varchar(255),@diaDesde varchar(255),@diaHasta varchar(255),@horaDesde numeric(18,0),@horaHasta numeric(18,0))
+AS
+BEGIN
+	DECLARE @cod_agenda numeric (18,0)
+	--HACER TRIGGER POR SI NO EXISTE UNA AGENDA QUE CREE UNA
+	INSERT NEXTGDD.Rango_Atencion (cod_agenda,hora_final,dia_semanal_inicial,dia_semanal_final) values
+			(@cod_agenda,@horaDesde,@horaHasta,@diaDesde,@diaHasta)
+END;
+GO
+
+
 /*
 EXEC NEXTGDD.crearTurno @nroAF='113347201', @nombreEsp='Neurología', @nomProf='Caleb Villalba', @fecha='2016/11/4 17:30:00.000';
 select * from NEXTGDD.Turno where year(fecha)=2016
