@@ -144,7 +144,7 @@ namespace ClinicaFrba.Clases
             comando.CommandText = commandtext;
             comando.ExecuteNonQuery();
         }
-        /*
+        
         public static List<String> ObtenerLista(string queryString, string connectionString, string campo)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -163,7 +163,7 @@ namespace ClinicaFrba.Clases
                 return resultados;
             }
         }
-        
+        /*
         public static Boolean validarCampo(string queryString, string connectionString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
