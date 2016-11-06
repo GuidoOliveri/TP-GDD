@@ -368,6 +368,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modif
     DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Mail
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado_Plan'))
+    DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Plan
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoPrincipal'))
     DROP PROCEDURE NEXTGDD.agregarAfiliadoPrincipal
 GO
@@ -375,6 +379,11 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.mostrarHistorial'))
     DROP PROCEDURE NEXTGDD.mostrarHistorial
 GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.mostrarHistorial_ga'))
+    DROP PROCEDURE NEXTGDD.mostrarHistorial_ga
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.darDeBajaAfiliado'))
     DROP PROCEDURE NEXTGDD.darDeBajaAfiliado
 GO
@@ -517,6 +526,37 @@ END
 GO
 
 
+CREATE PROCEDURE NEXTGDD.Modificar_Afiliado_Plan(@id numeric(20,0), @nuevo_plan numeric (18,0),@motivo varchar (255))
+ AS BEGIN
+  
+DECLARE @plan_viejo numeric (18,0)
+
+ IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
+    BEGIN TRY
+	  BEGIN TRANSACTION   
+	        SET @plan_viejo = (SELECT cod_plan FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id )
+           
+		    UPDATE NEXTGDD.Afiliado
+            SET  cod_plan = @nuevo_plan
+            WHERE  nro_afiliado= @id
+           
+		   INSERT INTO NEXTGDD.Historial (fecha_modificacion, motivo_modificacion, nro_afiliado, cod_plan_viejo,cod_plan_nuevo)
+		   VALUES (GETDATE(),@motivo,@id,@plan_viejo,@nuevo_plan)
+
+	COMMIT TRANSACTION
+    RETURN 0
+  END TRY
+  
+  BEGIN CATCH
+    ROLLBACK TRANSACTION 
+    RETURN -1
+   END CATCH
+
+ ELSE
+    RETURN -2
+	
+END
+GO
 
 CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100))
  AS 
@@ -897,6 +937,17 @@ WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.gru
 END
 GO
 
+CREATE PROCEDURE NEXTGDD.mostrarHistorial_ga(@grupoafiliado numeric(20,0) )
+AS
+BEGIN
+
+SELECT nro_historial,fecha_modificacion,motivo_modificacion, nro_afiliado, cod_plan_viejo, cod_plan_nuevo
+FROM NEXTGDD.Historial
+WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.grupo_afiliado = @grupoafiliado)
+END
+GO
+
+
 CREATE PROCEDURE NEXTGDD.darDeBajaAfiliado(@nro_afiliado numeric(20,0))
 AS BEGIN
 
@@ -918,6 +969,10 @@ AS BEGIN
 
 END
 GO
+
+
+
+
 /*
 EXEC NEXTGDD.darDeBajaAfiliado 112396001
 select * from NEXTGDD.Afiliado WHERE nro_afiliado= 112396001
