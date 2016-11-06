@@ -60,7 +60,7 @@ namespace ClinicaFrba.Clases
 
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
             ListaParametros.Add(new SqlParameter("@rol", idRol));
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT F.id_rol, F.nombre FROM NEXTGDD.Rol R JOIN NEXTGDD.Funcionalidad_X_Rol FM ON R.id_rol = FM.id_rol JOIN NEXTGDD.Funcionalidad F ON FM.id_funcionalidad = F.id_funcionalidad WHERE R.id_rol = @rol", "T", ListaParametros);
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT F.id_funcionalidad, F.nombre FROM NEXTGDD.Rol JOIN NEXTGDD.Funcionalidad_X_Rol FM ON Rol.id_rol = FM.id_rol JOIN NEXTGDD.Funcionalidad F ON FM.id_funcionalidad = F.id_funcionalidad WHERE Rol.id_rol = @rol", "T", ListaParametros);
 
             if (lector.HasRows)
             {
