@@ -414,6 +414,9 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarRangoDeAtencion'))
     DROP FUNCTION NEXTGDD.verificarRangoDeAtencion
 GO
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarCodigoAgenda'))
+    DROP FUNCTION NEXTGDD.buscarCodigoAgenda
+GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarConsulta'))
     DROP PROCEDURE NEXTGDD.registrarConsulta
@@ -425,6 +428,10 @@ GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarAgenda'))
     DROP PROCEDURE NEXTGDD.registrarAgenda
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarRangoHorario'))
+    DROP PROCEDURE NEXTGDD.registrarRangoHorario
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.pedirTurno'))
@@ -693,16 +700,51 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE NEXTGDD.registrarAgenda (@nomProfesional varchar(255),@nomEspecialidad varchar(255),@diaDesde varchar(255),@diaHasta varchar(255),@horaDesde numeric(18,0),@horaHasta numeric(18,0))
+CREATE PROCEDURE NEXTGDD.registrarAgenda (@nomProfesional varchar(255),@nomEspecialidad varchar(255),@fechaD datetime,@fechaH datetime)
 AS
 BEGIN
-	DECLARE @cod_agenda numeric (18,0)
-	--HACER TRIGGER POR SI NO EXISTE UNA AGENDA QUE CREE UNA
-	INSERT NEXTGDD.Rango_Atencion (cod_agenda,hora_final,dia_semanal_inicial,dia_semanal_final) values
-			(@cod_agenda,@horaDesde,@horaHasta,@diaDesde,@diaHasta)
+	DECLARE @cod_esp numeric(18,0)=(select cod_especialidad from NEXTGDD.Especialidad where descripcion LIKE @nomEspecialidad)
+	DECLARE @matricula numeric(18,0)=(select pr.matricula from NEXTGDD.Profesional pr, NEXTGDD.Persona p where p.nombre+' '+p.apellido LIKE @nomProfesional and p.id_persona=pr.id_persona)
+	INSERT NEXTGDD.Agenda(rango_fecha_desde,rango_fecha_hasta,matricula,cod_especialidad) values
+			(@fechaD,@fechaH,@matricula,@cod_esp)
 END;
 GO
 
+CREATE PROCEDURE NEXTGDD.registrarRangoHorario (@cod_rango numeric(18,0),@codAgenda numeric(18,0),@diaD numeric(18,0),@diaH numeric(18,0),@horaD time,@horaH time)
+AS
+BEGIN
+	INSERT NEXTGDD.Rango_Atencion (rango_atencion,cod_agenda,hora_final,hora_inicial,dia_semanal_inicial,dia_semanal_final) values
+			(@cod_rango,@codAgenda,@horaD,@horaH,@diaD,@diaH)
+END;
+GO
+
+CREATE FUNCTION NEXTGDD.buscarCodigoAgenda(@nomProfesional varchar(255),@nomEsp varchar(255))
+returns numeric(18,0)
+BEGIN
+	RETURN (select a.cod_agenda
+			from NEXTGDD.Agenda a,NEXTGDD.Profesional pr, NEXTGDD.Persona p,NEXTGDD.Especialidad e
+			where p.nombre+' '+p.apellido LIKE @nomProfesional and p.id_persona=pr.id_persona and pr.matricula=a.matricula
+				  and e.descripcion LIKE @nomEsp and e.cod_especialidad=a.cod_especialidad)
+END;
+GO
+
+/*TEST
+select a.cod_agenda from NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p 
+where p.nombre LIKE 'NICOLE' and p.apellido LIKE 'Tobal' and p.id_persona=pr.id_persona and a.matricula=pr.matricula
+and a.cod_especialidad LIKE 9999
+
+DELETE FROM NEXTGDD.Agenda where cod_agenda LIKE 51
+
+INSERT NEXTGDD.Persona (nombre,apellido,domicilio,telefono,mail,sexo,fecha_nac,nro_documento)
+values ('NICOLE','Tobal','Juramento',4123143,'dksjsf','M',CONVERT(datetime,'1995/10/19 00:00:00',120),821781);
+GO
+INSERT NEXTGDD.Profesional (id_persona)
+(select id_persona from NEXTGDD.Persona where nombre='NICOLE' and apellido='Tobal');
+GO
+INSERT NEXTGDD.Profesional_X_Especialidad (matricula,cod_especialidad)
+(select matricula,9999 from NEXTGDD.Persona p, NEXTGDD.Profesional pr where nombre='NICOLE' and apellido='Tobal' and p.id_persona=pr.id_persona);
+GO
+*/
 
 /*
 EXEC NEXTGDD.crearTurno @nroAF='113347201', @nombreEsp='Neurología', @nomProf='Caleb Villalba', @fecha='2016/11/4 17:30:00.000';

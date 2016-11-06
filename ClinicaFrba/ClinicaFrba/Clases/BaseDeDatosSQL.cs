@@ -126,6 +126,17 @@ namespace ClinicaFrba.Clases
             return resultados;
         }
 
+        public string buscarCampo(string queryString)
+        {
+            SqlCommand command = new SqlCommand(queryString, conexion);
+            string result= (string) command.ExecuteScalar().ToString();
+            if (result != null)
+            {
+                return result;
+            }
+            return "";
+        }
+
         public Boolean validarCampo(string queryString)
         {
             SqlCommand command = new SqlCommand(queryString, conexion);

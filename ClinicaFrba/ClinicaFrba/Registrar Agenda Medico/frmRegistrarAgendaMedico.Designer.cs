@@ -29,17 +29,13 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.warning1 = new System.Windows.Forms.Label();
             this.btnAgregar = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cmbDiaHasta = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbDiaDesde = new System.Windows.Forms.ComboBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.dpFechaDesde = new System.Windows.Forms.DateTimePicker();
-            this.label9 = new System.Windows.Forms.Label();
-            this.dpFechaHasta = new System.Windows.Forms.DateTimePicker();
-            this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cmbHorarioHasta = new System.Windows.Forms.ComboBox();
@@ -47,26 +43,32 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.dgRangoAtencion = new System.Windows.Forms.DataGridView();
-            this.label6 = new System.Windows.Forms.Label();
-            this.cmbProfesional = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
-            this.btnIngresar = new System.Windows.Forms.Button();
-            this.warning2 = new System.Windows.Forms.Label();
-            this.warning1 = new System.Windows.Forms.Label();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cmbProfesional = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.dpFechaDesde = new System.Windows.Forms.DateTimePicker();
+            this.label9 = new System.Windows.Forms.Label();
+            this.dpFechaHasta = new System.Windows.Forms.DateTimePicker();
+            this.label8 = new System.Windows.Forms.Label();
+            this.btnIngresar = new System.Windows.Forms.Button();
+            this.warning2 = new System.Windows.Forms.Label();
+            this.warning3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgRangoAtencion)).BeginInit();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.warning3);
             this.groupBox1.Controls.Add(this.warning1);
             this.groupBox1.Controls.Add(this.btnAgregar);
             this.groupBox1.Controls.Add(this.groupBox2);
@@ -84,6 +86,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Registrar agenda";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // warning1
+            // 
+            this.warning1.AutoSize = true;
+            this.warning1.ForeColor = System.Drawing.Color.Red;
+            this.warning1.Location = new System.Drawing.Point(9, 199);
+            this.warning1.Name = "warning1";
+            this.warning1.Size = new System.Drawing.Size(224, 13);
+            this.warning1.TabIndex = 11;
+            this.warning1.Text = "El rango horario no es válido. Seleccione otro.";
             // 
             // btnAgregar
             // 
@@ -141,51 +153,6 @@
             this.cmbDiaDesde.Name = "cmbDiaDesde";
             this.cmbDiaDesde.Size = new System.Drawing.Size(121, 21);
             this.cmbDiaDesde.TabIndex = 0;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.dpFechaDesde);
-            this.groupBox4.Controls.Add(this.label9);
-            this.groupBox4.Controls.Add(this.dpFechaHasta);
-            this.groupBox4.Controls.Add(this.label8);
-            this.groupBox4.Location = new System.Drawing.Point(12, 312);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(500, 68);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Rango de fechas";
-            // 
-            // dpFechaDesde
-            // 
-            this.dpFechaDesde.Location = new System.Drawing.Point(222, 16);
-            this.dpFechaDesde.Name = "dpFechaDesde";
-            this.dpFechaDesde.Size = new System.Drawing.Size(267, 20);
-            this.dpFechaDesde.TabIndex = 10;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(28, 48);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(38, 13);
-            this.label9.TabIndex = 13;
-            this.label9.Text = "Hasta:";
-            // 
-            // dpFechaHasta
-            // 
-            this.dpFechaHasta.Location = new System.Drawing.Point(222, 42);
-            this.dpFechaHasta.Name = "dpFechaHasta";
-            this.dpFechaHasta.Size = new System.Drawing.Size(267, 20);
-            this.dpFechaHasta.TabIndex = 11;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(28, 22);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(41, 13);
-            this.label8.TabIndex = 12;
-            this.label8.Text = "Desde:";
             // 
             // label7
             // 
@@ -263,10 +230,30 @@
             this.dgRangoAtencion.TabIndex = 3;
             this.dgRangoAtencion.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgRangoAtencion_CellContentClick);
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Dia (Desde)";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Dia (Hasta)";
+            this.Column2.Name = "Column2";
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Hora (Desde)";
+            this.Column3.Name = "Column3";
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Hora (Hasta)";
+            this.Column4.Name = "Column4";
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(31, 27);
+            this.label6.Location = new System.Drawing.Point(31, 25);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(128, 13);
             this.label6.TabIndex = 8;
@@ -275,7 +262,7 @@
             // cmbProfesional
             // 
             this.cmbProfesional.FormattingEnabled = true;
-            this.cmbProfesional.Location = new System.Drawing.Point(222, 24);
+            this.cmbProfesional.Location = new System.Drawing.Point(222, 21);
             this.cmbProfesional.Name = "cmbProfesional";
             this.cmbProfesional.Size = new System.Drawing.Size(267, 21);
             this.cmbProfesional.TabIndex = 7;
@@ -283,7 +270,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(31, 54);
+            this.label5.Location = new System.Drawing.Point(34, 49);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(125, 13);
             this.label5.TabIndex = 6;
@@ -292,10 +279,55 @@
             // cmbEspecialidad
             // 
             this.cmbEspecialidad.FormattingEnabled = true;
-            this.cmbEspecialidad.Location = new System.Drawing.Point(222, 51);
+            this.cmbEspecialidad.Location = new System.Drawing.Point(222, 46);
             this.cmbEspecialidad.Name = "cmbEspecialidad";
             this.cmbEspecialidad.Size = new System.Drawing.Size(267, 21);
             this.cmbEspecialidad.TabIndex = 5;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.dpFechaDesde);
+            this.groupBox4.Controls.Add(this.label9);
+            this.groupBox4.Controls.Add(this.dpFechaHasta);
+            this.groupBox4.Controls.Add(this.label8);
+            this.groupBox4.Location = new System.Drawing.Point(12, 312);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(500, 68);
+            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Rango de fechas";
+            // 
+            // dpFechaDesde
+            // 
+            this.dpFechaDesde.Location = new System.Drawing.Point(222, 16);
+            this.dpFechaDesde.Name = "dpFechaDesde";
+            this.dpFechaDesde.Size = new System.Drawing.Size(267, 20);
+            this.dpFechaDesde.TabIndex = 10;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(28, 48);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(38, 13);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Hasta:";
+            // 
+            // dpFechaHasta
+            // 
+            this.dpFechaHasta.Location = new System.Drawing.Point(222, 42);
+            this.dpFechaHasta.Name = "dpFechaHasta";
+            this.dpFechaHasta.Size = new System.Drawing.Size(267, 20);
+            this.dpFechaHasta.TabIndex = 11;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(28, 22);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 13);
+            this.label8.TabIndex = 12;
+            this.label8.Text = "Desde:";
             // 
             // btnIngresar
             // 
@@ -317,35 +349,16 @@
             this.warning2.TabIndex = 2;
             this.warning2.Text = "Faltan seleccionar campos";
             // 
-            // warning1
+            // warning3
             // 
-            this.warning1.AutoSize = true;
-            this.warning1.ForeColor = System.Drawing.Color.Red;
-            this.warning1.Location = new System.Drawing.Point(9, 199);
-            this.warning1.Name = "warning1";
-            this.warning1.Size = new System.Drawing.Size(224, 13);
-            this.warning1.TabIndex = 11;
-            this.warning1.Text = "El rango horario no es válido. Seleccione otro.";
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Dia (Desde)";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Dia (Hasta)";
-            this.Column2.Name = "Column2";
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Hora (Desde)";
-            this.Column3.Name = "Column3";
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Hora (Hasta)";
-            this.Column4.Name = "Column4";
+            this.warning3.AutoSize = true;
+            this.warning3.ForeColor = System.Drawing.Color.Red;
+            this.warning3.Location = new System.Drawing.Point(377, 68);
+            this.warning3.Name = "warning3";
+            this.warning3.Size = new System.Drawing.Size(113, 13);
+            this.warning3.TabIndex = 12;
+            this.warning3.Text = "Ya existe una agenda.";
+            this.warning3.Click += new System.EventHandler(this.warning3_Click);
             // 
             // frmRegistrarAgendaMedico
             // 
@@ -364,11 +377,11 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgRangoAtencion)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -406,5 +419,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.Label warning3;
     }
 }
