@@ -345,11 +345,15 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agreg
     DROP PROCEDURE NEXTGDD.agregar_funcionalidad
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.eliminar_Funcionalidad_Rol'))
+    DROP PROCEDURE NEXTGDD.eliminar_Funcionalidad_Rol
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregar_Rol'))
     DROP PROCEDURE NEXTGDD.agregar_Rol
 GO
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Nombre_Rol'))
-    DROP PROCEDURE NEXTGDD.Modificar_Nombre_Rol
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Nombre_Rol'))
+    DROP PROCEDURE NEXTGDD.modificar_Nombre_Rol
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoFamilia'))
@@ -359,23 +363,23 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agreg
     DROP PROCEDURE NEXTGDD.agregar_usuario
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado_Domic'))
-    DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Domic
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Afiliado_Domic'))
+    DROP PROCEDURE NEXTGDD.modificar_Afiliado_Domic
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado_Telef'))
-    DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Telef
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Afiliado_Telef'))
+    DROP PROCEDURE NEXTGDD.modificar_Afiliado_Telef
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.DarDeBajaRol'))
-    DROP PROCEDURE NEXTGDD.DarDeBajaRol
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.darDeBajaRol'))
+    DROP PROCEDURE NEXTGDD.darDeBajaRol
 GO
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado_Mail'))
-    DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Mail
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Afiliado_Mail'))
+    DROP PROCEDURE NEXTGDD.modificar_Afiliado_Mail
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado_Plan'))
-    DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Plan
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Afiliado_Plan'))
+    DROP PROCEDURE NEXTGDD.modificar_Afiliado_Plan
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoPrincipal'))
@@ -437,7 +441,7 @@ afiliado, es necesario que se registre cuando se ha producido dicha modificación
 motivo que la originó, de manera de poder obtener un historial de dichos cambios.
 Dicho historial debe poder ser consultado de alguna manera dentro del sistema.*/
 
- CREATE PROCEDURE NEXTGDD.Modificar_Afiliado_Domic(@id numeric(20,0), @nuevo_dom varchar(255))
+ CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Domic(@id numeric(20,0), @nuevo_dom varchar(255))
   AS BEGIN
   
 DECLARE @pers numeric (18,0)
@@ -469,7 +473,7 @@ END
 GO
 
  
- CREATE PROCEDURE NEXTGDD.Modificar_Afiliado_Telef(@id numeric(20,0), @nuevo_telef numeric(18,0))
+ CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Telef(@id numeric(20,0), @nuevo_telef numeric(18,0))
  AS BEGIN
   
 DECLARE @pers numeric (18,0)
@@ -501,7 +505,7 @@ END
 GO
 
 
- CREATE PROCEDURE NEXTGDD.Modificar_Afiliado_Mail(@id numeric(20,0), @nuevo_mail varchar(255))
+ CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Mail(@id numeric(20,0), @nuevo_mail varchar(255))
  AS BEGIN
   
 DECLARE @pers numeric (18,0)
@@ -532,7 +536,7 @@ END
 GO
 
 
-CREATE PROCEDURE NEXTGDD.Modificar_Afiliado_Plan(@id numeric(20,0), @nuevo_plan numeric (18,0),@motivo varchar (255))
+CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Plan(@id numeric(20,0), @nuevo_plan numeric (18,0),@motivo varchar (255))
  AS BEGIN
   
 DECLARE @plan_viejo numeric (18,0)
@@ -734,6 +738,33 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE NEXTGDD.eliminar_Funcionalidad_Rol(@id_rol tinyint, @id_func tinyint, @ret smallint output) 
+AS BEGIN
+IF EXISTS (SELECT * FROM NEXTGDD.Funcionalidad_X_Rol WHERE id_rol= @id_rol and id_funcionalidad= @id_func )
+
+   BEGIN TRY
+	BEGIN TRANSACTION
+			
+	DELETE  NEXTGDD.Funcionalidad_X_Rol 
+	WHERE id_rol= @id_rol and id_funcionalidad= @id_func
+	SET @ret =0
+	COMMIT TRANSACTION
+    
+  END TRY
+  
+  BEGIN CATCH
+    ROLLBACK TRANSACTION
+    -- No hago nada si hubo un error 
+    SET @ret =-1
+  END CATCH
+END
+GO
+/*
+SELECT * FROM NEXTGDD.Funcionalidad_X_Rol
+DECLARE @ret smallint=7
+EXEC NEXTGDD.eliminar_Funcionalidad_Rol 1,2, @ret output
+PRINT @ret
+*/
 CREATE PROCEDURE NEXTGDD.agregar_Rol(@nombreRol varchar(255), @ret smallint output)
 AS BEGIN
 
@@ -747,7 +778,7 @@ ELSE
 END
 GO
 
-CREATE PROCEDURE NEXTGDD.Modificar_Nombre_Rol(@id_rol tinyint,@nuevo_nombreRol varchar(255), @ret smallint output)
+CREATE PROCEDURE NEXTGDD.modificar_Nombre_Rol(@id_rol tinyint,@nuevo_nombreRol varchar(255), @ret smallint output)
 AS BEGIN
 
 IF NOT EXISTS ( SELECT * FROM NEXTGDD.Rol WHERE nombre = @nuevo_nombreRol)
@@ -762,7 +793,7 @@ END
 GO
 
 
-CREATE PROCEDURE NEXTGDD.DarDeBajaRol(@id_rol tinyint, @ret smallint output)
+CREATE PROCEDURE NEXTGDD.darDeBajaRol(@id_rol tinyint, @ret smallint output)
 AS BEGIN
 
 IF EXISTS ( SELECT * FROM NEXTGDD.Rol WHERE id_rol= @id_rol)
