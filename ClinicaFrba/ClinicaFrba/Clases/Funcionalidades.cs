@@ -28,6 +28,7 @@ namespace ClinicaFrba.Clases
                     Lista.Add(unaFuncionalidad);
                 }
             }
+            lector.Close();
             return Lista;
         }
 
@@ -49,6 +50,7 @@ namespace ClinicaFrba.Clases
                     Lista.Add(unaFuncionalidad);
                 }
             }
+            lector.Close();
             return Lista;
         }
 
@@ -70,6 +72,7 @@ namespace ClinicaFrba.Clases
                     Lista.Add(unaFuncionalidad);
                 }
             }
+            lector.Close();
             return Lista;
         }
 
@@ -91,6 +94,7 @@ namespace ClinicaFrba.Clases
                     Lista.Add(unaFuncionalidad.Nombre);
                 }
             }
+            lector.Close();
             return Lista;
         }
 
