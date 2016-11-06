@@ -23,6 +23,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
             idPersona = 1123960; // Hardcode de prueba
             comando = "select * from GD2C2016.NEXTGDD.Persona where id_persona ="+idPersona;
+         //   basedeDatos.ObtenerPersona(comando);
         }
 
         private void frmModificarAfiliado_Load(object sender, EventArgs e)
