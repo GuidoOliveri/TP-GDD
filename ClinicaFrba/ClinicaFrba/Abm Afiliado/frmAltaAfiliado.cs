@@ -25,18 +25,18 @@ namespace ClinicaFrba.Abm_Afiliado
         public String Miembro { get; set; }
         //public Afiliado nuevoAfil { get; set; }
 
-        private void btnLimpiar_Click(object sender, EventArgs e)
+        private void cargarTodoLimpio()
         {
             // limpio txt
-            txtNombre.Text = string.Empty;
-            txtApellido.Text = string.Empty;
-            txtCantFam.Text = string.Empty;
-            txtMail.Text = string.Empty;
-            txtNroAfiliado.Text = string.Empty;
-            txtNroDoc.Text = string.Empty;
-            txtPlanMedico.Text = string.Empty;
-            txtTel.Text = string.Empty;
-            txtPlanMedico.Text = string.Empty;
+            txtNombre.Text = "";
+            txtApellido.Text = "";
+            txtCantFam.Text = "";
+            txtMail.Text = "";
+            txtNroAfiliado.Text = "";
+            txtNroDoc.Text = "";
+            txtPlanMedico.Text = "";
+            txtTel.Text = "";
+            txtPlanMedico.Text = "";
             txtMotivo.Text = "";
 
             // limpio combo box
@@ -47,20 +47,15 @@ namespace ClinicaFrba.Abm_Afiliado
             optMasculino.Checked = false;
             optFemenino.Checked = false;
 
+            //date time picker
+            dtpFecNac.Value = Today;
+            dtpFechaCambioPlan.Value = Today;
         }
 
-        //analizo todos los campos 
-        private Boolean analizarCampos()
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            string mensaje = string.Empty;
-            if (txtNombre.Text.Trim() == string.Empty || txtApellido.Text.Trim() == string.Empty || txtNroDoc.Text.Trim() == "" || txtDir.Text.Trim() == "" || txtTel.Text.Trim() == "" || txtMail.Text.Trim() == "" || txtCantFam.Text.Trim() == "" || int.Parse(txtCantFam.Text.Trim()) < 0 || cboEstadoCivil.SelectedIndex==-1 || cboTipoDoc.SelectedIndex==-1 || dtpFecNac.Value>dtpFechaCambioPlan.Value)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            cargarTodoLimpio();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -70,12 +65,31 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
-           
+            if (txtNombre.Text.Trim() == string.Empty || txtApellido.Text.Trim() == string.Empty || txtNroDoc.Text.Trim() == "" || txtDir.Text.Trim() == "" || txtTel.Text.Trim() == "" || txtMail.Text.Trim() == "" || txtCantFam.Text.Trim() == "" || int.Parse(txtCantFam.Text.Trim()) < 0 || cboEstadoCivil.SelectedIndex == -1 || cboTipoDoc.SelectedIndex == -1 || dtpFecNac.Value > dtpFechaCambioPlan.Value)
+            {
+                MessageBox.Show("Todos los campos no estan llenos o no estan llenos correctamente", "Alta afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                DialogResult dialogResult = MessageBox.Show("Registrado exitosamente! Desea Registrar a algun familiar?", "Alta afiliado", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    //aca tengo que enganchar el stored procedure de lo que hace el afiliado
+                    cargarTodoLimpio();
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    AbmRol.frmElegirAccionRol elegirOtra = new AbmRol.frmElegirAccionRol();
+                    this.Hide();
+                    elegirOtra.Show();
+                }
+            }
+
         }
 
         private void pnlDatosPersonales_Paint(object sender, PaintEventArgs e)
         {
-
+            
         }
 
         private void txtMotivo_TextChanged(object sender, EventArgs e)
@@ -90,9 +104,23 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
+            AbmRol.frmElegirAccionRol elegir = new AbmRol.frmElegirAccionRol();
             this.Hide();
+            elegir.Show();
         }
 
-      
+        private void btnHijo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnConyuge_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+
+        public DateTime Today { get; set; }
     }
 }

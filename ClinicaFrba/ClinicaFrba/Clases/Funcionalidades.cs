@@ -23,8 +23,8 @@ namespace ClinicaFrba.Clases
                 while (lector.Read())
                 {
                     Funcionalidad unaFuncionalidad = new Funcionalidad();
-                    unaFuncionalidad.Id = (int)(decimal)lector["id"];
-                    unaFuncionalidad.Nombre = (string)lector["nombre"];
+                    unaFuncionalidad.Id = Int32.Parse(lector["id_funcionalidad"].ToString());
+                    unaFuncionalidad.Nombre = lector["nombre"].ToString();
                     Lista.Add(unaFuncionalidad);
                 }
             }
@@ -44,8 +44,8 @@ namespace ClinicaFrba.Clases
                 while (lector.Read())
                 {
                     Funcionalidad unaFuncionalidad = new Funcionalidad();
-                    unaFuncionalidad.Id = (int)(decimal)lector["id"];
-                    unaFuncionalidad.Nombre = (string)lector["nombre"];
+                    unaFuncionalidad.Id = Int32.Parse(lector["id_funcionalidad"].ToString());
+                    unaFuncionalidad.Nombre = lector["nombre"].ToString();
                     Lista.Add(unaFuncionalidad);
                 }
             }
@@ -65,8 +65,8 @@ namespace ClinicaFrba.Clases
                 while (lector.Read())
                 {
                     Funcionalidad unaFuncionalidad = new Funcionalidad();
-                    unaFuncionalidad.Id = (int)(decimal)lector["id"];
-                    unaFuncionalidad.Nombre = (string)lector["nombre"];
+                    unaFuncionalidad.Id = Int32.Parse(lector["id_funcionalidad"].ToString());
+                    unaFuncionalidad.Nombre = lector["nombre"].ToString();
                     Lista.Add(unaFuncionalidad);
                 }
             }
@@ -86,8 +86,8 @@ namespace ClinicaFrba.Clases
                 while (lector.Read())
                 {
                     Funcionalidad unaFuncionalidad = new Funcionalidad();
-                    unaFuncionalidad.Id = (int)(decimal)lector["id"];
-                    unaFuncionalidad.Nombre = (string)lector["nombre"];
+                    unaFuncionalidad.Id = Int32.Parse(lector["id_funcionalidad"].ToString());
+                    unaFuncionalidad.Nombre = lector["nombre"].ToString();
                     Lista.Add(unaFuncionalidad.Nombre);
                 }
             }

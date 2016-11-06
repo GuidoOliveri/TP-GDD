@@ -19,18 +19,20 @@ namespace ClinicaFrba.Clases
             ListaParametros.Add(new SqlParameter("@txt", "%" + filtro + "%"));
 
             SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id_rol, nombre, habilitado FROM NEXTGDD.Rol WHERE nombre like @txt", "T", ListaParametros);
+            
 
             if (lector.HasRows)
             {
                 while (lector.Read())
                 {
                     Rol unRol = new Rol();
-                    unRol.Id = (int)(decimal)lector["id"];
-                    unRol.Nombre = (string)lector["nombre"];
-                    unRol.Habilitado = (bool)lector["habilitado"];
+                    unRol.Id = Int32.Parse(lector["id_rol"].ToString());
+                    unRol.Nombre = lector["nombre"].ToString();
+                    unRol.Habilitado = lector.GetBoolean(2);
                     listaDeRoles.Add(unRol);
                 }
             }
+            lector.Close();
             return listaDeRoles;
         }
 
@@ -48,12 +50,13 @@ namespace ClinicaFrba.Clases
                 while (lector.Read())
                 {
                     Rol unRol = new Rol();
-                    unRol.Id = (int)(decimal)lector["id"];
-                    unRol.Nombre = (string)lector["nombre"];
-                    unRol.Habilitado = (bool)lector["habilitado"];
+                    unRol.Id = Int32.Parse(lector["id_rol"].ToString());
+                    unRol.Nombre = lector["nombre"].ToString();
+                    unRol.Habilitado = lector.GetBoolean(2);
                     listaDeRoles.Add(unRol);
                 }
             }
+            lector.Close();
             return listaDeRoles;
         }
 
@@ -133,12 +136,13 @@ namespace ClinicaFrba.Clases
                 while (lector.Read())
                 {
                     Rol unRol = new Rol();
-                    unRol.Id = ((int)(decimal)lector["id"]);
-                    unRol.Nombre = (string)lector["nombre"];
-                    unRol.Habilitado = (bool)lector["habilitado"];
+                    unRol.Id = Int32.Parse(lector["id_rol"].ToString());
+                    unRol.Nombre = lector["nombre"].ToString();
+                    unRol.Habilitado = lector.GetBoolean(2);
                     listaDeRoles.Add(unRol);
                 }
             }
+            lector.Close();
             return listaDeRoles; ;
         }
 
@@ -155,12 +159,13 @@ namespace ClinicaFrba.Clases
                 while (lector.Read())
                 {
                     Rol unRol = new Rol();
-                    unRol.Id = ((int)(decimal)lector["id"]);
-                    unRol.Nombre = (string)lector["nombre"];
-                    unRol.Habilitado = (bool)lector["habilitado"];
+                    unRol.Id = Int32.Parse(lector["id_rol"].ToString());
+                    unRol.Nombre = lector["nombre"].ToString();
+                    unRol.Habilitado = lector.GetBoolean(2);
                     listaDeRoles.Add(unRol);
                 }
             }
+            lector.Close();
             return listaDeRoles; ;
         }
     }

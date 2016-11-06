@@ -53,5 +53,15 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
+        private void btnModificarAfiliado_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }

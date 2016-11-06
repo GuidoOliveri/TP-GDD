@@ -90,7 +90,6 @@
             this.warning.Size = new System.Drawing.Size(114, 13);
             this.warning.TabIndex = 10;
             this.warning.Text = "Faltan completar datos";
-            this.warning.Visible = false;
             // 
             // frmLogin
             // 
@@ -104,6 +103,7 @@
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.txtUsuario);
             this.Name = "frmLogin";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login de la Clinica Frba";
             this.ResumeLayout(false);
             this.PerformLayout();

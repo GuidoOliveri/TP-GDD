@@ -24,8 +24,8 @@ namespace ClinicaFrba.AbmRol
 
         private void lstSeleccionFuncionalidad_Load(object sender, EventArgs e)
         {
-            try
-            {
+          //  try
+           // {
                 if (unRol != null)
                 {
                     //ME TRAIGO TODAS PARA MOSTRARLAS DESCHEACKEADAS
@@ -46,9 +46,9 @@ namespace ClinicaFrba.AbmRol
                     CheckearFuncionalidades();
                 }
                 txtRol.Text = unRol.Nombre;
-            }
-            catch
-            {MessageBox.Show("Se ha producido un error,vuelva a intentarlo", "Error!", MessageBoxButtons.OK);}
+           // }
+           // catch
+            //{MessageBox.Show("Se ha producido un error,vuelva a intentarlo", "Error!", MessageBoxButtons.OK);}
         }
 
         private void cmdAgregar_Click(object sender, EventArgs e)

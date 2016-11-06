@@ -24,8 +24,8 @@ namespace ClinicaFrba.Clases
             {
                 lector.Read();
                 Id = id;
-                Nombre = ((string)lector["nombre"]);
-                Habilitado = (bool)lector["habilitado"];
+                Nombre = lector["nombre"].ToString();
+                Habilitado = lector.GetBoolean(2);
                 ListaFuncionalidades = Funcionalidades.ObtenerFuncionalidades(Id);
             }
         }

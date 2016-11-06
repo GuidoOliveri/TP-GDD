@@ -60,16 +60,14 @@
             this.lblFechaCambioPlan = new System.Windows.Forms.Label();
             this.txtMotivo = new System.Windows.Forms.TextBox();
             this.lblMotivoCambio = new System.Windows.Forms.Label();
-            this.btnConyuge = new System.Windows.Forms.Button();
-            this.btnHijo = new System.Windows.Forms.Button();
             this.lblAltaFamiliar = new System.Windows.Forms.Label();
-            this.txtNroAfiliado = new System.Windows.Forms.TextBox();
-            this.lblNroAfiliado = new System.Windows.Forms.Label();
             this.txtPlanMedico = new System.Windows.Forms.TextBox();
             this.lblPlanMedico = new System.Windows.Forms.Label();
             this.lblDatosEspecificos = new System.Windows.Forms.Label();
             this.lblAclaracion = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
+            this.txtNroAfiliado = new System.Windows.Forms.TextBox();
+            this.lblNroAfiliado = new System.Windows.Forms.Label();
             this.pnlDatosPersonales.SuspendLayout();
             this.pnlDatosEspecificos.SuspendLayout();
             this.SuspendLayout();
@@ -127,9 +125,9 @@
             // 
             // txtCantFam
             // 
-            this.txtCantFam.Location = new System.Drawing.Point(514, 148);
+            this.txtCantFam.Location = new System.Drawing.Point(469, 148);
             this.txtCantFam.Name = "txtCantFam";
-            this.txtCantFam.Size = new System.Drawing.Size(97, 20);
+            this.txtCantFam.Size = new System.Drawing.Size(149, 20);
             this.txtCantFam.TabIndex = 21;
             // 
             // lblCantFam
@@ -341,8 +339,6 @@
             this.pnlDatosEspecificos.Controls.Add(this.lblFechaCambioPlan);
             this.pnlDatosEspecificos.Controls.Add(this.txtMotivo);
             this.pnlDatosEspecificos.Controls.Add(this.lblMotivoCambio);
-            this.pnlDatosEspecificos.Controls.Add(this.btnConyuge);
-            this.pnlDatosEspecificos.Controls.Add(this.btnHijo);
             this.pnlDatosEspecificos.Controls.Add(this.lblAltaFamiliar);
             this.pnlDatosEspecificos.Controls.Add(this.txtNroAfiliado);
             this.pnlDatosEspecificos.Controls.Add(this.lblNroAfiliado);
@@ -387,49 +383,13 @@
             this.lblMotivoCambio.TabIndex = 17;
             this.lblMotivoCambio.Text = "Motivo cambio de plan:";
             // 
-            // btnConyuge
-            // 
-            this.btnConyuge.Location = new System.Drawing.Point(555, 42);
-            this.btnConyuge.Name = "btnConyuge";
-            this.btnConyuge.Size = new System.Drawing.Size(81, 23);
-            this.btnConyuge.TabIndex = 16;
-            this.btnConyuge.Text = "Conyuge";
-            this.btnConyuge.UseVisualStyleBackColor = true;
-            // 
-            // btnHijo
-            // 
-            this.btnHijo.Location = new System.Drawing.Point(466, 42);
-            this.btnHijo.Name = "btnHijo";
-            this.btnHijo.Size = new System.Drawing.Size(83, 23);
-            this.btnHijo.TabIndex = 15;
-            this.btnHijo.Text = "Hijo";
-            this.btnHijo.UseVisualStyleBackColor = true;
-            // 
             // lblAltaFamiliar
             // 
             this.lblAltaFamiliar.AutoSize = true;
             this.lblAltaFamiliar.Location = new System.Drawing.Point(466, 19);
             this.lblAltaFamiliar.Name = "lblAltaFamiliar";
-            this.lblAltaFamiliar.Size = new System.Drawing.Size(170, 13);
+            this.lblAltaFamiliar.Size = new System.Drawing.Size(0, 13);
             this.lblAltaFamiliar.TabIndex = 14;
-            this.lblAltaFamiliar.Text = "Desea dar de alta a algun familiar?";
-            // 
-            // txtNroAfiliado
-            // 
-            this.txtNroAfiliado.Enabled = false;
-            this.txtNroAfiliado.Location = new System.Drawing.Point(89, 44);
-            this.txtNroAfiliado.Name = "txtNroAfiliado";
-            this.txtNroAfiliado.Size = new System.Drawing.Size(109, 20);
-            this.txtNroAfiliado.TabIndex = 13;
-            // 
-            // lblNroAfiliado
-            // 
-            this.lblNroAfiliado.AutoSize = true;
-            this.lblNroAfiliado.Location = new System.Drawing.Point(10, 45);
-            this.lblNroAfiliado.Name = "lblNroAfiliado";
-            this.lblNroAfiliado.Size = new System.Drawing.Size(67, 13);
-            this.lblNroAfiliado.TabIndex = 12;
-            this.lblNroAfiliado.Text = "*Nro afiliado:";
             // 
             // txtPlanMedico
             // 
@@ -474,6 +434,23 @@
             this.btnVolver.Text = "Volver";
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
+            // 
+            // txtNroAfiliado
+            // 
+            this.txtNroAfiliado.Enabled = false;
+            this.txtNroAfiliado.Location = new System.Drawing.Point(89, 44);
+            this.txtNroAfiliado.Name = "txtNroAfiliado";
+            this.txtNroAfiliado.Size = new System.Drawing.Size(109, 20);
+            this.txtNroAfiliado.TabIndex = 13;
+            // 
+            // lblNroAfiliado
+            // 
+            this.lblNroAfiliado.AutoSize = true;
+            this.lblNroAfiliado.Location = new System.Drawing.Point(10, 45);
+            this.lblNroAfiliado.Name = "lblNroAfiliado";
+            this.lblNroAfiliado.Size = new System.Drawing.Size(67, 13);
+            this.lblNroAfiliado.TabIndex = 12;
+            this.lblNroAfiliado.Text = "*Nro afiliado:";
             // 
             // frmAltaAfiliado
             // 
@@ -529,18 +506,16 @@
         private System.Windows.Forms.Label lblCantFam;
         private System.Windows.Forms.Panel pnlDatosEspecificos;
         private System.Windows.Forms.Label lblDatosEspecificos;
-        private System.Windows.Forms.TextBox txtNroAfiliado;
-        private System.Windows.Forms.Label lblNroAfiliado;
         private System.Windows.Forms.TextBox txtPlanMedico;
         private System.Windows.Forms.Label lblPlanMedico;
         private System.Windows.Forms.Label lblAclaracion;
-        private System.Windows.Forms.Button btnConyuge;
-        private System.Windows.Forms.Button btnHijo;
         private System.Windows.Forms.Label lblAltaFamiliar;
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.Label lblFechaCambioPlan;
         private System.Windows.Forms.TextBox txtMotivo;
         private System.Windows.Forms.Label lblMotivoCambio;
         private System.Windows.Forms.DateTimePicker dtpFechaCambioPlan;
+        private System.Windows.Forms.TextBox txtNroAfiliado;
+        private System.Windows.Forms.Label lblNroAfiliado;
     }
 }

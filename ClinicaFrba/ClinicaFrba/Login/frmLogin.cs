@@ -17,6 +17,7 @@ namespace ClinicaFrba.Login
         public frmLogin()
         {
             InitializeComponent();
+            warning.Visible = false;
         }
         private int intentosFallidos = 0;
         private SqlConnection conn = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");

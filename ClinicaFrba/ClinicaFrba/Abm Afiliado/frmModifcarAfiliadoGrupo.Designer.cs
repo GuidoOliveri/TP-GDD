@@ -46,8 +46,6 @@
             this.listaDeAfiliados = new ClinicaFrba.ListaDeAfiliados();
             this.listaDeAfiliadosBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.afiliadoBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.afiliadoTableAdapter = new ClinicaFrba.ListaDeAfiliadosTableAdapters.AfiliadoTableAdapter();
             this.nroafiliadoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cantfamiliaresDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.codplanDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,6 +55,8 @@
             this.idpersonaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.grupoafiliadoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.integrantegrupoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.afiliadoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.afiliadoTableAdapter = new ClinicaFrba.ListaDeAfiliadosTableAdapters.AfiliadoTableAdapter();
             this.pnlFiltroBusqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listaDeAfiliados)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.listaDeAfiliadosBindingSource)).BeginInit();
@@ -171,6 +171,7 @@
             this.btnBuscar.TabIndex = 2;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // btnModificarAfiliado
             // 
@@ -180,6 +181,7 @@
             this.btnModificarAfiliado.TabIndex = 4;
             this.btnModificarAfiliado.Text = "ModificarAfiliado";
             this.btnModificarAfiliado.UseVisualStyleBackColor = true;
+            this.btnModificarAfiliado.Click += new System.EventHandler(this.btnModificarAfiliado_Click);
             // 
             // btnVolver
             // 
@@ -222,16 +224,6 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(535, 150);
             this.dataGridView1.TabIndex = 6;
-            // 
-            // afiliadoBindingSource
-            // 
-            this.afiliadoBindingSource.DataMember = "Afiliado";
-            this.afiliadoBindingSource.DataSource = this.listaDeAfiliadosBindingSource;
-            this.afiliadoBindingSource.CurrentChanged += new System.EventHandler(this.afiliadoBindingSource_CurrentChanged);
-            // 
-            // afiliadoTableAdapter
-            // 
-            this.afiliadoTableAdapter.ClearBeforeFill = true;
             // 
             // nroafiliadoDataGridViewTextBoxColumn
             // 
@@ -286,6 +278,16 @@
             this.integrantegrupoDataGridViewTextBoxColumn.DataPropertyName = "integrante_grupo";
             this.integrantegrupoDataGridViewTextBoxColumn.HeaderText = "integrante_grupo";
             this.integrantegrupoDataGridViewTextBoxColumn.Name = "integrantegrupoDataGridViewTextBoxColumn";
+            // 
+            // afiliadoBindingSource
+            // 
+            this.afiliadoBindingSource.DataMember = "Afiliado";
+            this.afiliadoBindingSource.DataSource = this.listaDeAfiliadosBindingSource;
+            this.afiliadoBindingSource.CurrentChanged += new System.EventHandler(this.afiliadoBindingSource_CurrentChanged);
+            // 
+            // afiliadoTableAdapter
+            // 
+            this.afiliadoTableAdapter.ClearBeforeFill = true;
             // 
             // frmModifcarAfiliado
             // 

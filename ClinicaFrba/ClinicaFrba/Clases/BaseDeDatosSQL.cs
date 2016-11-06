@@ -16,17 +16,17 @@ namespace ClinicaFrba.Clases
 {
     public class BaseDeDatosSQL
     {
-        private static SqlConnection _conexion = new SqlConnection();
-        private SqlConnection conexion = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+        //private static SqlConnection _conexion = new SqlConnection();
+        private static SqlConnection conexion = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
 
         public static SqlConnection ObtenerConexion()
         {
-            if (_conexion.State == ConnectionState.Closed)
+            if (conexion.State == ConnectionState.Closed)
             {
-                _conexion.ConnectionString = ConfigurationSettings.AppSettings["ConnectionString"];
-                _conexion.Open();
+                conexion.ConnectionString = ConfigurationSettings.AppSettings["ConnectionString"];
+                conexion.Open();
             }
-            return _conexion;
+            return conexion;
         }
 
         public static SqlDataReader ObtenerDataReader(string commandtext, string commandtype, List<SqlParameter> ListaParametro)
@@ -52,7 +52,9 @@ namespace ClinicaFrba.Clases
                     comando.CommandType = CommandType.StoredProcedure;
                     break;
             }
-            return comando.ExecuteReader();
+            SqlDataReader reader = comando.ExecuteReader();
+            //comando.Connection.Close();
+            return reader;
         }
 
 

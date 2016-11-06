@@ -34,8 +34,9 @@
             this.cmdLimpiar = new System.Windows.Forms.Button();
             this.cmdBuscar = new System.Windows.Forms.Button();
             this.grillaRoles = new System.Windows.Forms.DataGridView();
-            this.cmdOperacion = new System.Windows.Forms.Button();
             this.btnVolver = new System.Windows.Forms.Button();
+            this.cmdModificar = new System.Windows.Forms.Button();
+            this.cmdBaja = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grillaRoles)).BeginInit();
             this.SuspendLayout();
@@ -97,19 +98,9 @@
             this.grillaRoles.Size = new System.Drawing.Size(435, 152);
             this.grillaRoles.TabIndex = 4;
             // 
-            // cmdOperacion
-            // 
-            this.cmdOperacion.Location = new System.Drawing.Point(123, 346);
-            this.cmdOperacion.Name = "cmdOperacion";
-            this.cmdOperacion.Size = new System.Drawing.Size(93, 23);
-            this.cmdOperacion.TabIndex = 7;
-            this.cmdOperacion.Text = "Operación";
-            this.cmdOperacion.UseVisualStyleBackColor = true;
-            this.cmdOperacion.Click += new System.EventHandler(this.cmdOperacion_Click);
-            // 
             // btnVolver
             // 
-            this.btnVolver.Location = new System.Drawing.Point(245, 346);
+            this.btnVolver.Location = new System.Drawing.Point(316, 347);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(93, 23);
             this.btnVolver.TabIndex = 8;
@@ -117,13 +108,34 @@
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
+            // cmdModificar
+            // 
+            this.cmdModificar.Location = new System.Drawing.Point(198, 347);
+            this.cmdModificar.Name = "cmdModificar";
+            this.cmdModificar.Size = new System.Drawing.Size(86, 23);
+            this.cmdModificar.TabIndex = 9;
+            this.cmdModificar.Text = "Modificar";
+            this.cmdModificar.UseVisualStyleBackColor = true;
+            this.cmdModificar.Click += new System.EventHandler(this.cmdModificar_Click);
+            // 
+            // cmdBaja
+            // 
+            this.cmdBaja.Location = new System.Drawing.Point(64, 347);
+            this.cmdBaja.Name = "cmdBaja";
+            this.cmdBaja.Size = new System.Drawing.Size(86, 22);
+            this.cmdBaja.TabIndex = 10;
+            this.cmdBaja.Text = "Baja";
+            this.cmdBaja.UseVisualStyleBackColor = true;
+            this.cmdBaja.Click += new System.EventHandler(this.cmdBaja_Click);
+            // 
             // frmSeleccionRolBajaOModificacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(516, 381);
+            this.Controls.Add(this.cmdBaja);
+            this.Controls.Add(this.cmdModificar);
             this.Controls.Add(this.btnVolver);
-            this.Controls.Add(this.cmdOperacion);
             this.Controls.Add(this.grillaRoles);
             this.Controls.Add(this.cmdBuscar);
             this.Controls.Add(this.cmdLimpiar);
@@ -146,7 +158,8 @@
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.Label lblNombreRol;
         private System.Windows.Forms.DataGridView grillaRoles;
-        private System.Windows.Forms.Button cmdOperacion;
         private System.Windows.Forms.Button btnVolver;
+        private System.Windows.Forms.Button cmdModificar;
+        private System.Windows.Forms.Button cmdBaja;
     }
 }
