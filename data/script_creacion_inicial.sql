@@ -600,7 +600,7 @@ DECLARE @plan_viejo numeric (18,0)
 END
 GO
 
-CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100))
+CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smallint)
  AS 
   BEGIN
 
@@ -608,7 +608,7 @@ CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100))
   
      BEGIN
 
-	      IF ( SELECT password FROM NEXTGDD.Usuario WHERE username = @user) = HASHBYTES('SHA2_256', @pass)
+	    IF ( SELECT password FROM NEXTGDD.Usuario WHERE username = @user) = HASHBYTES('SHA2_256', @pass)
 		    BEGIN
 			  UPDATE NEXTGDD.Usuario
               SET logins_fallidos = 0
@@ -623,7 +623,7 @@ CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100))
            
 		  ELSE
 		   BEGIN 
-			PRINT 'CONTRASENA INCORRECTA'	   
+		  --PRINT 'CONTRASENA INCORRECTA'	   
 			--Agrego un login fallido
             UPDATE NEXTGDD.Usuario
             SET logins_fallidos = logins_fallidos + 1
@@ -635,12 +635,15 @@ CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100))
            SET habilitado = 0
            WHERE username = @user
            AND logins_fallidos = 3
+		   
+		   SET @ret = -2
+		   
 		   END
         END
 
    ELSE
-	    PRINT 'NO EXISTE EL USUARIO o EL USUARIO ESTA INHABILITADO'
-
+	    --PRINT 'NO EXISTE EL USUARIO o EL USUARIO ESTA INHABILITADO'
+		SET @ret= -1
 END
 GO
 
@@ -1261,14 +1264,14 @@ INSERT INTO NEXTGDD.Funcionalidad (nombre)
 	VALUES ('ABM de roles'),
 	       ('ABM de afiliados'),
 	       ('ABM de profesionales'),
+		   ('ABM de usuarios'),
 	       ('ABM de especialidades medicas'),
 	       ('ABM de planes'),
 		   ('Compra de bonos'),
 	       ('Pedido de turno'),
 	       ('Registrar agenda profesional'),		 
 	       ('Registro de llegada para atencion medica'),
-	       ('Registro de resultado para atencion medica'),
-	       ('Registrar diagnostico'),
+	       ('Registro de resultado para atencion medica'),	       
 	       ('Cancelar atencion medica'),
 	       ('Consultar listado estadistico')
 GO
