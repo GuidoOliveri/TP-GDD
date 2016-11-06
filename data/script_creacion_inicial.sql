@@ -367,6 +367,9 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modif
     DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Telef
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.DarDeBajaRol'))
+    DROP PROCEDURE NEXTGDD.DarDeBajaRol
+GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Afiliado_Mail'))
     DROP PROCEDURE NEXTGDD.Modificar_Afiliado_Mail
 GO
@@ -724,14 +727,14 @@ BEGIN
 /*DROP PROCEDURE NEXTGDD.crearTurno*/
 
 
-CREATE PROCEDURE NEXTGDD.agregar_funcionalidad(@id_rol tinyint, @func varchar(255)) AS
+CREATE PROCEDURE NEXTGDD.agregar_funcionalidad(@rol varchar(255), @func varchar(255)) AS
 BEGIN
 	INSERT INTO NEXTGDD.Funcionalidad_X_Rol(id_rol,id_funcionalidad )
-		VALUES (@id_rol, (SELECT id_funcionalidad FROM NEXTGDD.Funcionalidad WHERE nombre = @func))
+		VALUES ((SELECT id_rol FROM NEXTGDD.Rol WHERE nombre = @rol), (SELECT id_funcionalidad FROM NEXTGDD.Funcionalidad WHERE nombre = @func))
 END
 GO
 
-CREATE PROCEDURE NEXTGDD.agregar_Rol(@nombreRol varchar(255), @ret numeric(18,0) output)
+CREATE PROCEDURE NEXTGDD.agregar_Rol(@nombreRol varchar(255), @ret smallint output)
 AS BEGIN
 
 IF NOT EXISTS ( SELECT * FROM NEXTGDD.Rol WHERE nombre = @nombreRol)
@@ -744,7 +747,7 @@ ELSE
 END
 GO
 
-CREATE PROCEDURE NEXTGDD.Modificar_Nombre_Rol(@id_rol tinyint,@nuevo_nombreRol varchar(255), @ret numeric(18,0) output)
+CREATE PROCEDURE NEXTGDD.Modificar_Nombre_Rol(@id_rol tinyint,@nuevo_nombreRol varchar(255), @ret smallint output)
 AS BEGIN
 
 IF NOT EXISTS ( SELECT * FROM NEXTGDD.Rol WHERE nombre = @nuevo_nombreRol)
@@ -758,6 +761,42 @@ ELSE
 END
 GO
 
+
+CREATE PROCEDURE NEXTGDD.DarDeBajaRol(@id_rol tinyint, @ret smallint output)
+AS BEGIN
+
+IF EXISTS ( SELECT * FROM NEXTGDD.Rol WHERE id_rol= @id_rol)
+   BEGIN TRY
+	BEGIN TRANSACTION
+			
+	UPDATE  NEXTGDD.Rol 
+	SET habilitado = 0
+	WHERE id_rol= @id_rol
+	
+
+	DELETE NEXTGDD.Usuario_X_Rol
+	WHERE id_rol =@id_rol
+
+	COMMIT TRANSACTION
+    SET @ret =0
+  END TRY
+  
+  BEGIN CATCH
+    ROLLBACK TRANSACTION
+    -- No hago nada si hubo un error 
+    SET @ret =-1
+  END CATCH
+
+END
+GO
+/*
+SELECT * FROM NEXTGDD.Rol
+SELECT * FROM NEXTGDD.Usuario_X_Rol
+
+DECLARE @ret numeric (18,0)
+EXEC NEXTGDD.DarDeBajaRol 1,@ret output
+PRINT @ret
+*/
 CREATE PROCEDURE NEXTGDD.agregar_usuario (@username VARCHAR(50), @password VARCHAR(255), @codigo_rol TINYINT, @habilitado BIT,  @id_persona INT) 
 AS BEGIN
   /* Intenta crear un usuario con los datos especificados Para eso debe crear una entrada en la tabla Usuario y una en la table Usuario_X_Rol
