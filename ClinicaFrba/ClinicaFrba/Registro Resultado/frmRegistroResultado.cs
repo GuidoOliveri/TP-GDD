@@ -161,5 +161,10 @@ namespace ClinicaFrba.Registro_Resultado
         {
 
         }
+
+        private void cmbConsulta_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

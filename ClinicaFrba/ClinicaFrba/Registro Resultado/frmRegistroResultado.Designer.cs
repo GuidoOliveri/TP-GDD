@@ -118,6 +118,7 @@
             this.cmbConsulta.Name = "cmbConsulta";
             this.cmbConsulta.Size = new System.Drawing.Size(173, 21);
             this.cmbConsulta.TabIndex = 6;
+            this.cmbConsulta.SelectedIndexChanged += new System.EventHandler(this.cmbConsulta_SelectedIndexChanged);
             // 
             // label6
             // 

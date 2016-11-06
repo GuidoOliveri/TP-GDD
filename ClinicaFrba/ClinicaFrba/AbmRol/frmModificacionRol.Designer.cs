@@ -113,6 +113,7 @@
             this.Controls.Add(this.cmdAgregar);
             this.Controls.Add(this.grillaFuncionalidades);
             this.Name = "frmModificacionRol";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modificación de Rol";
             this.Load += new System.EventHandler(this.lstSeleccionFuncionalidad_Load);
             this.groupBox2.ResumeLayout(false);

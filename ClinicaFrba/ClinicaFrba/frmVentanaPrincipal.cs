@@ -24,5 +24,17 @@ namespace ClinicaFrba
         }
 
         public Usuario User { get; set; }
+
+        private void cmdIngresar_Click(object sender, EventArgs e)
+        {
+            Login.frmLogin ingresa = new Login.frmLogin();
+            this.Hide();
+            ingresa.Show();
+        }
+
+        private void cmdSalir_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -56,7 +56,7 @@
             // 
             // btnIniciarSesion
             // 
-            this.btnIniciarSesion.Location = new System.Drawing.Point(105, 124);
+            this.btnIniciarSesion.Location = new System.Drawing.Point(162, 124);
             this.btnIniciarSesion.Name = "btnIniciarSesion";
             this.btnIniciarSesion.Size = new System.Drawing.Size(142, 23);
             this.btnIniciarSesion.TabIndex = 7;
@@ -85,7 +85,7 @@
             // 
             this.warning.AutoSize = true;
             this.warning.ForeColor = System.Drawing.Color.Red;
-            this.warning.Location = new System.Drawing.Point(275, 127);
+            this.warning.Location = new System.Drawing.Point(333, 129);
             this.warning.Name = "warning";
             this.warning.Size = new System.Drawing.Size(114, 13);
             this.warning.TabIndex = 10;

@@ -53,6 +53,16 @@ namespace ClinicaFrba.Clases
                     break;
             }
             SqlDataReader reader = comando.ExecuteReader();
+            /*if(reader.Hasrows)
+                {
+                While(reader.READ())
+                {
+                    elemento.PropiedadString=reader.GetString(0);
+                    elemento.PropiedadInteger=reader.GetInt32(1);
+                    TuLista_DE_Objetos.ADD(elemento)
+                }
+            }
+            reader.Close();*/
             //comando.Connection.Close();
             return reader;
         }

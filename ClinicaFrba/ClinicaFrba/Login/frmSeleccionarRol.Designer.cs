@@ -46,7 +46,7 @@
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(348, 191);
+            this.btnAceptar.Location = new System.Drawing.Point(335, 191);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(133, 41);
             this.btnAceptar.TabIndex = 1;
@@ -63,14 +63,14 @@
             "3- Profesional",
             "",
             ""});
-            this.cboRoles.Location = new System.Drawing.Point(118, 120);
+            this.cboRoles.Location = new System.Drawing.Point(114, 106);
             this.cboRoles.Name = "cboRoles";
             this.cboRoles.Size = new System.Drawing.Size(295, 21);
             this.cboRoles.TabIndex = 2;
             // 
             // btnVolverMenuPrincipal
             // 
-            this.btnVolverMenuPrincipal.Location = new System.Drawing.Point(63, 191);
+            this.btnVolverMenuPrincipal.Location = new System.Drawing.Point(70, 191);
             this.btnVolverMenuPrincipal.Name = "btnVolverMenuPrincipal";
             this.btnVolverMenuPrincipal.Size = new System.Drawing.Size(149, 41);
             this.btnVolverMenuPrincipal.TabIndex = 3;

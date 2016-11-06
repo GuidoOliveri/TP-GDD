@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.lblDecision = new System.Windows.Forms.Label();
-            this.btnAgregarRol = new System.Windows.Forms.Button();
+            this.cmdAgregarNuevoRol = new System.Windows.Forms.Button();
             this.btnSeleccionRol = new System.Windows.Forms.Button();
             this.btnVolverALoguearse = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -38,27 +38,27 @@
             // 
             this.lblDecision.AutoSize = true;
             this.lblDecision.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDecision.Location = new System.Drawing.Point(131, 28);
+            this.lblDecision.Location = new System.Drawing.Point(198, 29);
             this.lblDecision.Name = "lblDecision";
             this.lblDecision.Size = new System.Drawing.Size(232, 25);
             this.lblDecision.TabIndex = 0;
             this.lblDecision.Text = "Qué desea realizar? ";
             // 
-            // btnAgregarRol
+            // cmdAgregarNuevoRol
             // 
-            this.btnAgregarRol.Location = new System.Drawing.Point(26, 124);
-            this.btnAgregarRol.Name = "btnAgregarRol";
-            this.btnAgregarRol.Size = new System.Drawing.Size(117, 48);
-            this.btnAgregarRol.TabIndex = 1;
-            this.btnAgregarRol.Text = "Agregar Nuevo Rol";
-            this.btnAgregarRol.UseVisualStyleBackColor = true;
-            this.btnAgregarRol.Click += new System.EventHandler(this.btnAgregarRol_Click);
+            this.cmdAgregarNuevoRol.Location = new System.Drawing.Point(95, 100);
+            this.cmdAgregarNuevoRol.Name = "cmdAgregarNuevoRol";
+            this.cmdAgregarNuevoRol.Size = new System.Drawing.Size(99, 46);
+            this.cmdAgregarNuevoRol.TabIndex = 1;
+            this.cmdAgregarNuevoRol.Text = "Agregar Nuevo Rol";
+            this.cmdAgregarNuevoRol.UseVisualStyleBackColor = true;
+            this.cmdAgregarNuevoRol.Click += new System.EventHandler(this.btnAgregarRol_Click);
             // 
             // btnSeleccionRol
             // 
-            this.btnSeleccionRol.Location = new System.Drawing.Point(174, 126);
+            this.btnSeleccionRol.Location = new System.Drawing.Point(244, 100);
             this.btnSeleccionRol.Name = "btnSeleccionRol";
-            this.btnSeleccionRol.Size = new System.Drawing.Size(137, 46);
+            this.btnSeleccionRol.Size = new System.Drawing.Size(102, 46);
             this.btnSeleccionRol.TabIndex = 2;
             this.btnSeleccionRol.Text = "Seleccionar Rol A Modificar";
             this.btnSeleccionRol.UseVisualStyleBackColor = true;
@@ -66,11 +66,11 @@
             // 
             // btnVolverALoguearse
             // 
-            this.btnVolverALoguearse.Location = new System.Drawing.Point(355, 124);
+            this.btnVolverALoguearse.Location = new System.Drawing.Point(404, 98);
             this.btnVolverALoguearse.Name = "btnVolverALoguearse";
-            this.btnVolverALoguearse.Size = new System.Drawing.Size(125, 48);
+            this.btnVolverALoguearse.Size = new System.Drawing.Size(126, 48);
             this.btnVolverALoguearse.TabIndex = 3;
-            this.btnVolverALoguearse.Text = "Volver a Loguearse";
+            this.btnVolverALoguearse.Text = "Volver a Funcionalidades";
             this.btnVolverALoguearse.UseVisualStyleBackColor = true;
             this.btnVolverALoguearse.Click += new System.EventHandler(this.btnVolverALoguearse_Click);
             // 
@@ -78,14 +78,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(506, 245);
+            this.ClientSize = new System.Drawing.Size(587, 214);
             this.Controls.Add(this.btnVolverALoguearse);
             this.Controls.Add(this.btnSeleccionRol);
-            this.Controls.Add(this.btnAgregarRol);
+            this.Controls.Add(this.cmdAgregarNuevoRol);
             this.Controls.Add(this.lblDecision);
             this.Name = "frmElegirAccionRol";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Elegir Acción Rol";
+            this.Load += new System.EventHandler(this.frmElegirAccionRol_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -94,7 +95,7 @@
         #endregion
 
         private System.Windows.Forms.Label lblDecision;
-        private System.Windows.Forms.Button btnAgregarRol;
+        private System.Windows.Forms.Button cmdAgregarNuevoRol;
         private System.Windows.Forms.Button btnSeleccionRol;
         private System.Windows.Forms.Button btnVolverALoguearse;
     }

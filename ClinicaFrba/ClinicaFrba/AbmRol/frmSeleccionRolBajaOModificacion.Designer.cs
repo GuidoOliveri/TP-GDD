@@ -141,6 +141,7 @@
             this.Controls.Add(this.cmdLimpiar);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmSeleccionRolBajaOModificacion";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Selección de Rol para Baja o Modificación";
             this.Load += new System.EventHandler(this.lstSeleccionRol_Load);
             this.groupBox1.ResumeLayout(false);

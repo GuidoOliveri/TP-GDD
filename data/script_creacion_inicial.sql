@@ -608,11 +608,12 @@ GO
  AND U.username = R_U.username 
  */
 
+
 CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smallint output)
  AS 
   BEGIN
 
-  IF EXISTS( SELECT * FROM NEXTGDD.Usuario   WHERE username = @user AND habilitado = 1)
+  IF EXISTS( SELECT 1 FROM NEXTGDD.Usuario   WHERE username = @user AND habilitado = 1)
   
      BEGIN
 
@@ -621,7 +622,7 @@ CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smal
 			  UPDATE NEXTGDD.Usuario
               SET logins_fallidos = 0
               WHERE username = @user
-				     
+				set @ret = 0
 			END
            
 		  ELSE

@@ -33,9 +33,19 @@ namespace ClinicaFrba.AbmRol
 
         private void btnVolverALoguearse_Click(object sender, EventArgs e)
         {
-            Login.frmLogin loguin = new Login.frmLogin();
+            Login.frmMenuDeAbms menu = new Login.frmMenuDeAbms();
             this.Hide();
-            loguin.Show();
+            menu.Show();
+
+        }
+
+        private void cmdAbmAfiliados_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void frmElegirAccionRol_Load(object sender, EventArgs e)
+        {
 
         }
     }

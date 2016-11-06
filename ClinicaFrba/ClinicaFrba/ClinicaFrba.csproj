@@ -104,10 +104,16 @@
     <Compile Include="AbmRol\frmElegirAccionRol.Designer.cs">
       <DependentUpon>frmElegirAccionRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\frmSeleccionarRol.cs">
+    <Compile Include="Login\frmMenuDeAbms.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\frmSeleccionarRol.Designer.cs">
+    <Compile Include="Login\frmMenuDeAbms.Designer.cs">
+      <DependentUpon>frmMenuDeAbms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login\frmSeleccionarRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\frmSeleccionarRol.Designer.cs">
       <DependentUpon>frmSeleccionarRol.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\frmModificacionRol.cs">
@@ -255,7 +261,13 @@
     <EmbeddedResource Include="AbmRol\frmElegirAccionRol.resx">
       <DependentUpon>frmElegirAccionRol.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRol\frmSeleccionarRol.resx">
+    <EmbeddedResource Include="frmVentanaPrincipal.resx">
+      <DependentUpon>frmVentanaPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\frmMenuDeAbms.resx">
+      <DependentUpon>frmMenuDeAbms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\frmSeleccionarRol.resx">
       <DependentUpon>frmSeleccionarRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\frmModificacionRol.resx">
