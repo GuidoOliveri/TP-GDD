@@ -21,6 +21,8 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         private string diaHasta = "";
         private string horaDesde = "";
         private string horaHasta = "";
+        private string fechaDesde = "";
+        private string fechaHasta = "";
         private List<string> horarios = new List<string>();
         private List<string> dias = new List<string>();
 
@@ -42,13 +44,18 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona order by (p.nombre+' '+p.apellido) ASC";
             cargar(bdd.ObtenerLista(comando,"nombre"), cmbProfesional);
 
+            //cargarGrilla();
+
             cmbProfesional.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbEspecialidad.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbDiaDesde.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbDiaHasta.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbHorarioDesde.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbHorarioHasta.SelectedIndexChanged += OnSelectedIndexChanged;
-            btnIngresar.Click += new EventHandler(btnIngresar_Click);
+           // dgRangoAtencion.CellValueChanged += new DataGridViewCellEventHandler(dgRangoAtencion_CellContentClick);
+            dpFechaDesde.ValueChanged += new EventHandler(dpFechaDesde_ValueChanged);
+            btnAgregar.Click += new EventHandler(btn_Click);
+            btnIngresar.Click += new EventHandler(btn_Click);
 
         }
 
@@ -74,7 +81,34 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 dt=dt.AddMinutes(30);
             }
         }
+/*
+        private void cargarGrilla()
+        {
+            DataGridViewComboBoxColumn dgDiaDesde = new DataGridViewComboBoxColumn();
+            dgDiaDesde.DataSource = dias;
+            dgDiaDesde.HeaderText = "Dia (Desde)";
+            dgDiaDesde.DataPropertyName = "Dia (Desde)";
+            dgRangoAtencion.Columns.AddRange(dgDiaDesde);
 
+            DataGridViewComboBoxColumn dgDiaHasta = new DataGridViewComboBoxColumn();
+            dgDiaHasta.DataSource = dias;
+            dgDiaHasta.HeaderText = "Dia (Hasta)";
+            dgDiaHasta.DataPropertyName = "Dia (Hasta)";
+            dgRangoAtencion.Columns.AddRange(dgDiaHasta);
+
+            DataGridViewComboBoxColumn dgHoraDesde = new DataGridViewComboBoxColumn();
+            dgHoraDesde.DataSource = horarios;
+            dgHoraDesde.HeaderText = "Hora (Desde)";
+            dgHoraDesde.DataPropertyName = "Hora (Desde)";
+            dgRangoAtencion.Columns.AddRange(dgHoraDesde);
+
+            DataGridViewComboBoxColumn dgHoraHasta = new DataGridViewComboBoxColumn();
+            dgHoraHasta.DataSource = horarios;
+            dgHoraHasta.HeaderText = "Hora (Hasta)";
+            dgHoraHasta.DataPropertyName = "Hora (Hasta)";
+            dgRangoAtencion.Columns.AddRange(dgHoraHasta);
+        }
+*/
         private void cargar(List<string> lista, ComboBox cmb)
         {
             foreach (string elemento in lista)
@@ -121,42 +155,61 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             }
         }
 
-        private void btnIngresar_Click(object sender, EventArgs e)
+        private void dpFechaDesde_ValueChanged(object sender, EventArgs e)
         {
-            especialidad = (string) cmbEspecialidad.SelectedItem;
-            diaHasta = (string)cmbDiaHasta.SelectedItem;
-            horaHasta = (string)cmbHorarioHasta.SelectedItem;
-            verificarRangoHospital();
-            verificarQueNoExista();
-            if (especialidad != "" && profesional != "" && diaDesde != "" && diaHasta!="" && horaDesde!="" && horaHasta!="" && warning1.Visible==false && warning2.Visible==false)
-            {
-                //FALTA CREAR EL STORED PROCEDURE
-                //Clases.BaseDeDatosSQL.ExecStoredProcedure2(comando, conexion);
+            dpFechaHasta.MinDate = dpFechaDesde.Value;
+        }
 
-                frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(bdd);
-                NewForm.Show();
-                this.Dispose(false);
+        private void btn_Click(object sender, EventArgs e)
+        {
+            if (((Button)sender).Text.Equals(btnAgregar.Text))
+            {
+                diaHasta = (string)cmbDiaHasta.SelectedItem;
+                horaHasta = (string)cmbHorarioHasta.SelectedItem;
+                verificarRangoHospital();
+                if(warning1.Visible==false)
+                {
+                    dgRangoAtencion.Rows.Add(diaDesde, diaHasta, horaDesde, horaHasta);
+                }
 
             }
-            else
+            if (((Button)sender).Text.Equals(btnIngresar.Text))
             {
-                warning2.Visible = true;
+                especialidad = (string)cmbEspecialidad.SelectedItem;
+                diaHasta = (string)cmbDiaHasta.SelectedItem;
+                horaHasta = (string)cmbHorarioHasta.SelectedItem;
+                fechaDesde =dpFechaDesde.Value.Date.ToString();
+                fechaHasta = dpFechaHasta.Value.Date.ToString();
+                if (especialidad != "" && profesional != "" && dgRangoAtencion.Rows.Count!=0 && fechaDesde!="" && fechaHasta!="" && warning1.Visible == false && warning2.Visible == false)
+                {
+                    //FALTA CREAR EL STORED PROCEDURE
+                    //Clases.BaseDeDatosSQL.ExecStoredProcedure2(comando, conexion);
+
+                    frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(bdd);
+                    NewForm.Show();
+                    this.Dispose(false);
+                }
+                else
+                {
+                    warning2.Visible = true;
+                }
             }
 
         }
 
-
         //0:Lunes 1:Martes 2:Miercoles 3:Jueves 4:Viernes 5:Sabado 
         private void verificarRangoHospital()
         {
-            if (cmbDiaHasta.SelectedIndex <= 4)
+            int dia;
+            for (dia = 0; (dia < 6) && dias.ElementAt(dia)!=(string)cmbDiaHasta.SelectedItem; dia++) { };
+            if (dia <= 4)
             {
                 warning1.Visible = false;
             }
-            else 
+            else
             {
-                if (DateTime.Compare(DateTime.Parse("2000/02/20 " + horaDesde+":00"),DateTime.Parse("2000/02/20 10:00:00"))>0
-                    && DateTime.Compare(DateTime.Parse("2000/02/20 " + horaHasta+":00"), DateTime.Parse("2000/02/20 15:00:00"))<0)
+                if (DateTime.Compare(DateTime.Parse("2000/02/20 " + horaDesde + ":00"), DateTime.Parse("2000/02/20 10:00:00")) > 0
+                    && DateTime.Compare(DateTime.Parse("2000/02/20 " + horaHasta + ":00"), DateTime.Parse("2000/02/20 15:00:00")) < 0)
                 {
                     warning1.Visible = false;
                 }
@@ -167,18 +220,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             }
         }
 
-        private void verificarQueNoExista()
-        {
-            comando = "select isnull(count(*),0) from NEXTGDD.Rango_Atencion r,NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p where (p.nombre+' '+p.apellido) LIKE '"+profesional+"' and p.id_persona=pr.id_persona and a.matricula=pr.matricula and r.cod_agenda=a.cod_agenda and r.dia_semanal_inicial LIKE '"+diaDesde+"' and r.dia_semanal_final LIKE '"+diaHasta+"' and hora_inicial LIKE '"+horaDesde+"' and hora_final LIKE '"+horaHasta+"'";
-            if (bdd.validarCampo(comando))
-            {
-                warning1.Visible = true;
-            }
-            else
-            {
-                warning1.Visible=false;
-            }
-        }
 
         private void frmRegistrarAgendaMedico_Load(object sender, EventArgs e)
         {
@@ -201,5 +242,33 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         {
 
         }
+
+        private void dgRangoAtencion_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            
+            /*
+            string a = "";
+            a = (string)dgRangoAtencion.CurrentCell.Value;
+            if (a != null)
+            {
+                Console.Write(a);
+            }
+            int nroColumna=dgRangoAtencion.CurrentCell.ColumnIndex;
+            int nroFila = dgRangoAtencion.CurrentCell.RowIndex;
+            if (nroColumna == 0)
+            {
+                DataGridViewComboBoxColumn dgDiaDesde = new DataGridViewComboBoxColumn();
+                dgRangoAtencion[nroFila, nroColumna + 1].;
+                dgRangoAtencion[nroFila, nroColumna + 1].DataSource = dias;
+            }
+             * */
+            //if(dgRangoAtencion.CurrentCell.Value)
+        }
+
+        private void btnAgregar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
