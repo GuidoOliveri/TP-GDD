@@ -600,7 +600,15 @@ DECLARE @plan_viejo numeric (18,0)
 END
 GO
 
-CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smallint)
+/* 
+ SELECT  R_U.id_rol
+ FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U
+ WHERE R_U.id_rol = R.id_rol
+ AND U.username = @user
+ AND U.username = R_U.username 
+ */
+
+CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smallint output)
  AS 
   BEGIN
 
@@ -613,12 +621,7 @@ CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smal
 			  UPDATE NEXTGDD.Usuario
               SET logins_fallidos = 0
               WHERE username = @user
-				 
-			  SELECT  R_U.id_rol
-              FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U
-              WHERE R_U.id_rol = R.id_rol
-              AND U.username = @user
-              AND U.username = R_U.username 	     
+				     
 			END
            
 		  ELSE
