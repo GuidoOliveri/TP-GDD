@@ -9,11 +9,14 @@ using System.Windows.Forms;
 using ClinicaFrba.Clases;
 using System.Security.Cryptography;
 using System.Data.SqlClient;
+using ClinicaFrba.AbmRol;
 
 namespace ClinicaFrba.Login
 {
     public partial class frmLogin : Form
     {
+        private string query = ""; 
+        
         public frmLogin()
         {
             InitializeComponent();
@@ -53,15 +56,35 @@ namespace ClinicaFrba.Login
 
             SqlDataReader dr = command.ExecuteReader();
             dr.Read();
+            dr.Close();
 
             int resu = Int32.Parse(parNumero.Value.ToString());
            
             if (resu.Equals(0))
             {
                 MessageBox.Show("Logueo exitoso! Entrando al sistema...", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                frmMenuDeAbms elegiaccion = new frmMenuDeAbms();
-                this.Hide();
-                elegiaccion.Show();
+                
+                query = "SELECT  R.nombre as nom FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U WHERE R_U.id_rol = R.id_rol AND U.username = @user AND U.username = R_U.username ";
+                SqlCommand comandito = new SqlCommand(query, conn);
+                SqlParameter parametroUsuario = new SqlParameter("@user", uname);
+                comandito.Parameters.Add(parametroUsuario);
+                SqlDataReader dataReader = comandito.ExecuteReader();
+
+                List<String> nombreRoles = new List<string>();
+                while (dataReader.Read()) nombreRoles.Add(dataReader.GetString(0));
+                if (nombreRoles.Count > 1)
+                {
+                    frmSeleccionarRol seleccion = new frmSeleccionarRol();
+                    this.Hide();
+                    seleccion.Show();
+                }
+                else
+                {
+                    frmMenuDeAbms elegiaccion = new frmMenuDeAbms();
+                    this.Hide();
+                    elegiaccion.Show();
+                }
+                dataReader.Close();
             }
             else if (resu.Equals(-1))
             {
@@ -71,18 +94,10 @@ namespace ClinicaFrba.Login
             {
                 MessageBox.Show("Usuario o contrasenia incorrecta", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            dr.Close();
+     
             conn.Close();
 
-           /* String query = "SELECT  R_U.nombre as nom FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U WHERE R_U.id_rol = R.id_rol AND U.username = @user AND U.username = R_U.username ";
-
-            SqlCommand command = new SqlCommand(query , conn);
-
-            SqlDataReader dr = command.ExecuteReader();
-            List<String> nombreRoles = new List<string>();
-            while (dr.Read()) nombreRoles.Add(dr.GetString(0));
-            if (nombreRoles.Count > 1)
+           /*   
             {
                 foreach (String nombre in nombreRoles)
                 {

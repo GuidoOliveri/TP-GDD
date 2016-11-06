@@ -32,6 +32,7 @@
             this.btnAceptar = new System.Windows.Forms.Button();
             this.cboRoles = new System.Windows.Forms.ComboBox();
             this.btnVolverMenuPrincipal = new System.Windows.Forms.Button();
+            this.warning = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblSelRol
@@ -63,7 +64,7 @@
             "3- Profesional",
             "",
             ""});
-            this.cboRoles.Location = new System.Drawing.Point(114, 106);
+            this.cboRoles.Location = new System.Drawing.Point(114, 108);
             this.cboRoles.Name = "cboRoles";
             this.cboRoles.Size = new System.Drawing.Size(295, 21);
             this.cboRoles.TabIndex = 2;
@@ -78,11 +79,22 @@
             this.btnVolverMenuPrincipal.UseVisualStyleBackColor = true;
             this.btnVolverMenuPrincipal.Click += new System.EventHandler(this.btnVolverMenuPrincipal_Click);
             // 
+            // warning
+            // 
+            this.warning.AutoSize = true;
+            this.warning.ForeColor = System.Drawing.Color.Red;
+            this.warning.Location = new System.Drawing.Point(186, 141);
+            this.warning.Name = "warning";
+            this.warning.Size = new System.Drawing.Size(165, 13);
+            this.warning.TabIndex = 4;
+            this.warning.Text = "Debes seleccionar alguna opcion";
+            // 
             // frmSeleccionarRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(563, 262);
+            this.Controls.Add(this.warning);
             this.Controls.Add(this.btnVolverMenuPrincipal);
             this.Controls.Add(this.cboRoles);
             this.Controls.Add(this.btnAceptar);
@@ -101,5 +113,6 @@
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.ComboBox cboRoles;
         private System.Windows.Forms.Button btnVolverMenuPrincipal;
+        private System.Windows.Forms.Label warning;
     }
 }

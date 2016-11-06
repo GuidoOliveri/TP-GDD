@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClinicaFrba.Login;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,7 @@ namespace ClinicaFrba.AbmRol
         public frmSeleccionarRol()
         {
             InitializeComponent();
+            warning.Visible = false;
         }
 
         private void btnVolverMenuPrincipal_Click(object sender, EventArgs e)
@@ -26,9 +28,17 @@ namespace ClinicaFrba.AbmRol
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            frmElegirAccionRol elegir = new frmElegirAccionRol();
-            this.Hide();
-            elegir.Show();
+
+            if (cboRoles.SelectedItem != null)
+            {
+                frmMenuDeAbms abms = new frmMenuDeAbms();
+                this.Hide();
+                abms.Show();
+            }
+            else
+            {
+                warning.Visible = true;
+            }
         }
     }
 }

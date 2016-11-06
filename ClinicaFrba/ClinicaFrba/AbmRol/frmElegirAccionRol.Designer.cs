@@ -38,7 +38,7 @@
             // 
             this.lblDecision.AutoSize = true;
             this.lblDecision.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDecision.Location = new System.Drawing.Point(198, 29);
+            this.lblDecision.Location = new System.Drawing.Point(173, 29);
             this.lblDecision.Name = "lblDecision";
             this.lblDecision.Size = new System.Drawing.Size(232, 25);
             this.lblDecision.TabIndex = 0;
@@ -46,7 +46,7 @@
             // 
             // cmdAgregarNuevoRol
             // 
-            this.cmdAgregarNuevoRol.Location = new System.Drawing.Point(95, 100);
+            this.cmdAgregarNuevoRol.Location = new System.Drawing.Point(53, 99);
             this.cmdAgregarNuevoRol.Name = "cmdAgregarNuevoRol";
             this.cmdAgregarNuevoRol.Size = new System.Drawing.Size(99, 46);
             this.cmdAgregarNuevoRol.TabIndex = 1;
@@ -56,7 +56,7 @@
             // 
             // btnSeleccionRol
             // 
-            this.btnSeleccionRol.Location = new System.Drawing.Point(244, 100);
+            this.btnSeleccionRol.Location = new System.Drawing.Point(233, 100);
             this.btnSeleccionRol.Name = "btnSeleccionRol";
             this.btnSeleccionRol.Size = new System.Drawing.Size(102, 46);
             this.btnSeleccionRol.TabIndex = 2;
