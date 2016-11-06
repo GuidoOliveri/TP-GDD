@@ -50,11 +50,11 @@
     <Compile Include="Abm Afiliado\frmHistorialCambios.Designer.cs">
       <DependentUpon>frmHistorialCambios.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Afiliado\frmModifcarAfiliadoGrupo.cs">
+    <Compile Include="Abm Afiliado\frmBuscarAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Afiliado\frmModifcarAfiliadoGrupo.Designer.cs">
-      <DependentUpon>frmModifcarAfiliadoGrupo.cs</DependentUpon>
+    <Compile Include="Abm Afiliado\frmBuscarAfiliado.Designer.cs">
+      <DependentUpon>frmBuscarAfiliado.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Afiliado\frmBajaAfiliado.cs">
       <SubType>Form</SubType>
@@ -67,6 +67,12 @@
     </Compile>
     <Compile Include="Abm Afiliado\frmAltaAfiliado.Designer.cs">
       <DependentUpon>frmAltaAfiliado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Afiliado\frmModificarAfiliado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\frmModificarAfiliado.Designer.cs">
+      <DependentUpon>frmModificarAfiliado.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Profesional\frmProfesional.cs">
       <SubType>Form</SubType>
@@ -228,8 +234,11 @@
     <EmbeddedResource Include="Abm Afiliado\frmHistorialCambios.resx">
       <DependentUpon>frmHistorialCambios.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Afiliado\frmModifcarAfiliadoGrupo.resx">
-      <DependentUpon>frmModifcarAfiliadoGrupo.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Afiliado\frmBuscarAfiliado.resx">
+      <DependentUpon>frmBuscarAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\frmModificarAfiliado.resx">
+      <DependentUpon>frmModificarAfiliado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Profesional\frmProfesional.resx">
       <DependentUpon>frmProfesional.cs</DependentUpon>
