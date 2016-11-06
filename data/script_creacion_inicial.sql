@@ -348,6 +348,9 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregar_Rol'))
     DROP PROCEDURE NEXTGDD.agregar_Rol
 GO
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Modificar_Nombre_Rol'))
+    DROP PROCEDURE NEXTGDD.Modificar_Nombre_Rol
+GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoFamilia'))
     DROP PROCEDURE NEXTGDD.agregarAfiliadoFamilia
@@ -721,21 +724,39 @@ BEGIN
 /*DROP PROCEDURE NEXTGDD.crearTurno*/
 
 
-CREATE PROCEDURE NEXTGDD.agregar_funcionalidad(@rol varchar(255), @func varchar(255)) AS
+CREATE PROCEDURE NEXTGDD.agregar_funcionalidad(@id_rol tinyint, @func varchar(255)) AS
 BEGIN
 	INSERT INTO NEXTGDD.Funcionalidad_X_Rol(id_rol,id_funcionalidad )
-		VALUES ((SELECT id_rol FROM NEXTGDD.Rol WHERE nombre = @rol),
-		        (SELECT id_funcionalidad FROM NEXTGDD.Funcionalidad WHERE nombre = @func))
+		VALUES (@id_rol, (SELECT id_funcionalidad FROM NEXTGDD.Funcionalidad WHERE nombre = @func))
 END
 GO
 
 CREATE PROCEDURE NEXTGDD.agregar_Rol(@nombreRol varchar(255), @ret numeric(18,0) output)
 AS BEGIN
+
+IF NOT EXISTS ( SELECT * FROM NEXTGDD.Rol WHERE nombre = @nombreRol)
+	BEGIN
 	INSERT INTO NEXTGDD.Rol (nombre) VALUES (@nombreRol)
 	SET @ret = SCOPE_IDENTITY()
+	END
+ELSE 
+  SET @ret = -1
 END
 GO
 
+CREATE PROCEDURE NEXTGDD.Modificar_Nombre_Rol(@id_rol tinyint,@nuevo_nombreRol varchar(255), @ret numeric(18,0) output)
+AS BEGIN
+
+IF NOT EXISTS ( SELECT * FROM NEXTGDD.Rol WHERE nombre = @nuevo_nombreRol)
+   BEGIN
+	UPDATE  NEXTGDD.Rol 
+	SET nombre = @nuevo_nombreRol
+	WHERE id_rol= @id_rol
+	END
+ELSE 
+  SET @ret = -1
+END
+GO
 
 CREATE PROCEDURE NEXTGDD.agregar_usuario (@username VARCHAR(50), @password VARCHAR(255), @codigo_rol TINYINT, @habilitado BIT,  @id_persona INT) 
 AS BEGIN
