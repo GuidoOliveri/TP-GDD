@@ -12,6 +12,9 @@ GO
 
 /******** VALIDACION DE TABLAS ********/
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Rango_Atencion_Clinica'))
+    DROP TABLE NEXTGDD.Rango_Atencion_Clinica
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Funcionalidad_X_Rol'))
     DROP TABLE NEXTGDD.Funcionalidad_X_Rol
 
@@ -98,6 +101,14 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Estad
 GO
 
 /**** CREACION DE TABLAS ****/
+
+CREATE TABLE NEXTGDD.Rango_Atencion_Clinica(
+	id_rango_clinica tinyint IDENTITY,
+	dia_inicial numeric(18,0),
+	dia_final numeric(18,0),
+	hora_inicial time,
+	hora_final time
+	)
 
 CREATE TABLE NEXTGDD.Estado_Civil (
 
@@ -257,6 +268,8 @@ CREATE TABLE NEXTGDD.Cancelacion (
 CREATE TABLE NEXTGDD.Agenda (
 
    cod_agenda numeric (18,0) IDENTITY PRIMARY KEY,
+   rango_fecha_desde datetime,
+   rango_fecha_hasta datetime,
    matricula numeric (18,0) NOT NULL,
    cod_especialidad numeric (18,0) NOT NULL,
    FOREIGN KEY (matricula, cod_especialidad) REFERENCES NextGDD.Profesional_X_Especialidad(matricula, cod_especialidad)
@@ -295,6 +308,7 @@ CREATE TABLE NEXTGDD.Diagnostico (
 CREATE TABLE NEXTGDD.Consulta (
  
    cod_consulta numeric (18,0) PRIMARY KEY IDENTITY (1000,1),
+   hora_registro_consulta time,
    cod_diagnostico numeric (18,0) REFERENCES NextGDD.Diagnostico(cod_diagnostico),
    nro_bono numeric (18,0) REFERENCES NextGDD.Bono_Consulta(nro_bono),
    nro_turno numeric (18,0) REFERENCES NextGDD.Turno(nro_turno)
@@ -323,10 +337,10 @@ CREATE TABLE NEXTGDD.Rango_Atencion (
 
    cod_agenda numeric (18,0) REFERENCES NextGDD.Agenda(cod_agenda),
    rango_atencion numeric (18,0) ,
-   hora_inicial numeric (18,0),
-   hora_final numeric (18,0),
-   dia_semanal_inicial varchar (255), 
-   dia_semanal_final varchar (255),
+   hora_inicial time,
+   hora_final time,
+   dia_semanal_inicial numeric(8,0), 
+   dia_semanal_final numeric(8,0),
    PRIMARY KEY (cod_agenda, rango_atencion) 
    )
 GO
@@ -401,9 +415,20 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verif
     DROP FUNCTION NEXTGDD.verificarRangoDeAtencion
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarConsulta'))
+    DROP PROCEDURE NEXTGDD.registrarConsulta
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarDiagnostico'))
+    DROP PROCEDURE NEXTGDD.registrarDiagnostico
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarAgenda'))
+    DROP PROCEDURE NEXTGDD.registrarAgenda
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.pedirTurno'))
     DROP TRIGGER NEXTGDD.pedirTurno
-
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes'))
@@ -1090,6 +1115,10 @@ VALUES ('Soltero/a'),    --1
 	   ('Divorciado/a'), --5
 	    ('X')            --6
 
+INSERT NEXTGDD.Rango_Atencion_Clinica (dia_inicial,dia_final,hora_inicial,hora_final) values
+		(0,4,CONVERT(time,'07:00:00'),CONVERT(time,'20:00:00'))
+INSERT NEXTGDD.Rango_Atencion_Clinica (dia_inicial,dia_final,hora_inicial,hora_final) values
+		(5,5,CONVERT(time,'10:00:00'),CONVERT(time,'15:00:00'))
 
 INSERT NEXTGDD.Plan_Medico (cod_plan,descripcion,cuota,precio_bono_consulta,precio_bono_farmacia)
 	   (select  distinct Plan_Med_Codigo,Plan_Med_Descripcion,null,Plan_Med_Precio_Bono_Consulta,Plan_Med_Precio_Bono_Farmacia
