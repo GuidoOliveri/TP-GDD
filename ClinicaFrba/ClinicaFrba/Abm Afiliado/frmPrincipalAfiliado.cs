@@ -19,9 +19,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
-            this.Hide();
-            menuAbm.Show();
+            //Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
+            //this.Hide();
+            //menuAbm.Show();
         }
 
         private void cmdModificarAfiliado_Click(object sender, EventArgs e)
