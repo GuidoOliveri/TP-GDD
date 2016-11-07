@@ -40,9 +40,11 @@
             this.cmdAbmPlanes = new System.Windows.Forms.Button();
             this.cmdAbmEspecialidadesMedicas = new System.Windows.Forms.Button();
             this.cmdAbmRol = new System.Windows.Forms.Button();
-            this.cmdAbmAfiliados = new System.Windows.Forms.Button();
             this.cmdAbmProfesionales = new System.Windows.Forms.Button();
             this.cmdLogueo = new System.Windows.Forms.Button();
+            this.cmbFuncionalidades = new System.Windows.Forms.ComboBox();
+            this.cmdAbmAfiliados = new System.Windows.Forms.Button();
+            this.btnEjecutar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblDale
@@ -57,7 +59,7 @@
             // 
             // cmdAbmUsuarios
             // 
-            this.cmdAbmUsuarios.Location = new System.Drawing.Point(490, 79);
+            this.cmdAbmUsuarios.Location = new System.Drawing.Point(521, 50);
             this.cmdAbmUsuarios.Name = "cmdAbmUsuarios";
             this.cmdAbmUsuarios.Size = new System.Drawing.Size(104, 45);
             this.cmdAbmUsuarios.TabIndex = 31;
@@ -66,7 +68,7 @@
             // 
             // cmdListadoEstadistico
             // 
-            this.cmdListadoEstadistico.Location = new System.Drawing.Point(371, 261);
+            this.cmdListadoEstadistico.Location = new System.Drawing.Point(254, 194);
             this.cmdListadoEstadistico.Name = "cmdListadoEstadistico";
             this.cmdListadoEstadistico.Size = new System.Drawing.Size(104, 48);
             this.cmdListadoEstadistico.TabIndex = 30;
@@ -75,7 +77,7 @@
             // 
             // cmdCancelarAtencionMedica
             // 
-            this.cmdCancelarAtencionMedica.Location = new System.Drawing.Point(242, 261);
+            this.cmdCancelarAtencionMedica.Location = new System.Drawing.Point(128, 194);
             this.cmdCancelarAtencionMedica.Name = "cmdCancelarAtencionMedica";
             this.cmdCancelarAtencionMedica.Size = new System.Drawing.Size(100, 48);
             this.cmdCancelarAtencionMedica.TabIndex = 29;
@@ -84,7 +86,7 @@
             // 
             // cmdRegistroResultadoAtencionMedica
             // 
-            this.cmdRegistroResultadoAtencionMedica.Location = new System.Drawing.Point(106, 261);
+            this.cmdRegistroResultadoAtencionMedica.Location = new System.Drawing.Point(14, 194);
             this.cmdRegistroResultadoAtencionMedica.Name = "cmdRegistroResultadoAtencionMedica";
             this.cmdRegistroResultadoAtencionMedica.Size = new System.Drawing.Size(92, 48);
             this.cmdRegistroResultadoAtencionMedica.TabIndex = 28;
@@ -93,7 +95,7 @@
             // 
             // cmdRegistroLlegadaAtencionMedica
             // 
-            this.cmdRegistroLlegadaAtencionMedica.Location = new System.Drawing.Point(511, 172);
+            this.cmdRegistroLlegadaAtencionMedica.Location = new System.Drawing.Point(521, 120);
             this.cmdRegistroLlegadaAtencionMedica.Name = "cmdRegistroLlegadaAtencionMedica";
             this.cmdRegistroLlegadaAtencionMedica.Size = new System.Drawing.Size(107, 48);
             this.cmdRegistroLlegadaAtencionMedica.TabIndex = 27;
@@ -102,7 +104,7 @@
             // 
             // cmdPedidoTurno
             // 
-            this.cmdPedidoTurno.Location = new System.Drawing.Point(364, 172);
+            this.cmdPedidoTurno.Location = new System.Drawing.Point(371, 120);
             this.cmdPedidoTurno.Name = "cmdPedidoTurno";
             this.cmdPedidoTurno.Size = new System.Drawing.Size(131, 48);
             this.cmdPedidoTurno.TabIndex = 26;
@@ -111,7 +113,7 @@
             // 
             // cmdAbmCompraBonos
             // 
-            this.cmdAbmCompraBonos.Location = new System.Drawing.Point(242, 172);
+            this.cmdAbmCompraBonos.Location = new System.Drawing.Point(251, 120);
             this.cmdAbmCompraBonos.Name = "cmdAbmCompraBonos";
             this.cmdAbmCompraBonos.Size = new System.Drawing.Size(107, 48);
             this.cmdAbmCompraBonos.TabIndex = 25;
@@ -120,7 +122,7 @@
             // 
             // cmdRegistrarAgendaProfesional
             // 
-            this.cmdRegistrarAgendaProfesional.Location = new System.Drawing.Point(128, 172);
+            this.cmdRegistrarAgendaProfesional.Location = new System.Drawing.Point(128, 120);
             this.cmdRegistrarAgendaProfesional.Name = "cmdRegistrarAgendaProfesional";
             this.cmdRegistrarAgendaProfesional.Size = new System.Drawing.Size(100, 48);
             this.cmdRegistrarAgendaProfesional.TabIndex = 24;
@@ -129,7 +131,7 @@
             // 
             // cmdAbmPlanes
             // 
-            this.cmdAbmPlanes.Location = new System.Drawing.Point(12, 172);
+            this.cmdAbmPlanes.Location = new System.Drawing.Point(8, 120);
             this.cmdAbmPlanes.Name = "cmdAbmPlanes";
             this.cmdAbmPlanes.Size = new System.Drawing.Size(92, 48);
             this.cmdAbmPlanes.TabIndex = 23;
@@ -138,7 +140,7 @@
             // 
             // cmdAbmEspecialidadesMedicas
             // 
-            this.cmdAbmEspecialidadesMedicas.Location = new System.Drawing.Point(344, 76);
+            this.cmdAbmEspecialidadesMedicas.Location = new System.Drawing.Point(371, 50);
             this.cmdAbmEspecialidadesMedicas.Name = "cmdAbmEspecialidadesMedicas";
             this.cmdAbmEspecialidadesMedicas.Size = new System.Drawing.Size(131, 48);
             this.cmdAbmEspecialidadesMedicas.TabIndex = 22;
@@ -147,7 +149,7 @@
             // 
             // cmdAbmRol
             // 
-            this.cmdAbmRol.Location = new System.Drawing.Point(225, 76);
+            this.cmdAbmRol.Location = new System.Drawing.Point(251, 50);
             this.cmdAbmRol.Name = "cmdAbmRol";
             this.cmdAbmRol.Size = new System.Drawing.Size(98, 48);
             this.cmdAbmRol.TabIndex = 21;
@@ -155,18 +157,9 @@
             this.cmdAbmRol.UseVisualStyleBackColor = true;
             this.cmdAbmRol.Click += new System.EventHandler(this.cmdAbmRol_Click);
             // 
-            // cmdAbmAfiliados
-            // 
-            this.cmdAbmAfiliados.Location = new System.Drawing.Point(0, 76);
-            this.cmdAbmAfiliados.Name = "cmdAbmAfiliados";
-            this.cmdAbmAfiliados.Size = new System.Drawing.Size(86, 48);
-            this.cmdAbmAfiliados.TabIndex = 20;
-            this.cmdAbmAfiliados.Text = "Abm Afiliados";
-            this.cmdAbmAfiliados.UseVisualStyleBackColor = true;
-            // 
             // cmdAbmProfesionales
             // 
-            this.cmdAbmProfesionales.Location = new System.Drawing.Point(106, 76);
+            this.cmdAbmProfesionales.Location = new System.Drawing.Point(128, 50);
             this.cmdAbmProfesionales.Name = "cmdAbmProfesionales";
             this.cmdAbmProfesionales.Size = new System.Drawing.Size(100, 48);
             this.cmdAbmProfesionales.TabIndex = 19;
@@ -175,19 +168,48 @@
             // 
             // cmdLogueo
             // 
-            this.cmdLogueo.Location = new System.Drawing.Point(521, 261);
+            this.cmdLogueo.Location = new System.Drawing.Point(149, 308);
             this.cmdLogueo.Name = "cmdLogueo";
-            this.cmdLogueo.Size = new System.Drawing.Size(97, 41);
+            this.cmdLogueo.Size = new System.Drawing.Size(142, 27);
             this.cmdLogueo.TabIndex = 32;
             this.cmdLogueo.Text = "Volver a Loguearse";
             this.cmdLogueo.UseVisualStyleBackColor = true;
             this.cmdLogueo.Click += new System.EventHandler(this.cmdLogueo_Click);
+            // 
+            // cmbFuncionalidades
+            // 
+            this.cmbFuncionalidades.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.cmbFuncionalidades.FormattingEnabled = true;
+            this.cmbFuncionalidades.Location = new System.Drawing.Point(149, 248);
+            this.cmbFuncionalidades.Name = "cmbFuncionalidades";
+            this.cmbFuncionalidades.Size = new System.Drawing.Size(338, 21);
+            this.cmbFuncionalidades.TabIndex = 33;
+            // 
+            // cmdAbmAfiliados
+            // 
+            this.cmdAbmAfiliados.Location = new System.Drawing.Point(14, 50);
+            this.cmdAbmAfiliados.Name = "cmdAbmAfiliados";
+            this.cmdAbmAfiliados.Size = new System.Drawing.Size(86, 48);
+            this.cmdAbmAfiliados.TabIndex = 20;
+            this.cmdAbmAfiliados.Text = "Abm Afiliados";
+            this.cmdAbmAfiliados.UseVisualStyleBackColor = true;
+            // 
+            // btnEjecutar
+            // 
+            this.btnEjecutar.Location = new System.Drawing.Point(350, 308);
+            this.btnEjecutar.Name = "btnEjecutar";
+            this.btnEjecutar.Size = new System.Drawing.Size(137, 27);
+            this.btnEjecutar.TabIndex = 35;
+            this.btnEjecutar.Text = "Ejecutar";
+            this.btnEjecutar.UseVisualStyleBackColor = true;
             // 
             // frmMenuDeAbms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(655, 361);
+            this.Controls.Add(this.btnEjecutar);
+            this.Controls.Add(this.cmbFuncionalidades);
             this.Controls.Add(this.cmdLogueo);
             this.Controls.Add(this.cmdAbmUsuarios);
             this.Controls.Add(this.cmdListadoEstadistico);
@@ -206,6 +228,7 @@
             this.Name = "frmMenuDeAbms";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu de ABMs";
+            this.Load += new System.EventHandler(this.frmMenuDeAbms_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -225,8 +248,10 @@
         private System.Windows.Forms.Button cmdAbmPlanes;
         private System.Windows.Forms.Button cmdAbmEspecialidadesMedicas;
         private System.Windows.Forms.Button cmdAbmRol;
-        private System.Windows.Forms.Button cmdAbmAfiliados;
         private System.Windows.Forms.Button cmdAbmProfesionales;
         private System.Windows.Forms.Button cmdLogueo;
+        private System.Windows.Forms.ComboBox cmbFuncionalidades;
+        private System.Windows.Forms.Button cmdAbmAfiliados;
+        private System.Windows.Forms.Button btnEjecutar;
     }
 }

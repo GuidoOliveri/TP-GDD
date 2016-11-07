@@ -15,12 +15,15 @@ namespace ClinicaFrba.Login
 {
     public partial class frmLogin : Form
     {
-        private string query = ""; 
+        private string query = "";
+        private Clases.BaseDeDatosSQL bdd;
         
-        public frmLogin()
+        public frmLogin(Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
             warning.Visible = false;
+
+            this.bdd = bdd;
         }
    
         private SqlConnection conn = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
@@ -74,13 +77,13 @@ namespace ClinicaFrba.Login
                 while (dataReader.Read()) nombreRoles.Add(dataReader.GetString(0));
                 if (nombreRoles.Count > 1)
                 {
-                    frmSeleccionarRol seleccion = new frmSeleccionarRol();
+                    frmSeleccionarRol seleccion = new frmSeleccionarRol(nombreRoles,bdd,uname);
                     this.Hide();
                     seleccion.Show();
                 }
                 else
                 {
-                    frmMenuDeAbms elegiaccion = new frmMenuDeAbms();
+                    frmMenuDeAbms elegiaccion = new frmMenuDeAbms(nombreRoles.ElementAt(0),uname,bdd);
                     this.Hide();
                     elegiaccion.Show();
                 }

@@ -24,12 +24,14 @@ namespace ClinicaFrba.Registro_Resultado
         private string descripcion = "";
 
         //SE HARDCODEA, TENDRIA QUE SER EL MEDICO LOGUEADO
+        private string usuario = "";
         private string id_persona = "3116603"; //id_persona del usuario
 
-        public frmRegistroResultado(Clases.BaseDeDatosSQL bdd)
+        public frmRegistroResultado(Clases.BaseDeDatosSQL bdd,string usuario)
         {
             InitializeComponent();
 
+            this.usuario = usuario;
             this.bdd = bdd;
 
             warning1.Visible = false;
@@ -115,7 +117,7 @@ namespace ClinicaFrba.Registro_Resultado
             {
                 //FALTA CREAR EL STORED PROCEDURE
 
-                frmRegistroResultado NewForm = new frmRegistroResultado(bdd);
+                frmRegistroResultado NewForm = new frmRegistroResultado(bdd,usuario);
                 NewForm.Show();
                 this.Dispose(false);
 

@@ -18,16 +18,19 @@ namespace ClinicaFrba
 {
     public partial class frmVentanaPrincipal : Form
     {
-        public frmVentanaPrincipal()
+        Clases.BaseDeDatosSQL bdd;
+        public frmVentanaPrincipal(Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
+
+            this.bdd = bdd;
         }
 
         public Usuario User { get; set; }
 
         private void cmdIngresar_Click(object sender, EventArgs e)
         {
-            Login.frmLogin ingresa = new Login.frmLogin();
+            Login.frmLogin ingresa = new Login.frmLogin(bdd);
             this.Hide();
             ingresa.Show();
         }

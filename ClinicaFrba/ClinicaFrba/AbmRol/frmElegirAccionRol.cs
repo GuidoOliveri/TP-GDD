@@ -33,9 +33,9 @@ namespace ClinicaFrba.AbmRol
 
         private void btnVolverALoguearse_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menu = new Login.frmMenuDeAbms();
-            this.Hide();
-            menu.Show();
+            //Login.frmMenuDeAbms menu = new Login.frmMenuDeAbms();
+            //this.Hide();
+            //menu.Show();
 
         }
 

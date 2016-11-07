@@ -64,7 +64,7 @@
             "3- Profesional",
             "",
             ""});
-            this.cboRoles.Location = new System.Drawing.Point(114, 108);
+            this.cboRoles.Location = new System.Drawing.Point(123, 104);
             this.cboRoles.Name = "cboRoles";
             this.cboRoles.Size = new System.Drawing.Size(295, 21);
             this.cboRoles.TabIndex = 2;
@@ -102,6 +102,7 @@
             this.Name = "frmSeleccionarRol";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Selección de Rol";
+            this.Load += new System.EventHandler(this.frmSeleccionarRol_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

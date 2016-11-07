@@ -13,17 +13,41 @@ namespace ClinicaFrba.AbmRol
 {
     public partial class frmSeleccionarRol : Form
     {
-        public frmSeleccionarRol()
+        private string usuario = "";
+        private string rol = "";
+        private Clases.BaseDeDatosSQL bdd;
+
+        public frmSeleccionarRol(List<string> roles,Clases.BaseDeDatosSQL bdd,string usuario)
         {
             InitializeComponent();
             warning.Visible = false;
+
+            this.bdd = bdd;
+            this.usuario = usuario;
+            cargar(roles,cboRoles);
+
+            cboRoles.SelectedIndexChanged += OnSelectedIndexChanged;
+        }
+
+        private void cargar(List<string> lista, ComboBox cmb)
+        {
+            foreach (string elemento in lista)
+            {
+                cmb.Items.Add(elemento);
+            }
+        }
+
+        private void OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            warning.Visible = false;
+            rol = (string) cboRoles.SelectedItem;
         }
 
         private void btnVolverMenuPrincipal_Click(object sender, EventArgs e)
         {
-            frmVentanaPrincipal principal = new frmVentanaPrincipal();
-            this.Hide();
-            principal.Show();
+            //frmVentanaPrincipal principal = new frmVentanaPrincipal();
+            //this.Hide();
+            //principal.Show();
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
@@ -31,7 +55,7 @@ namespace ClinicaFrba.AbmRol
 
             if (cboRoles.SelectedItem != null)
             {
-                frmMenuDeAbms abms = new frmMenuDeAbms();
+                frmMenuDeAbms abms = new frmMenuDeAbms(rol,usuario,bdd);
                 this.Hide();
                 abms.Show();
             }
@@ -39,6 +63,11 @@ namespace ClinicaFrba.AbmRol
             {
                 warning.Visible = true;
             }
+        }
+
+        private void frmSeleccionarRol_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
