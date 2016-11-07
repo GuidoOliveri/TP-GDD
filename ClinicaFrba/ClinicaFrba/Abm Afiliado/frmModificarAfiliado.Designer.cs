@@ -107,6 +107,7 @@
             this.txtDir.Name = "txtDir";
             this.txtDir.Size = new System.Drawing.Size(217, 20);
             this.txtDir.TabIndex = 8;
+            this.txtDir.TextChanged += new System.EventHandler(this.txtDir_TextChanged);
             // 
             // lblDireccionCompleta
             // 

@@ -136,7 +136,7 @@ namespace ClinicaFrba.Clases
             return resultados;
         }
 
-        public DataTable obtenerRow(String comando)
+        public ArrayList obtenerRow(String comando)
         {
             using (conexion)
             {
@@ -147,12 +147,15 @@ namespace ClinicaFrba.Clases
                 command.ExecuteNonQuery();
                 SqlDataReader reader = command.ExecuteReader();
 
-                DataTable row = new DataTable();
-                List<string> rowEnLista = new List<string>();
+                ArrayList rowEnLista = new ArrayList();
+                
                 if (reader.HasRows)
                 {
-                 
-                        row = reader.GetSchemaTable();
+
+                    reader.Read();
+                    for (int i = 0; i < reader.FieldCount; i ++ )
+
+                        rowEnLista.Add(reader[i]);
                  
                 }
                 else
@@ -160,7 +163,7 @@ namespace ClinicaFrba.Clases
                     Console.WriteLine("No rows found.");
                 }
                 reader.Close();
-                return row;
+                return rowEnLista;
             }
 
         }
