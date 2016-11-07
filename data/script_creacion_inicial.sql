@@ -676,7 +676,7 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE NEXTGDD.registrarConsulta (@nomProf varchar(255),@fechaTurno datetime,@nroBono numeric(18,0))
+CREATE PROCEDURE NEXTGDD.registrarConsulta (@horaLlegada time,@nomProf varchar(255),@fechaTurno datetime,@nroBono numeric(18,0))
 AS
 BEGIN
 	DECLARE @nro_turno numeric(18,0)=(select t.nro_turno
@@ -685,8 +685,8 @@ BEGIN
 											p.nombre+' '+p.apellido LIKE @nomProf and
 											p.id_persona=pr.id_persona and pr.matricula=ag.matricula and
 											t.cod_agenda=ag.cod_agenda)
-	INSERT NEXTGDD.Consulta (nro_bono,nro_turno) values
-			(@nroBono,@nro_turno)
+	INSERT NEXTGDD.Consulta (hora_registro_consulta,nro_bono,nro_turno) values
+			(@horaLlegada,@nroBono,@nro_turno)
 END;
 GO
 

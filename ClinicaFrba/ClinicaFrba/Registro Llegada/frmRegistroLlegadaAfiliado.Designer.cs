@@ -41,20 +41,25 @@
             this.cmbProfesional = new System.Windows.Forms.ComboBox();
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtHoraLlegada = new System.Windows.Forms.TextBox();
+            this.warning3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.groupBox2);
+            this.groupBox1.Controls.Add(this.warning3);
+            this.groupBox1.Controls.Add(this.txtHoraLlegada);
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cmbEspecialidad);
             this.groupBox1.Controls.Add(this.rbBusqueda);
             this.groupBox1.Controls.Add(this.cmbProfesional);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(358, 221);
+            this.groupBox1.Size = new System.Drawing.Size(358, 276);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Registro de llegada";
@@ -67,7 +72,7 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.cmbBono);
             this.groupBox2.Controls.Add(this.cmbTurno);
-            this.groupBox2.Location = new System.Drawing.Point(0, 106);
+            this.groupBox2.Location = new System.Drawing.Point(12, 174);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(358, 114);
             this.groupBox2.TabIndex = 5;
@@ -122,7 +127,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 32);
+            this.label1.Location = new System.Drawing.Point(7, 78);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(132, 13);
             this.label1.TabIndex = 3;
@@ -131,7 +136,7 @@
             // cmbEspecialidad
             // 
             this.cmbEspecialidad.FormattingEnabled = true;
-            this.cmbEspecialidad.Location = new System.Drawing.Point(163, 79);
+            this.cmbEspecialidad.Location = new System.Drawing.Point(163, 125);
             this.cmbEspecialidad.Name = "cmbEspecialidad";
             this.cmbEspecialidad.Size = new System.Drawing.Size(189, 21);
             this.cmbEspecialidad.TabIndex = 2;
@@ -139,7 +144,7 @@
             // rbBusqueda
             // 
             this.rbBusqueda.AutoSize = true;
-            this.rbBusqueda.Location = new System.Drawing.Point(163, 56);
+            this.rbBusqueda.Location = new System.Drawing.Point(163, 102);
             this.rbBusqueda.Name = "rbBusqueda";
             this.rbBusqueda.Size = new System.Drawing.Size(189, 17);
             this.rbBusqueda.TabIndex = 1;
@@ -150,14 +155,14 @@
             // cmbProfesional
             // 
             this.cmbProfesional.FormattingEnabled = true;
-            this.cmbProfesional.Location = new System.Drawing.Point(163, 29);
+            this.cmbProfesional.Location = new System.Drawing.Point(163, 75);
             this.cmbProfesional.Name = "cmbProfesional";
             this.cmbProfesional.Size = new System.Drawing.Size(189, 21);
             this.cmbProfesional.TabIndex = 0;
             // 
             // btnIngresar
             // 
-            this.btnIngresar.Location = new System.Drawing.Point(153, 252);
+            this.btnIngresar.Location = new System.Drawing.Point(157, 291);
             this.btnIngresar.Name = "btnIngresar";
             this.btnIngresar.Size = new System.Drawing.Size(75, 23);
             this.btnIngresar.TabIndex = 1;
@@ -168,18 +173,46 @@
             // 
             this.warning2.AutoSize = true;
             this.warning2.ForeColor = System.Drawing.Color.Red;
-            this.warning2.Location = new System.Drawing.Point(9, 257);
+            this.warning2.Location = new System.Drawing.Point(9, 291);
             this.warning2.Name = "warning2";
             this.warning2.Size = new System.Drawing.Size(133, 13);
             this.warning2.TabIndex = 2;
             this.warning2.Text = "Faltan seleccionar campos";
             this.warning2.Click += new System.EventHandler(this.label4_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(7, 31);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(138, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Hora de llegada: (hh:mm:ss)";
+            this.label4.Click += new System.EventHandler(this.label4_Click_1);
+            // 
+            // txtHoraLlegada
+            // 
+            this.txtHoraLlegada.Location = new System.Drawing.Point(163, 28);
+            this.txtHoraLlegada.Name = "txtHoraLlegada";
+            this.txtHoraLlegada.Size = new System.Drawing.Size(189, 20);
+            this.txtHoraLlegada.TabIndex = 5;
+            // 
+            // warning3
+            // 
+            this.warning3.AutoSize = true;
+            this.warning3.ForeColor = System.Drawing.Color.Red;
+            this.warning3.Location = new System.Drawing.Point(209, 51);
+            this.warning3.Name = "warning3";
+            this.warning3.Size = new System.Drawing.Size(143, 13);
+            this.warning3.TabIndex = 9;
+            this.warning3.Text = "Formato de fecha incorrecto.";
+            // 
             // frmRegistroLlegadaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(382, 287);
+            this.ClientSize = new System.Drawing.Size(382, 326);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.warning2);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
@@ -211,5 +244,8 @@
         private System.Windows.Forms.Button btnIngresar;
         private System.Windows.Forms.Label warning1;
         private System.Windows.Forms.Label warning2;
+        private System.Windows.Forms.Label warning3;
+        private System.Windows.Forms.TextBox txtHoraLlegada;
+        private System.Windows.Forms.Label label4;
     }
 }
