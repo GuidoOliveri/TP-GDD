@@ -324,16 +324,7 @@ CREATE TABLE NEXTGDD.Historial (
    cod_plan_viejo numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan),
     cod_plan_nuevo numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan)  
    )
-/*
-CREATE TABLE NEXTGDD.Agenda_X_Turno (
 
-   cod_agenda numeric (18,0) REFERENCES NextGDD.Agenda(cod_agenda),
-   fecha datetime,
-   cod_cancelacion numeric (18,0) REFERENCES NextGDD.Cancelacion(cod_cancelacion),
-   PRIMARY KEY (cod_agenda,fecha)
-   )
-
-*/
 CREATE TABLE NEXTGDD.Rango_Atencion (
 
    cod_agenda numeric (18,0) REFERENCES NextGDD.Agenda(cod_agenda),
@@ -601,13 +592,6 @@ DECLARE @plan_viejo numeric (18,0)
 END
 GO
 
-/* 
- SELECT  R_U.id_rol
- FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U
- WHERE R_U.id_rol = R.id_rol
- AND U.username = @user
- AND U.username = R_U.username 
- */
 
 
 CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smallint output)
@@ -651,16 +635,6 @@ CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smal
 		SET @ret= -1
 END
 GO
-
-/*
-update NEXTGDD.Usuario
-set habilitado=1
-where username = 'admiN'
-
-exec NEXTGDD.login 'admin', 'w23e'
-
-select * from NEXTGDD.Usuario
-*/
 
 
 CREATE PROCEDURE NEXTGDD.crearTurno (@nroAf numeric(18,0),@nombreEsp varchar(255),@nomProf varchar(255),@fecha datetime)
@@ -764,12 +738,7 @@ IF EXISTS (SELECT * FROM NEXTGDD.Funcionalidad_X_Rol WHERE id_rol= @id_rol and i
   END CATCH
 END
 GO
-/*
-SELECT * FROM NEXTGDD.Funcionalidad_X_Rol
-DECLARE @ret smallint=7
-EXEC NEXTGDD.eliminar_Funcionalidad_Rol 1,2, @ret output
-PRINT @ret
-*/
+
 CREATE PROCEDURE NEXTGDD.agregar_Rol(@nombreRol varchar(255), @ret smallint output)
 AS BEGIN
 
@@ -825,14 +794,7 @@ IF EXISTS ( SELECT * FROM NEXTGDD.Rol WHERE id_rol= @id_rol)
 
 END
 GO
-/*
-SELECT * FROM NEXTGDD.Rol
-SELECT * FROM NEXTGDD.Usuario_X_Rol
 
-DECLARE @ret numeric (18,0)
-EXEC NEXTGDD.DarDeBajaRol 1,@ret output
-PRINT @ret
-*/
 CREATE PROCEDURE NEXTGDD.agregar_usuario (@username VARCHAR(50), @password VARCHAR(255), @codigo_rol TINYINT, @habilitado BIT,  @id_persona INT) 
 AS BEGIN
   /* Intenta crear un usuario con los datos especificados Para eso debe crear una entrada en la tabla Usuario y una en la table Usuario_X_Rol
@@ -1003,23 +965,6 @@ SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado
 END
 GO
 
-/*
-DECLARE @ret NUMERIC (20,0)
-exec NEXTGDD.agregarAfiliadoFamilia 'Jesica','XX','18/06/2000', 'M', 'DNI', 2000009, 'MEDRANO 950',4646550517, 1,'DSFDSF@SSADA',3,555555,7470058801,1, @ret OUTPUT
-PRINT @ret 
-
- SELECT * FROM NEXTGDD.Afiliado WHERE grupo_afiliado=(SELECT grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado= 7470058801)
-
- SELECT * from NEXTGDD.Persona
-
- DELETE FROM NEXTGDD.Afiliado WHERE id_persona= (SELECT id_persona FROM NEXTGDD.Persona WHERE nro_documento= 2000007)
-
- DELETE FROM NEXTGDD.Persona WHERE nro_documento= 2000007
-  
- DELETE FROM NEXTGDD.Usuario_X_Rol WHERE username = '2000007'
-
- DELETE FROM NEXTGDD.Usuario WHERE username = '2000007'
- */
 --en base a un numero de afiliado muestra todo el historial del grupo familiar 
 --ver la pantalla
 CREATE PROCEDURE NEXTGDD.mostrarHistorial(@nroafiliado numeric(20,0) )
@@ -1044,13 +989,13 @@ END
 GO
 
 
-CREATE PROCEDURE NEXTGDD.darDeBajaAfiliado(@nro_afiliado numeric(20,0))
+CREATE PROCEDURE NEXTGDD.darDeBajaAfiliado(@nro_afiliado numeric(20,0), @fecha_baja datetime)
 AS BEGIN
 
     BEGIN TRY
 	  BEGIN TRANSACTION   
           UPDATE NEXTGDD.Afiliado 
-	      SET  activo = 0, fecha_baja_logica = GETDATE()
+	      SET  activo = 0, fecha_baja_logica = @fecha_baja
 	      WHERE nro_afiliado = @nro_afiliado
               
 	  COMMIT TRANSACTION
@@ -1067,12 +1012,6 @@ END
 GO
 
 
-
-
-/*
-EXEC NEXTGDD.darDeBajaAfiliado 112396001
-select * from NEXTGDD.Afiliado WHERE nro_afiliado= 112396001
-*/
 /************ Migracion *************/
 
 
@@ -1145,23 +1084,6 @@ INSERT INTO NEXTGDD.Persona (id_persona, nombre, apellido, nro_documento, fecha_
 SET IDENTITY_INSERT NEXTGDD.Persona OFF
 
 
---SET IDENTITY_INSERT NEXTGDD.Afiliado ON
-/* concateno el grupo_afiliado + intergrante_grupo para obtenter nro afiliado cast(id_persona as varchar)  + '01'
-cuando damos de alta un afiliado principal, creamos una persona, y ese id_persona va a ser el valor de grupo_afiliado,como es principal 
-su valor de integrante_grupo es 01.
-
-EN TEORIA: concateno el grupo_afiliado + intergrante_grupo para obtenter nro afiliado 
-cast(grupo_afiliado as varchar)  + cast('intergrante_grupo' as varchar)
-cuando damos de alta un afiliado cualquiera.
-*/
-
-/*
-INSERT INTO NEXTGDD.Afiliado (nro_afiliado, id_persona, cod_plan, grupo_afiliado, integrante_grupo, cant_familiares)
-	SELECT cast(id_persona as varchar)  + '01',id_persona, Plan_Med_Codigo, id_persona, 01,0
-	FROM NEXTGDD.Persona , NEXTGDD.Pacientes
-	WHERE nro_documento = Paciente_Dni 
-*/
-
 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, id_persona, cod_plan, nro_consulta, grupo_afiliado, integrante_grupo, cant_familiares)
 	SELECT cast(id_persona as varchar)  + '01',id_persona, Plan_Med_Codigo, count(distinct Bono_Consulta_Numero), id_persona, 01,0
 	FROM NEXTGDD.Persona , gd_esquema.Maestra
@@ -1190,11 +1112,7 @@ EXEC NEXTGDD.agregar_Rol @nombreRol = 'Afiliado', @ret = 0
 EXEC NEXTGDD.agregar_Rol @nombreRol = 'Profesional', @ret = 0
 
 GO
-/*
-INSERT NEXTGDD.Rol (nombre) values ('Administrativo');
-INSERT NEXTGDD.Rol (nombre) values ('Afiliado');
-INSERT NEXTGDD.Rol (nombre) values ('Profesional');
-*/
+
 INSERT INTO NEXTGDD.Funcionalidad (nombre)
 	VALUES ('ABM de roles'),
 	       ('ABM de afiliados'),
@@ -1288,8 +1206,8 @@ SET IDENTITY_INSERT NEXTGDD.Turno OFF
 SET IDENTITY_INSERT NEXTGDD.Diagnostico ON
 
 
-INSERT NEXTGDD.Diagnostico (cod_diagnostico,sintoma,enfermedad)
-	   (select Bono_Consulta_Numero, Consulta_Sintomas, Consulta_Enfermedades
+INSERT NEXTGDD.Diagnostico (cod_diagnostico,fecha_diagnostico, sintoma,enfermedad)
+	   (select Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades
 		from gd_esquema.Maestra
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
 GO
@@ -1298,61 +1216,22 @@ SET IDENTITY_INSERT NEXTGDD.Diagnostico OFF
 
 SET IDENTITY_INSERT NEXTGDD.Profesional ON
 
-INSERT NEXTGDD.Consulta (cod_diagnostico, nro_bono, nro_turno)
-	   (select Bono_Consulta_Numero, Bono_Consulta_Numero, Turno_Numero
+INSERT NEXTGDD.Consulta (cod_diagnostico, hora_registro_consulta, nro_bono ,nro_turno)
+	   (select Bono_Consulta_Numero,convert (time,Bono_Consulta_Fecha_Impresion), Bono_Consulta_Numero, Turno_Numero
 		from gd_esquema.Maestra
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
 GO
 
-/***pruebas
-
-select distinct dds.Paciente_Dni, cant_bonos_X_afil,Turno_Numero,Turno_Fecha, Bono_Consulta_Numero ,Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Consulta_Sintomas, Consulta_Enfermedades
-from (select Paciente_Dni, count (Bono_Consulta_Numero) cant_bonos_X_afil from gd_esquema.Maestra g1--g JOIN NEXTGDD.Afiliado a ON (g.Paciente_Dni= a.id_persona) 
-		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null group by Paciente_Dni) dds, (Select Paciente_Dni,Turno_Numero,Turno_Fecha, Bono_Consulta_Numero ,Bono_Consulta_Fecha_Impresion,Compra_Bono_Fecha,Consulta_Sintomas, Consulta_Enfermedades
-		        from gd_esquema.Maestra g2 where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null) tot
-
-		where dds.Paciente_Dni= tot.Paciente_Dni
-		order by cant_bonos_X_afil
-
-select b.nro_afiliado, count (distinct b.nro_bono)
-from NEXTGDD.Bono_Consulta b JOIN NEXTGDD.Consulta c ON (b.nro_bono= c.nro_bono)
-group by nro_afiliado
-order by count (b.nro_bono)
-*/
-/*
-select Paciente_Dni, Turno_Numero, Turno_Fecha, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha, Plan_Med_Codigo
-from gd_esquema.Maestra order by Paciente_Dni, Turno_Numero, Bono_Consulta_Numero
-
-select Paciente_Dni, Turno_Numero, Turno_Fecha,Consulta_Enfermedades,Consulta_Sintomas, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha
-from gd_esquema.Maestra 
-where Turno_Numero  is not null
-order by Turno_Numero, Bono_Consulta_Numero
-
-select  Paciente_Dni, Turno_Numero, Turno_Fecha,Consulta_Enfermedades,Consulta_Sintomas, Bono_Consulta_Numero, Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha 
-from gd_esquema.Maestra
-where turno_numero is  null
-order by Turno_Numero
-
-select * from NEXTGDD.Turno
-*/
-
-/*pruebas
-		SELECT Medico_Dni, matricula ,id_persona
-		from gd_esquema.Maestra g JOIN NEXTGDD.Profesional p on ( p.id_persona  = g.Medico_Dni)
-		
-		where Bono_Consulta_Fecha_Impresion is null and Compra_Bono_Fecha is  null )
-select * from NEXTGDD.Profesional p JOIN NEXTGDD.Persona e ON (p.id_persona= e.id_persona)
-
-where Bono_Consulta_Fecha_Impresion is null and Compra_Bono_Fecha is  null 
-*/
-
--- 1) FALTARIA VER LA CANTIDAD DE CONSULTAS POR AFILIADO 
--- 2) LA CARGA DE DATOS DE LA TABLA RANGO ATENCION MEDIANTE LA VISTA (APP)
--- 3) Ver como va incrementando el integrante_grupo, como validarlo
 
 /************************************/
 
 /****** Inserto el usuario admin *****/
 
 EXEC NEXTGDD.agregar_usuario @username = 'admin', @password = 'w23e',@codigo_rol= 1, @habilitado= 1, @id_persona = null
+GO
+
+EXEC NEXTGDD.agregar_usuario @username = 'afiliado', @password = 'w23e',@codigo_rol= 2, @habilitado= 1, @id_persona = 1123960
+GO
+
+EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 0, @id_persona = 3116603
 GO
