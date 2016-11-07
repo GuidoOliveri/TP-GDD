@@ -1011,6 +1011,59 @@ AS BEGIN
 END
 GO
 
+/* LISTADOS *********************************************
+
+select top 5 (p.nombre+' '+p.apellido) as 'Nombre Afiliado',count(a.nro_afiliado) as 'Cantidad de Bonos Comprados'
+from NEXTGDD.Afiliado a,NEXTGDD.Compra_Bono c,NEXTGDD.Persona p
+where c.id_afiliado=a.nro_afiliado and a.id_persona=p.id_persona
+group by p.nombre,p.apellido,a.nro_afiliado
+order by 2 DESC;
+
+select top 5 (p.nombre+' '+p.apellido) as 'Profesional',
+		sum(((r.dia_semanal_final-r.dia_semanal_inicial+1)*(DATEDIFF(MINUTE,r.hora_inicial,r.hora_final)))/60) as 'Horas trabajadas'
+from NEXTGDD.Profesional pr,NEXTGDD.Agenda a,NEXTGDD.Rango_Atencion r,NEXTGDD.Persona p
+where pr.id_persona=p.id_persona and pr.matricula=a.matricula and a.cod_agenda=r.cod_agenda
+group by p.nombre,p.apellido,pr.matricula
+order by 2 ASC;
+
+select top 5 p.nombre+' '+p.apellido as 'Profesional',e.descripcion as 'Especialidad',count(pr.matricula) as 'Cantidad de Consultas'
+from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Persona p
+where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
+		and a.cod_especialidad=e.cod_especialidad and p.id_persona=pr.id_persona
+group by p.nombre,p.apellido,e.descripcion,pr.matricula,e.cod_especialidad
+order by count(pr.matricula) DESC;
+
+select distinct p.descripcion as 'Plan',pe.nombre+' '+pe.apellido as 'Profesional',e.descripcion 'Especialidad'
+from NEXTGDD.Plan_Medico p,NEXTGDD.Consulta c,NEXTGDD.Turno t,NEXTGDD.Afiliado a,NEXTGDD.Agenda ag,NEXTGDD.Profesional pr,
+	NEXTGDD.Persona pe,NEXTGDD.Especialidad e
+where c.nro_turno=t.nro_turno and t.nro_afiliado=a.nro_afiliado and p.cod_plan=a.cod_plan and
+		t.cod_agenda=ag.cod_agenda and ag.matricula=pr.matricula and ag.cod_especialidad=e.cod_especialidad
+		and pr.id_persona=pe.id_persona
+group by p.descripcion,p.cod_plan,pe.id_persona,pe.nombre,pe.apellido,e.cod_especialidad,e.descripcion
+having pe.id_persona in 
+		(select top 5 pr.id_persona 
+		from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Afiliado af
+		where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
+			and a.cod_especialidad=e.cod_especialidad and af.nro_afiliado=t.nro_afiliado
+			and af.cod_plan=p.cod_plan
+		group by pr.matricula,e.cod_especialidad,pr.id_persona
+		order by count(pr.matricula) DESC) and
+		e.cod_especialidad in
+		(select top 5 e.cod_especialidad
+		from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Afiliado af
+		where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
+			and a.cod_especialidad=e.cod_especialidad and af.nro_afiliado=t.nro_afiliado
+			and af.cod_plan=p.cod_plan
+		group by pr.id_persona,pr.matricula,e.cod_especialidad
+		order by count(pr.matricula) DESC);
+
+select top 5 e.descripcion as 'Especialidad', count(e.cod_especialidad) 'Cantidad cancelaciones'
+from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Cancelacion c,NEXTGDD.Agenda a
+where c.cod_cancelacion=t.cod_cancelacion and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
+group by e.cod_especialidad,e.descripcion
+order by count(e.cod_especialidad) DESC;
+*/
+
 
 /************ Migracion *************/
 
