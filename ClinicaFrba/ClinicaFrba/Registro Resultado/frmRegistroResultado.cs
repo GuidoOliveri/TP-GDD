@@ -26,9 +26,14 @@ namespace ClinicaFrba.Registro_Resultado
         private string enfermedad = "";
         private string descripcion = "";
 
+<<<<<<< HEAD
         //SE HARDCODEA, TENDRIA QUE SER EL MEDICO LOGUEADO
         
         private string id_persona = "3116603"; //id_persona del usuario
+=======
+        private string usuario = "";
+        private string id_persona = ""; 
+>>>>>>> ed245716aa0159fe76c7e20369188c60517872ef
 
         public frmRegistroResultado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
@@ -36,6 +41,8 @@ namespace ClinicaFrba.Registro_Resultado
             this.rol = rol;
             this.usuario = usuario;
             this.bdd = bdd;
+            comando = "select u.id_persona as id from NEXTGDD.Usuario u where u.username LIKE '"+usuario+"'";
+            id_persona = bdd.buscarCampo(comando);
 
             warning1.Visible = false;
             warning2.Visible = false;
@@ -118,7 +125,8 @@ namespace ClinicaFrba.Registro_Resultado
             enfermedad = (string)cmbEnfermedad.SelectedItem;
             if (consulta != null && consulta!=""  && fecha != null && hora != null && enfermedad!=null && sintoma!= null && warning1.Visible==false && warning2.Visible==false)
             {
-                //FALTA CREAR EL STORED PROCEDURE
+                comando = "EXECUTE NEXTGDD.registrarDiagnostico @medico='" + id_persona + "',@fechaConsulta='" + convertirFecha(consulta) + "', @fechaAtencion='" + convertirFecha(fecha+' '+hora) + "', @enfermedad='" + enfermedad + "',@sintoma='"+sintoma+"',@descripcion='"+descripcion+"'";
+                bdd.ExecStoredProcedure2(comando);
 
                 frmRegistroResultado NewForm = new frmRegistroResultado(rol,usuario,bdd);
                 NewForm.Show();
@@ -156,6 +164,22 @@ namespace ClinicaFrba.Registro_Resultado
             l.Visible = b;
         }
 
+        private string convertirFecha(string fecha)
+        {
+            string fechaSinTiempo = fecha.Split(' ')[0];
+            string dia = fechaSinTiempo.Split('/')[0];
+            if (dia.Length == 1)
+            {
+                dia = '0' + dia;
+            }
+            string mes = fechaSinTiempo.Split('/')[1];
+            if (mes.Length == 1)
+            {
+                mes = '0' + mes;
+            }
+            string año = fechaSinTiempo.Split('/')[2];
+            return año + "/" + mes + "/" + dia + " " + fecha.Split(' ')[1];
+        }
 
         private void frmRegistroResultado_Load(object sender, EventArgs e)
         {

@@ -300,6 +300,7 @@ CREATE TABLE NEXTGDD.Enfermedad (
 CREATE TABLE NEXTGDD.Diagnostico (
    
    cod_diagnostico numeric (18,0) PRIMARY KEY IDENTITY (1000,1),
+   fecha_diagnostico datetime,
    descripcion varchar (255),
    sintoma varchar (255) REFERENCES NextGDD.Sintoma (sintoma),
    enfermedad varchar (255) REFERENCES NextGDD.Enfermedad (enfermedad),
@@ -694,8 +695,8 @@ CREATE PROCEDURE NEXTGDD.registrarDiagnostico (@medico numeric(18,0),@fechaConsu
 AS
 BEGIN
 	DECLARE @diagnostico numeric(18,0)
-	INSERT NEXTGDD.Diagnostico (descripcion,sintoma,enfermedad) values
-			(@descripcion,@sintoma,@enfermedad)
+	INSERT NEXTGDD.Diagnostico (fecha_diagnostico,descripcion,sintoma,enfermedad) values
+			(@fechaAtencion,@descripcion,@sintoma,@enfermedad)
 	SET @diagnostico=(select top 1 cod_diagnostico from NEXTGDD.Diagnostico order by cod_diagnostico DESC)
 	UPDATE NEXTGDD.Consulta
 			SET cod_diagnostico=@diagnostico
@@ -734,76 +735,6 @@ BEGIN
 				  and e.descripcion LIKE @nomEsp and e.cod_especialidad=a.cod_especialidad)
 END;
 GO
-
-/*TEST
-select a.cod_agenda from NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p 
-where p.nombre LIKE 'NICOLE' and p.apellido LIKE 'Tobal' and p.id_persona=pr.id_persona and a.matricula=pr.matricula
-and a.cod_especialidad LIKE 9999
-
-DELETE FROM NEXTGDD.Agenda where cod_agenda LIKE 51
-
-INSERT NEXTGDD.Persona (nombre,apellido,domicilio,telefono,mail,sexo,fecha_nac,nro_documento)
-values ('NICOLE','Tobal','Juramento',4123143,'dksjsf','M',CONVERT(datetime,'1995/10/19 00:00:00',120),821781);
-GO
-INSERT NEXTGDD.Profesional (id_persona)
-(select id_persona from NEXTGDD.Persona where nombre='NICOLE' and apellido='Tobal');
-GO
-INSERT NEXTGDD.Profesional_X_Especialidad (matricula,cod_especialidad)
-(select matricula,9999 from NEXTGDD.Persona p, NEXTGDD.Profesional pr where nombre='NICOLE' and apellido='Tobal' and p.id_persona=pr.id_persona);
-GO
-*/
-
-/*
-EXEC NEXTGDD.crearTurno @nroAF='113347201', @nombreEsp='Neurología', @nomProf='Caleb Villalba', @fecha='2016/11/4 17:30:00.000';
-select * from NEXTGDD.Turno where year(fecha)=2016
-select nro_afiliado from NEXTGDD.Afiliado where nro_afiliado LIKE '113347201'
-select isnull(count(*),0) from NEXTGDD.Afiliado where nro_afiliado LIKE '113347201'
-select pers.nombre+' '+pers.apellido as nombre from NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e,NEXTGDD.Persona pers where pers.id_persona=p.id_persona and p.matricula=pe.matricula and pe.cod_especialidad=e.cod_especialidad and e.descripcion LIKE 'Neurología' order by (pers.nombre+' '+pers.apellido) ASC
-select isnull(count(*),0) from NEXTGDD.Turno t,NEXTGDD.Agenda a, NEXTGDD.Profesional p,NEXTGDD.Persona pers where t.fecha LIKE CONVERT(datetime,'" + fecha + "', 120) and (pers.nombre+' '+pers.apellido) LIKE '" + profesional + "' and pers.id_persona=p.id_persona and a.matricula=p.matricula and t.cod_agenda=a.cod_agenda
-
-CREATE TRIGGER NEXTGDD.pedirTurno ON NEXTGDD.Turno INSTEAD OF insert
-AS
-BEGIN
-	IF (select isnull(count(t.cod_agenda+t.fecha),0) 
-	    from inserted i,NEXTGDD.Turno t
-		where i.cod_agenda+i.fecha=t.cod_agenda+t.fecha
-		group by t.cod_agenda,t.fecha)=0 
-	BEGIN
-		IF GD2C2016.NEXTGDD.verificarRangoDeAtencion((select fecha from inserted),(select cod_agenda from inserted))=1
-		BEGIN
-			INSERT NEXTGDD.Turno (nro_turno,fecha,nro_afiliado,cod_agenda,cod_cancelacion) 
-			(select nro_turno,fecha,nro_afiliado,cod_agenda,cod_cancelacion
-			 from inserted)
-			RETURN
-		END
-		raiserror('El turno esta fuera del rango de atencion del profesional',1,1)
-		RETURN
-	END
-	raiserror('Ya hay un turno en ese horario',1,1)
-	RETURN
-END;
-GO 
-
-CREATE FUNCTION NEXTGDD.verificarRangoDeAtencion (@fecha datetime,@cod_agenda numeric(18,0))
-returns int
-AS
-BEGIN
-	RETURN (select isnull(count(cod_agenda+rango_atencion),0)
-			from NEXTGDD.Rango_Atencion 
-	        where cod_agenda=@cod_agenda
-				  and (SELECT DATEPART(HOUR, @fecha))<hora_final
-				  and (SELECT DATEPART(HOUR, @fecha))>hora_inicial
-				  */--FALTA VER DIA SEMANAL-->CAMBIAR DIA DE SEMANA POR NUMERO
-			--group by cod_agenda,rango_atencion)
-			/*DEVUELVE 1 SI ESTA DENTRO DE ALGUN RANGO
-			  SINO DEVUELVE 0*/ 
---END;
---GO
-
-/*DROP FUNCTION NEXTGDD.verificarRangoDeAtencion*/
-/*DROP TRIGGER NEXTGDD.pedirTurno*/
-/*DROP PROCEDURE NEXTGDD.crearTurno*/
-
 
 CREATE PROCEDURE NEXTGDD.agregar_funcionalidad(@rol varchar(255), @func varchar(255)) AS
 BEGIN
