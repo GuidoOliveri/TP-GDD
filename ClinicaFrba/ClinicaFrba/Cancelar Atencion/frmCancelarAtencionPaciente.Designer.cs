@@ -39,6 +39,7 @@
             this.cmbMotivoCancelacion = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbSeleccionTurno = new System.Windows.Forms.ComboBox();
+            this.cmdVolver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -55,12 +56,13 @@
             // 
             // btnIngresar
             // 
-            this.btnIngresar.Location = new System.Drawing.Point(123, 233);
+            this.btnIngresar.Location = new System.Drawing.Point(45, 234);
             this.btnIngresar.Name = "btnIngresar";
             this.btnIngresar.Size = new System.Drawing.Size(75, 23);
             this.btnIngresar.TabIndex = 4;
             this.btnIngresar.Text = "Ingresar";
             this.btnIngresar.UseVisualStyleBackColor = true;
+            this.btnIngresar.Click += new System.EventHandler(this.btnIngresar_Click_1);
             // 
             // groupBox1
             // 
@@ -150,17 +152,29 @@
             this.cmbSeleccionTurno.Size = new System.Drawing.Size(274, 21);
             this.cmbSeleccionTurno.TabIndex = 0;
             // 
+            // cmdVolver
+            // 
+            this.cmdVolver.Location = new System.Drawing.Point(177, 234);
+            this.cmdVolver.Name = "cmdVolver";
+            this.cmdVolver.Size = new System.Drawing.Size(75, 23);
+            this.cmdVolver.TabIndex = 6;
+            this.cmdVolver.Text = "Volver";
+            this.cmdVolver.UseVisualStyleBackColor = true;
+            this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
+            // 
             // frmCancelarAtencionPaciente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(321, 262);
+            this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.warning2);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmCancelarAtencionPaciente";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cancelar Atención";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCancelarAtencionPaciente_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -183,5 +197,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbSeleccionTurno;
         private System.Windows.Forms.TextBox textBoxDetalleCancelacion;
+        private System.Windows.Forms.Button cmdVolver;
     }
 }

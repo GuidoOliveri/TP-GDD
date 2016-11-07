@@ -12,9 +12,16 @@ namespace ClinicaFrba.Compra_Bono
 {
     public partial class frmCompraBonos : Form
     {
-        public frmCompraBonos()
+        private string rol = "";
+        private string usuario = "";
+        private Clases.BaseDeDatosSQL bdd;
+
+        public frmCompraBonos(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
+            this.rol = rol;
+            this.usuario = usuario;
+            this.bdd = bdd;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -28,7 +35,21 @@ namespace ClinicaFrba.Compra_Bono
 
         private void button1_Click(object sender, EventArgs e)
         {
+            frmMontoAPagar monto = new frmMontoAPagar(rol,usuario,bdd);
+            this.Hide();
+            monto.Show();
+        }
 
+        private void cmdVolver_Click(object sender, EventArgs e)
+        {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            this.Hide();
+            menuAbm.Show();
+        }
+
+        private void frmCompraBonos_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

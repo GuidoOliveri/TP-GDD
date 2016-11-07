@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.pnlIngreseFechaBaja = new System.Windows.Forms.Panel();
-            this.btnCancelar = new System.Windows.Forms.Button();
+            this.cmdVolver = new System.Windows.Forms.Button();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.dtpFechaBaja = new System.Windows.Forms.DateTimePicker();
             this.txtMatricula = new System.Windows.Forms.TextBox();
@@ -41,7 +41,7 @@
             // 
             // pnlIngreseFechaBaja
             // 
-            this.pnlIngreseFechaBaja.Controls.Add(this.btnCancelar);
+            this.pnlIngreseFechaBaja.Controls.Add(this.cmdVolver);
             this.pnlIngreseFechaBaja.Controls.Add(this.btnAceptar);
             this.pnlIngreseFechaBaja.Controls.Add(this.dtpFechaBaja);
             this.pnlIngreseFechaBaja.Controls.Add(this.txtMatricula);
@@ -53,14 +53,15 @@
             this.pnlIngreseFechaBaja.Size = new System.Drawing.Size(372, 205);
             this.pnlIngreseFechaBaja.TabIndex = 0;
             // 
-            // btnCancelar
+            // cmdVolver
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(225, 149);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(110, 38);
-            this.btnCancelar.TabIndex = 6;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
+            this.cmdVolver.Location = new System.Drawing.Point(225, 149);
+            this.cmdVolver.Name = "cmdVolver";
+            this.cmdVolver.Size = new System.Drawing.Size(110, 38);
+            this.cmdVolver.TabIndex = 6;
+            this.cmdVolver.Text = "Volver";
+            this.cmdVolver.UseVisualStyleBackColor = true;
+            this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
             // 
             // btnAceptar
             // 
@@ -123,6 +124,7 @@
             this.Name = "frmBajaAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Baja de Afiliado";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmBajaAfiliado_FormClosing);
             this.Load += new System.EventHandler(this.frmBajaAfiliado_Load);
             this.pnlIngreseFechaBaja.ResumeLayout(false);
             this.pnlIngreseFechaBaja.PerformLayout();
@@ -136,7 +138,7 @@
         private System.Windows.Forms.Label lblFecha;
         private System.Windows.Forms.Label lblNroAfiliado;
         private System.Windows.Forms.Label lblIngresaFechas;
-        private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.Button cmdVolver;
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.DateTimePicker dtpFechaBaja;
         private System.Windows.Forms.TextBox txtMatricula;

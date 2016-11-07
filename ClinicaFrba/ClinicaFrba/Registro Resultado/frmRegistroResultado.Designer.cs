@@ -48,6 +48,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning3 = new System.Windows.Forms.Label();
+            this.cmdVolver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -247,17 +248,29 @@
             this.warning3.TabIndex = 10;
             this.warning3.Text = "Faltan completar datos";
             // 
+            // cmdVolver
+            // 
+            this.cmdVolver.Location = new System.Drawing.Point(395, 303);
+            this.cmdVolver.Name = "cmdVolver";
+            this.cmdVolver.Size = new System.Drawing.Size(75, 23);
+            this.cmdVolver.TabIndex = 11;
+            this.cmdVolver.Text = "Volver";
+            this.cmdVolver.UseVisualStyleBackColor = true;
+            this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
+            // 
             // frmRegistroResultado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(597, 338);
+            this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.warning3);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmRegistroResultado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro resultado atención médica";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmRegistroResultado_FormClosing);
             this.Load += new System.EventHandler(this.frmRegistroResultado_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -290,5 +303,6 @@
         private System.Windows.Forms.RadioButton rbFiltrarFecha;
         private System.Windows.Forms.Label warning3;
         private System.Windows.Forms.ComboBox cmbAfiliado;
+        private System.Windows.Forms.Button cmdVolver;
     }
 }

@@ -44,6 +44,7 @@
             this.cmbHorario = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.warning3 = new System.Windows.Forms.Label();
+            this.cmdVolver = new System.Windows.Forms.Button();
             this.Turno.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -118,6 +119,7 @@
             this.btnIngresarTurno.TabIndex = 8;
             this.btnIngresarTurno.Text = "Ingresar Turno";
             this.btnIngresarTurno.UseVisualStyleBackColor = true;
+            this.btnIngresarTurno.Click += new System.EventHandler(this.btnIngresarTurno_Click_1);
             // 
             // cmbEspecialidad
             // 
@@ -236,17 +238,29 @@
             this.warning3.TabIndex = 11;
             this.warning3.Text = "Faltan completar campos";
             // 
+            // cmdVolver
+            // 
+            this.cmdVolver.Location = new System.Drawing.Point(325, 229);
+            this.cmdVolver.Name = "cmdVolver";
+            this.cmdVolver.Size = new System.Drawing.Size(94, 22);
+            this.cmdVolver.TabIndex = 12;
+            this.cmdVolver.Text = "Volver";
+            this.cmdVolver.UseVisualStyleBackColor = true;
+            this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
+            // 
             // frmSeleccionDeTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(442, 260);
+            this.ClientSize = new System.Drawing.Size(437, 260);
+            this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.warning3);
             this.Controls.Add(this.Turno);
             this.Controls.Add(this.btnIngresarTurno);
             this.Name = "frmSeleccionDeTurno";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Selección de Turno";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSeleccionDeTurno_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Turno.ResumeLayout(false);
             this.Turno.PerformLayout();
@@ -273,5 +287,6 @@
         private System.Windows.Forms.Label warning1;
         private System.Windows.Forms.Label warning3;
         private System.Windows.Forms.Label warning4;
+        private System.Windows.Forms.Button cmdVolver;
     }
 }

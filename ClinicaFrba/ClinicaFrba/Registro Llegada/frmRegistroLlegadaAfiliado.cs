@@ -12,7 +12,10 @@ namespace ClinicaFrba.Registro_Llegada
 {
     public partial class frmRegistroLlegadaAfiliado : Form
     {
+        private string rol = "";
+        private string usuario = "";
         private Clases.BaseDeDatosSQL bdd;
+
         private string comando = "";
         private string profesional = "";
         private string especialidad = "";
@@ -20,11 +23,14 @@ namespace ClinicaFrba.Registro_Llegada
         private string bono = "";//nro bono
         private string horaLLegada = "";
 
-        public frmRegistroLlegadaAfiliado(Clases.BaseDeDatosSQL bdd)
+        public frmRegistroLlegadaAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
 
+            this.rol = rol;
+            this.usuario = usuario;
             this.bdd = bdd;
+       
 
             cmbEspecialidad.Enabled = false;
             warning1.Visible = false;
@@ -161,7 +167,7 @@ namespace ClinicaFrba.Registro_Llegada
                 comando = "EXECUTE NEXTGDD.registrarConsulta @horaLlegada='"+horaLLegada+"',@nomProf='" + profesional + "', @fechaTurno='" +convertirFecha(turno) + "', @nroBono='" + bono+ "'";
                 bdd.ExecStoredProcedure2(comando);
 
-                frmRegistroLlegadaAfiliado NewForm = new frmRegistroLlegadaAfiliado(bdd);
+                frmRegistroLlegadaAfiliado NewForm = new frmRegistroLlegadaAfiliado(rol,usuario,bdd);
                 NewForm.Show();
                 this.Dispose(false);
 
@@ -212,6 +218,23 @@ namespace ClinicaFrba.Registro_Llegada
         private void label4_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnIngresar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmdVolver_Click(object sender, EventArgs e)
+        {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            this.Hide();
+            menuAbm.Show();
+        }
+
+        private void frmRegistroLlegadaAfiliado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

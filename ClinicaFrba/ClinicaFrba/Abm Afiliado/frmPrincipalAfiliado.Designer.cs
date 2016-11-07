@@ -122,6 +122,7 @@
             this.Name = "frmPrincipalAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pantalla Principal Afiliado";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPrincipalAfiliado_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

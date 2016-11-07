@@ -12,14 +12,19 @@ namespace ClinicaFrba.Cancelar_Atencion
 {
     public partial class frmCancelarAtencionPaciente : Form
     {
-
+        private string rol = "";
+        private string usuario = "";
+        private Clases.BaseDeDatosSQL bdd;
         string comando = "";
         string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
-        
 
-        public frmCancelarAtencionPaciente()
+
+        public frmCancelarAtencionPaciente(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
+            this.rol = rol;
+            this.usuario = usuario;
+            this.bdd = bdd;
             warning1.Visible = false;
             warning2.Visible = false;
             cmbMotivoCancelacion.Enabled = false;
@@ -60,6 +65,23 @@ namespace ClinicaFrba.Cancelar_Atencion
         private void groupBox1_Enter(object sender, EventArgs e)
         {
          
+        }
+
+        private void btnIngresar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmdVolver_Click(object sender, EventArgs e)
+        {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            this.Hide();
+            menuAbm.Show();
+        }
+
+        private void frmCancelarAtencionPaciente_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

@@ -15,9 +15,16 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmAltaAfiliado : Form
     {
-        public frmAltaAfiliado()
+        private string rol = "";
+        private string usuario = "";
+        private Clases.BaseDeDatosSQL bdd;
+
+        public frmAltaAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
+            this.rol = rol;
+            this.usuario = usuario;
+            this.bdd = bdd;
         }
 
         public String Operacion { get; set; }
@@ -65,7 +72,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
-            if (txtNombre.Text.Trim() == string.Empty || txtApellido.Text.Trim() == string.Empty || txtNroDoc.Text.Trim() == "" || txtDir.Text.Trim() == "" || txtTel.Text.Trim() == "" || txtMail.Text.Trim() == "" || txtCantFam.Text.Trim() == "" || int.Parse(txtCantFam.Text.Trim()) < 0 || cboEstadoCivil.SelectedIndex == -1 || cboTipoDoc.SelectedIndex == -1 || dtpFecNac.Value > dtpFechaCambioPlan.Value)
+            if (txtNombre.Text == "" || txtNombre.Text == null || txtApellido.Text == "" || txtApellido.Text == null || txtNroDoc.Text == "" || txtNroDoc.Text== null || txtDir.Text == "" || txtDir.Text==null || txtTel.Text == "" || txtTel.Text== null || txtMail.Text == "" || txtMail.Text==null || txtCantFam.Text == "" || txtCantFam.Text==null || Int32.Parse(txtCantFam.Text) < 0 || txtCantFam.Text==null || cboEstadoCivil.SelectedItem==null || cboTipoDoc.SelectedItem == null || dtpFecNac.Value > dtpFechaCambioPlan.Value)
             {
                 MessageBox.Show("Todos los campos no estan llenos o no estan llenos correctamente", "Alta afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -79,7 +86,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
                 else if (dialogResult == DialogResult.No)
                 {
-                    AbmRol.frmElegirAccionRol elegirOtra = new AbmRol.frmElegirAccionRol();
+                    Login.frmMenuDeAbms elegirOtra = new Login.frmMenuDeAbms(rol,usuario,bdd);
                     this.Hide();
                     elegirOtra.Show();
                 }
@@ -104,9 +111,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            AbmRol.frmElegirAccionRol elegir = new AbmRol.frmElegirAccionRol();
+            Login.frmMenuDeAbms abm = new Login.frmMenuDeAbms(rol,usuario,bdd);
             this.Hide();
-            elegir.Show();
+            abm.Show();
         }
 
         private void btnHijo_Click(object sender, EventArgs e)
@@ -122,5 +129,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
 
         public DateTime Today { get; set; }
+
+        private void frmAltaAfiliado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

@@ -127,6 +127,7 @@
             this.Name = "frmAgregarNuevoRol";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Agregar un nuevo Rol";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAgregarNuevoRol_FormClosing);
             this.Load += new System.EventHandler(this.frmRol_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

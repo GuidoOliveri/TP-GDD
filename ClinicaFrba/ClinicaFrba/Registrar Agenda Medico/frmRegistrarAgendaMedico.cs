@@ -13,7 +13,10 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 {
     public partial class frmRegistrarAgendaMedico : Form
     {
+        private string rol = "";
+        private string usuario = "";
         private Clases.BaseDeDatosSQL bdd;
+
         private string comando = "";
         private string especialidad = "";
         private string profesional = "";
@@ -26,13 +29,14 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         private List<string> horarios = new List<string>();
         private List<string> dias = new List<string>();
 
-        public frmRegistrarAgendaMedico(Clases.BaseDeDatosSQL bdd)
+        public frmRegistrarAgendaMedico(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
             warning1.Visible=false;
             warning2.Visible = false;
             warning3.Visible = false;
-
+            this.rol = rol;
+            this.usuario = usuario;
             this.bdd = bdd;
 
             cargarDias();
@@ -220,7 +224,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                         nroRango++;
                     }
 
-                    frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(bdd);
+                    frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(rol,usuario,bdd);
                     NewForm.Show();
                     this.Dispose(false);
                 }
@@ -318,6 +322,18 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         private void warning3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cmdVolver_Click(object sender, EventArgs e)
+        {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            this.Hide();
+            menuAbm.Show();
+        }
+
+        private void frmRegistrarAgendaMedico_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
 
     }

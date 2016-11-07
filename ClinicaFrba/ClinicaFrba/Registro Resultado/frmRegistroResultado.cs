@@ -13,7 +13,10 @@ namespace ClinicaFrba.Registro_Resultado
 
     public partial class frmRegistroResultado : Form
     {
+        private string rol = "";
+        private string usuario = "";
         private Clases.BaseDeDatosSQL bdd;
+        
         private string comando = "";
         private string consulta = "";
         private string afiliado = ""; //para filtrar
@@ -22,14 +25,12 @@ namespace ClinicaFrba.Registro_Resultado
         private string sintoma = "";
         private string enfermedad = "";
         private string descripcion = "";
-
-        private string usuario = "";
         private string id_persona = ""; 
 
-        public frmRegistroResultado(Clases.BaseDeDatosSQL bdd,string usuario)
+        public frmRegistroResultado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
-
+            this.rol = rol;
             this.usuario = usuario;
             this.bdd = bdd;
             comando = "select u.id_persona as id from NEXTGDD.Usuario u where u.username LIKE '"+usuario+"'";
@@ -119,7 +120,7 @@ namespace ClinicaFrba.Registro_Resultado
                 comando = "EXECUTE NEXTGDD.registrarDiagnostico @medico='" + id_persona + "',@fechaConsulta='" + convertirFecha(consulta) + "', @fechaAtencion='" + convertirFecha(fecha+' '+hora) + "', @enfermedad='" + enfermedad + "',@sintoma='"+sintoma+"',@descripcion='"+descripcion+"'";
                 bdd.ExecStoredProcedure2(comando);
 
-                frmRegistroResultado NewForm = new frmRegistroResultado(bdd,usuario);
+                frmRegistroResultado NewForm = new frmRegistroResultado(rol,usuario,bdd);
                 NewForm.Show();
                 this.Dispose(false);
 
@@ -185,6 +186,18 @@ namespace ClinicaFrba.Registro_Resultado
         private void cmbConsulta_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void cmdVolver_Click(object sender, EventArgs e)
+        {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            this.Hide();
+            menuAbm.Show();
+        }
+
+        private void frmRegistroResultado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

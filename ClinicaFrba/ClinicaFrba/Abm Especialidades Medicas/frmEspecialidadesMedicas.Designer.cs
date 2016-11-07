@@ -38,6 +38,7 @@
             this.Name = "frmEspecialidadesMedicas";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Especialidades Médicas";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmEspecialidadesMedicas_FormClosing);
             this.ResumeLayout(false);
 
         }

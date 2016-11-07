@@ -33,6 +33,11 @@ namespace ClinicaFrba.Login
 
         }
 
+        public frmMenuDeAbms()
+        {
+            // TODO: Complete member initialization
+        }
+
         private void cargar(List<string> lista, ComboBox cmb)
         {
             foreach (string elemento in lista)
@@ -48,12 +53,7 @@ namespace ClinicaFrba.Login
            logueo.Show();
         }
 
-        private void cmdAbmRol_Click(object sender, EventArgs e)
-        {
-            AbmRol.frmElegirAccionRol rol = new AbmRol.frmElegirAccionRol();
-            this.Hide();
-            rol.Show();
-        }
+
 
         private void btnEjecutar_OnClick(object sender, EventArgs e)
         {
@@ -62,79 +62,71 @@ namespace ClinicaFrba.Login
             {
                 if (funcionalidad == "Pedido de turno")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(bdd);
+                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(rol,usuario,bdd);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "ABM de roles")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(bdd);
+                    AbmRol.frmElegirAccionRol func = new AbmRol.frmElegirAccionRol(rol, usuario,bdd);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "ABM de afiliados")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(bdd);
+                    Abm_Afiliado.frmPrincipalAfiliado func = new Abm_Afiliado.frmPrincipalAfiliado(rol,usuario,bdd);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "ABM de profesionales")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(bdd);
-                    this.Hide();
-                    func.Show();
+                    MessageBox.Show("ABM Profesionales no tiene implementacion", "ABMs", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                 if (funcionalidad == "ABM de usuarios")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(bdd);
-                    this.Hide();
-                    func.Show();
+                    MessageBox.Show("ABM Usuarios no tiene implementacion", "ABMs", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                 if (funcionalidad == "ABM de especialidades medicas")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(bdd);
-                    this.Hide();
-                    func.Show();
+                    MessageBox.Show("ABM Especialidades Medicas no tiene implementacion", "ABMs", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                 if (funcionalidad == "ABM de planes")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(bdd);
-                    this.Hide();
-                    func.Show();
+                    MessageBox.Show("ABM Planes no tiene implementacion", "ABMs", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
                 if (funcionalidad == "Compra de bonos")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(bdd);
+                    Compra_Bono.frmCompraBonos func = new Compra_Bono.frmCompraBonos(rol,usuario,bdd);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "Registrar agenda profesional")
                 {
-                    Registrar_Agenda_Medico.frmRegistrarAgendaMedico func = new Registrar_Agenda_Medico.frmRegistrarAgendaMedico(bdd);
+                    Registrar_Agenda_Medico.frmRegistrarAgendaMedico func = new Registrar_Agenda_Medico.frmRegistrarAgendaMedico(rol,usuario,bdd);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "Registro de llegada para atencion medica")
                 {
-                    Registro_Llegada.frmRegistroLlegadaAfiliado func = new Registro_Llegada.frmRegistroLlegadaAfiliado(bdd);
+                    Registro_Llegada.frmRegistroLlegadaAfiliado func = new Registro_Llegada.frmRegistroLlegadaAfiliado(rol,usuario,bdd);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "Registro de resultado para atencion medica")
                 {
-                    Registro_Resultado.frmRegistroResultado func = new Registro_Resultado.frmRegistroResultado(bdd,usuario);
+                    Registro_Resultado.frmRegistroResultado func = new Registro_Resultado.frmRegistroResultado(rol,usuario,bdd);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "Cancelar atencion medica")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(bdd);
+                    Cancelar_Atencion.frmCancelarAtencionMedico func = new Cancelar_Atencion.frmCancelarAtencionMedico(rol,usuario,bdd);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "Consultar listado estadistico")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(bdd);
+                    Listados.frmListado func = new Listados.frmListado(rol,usuario,bdd);
                     this.Hide();
                     func.Show();
                 }
@@ -145,5 +137,21 @@ namespace ClinicaFrba.Login
         {
 
         }
+
+        private void btnEjecutar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbFuncionalidades_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void frmMenuDeAbms_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
     }
 }

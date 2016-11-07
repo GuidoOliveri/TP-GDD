@@ -12,9 +12,16 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmBuscarAfiliado : Form
     {
-        public frmBuscarAfiliado()
+        private string rol = "";
+        private string usuario = "";
+        private Clases.BaseDeDatosSQL bdd;
+
+        public frmBuscarAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
+            this.rol = rol;
+            this.usuario = usuario;
+            this.bdd = bdd;
         }
 
         private void lblFiltroBusqueda_Click(object sender, EventArgs e)
@@ -31,7 +38,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
             this.Hide();
+            menuAbm.Show();
         }
 
         public string Operacion { get; set; }
@@ -66,6 +75,11 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void frmBuscarAfiliado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
 
     }

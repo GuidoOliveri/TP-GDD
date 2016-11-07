@@ -112,6 +112,18 @@ namespace ClinicaFrba.Login
                 // mostrar la pantalla del menu directo
             } */
         }
+
+        private void cmdVolverMenuPrincipal_Click(object sender, EventArgs e)
+        {
+            frmVentanaPrincipal principal = new frmVentanaPrincipal(bdd);
+            this.Hide();
+            principal.Show();
+        }
+
+        private void frmLogin_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
 

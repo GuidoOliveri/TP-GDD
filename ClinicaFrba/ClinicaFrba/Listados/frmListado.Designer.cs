@@ -46,21 +46,22 @@
             this.gD2C2016DataSet = new ClinicaFrba.GD2C2016DataSet();
             this.maestraTableAdapter = new ClinicaFrba.GD2C2016DataSetTableAdapters.MaestraTableAdapter();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.listaDeAfiliados = new ClinicaFrba.ListaDeAfiliados();
             this.listaDeAfiliadosBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.listaDeAfiliados = new ClinicaFrba.ListaDeAfiliados();
+            this.cmdVolver = new System.Windows.Forms.Button();
             this.pnlFiltroBusqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.listaDeAfiliados)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.listaDeAfiliadosBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listaDeAfiliados)).BeginInit();
             this.SuspendLayout();
             // 
             // btnLimpiar
             // 
             this.btnLimpiar.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.btnLimpiar.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnLimpiar.Location = new System.Drawing.Point(52, 143);
+            this.btnLimpiar.Location = new System.Drawing.Point(100, 143);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(151, 25);
             this.btnLimpiar.TabIndex = 0;
@@ -70,12 +71,13 @@
             // btnBorrar
             // 
             this.btnBorrar.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.btnBorrar.Location = new System.Drawing.Point(307, 143);
+            this.btnBorrar.Location = new System.Drawing.Point(347, 143);
             this.btnBorrar.Name = "btnBorrar";
             this.btnBorrar.Size = new System.Drawing.Size(151, 26);
             this.btnBorrar.TabIndex = 1;
             this.btnBorrar.Text = "Borrar";
             this.btnBorrar.UseVisualStyleBackColor = false;
+            this.btnBorrar.Click += new System.EventHandler(this.btnBorrar_Click);
             // 
             // pnlFiltroBusqueda
             // 
@@ -206,21 +208,32 @@
             this.dataGridView1.Size = new System.Drawing.Size(563, 167);
             this.dataGridView1.TabIndex = 4;
             // 
-            // listaDeAfiliados
-            // 
-            this.listaDeAfiliados.DataSetName = "ListaDeAfiliados";
-            this.listaDeAfiliados.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
             // listaDeAfiliadosBindingSource
             // 
             this.listaDeAfiliadosBindingSource.DataSource = this.listaDeAfiliados;
             this.listaDeAfiliadosBindingSource.Position = 0;
             // 
+            // listaDeAfiliados
+            // 
+            this.listaDeAfiliados.DataSetName = "ListaDeAfiliados";
+            this.listaDeAfiliados.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // cmdVolver
+            // 
+            this.cmdVolver.Location = new System.Drawing.Point(233, 367);
+            this.cmdVolver.Name = "cmdVolver";
+            this.cmdVolver.Size = new System.Drawing.Size(136, 36);
+            this.cmdVolver.TabIndex = 5;
+            this.cmdVolver.Text = "Volver";
+            this.cmdVolver.UseVisualStyleBackColor = true;
+            this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
+            // 
             // frmListado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 415);
+            this.ClientSize = new System.Drawing.Size(611, 415);
+            this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.lblFiltroBusqueda);
             this.Controls.Add(this.pnlFiltroBusqueda);
@@ -229,14 +242,15 @@
             this.Name = "frmListado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Listado";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmListado_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.pnlFiltroBusqueda.ResumeLayout(false);
             this.pnlFiltroBusqueda.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.listaDeAfiliados)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.listaDeAfiliadosBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listaDeAfiliados)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -263,5 +277,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.BindingSource listaDeAfiliadosBindingSource;
         private ListaDeAfiliados listaDeAfiliados;
+        private System.Windows.Forms.Button cmdVolver;
     }
 }

@@ -24,12 +24,11 @@ namespace ClinicaFrba.Abm_Afiliado
         public frmModificarAfiliado(Clases.BaseDeDatosSQL bdd, int idAfiliado)
         {
             InitializeComponent();
-            
-            this.bdd = new Clases.BaseDeDatosSQL(); // Hardcode de prueba
+
+            this.bdd = bdd; 
 
             this.idAfiliado = idAfiliado;
 
-            this.idAfiliado = 112396001;
             int idPersona = 1123960; // Hardcode de prueba
             comando = "select * from GD2C2016.NEXTGDD.Persona where id_persona ="+idPersona;
             System.Collections.ArrayList persona = this.bdd.obtenerRow(comando);
@@ -88,7 +87,14 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void txtDir_TextChanged(object sender, EventArgs e)
         {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            this.Hide();
+            menuAbm.Show();
+        }
 
+        private void frmModificarAfiliado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

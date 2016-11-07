@@ -13,17 +13,22 @@ namespace ClinicaFrba.Pedir_Turno
 
     public partial class frmSeleccionDeTurno : Form
     {
+        private string rol = "";
+        private string usuario = "";
         private Clases.BaseDeDatosSQL bdd;
+
         private string comando = "";
         private string nroAfiliado = "";
         private string especialidad = "";
         private string profesional = "";
         private string fecha = "";
 
-        public frmSeleccionDeTurno(Clases.BaseDeDatosSQL bdd)
+        public frmSeleccionDeTurno(string rol, string usuario,Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
 
+            this.rol = rol;
+            this.usuario = usuario;
             this.bdd = bdd;
 
             warning1.Visible=false;
@@ -123,7 +128,7 @@ namespace ClinicaFrba.Pedir_Turno
                 comando = "EXECUTE NEXTGDD.crearTurno @nroAf='"+nroAfiliado+"', @nombreEsp='"+especialidad+"', @nomProf='"+profesional+"', @fecha='"+fecha+"'";
                 bdd.ExecStoredProcedure2(comando);
 
-                frmSeleccionDeTurno NewForm=new frmSeleccionDeTurno(bdd);
+                frmSeleccionDeTurno NewForm=new frmSeleccionDeTurno(rol,usuario,bdd);
                 NewForm.Show();
                 this.Dispose(false);
 
@@ -157,6 +162,23 @@ namespace ClinicaFrba.Pedir_Turno
         private void label3_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnIngresarTurno_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmdVolver_Click(object sender, EventArgs e)
+        {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            this.Hide();
+            menuAbm.Show();
+        }
+
+        private void frmSeleccionDeTurno_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

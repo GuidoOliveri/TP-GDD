@@ -48,11 +48,11 @@
             // 
             // cmdAgregar
             // 
-            this.cmdAgregar.Location = new System.Drawing.Point(155, 307);
+            this.cmdAgregar.Location = new System.Drawing.Point(144, 307);
             this.cmdAgregar.Name = "cmdAgregar";
-            this.cmdAgregar.Size = new System.Drawing.Size(75, 23);
+            this.cmdAgregar.Size = new System.Drawing.Size(120, 23);
             this.cmdAgregar.TabIndex = 4;
-            this.cmdAgregar.Text = "Guardar";
+            this.cmdAgregar.Text = "Guardar y Regresar";
             this.cmdAgregar.UseVisualStyleBackColor = true;
             this.cmdAgregar.Click += new System.EventHandler(this.cmdAgregar_Click);
             // 
@@ -115,6 +115,7 @@
             this.Name = "frmModificacionRol";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modificación de Rol";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmModificacionRol_FormClosing);
             this.Load += new System.EventHandler(this.lstSeleccionFuncionalidad_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

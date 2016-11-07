@@ -39,19 +39,19 @@
             this.btnBuscar = new System.Windows.Forms.Button();
             this.btnAceptarYVolver = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.historialDeCambios = new ClinicaFrba.HistorialDeCambios();
-            this.historialBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.historialTableAdapter = new ClinicaFrba.HistorialDeCambiosTableAdapters.HistorialTableAdapter();
             this.nrohistorialDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fechamodificacionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.motivomodificacionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nroafiliadoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.codplanviejoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.codplannuevoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.historialBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.historialDeCambios = new ClinicaFrba.HistorialDeCambios();
+            this.historialTableAdapter = new ClinicaFrba.HistorialDeCambiosTableAdapters.HistorialTableAdapter();
             this.pnlFiltroParaBuscarHistorial.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.historialDeCambios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.historialBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historialDeCambios)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlFiltroParaBuscarHistorial
@@ -133,6 +133,7 @@
             this.btnAceptarYVolver.TabIndex = 4;
             this.btnAceptarYVolver.Text = "Aceptar y Regresar";
             this.btnAceptarYVolver.UseVisualStyleBackColor = true;
+            this.btnAceptarYVolver.Click += new System.EventHandler(this.btnAceptarYVolver_Click);
             // 
             // dataGridView1
             // 
@@ -150,20 +151,6 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(424, 136);
             this.dataGridView1.TabIndex = 5;
-            // 
-            // historialDeCambios
-            // 
-            this.historialDeCambios.DataSetName = "HistorialDeCambios";
-            this.historialDeCambios.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // historialBindingSource
-            // 
-            this.historialBindingSource.DataMember = "Historial";
-            this.historialBindingSource.DataSource = this.historialDeCambios;
-            // 
-            // historialTableAdapter
-            // 
-            this.historialTableAdapter.ClearBeforeFill = true;
             // 
             // nrohistorialDataGridViewTextBoxColumn
             // 
@@ -201,6 +188,20 @@
             this.codplannuevoDataGridViewTextBoxColumn.HeaderText = "cod_plan_nuevo";
             this.codplannuevoDataGridViewTextBoxColumn.Name = "codplannuevoDataGridViewTextBoxColumn";
             // 
+            // historialBindingSource
+            // 
+            this.historialBindingSource.DataMember = "Historial";
+            this.historialBindingSource.DataSource = this.historialDeCambios;
+            // 
+            // historialDeCambios
+            // 
+            this.historialDeCambios.DataSetName = "HistorialDeCambios";
+            this.historialDeCambios.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // historialTableAdapter
+            // 
+            this.historialTableAdapter.ClearBeforeFill = true;
+            // 
             // frmHistorialCambios
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -214,12 +215,13 @@
             this.Name = "frmHistorialCambios";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Historial de Cambios ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmHistorialCambios_FormClosing);
             this.Load += new System.EventHandler(this.frmHistorialCambios_Load);
             this.pnlFiltroParaBuscarHistorial.ResumeLayout(false);
             this.pnlFiltroParaBuscarHistorial.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.historialDeCambios)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.historialBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.historialDeCambios)).EndInit();
             this.ResumeLayout(false);
 
         }

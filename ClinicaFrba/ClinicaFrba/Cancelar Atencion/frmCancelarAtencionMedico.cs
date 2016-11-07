@@ -12,11 +12,30 @@ namespace ClinicaFrba.Cancelar_Atencion
 {
     public partial class frmCancelarAtencionMedico : Form
     {
-        public frmCancelarAtencionMedico()
+        private string rol = "";
+        private string usuario = "";
+        private Clases.BaseDeDatosSQL bdd;
+
+        public frmCancelarAtencionMedico(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
+            this.rol = rol;
+            this.usuario = usuario;
+            this.bdd = bdd;
         }
 
         public Clases.Profesional unProfesional { get; set; }
+
+        private void cmdVolver_Click(object sender, EventArgs e)
+        {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            this.Hide();
+            menuAbm.Show();
+        }
+
+        private void frmCancelarAtencionMedico_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

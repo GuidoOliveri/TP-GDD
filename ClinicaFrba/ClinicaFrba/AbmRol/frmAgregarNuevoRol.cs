@@ -12,9 +12,16 @@ namespace ClinicaFrba.AbmRol
 {
     public partial class frmAgregarNuevoRol : Form
     {
-        public frmAgregarNuevoRol()
+        private string rol = "";
+        private string usuario = "";
+        private Clases.BaseDeDatosSQL bdd;
+
+        public frmAgregarNuevoRol(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
+            this.rol = rol;
+            this.usuario = usuario;
+            this.bdd = bdd;
         }
 
         private void frmRol_Load(object sender, EventArgs e)
@@ -76,9 +83,14 @@ namespace ClinicaFrba.AbmRol
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            frmElegirAccionRol elegi = new frmElegirAccionRol();
+            frmElegirAccionRol elegi = new frmElegirAccionRol(rol,usuario,bdd);
             this.Hide();
             elegi.Show();
+        }
+
+        private void frmAgregarNuevoRol_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

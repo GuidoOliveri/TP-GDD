@@ -38,6 +38,7 @@
             this.Name = "frmPlanes";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Plan ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPlanes_FormClosing);
             this.ResumeLayout(false);
 
         }
