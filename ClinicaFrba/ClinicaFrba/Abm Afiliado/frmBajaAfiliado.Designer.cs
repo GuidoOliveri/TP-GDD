@@ -124,6 +124,7 @@
             this.Name = "frmBajaAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Baja de Afiliado";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmBajaAfiliado_FormClosing);
             this.Load += new System.EventHandler(this.frmBajaAfiliado_Load);
             this.pnlIngreseFechaBaja.ResumeLayout(false);
             this.pnlIngreseFechaBaja.PerformLayout();

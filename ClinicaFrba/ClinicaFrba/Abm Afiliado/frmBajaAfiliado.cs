@@ -45,5 +45,10 @@ namespace ClinicaFrba.Abm_Afiliado
             this.Hide();
             menuAbm.Show();
         }
+
+        private void frmBajaAfiliado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

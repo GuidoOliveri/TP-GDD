@@ -29,6 +29,15 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblObliMatricula = new System.Windows.Forms.Label();
+            this.lblObliSexo = new System.Windows.Forms.Label();
+            this.lblObliFecNac = new System.Windows.Forms.Label();
+            this.lblObliMail = new System.Windows.Forms.Label();
+            this.lblObliTel = new System.Windows.Forms.Label();
+            this.lblObliDirec = new System.Windows.Forms.Label();
+            this.lblObliDoc = new System.Windows.Forms.Label();
+            this.lblObliApe = new System.Windows.Forms.Label();
+            this.lblObliNombre = new System.Windows.Forms.Label();
             this.lblAclaracion = new System.Windows.Forms.Label();
             this.cmdSeleccionarTodo = new System.Windows.Forms.Button();
             this.grillaEspecialidades = new System.Windows.Forms.CheckedListBox();
@@ -56,15 +65,6 @@
             this.lblFecNacProf = new System.Windows.Forms.Label();
             this.lblTelefonoProf = new System.Windows.Forms.Label();
             this.lblNombreProf = new System.Windows.Forms.Label();
-            this.lblObliNombre = new System.Windows.Forms.Label();
-            this.lblObliApe = new System.Windows.Forms.Label();
-            this.lblObliDoc = new System.Windows.Forms.Label();
-            this.lblObliDirec = new System.Windows.Forms.Label();
-            this.lblObliTel = new System.Windows.Forms.Label();
-            this.lblObliMail = new System.Windows.Forms.Label();
-            this.lblObliFecNac = new System.Windows.Forms.Label();
-            this.lblObliSexo = new System.Windows.Forms.Label();
-            this.lblObliMatricula = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -113,6 +113,87 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos Personales del Profesional:";
+            // 
+            // lblObliMatricula
+            // 
+            this.lblObliMatricula.AutoSize = true;
+            this.lblObliMatricula.Location = new System.Drawing.Point(381, 130);
+            this.lblObliMatricula.Name = "lblObliMatricula";
+            this.lblObliMatricula.Size = new System.Drawing.Size(11, 13);
+            this.lblObliMatricula.TabIndex = 76;
+            this.lblObliMatricula.Text = "*";
+            // 
+            // lblObliSexo
+            // 
+            this.lblObliSexo.AutoSize = true;
+            this.lblObliSexo.Location = new System.Drawing.Point(400, 93);
+            this.lblObliSexo.Name = "lblObliSexo";
+            this.lblObliSexo.Size = new System.Drawing.Size(11, 13);
+            this.lblObliSexo.TabIndex = 75;
+            this.lblObliSexo.Text = "*";
+            // 
+            // lblObliFecNac
+            // 
+            this.lblObliFecNac.AutoSize = true;
+            this.lblObliFecNac.Location = new System.Drawing.Point(2, 196);
+            this.lblObliFecNac.Name = "lblObliFecNac";
+            this.lblObliFecNac.Size = new System.Drawing.Size(11, 13);
+            this.lblObliFecNac.TabIndex = 74;
+            this.lblObliFecNac.Text = "*";
+            // 
+            // lblObliMail
+            // 
+            this.lblObliMail.AutoSize = true;
+            this.lblObliMail.Location = new System.Drawing.Point(368, 50);
+            this.lblObliMail.Name = "lblObliMail";
+            this.lblObliMail.Size = new System.Drawing.Size(11, 13);
+            this.lblObliMail.TabIndex = 73;
+            this.lblObliMail.Text = "*";
+            // 
+            // lblObliTel
+            // 
+            this.lblObliTel.AutoSize = true;
+            this.lblObliTel.Location = new System.Drawing.Point(23, 157);
+            this.lblObliTel.Name = "lblObliTel";
+            this.lblObliTel.Size = new System.Drawing.Size(11, 13);
+            this.lblObliTel.TabIndex = 72;
+            this.lblObliTel.Text = "*";
+            // 
+            // lblObliDirec
+            // 
+            this.lblObliDirec.AutoSize = true;
+            this.lblObliDirec.Location = new System.Drawing.Point(23, 124);
+            this.lblObliDirec.Name = "lblObliDirec";
+            this.lblObliDirec.Size = new System.Drawing.Size(11, 13);
+            this.lblObliDirec.TabIndex = 71;
+            this.lblObliDirec.Text = "*";
+            // 
+            // lblObliDoc
+            // 
+            this.lblObliDoc.AutoSize = true;
+            this.lblObliDoc.Location = new System.Drawing.Point(23, 89);
+            this.lblObliDoc.Name = "lblObliDoc";
+            this.lblObliDoc.Size = new System.Drawing.Size(11, 13);
+            this.lblObliDoc.TabIndex = 70;
+            this.lblObliDoc.Text = "*";
+            // 
+            // lblObliApe
+            // 
+            this.lblObliApe.AutoSize = true;
+            this.lblObliApe.Location = new System.Drawing.Point(23, 53);
+            this.lblObliApe.Name = "lblObliApe";
+            this.lblObliApe.Size = new System.Drawing.Size(11, 13);
+            this.lblObliApe.TabIndex = 69;
+            this.lblObliApe.Text = "*";
+            // 
+            // lblObliNombre
+            // 
+            this.lblObliNombre.AutoSize = true;
+            this.lblObliNombre.Location = new System.Drawing.Point(23, 31);
+            this.lblObliNombre.Name = "lblObliNombre";
+            this.lblObliNombre.Size = new System.Drawing.Size(11, 13);
+            this.lblObliNombre.TabIndex = 68;
+            this.lblObliNombre.Text = "*";
             // 
             // lblAclaracion
             // 
@@ -365,87 +446,6 @@
             this.lblNombreProf.TabIndex = 0;
             this.lblNombreProf.Text = "Nombre:";
             // 
-            // lblObliNombre
-            // 
-            this.lblObliNombre.AutoSize = true;
-            this.lblObliNombre.Location = new System.Drawing.Point(23, 31);
-            this.lblObliNombre.Name = "lblObliNombre";
-            this.lblObliNombre.Size = new System.Drawing.Size(11, 13);
-            this.lblObliNombre.TabIndex = 68;
-            this.lblObliNombre.Text = "*";
-            // 
-            // lblObliApe
-            // 
-            this.lblObliApe.AutoSize = true;
-            this.lblObliApe.Location = new System.Drawing.Point(23, 53);
-            this.lblObliApe.Name = "lblObliApe";
-            this.lblObliApe.Size = new System.Drawing.Size(11, 13);
-            this.lblObliApe.TabIndex = 69;
-            this.lblObliApe.Text = "*";
-            // 
-            // lblObliDoc
-            // 
-            this.lblObliDoc.AutoSize = true;
-            this.lblObliDoc.Location = new System.Drawing.Point(23, 89);
-            this.lblObliDoc.Name = "lblObliDoc";
-            this.lblObliDoc.Size = new System.Drawing.Size(11, 13);
-            this.lblObliDoc.TabIndex = 70;
-            this.lblObliDoc.Text = "*";
-            // 
-            // lblObliDirec
-            // 
-            this.lblObliDirec.AutoSize = true;
-            this.lblObliDirec.Location = new System.Drawing.Point(23, 124);
-            this.lblObliDirec.Name = "lblObliDirec";
-            this.lblObliDirec.Size = new System.Drawing.Size(11, 13);
-            this.lblObliDirec.TabIndex = 71;
-            this.lblObliDirec.Text = "*";
-            // 
-            // lblObliTel
-            // 
-            this.lblObliTel.AutoSize = true;
-            this.lblObliTel.Location = new System.Drawing.Point(23, 157);
-            this.lblObliTel.Name = "lblObliTel";
-            this.lblObliTel.Size = new System.Drawing.Size(11, 13);
-            this.lblObliTel.TabIndex = 72;
-            this.lblObliTel.Text = "*";
-            // 
-            // lblObliMail
-            // 
-            this.lblObliMail.AutoSize = true;
-            this.lblObliMail.Location = new System.Drawing.Point(368, 50);
-            this.lblObliMail.Name = "lblObliMail";
-            this.lblObliMail.Size = new System.Drawing.Size(11, 13);
-            this.lblObliMail.TabIndex = 73;
-            this.lblObliMail.Text = "*";
-            // 
-            // lblObliFecNac
-            // 
-            this.lblObliFecNac.AutoSize = true;
-            this.lblObliFecNac.Location = new System.Drawing.Point(2, 196);
-            this.lblObliFecNac.Name = "lblObliFecNac";
-            this.lblObliFecNac.Size = new System.Drawing.Size(11, 13);
-            this.lblObliFecNac.TabIndex = 74;
-            this.lblObliFecNac.Text = "*";
-            // 
-            // lblObliSexo
-            // 
-            this.lblObliSexo.AutoSize = true;
-            this.lblObliSexo.Location = new System.Drawing.Point(400, 93);
-            this.lblObliSexo.Name = "lblObliSexo";
-            this.lblObliSexo.Size = new System.Drawing.Size(11, 13);
-            this.lblObliSexo.TabIndex = 75;
-            this.lblObliSexo.Text = "*";
-            // 
-            // lblObliMatricula
-            // 
-            this.lblObliMatricula.AutoSize = true;
-            this.lblObliMatricula.Location = new System.Drawing.Point(381, 130);
-            this.lblObliMatricula.Name = "lblObliMatricula";
-            this.lblObliMatricula.Size = new System.Drawing.Size(11, 13);
-            this.lblObliMatricula.TabIndex = 76;
-            this.lblObliMatricula.Text = "*";
-            // 
             // frmAltaProfesional
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -455,6 +455,7 @@
             this.Name = "frmAltaProfesional";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Alta de Profesional";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAltaProfesional_FormClosing);
             this.Load += new System.EventHandler(this.frmProfesional_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

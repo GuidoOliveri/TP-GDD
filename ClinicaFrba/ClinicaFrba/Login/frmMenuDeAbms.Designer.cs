@@ -86,6 +86,7 @@
             this.Name = "frmMenuDeAbms";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu de ABMs";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMenuDeAbms_FormClosing);
             this.Load += new System.EventHandler(this.frmMenuDeAbms_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

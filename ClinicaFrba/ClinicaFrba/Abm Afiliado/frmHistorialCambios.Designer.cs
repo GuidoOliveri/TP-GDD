@@ -215,6 +215,7 @@
             this.Name = "frmHistorialCambios";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Historial de Cambios ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmHistorialCambios_FormClosing);
             this.Load += new System.EventHandler(this.frmHistorialCambios_Load);
             this.pnlFiltroParaBuscarHistorial.ResumeLayout(false);
             this.pnlFiltroParaBuscarHistorial.PerformLayout();

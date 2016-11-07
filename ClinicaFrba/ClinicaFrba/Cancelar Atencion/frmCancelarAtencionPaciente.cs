@@ -78,5 +78,10 @@ namespace ClinicaFrba.Cancelar_Atencion
             this.Hide();
             menuAbm.Show();
         }
+
+        private void frmCancelarAtencionPaciente_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

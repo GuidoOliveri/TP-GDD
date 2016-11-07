@@ -69,5 +69,10 @@ namespace ClinicaFrba.AbmRol
         {
 
         }
+
+        private void frmSeleccionarRol_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

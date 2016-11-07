@@ -139,5 +139,10 @@ namespace ClinicaFrba.AbmRol
                 MessageBox.Show("No hay ningun rol para modificar", "Seleccion Roles", MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
             }
         }
+
+        private void frmSeleccionRolBajaOModificacion_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

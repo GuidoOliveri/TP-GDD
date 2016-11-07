@@ -384,6 +384,7 @@
             this.Name = "frmRegistrarAgendaMedico";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro de la agenda del médico";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmRegistrarAgendaMedico_FormClosing);
             this.Load += new System.EventHandler(this.frmRegistrarAgendaMedico_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

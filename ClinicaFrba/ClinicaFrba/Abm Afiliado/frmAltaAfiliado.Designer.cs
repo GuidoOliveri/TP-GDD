@@ -61,13 +61,13 @@
             this.txtMotivo = new System.Windows.Forms.TextBox();
             this.lblMotivoCambio = new System.Windows.Forms.Label();
             this.lblAltaFamiliar = new System.Windows.Forms.Label();
+            this.txtNroAfiliado = new System.Windows.Forms.TextBox();
+            this.lblNroAfiliado = new System.Windows.Forms.Label();
             this.txtPlanMedico = new System.Windows.Forms.TextBox();
             this.lblPlanMedico = new System.Windows.Forms.Label();
             this.lblDatosEspecificos = new System.Windows.Forms.Label();
             this.lblAclaracion = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
-            this.txtNroAfiliado = new System.Windows.Forms.TextBox();
-            this.lblNroAfiliado = new System.Windows.Forms.Label();
             this.pnlDatosPersonales.SuspendLayout();
             this.pnlDatosEspecificos.SuspendLayout();
             this.SuspendLayout();
@@ -391,6 +391,23 @@
             this.lblAltaFamiliar.Size = new System.Drawing.Size(0, 13);
             this.lblAltaFamiliar.TabIndex = 14;
             // 
+            // txtNroAfiliado
+            // 
+            this.txtNroAfiliado.Enabled = false;
+            this.txtNroAfiliado.Location = new System.Drawing.Point(89, 44);
+            this.txtNroAfiliado.Name = "txtNroAfiliado";
+            this.txtNroAfiliado.Size = new System.Drawing.Size(109, 20);
+            this.txtNroAfiliado.TabIndex = 13;
+            // 
+            // lblNroAfiliado
+            // 
+            this.lblNroAfiliado.AutoSize = true;
+            this.lblNroAfiliado.Location = new System.Drawing.Point(10, 45);
+            this.lblNroAfiliado.Name = "lblNroAfiliado";
+            this.lblNroAfiliado.Size = new System.Drawing.Size(67, 13);
+            this.lblNroAfiliado.TabIndex = 12;
+            this.lblNroAfiliado.Text = "*Nro afiliado:";
+            // 
             // txtPlanMedico
             // 
             this.txtPlanMedico.Location = new System.Drawing.Point(89, 19);
@@ -435,23 +452,6 @@
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
-            // txtNroAfiliado
-            // 
-            this.txtNroAfiliado.Enabled = false;
-            this.txtNroAfiliado.Location = new System.Drawing.Point(89, 44);
-            this.txtNroAfiliado.Name = "txtNroAfiliado";
-            this.txtNroAfiliado.Size = new System.Drawing.Size(109, 20);
-            this.txtNroAfiliado.TabIndex = 13;
-            // 
-            // lblNroAfiliado
-            // 
-            this.lblNroAfiliado.AutoSize = true;
-            this.lblNroAfiliado.Location = new System.Drawing.Point(10, 45);
-            this.lblNroAfiliado.Name = "lblNroAfiliado";
-            this.lblNroAfiliado.Size = new System.Drawing.Size(67, 13);
-            this.lblNroAfiliado.TabIndex = 12;
-            this.lblNroAfiliado.Text = "*Nro afiliado:";
-            // 
             // frmAltaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -466,6 +466,7 @@
             this.Name = "frmAltaAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Alta de Afiliado";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAltaAfiliado_FormClosing);
             this.pnlDatosPersonales.ResumeLayout(false);
             this.pnlDatosPersonales.PerformLayout();
             this.pnlDatosEspecificos.ResumeLayout(false);

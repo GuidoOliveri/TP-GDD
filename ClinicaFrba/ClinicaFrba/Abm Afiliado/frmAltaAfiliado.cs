@@ -129,5 +129,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
 
         public DateTime Today { get; set; }
+
+        private void frmAltaAfiliado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

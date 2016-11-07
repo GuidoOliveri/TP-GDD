@@ -270,6 +270,7 @@
             this.Name = "frmRegistroResultado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro resultado atención médica";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmRegistroResultado_FormClosing);
             this.Load += new System.EventHandler(this.frmRegistroResultado_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -231,5 +231,10 @@ namespace ClinicaFrba.Registro_Llegada
             this.Hide();
             menuAbm.Show();
         }
+
+        private void frmRegistroLlegadaAfiliado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

@@ -165,6 +165,7 @@
             this.Controls.Add(this.pnlModDatosPersonales);
             this.Name = "frmModificarAfiliado";
             this.Text = "frmModificarAfiliado";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmModificarAfiliado_FormClosing);
             this.Load += new System.EventHandler(this.frmModificarAfiliado_Load);
             this.pnlModDatosPersonales.ResumeLayout(false);
             this.pnlModDatosPersonales.PerformLayout();

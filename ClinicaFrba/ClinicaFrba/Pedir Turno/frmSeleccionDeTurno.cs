@@ -175,5 +175,10 @@ namespace ClinicaFrba.Pedir_Turno
             this.Hide();
             menuAbm.Show();
         }
+
+        private void frmSeleccionDeTurno_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

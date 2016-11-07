@@ -174,6 +174,7 @@
             this.Name = "frmCancelarAtencionPaciente";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cancelar Atención";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCancelarAtencionPaciente_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

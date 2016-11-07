@@ -66,6 +66,7 @@
             // 
             // cmdSalir
             // 
+            this.cmdSalir.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdSalir.Location = new System.Drawing.Point(308, 216);
             this.cmdSalir.Name = "cmdSalir";
             this.cmdSalir.Size = new System.Drawing.Size(189, 42);
@@ -86,6 +87,8 @@
             this.Name = "frmVentanaPrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CLINICA FRBA DE LA UTN";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmVentanaPrincipal_FormClosing);
+            this.Load += new System.EventHandler(this.frmVentanaPrincipal_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

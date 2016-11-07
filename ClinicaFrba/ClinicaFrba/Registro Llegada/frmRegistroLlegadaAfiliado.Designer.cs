@@ -232,6 +232,7 @@
             this.Name = "frmRegistroLlegadaAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro llegada de afiliado";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmRegistroLlegadaAfiliado_FormClosing);
             this.Load += new System.EventHandler(this.frmRegistroLlegadaAfiliado_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

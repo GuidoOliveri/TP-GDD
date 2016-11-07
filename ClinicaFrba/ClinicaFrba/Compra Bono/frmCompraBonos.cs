@@ -46,5 +46,10 @@ namespace ClinicaFrba.Compra_Bono
             this.Hide();
             menuAbm.Show();
         }
+
+        private void frmCompraBonos_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

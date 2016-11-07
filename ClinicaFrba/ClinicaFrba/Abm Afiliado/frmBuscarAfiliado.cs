@@ -77,5 +77,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
+        private void frmBuscarAfiliado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
     }
 }

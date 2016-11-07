@@ -30,8 +30,8 @@
         {
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.warning1 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.warning1 = new System.Windows.Forms.Label();
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning2 = new System.Windows.Forms.Label();
             this.cmdVolver = new System.Windows.Forms.Button();
@@ -55,6 +55,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cancelar Atencion Medica";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(146, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Seleccione fecha a cancelar:";
+            // 
             // warning1
             // 
             this.warning1.AutoSize = true;
@@ -64,15 +73,6 @@
             this.warning1.Size = new System.Drawing.Size(205, 13);
             this.warning1.TabIndex = 10;
             this.warning1.Text = "No puede cancelar el mismo dia del turno.";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(146, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Seleccione fecha a cancelar:";
             // 
             // btnIngresar
             // 
@@ -115,6 +115,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "frmCancelarAtencionMedico";
             this.Text = "Cancelar Atencion";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCancelarAtencionMedico_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

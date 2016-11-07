@@ -87,5 +87,10 @@ namespace ClinicaFrba.AbmRol
             this.Hide();
             elegi.Show();
         }
+
+        private void frmAgregarNuevoRol_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

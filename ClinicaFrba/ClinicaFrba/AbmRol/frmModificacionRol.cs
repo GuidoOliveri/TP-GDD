@@ -108,5 +108,10 @@ namespace ClinicaFrba.AbmRol
                 }
             }
         }
+
+        private void frmModificacionRol_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

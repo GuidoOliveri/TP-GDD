@@ -242,6 +242,7 @@
             this.Name = "frmListado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Listado";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmListado_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.pnlFiltroBusqueda.ResumeLayout(false);
             this.pnlFiltroBusqueda.PerformLayout();

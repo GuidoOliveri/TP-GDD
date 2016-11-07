@@ -44,5 +44,15 @@ namespace ClinicaFrba
         {
             this.Close();
         }
+
+        private void frmVentanaPrincipal_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void frmVentanaPrincipal_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

@@ -148,5 +148,10 @@ namespace ClinicaFrba.Login
 
         }
 
+        private void frmMenuDeAbms_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
     }
 }

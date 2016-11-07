@@ -25,15 +25,7 @@ namespace ClinicaFrba.Registro_Resultado
         private string sintoma = "";
         private string enfermedad = "";
         private string descripcion = "";
-
-<<<<<<< HEAD
-        //SE HARDCODEA, TENDRIA QUE SER EL MEDICO LOGUEADO
-        
-        private string id_persona = "3116603"; //id_persona del usuario
-=======
-        private string usuario = "";
         private string id_persona = ""; 
->>>>>>> ed245716aa0159fe76c7e20369188c60517872ef
 
         public frmRegistroResultado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
@@ -201,6 +193,11 @@ namespace ClinicaFrba.Registro_Resultado
             Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
             this.Hide();
             menuAbm.Show();
+        }
+
+        private void frmRegistroResultado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

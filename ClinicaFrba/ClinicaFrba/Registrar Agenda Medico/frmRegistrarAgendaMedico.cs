@@ -331,5 +331,10 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             menuAbm.Show();
         }
 
+        private void frmRegistrarAgendaMedico_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
     }
 }

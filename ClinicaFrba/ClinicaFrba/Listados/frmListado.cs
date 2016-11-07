@@ -57,5 +57,10 @@ namespace ClinicaFrba.Listados
             this.Hide();
             menuAbm.Show();
         }
+
+        private void frmListado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

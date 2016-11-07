@@ -304,6 +304,7 @@
             this.Name = "frmBuscarAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modificacion Afiliado ";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmBuscarAfiliado_FormClosing);
             this.Load += new System.EventHandler(this.frmModifcarAfiliadoGrupo_Load);
             this.pnlFiltroBusqueda.ResumeLayout(false);
             this.pnlFiltroBusqueda.PerformLayout();

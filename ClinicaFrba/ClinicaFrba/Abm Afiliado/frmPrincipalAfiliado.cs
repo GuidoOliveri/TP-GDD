@@ -27,15 +27,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
             Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario,bdd);
             this.Hide();
             menuAbm.Show();
-=======
-            //Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
-            //this.Hide();
-            //menuAbm.Show();
->>>>>>> ed245716aa0159fe76c7e20369188c60517872ef
         }
 
         private void cmdModificarAfiliado_Click(object sender, EventArgs e)
@@ -71,6 +65,11 @@ namespace ClinicaFrba.Abm_Afiliado
             frmAltaAfiliado alta = new frmAltaAfiliado(rol,usuario,bdd);
             this.Hide();
             alta.Show();
+        }
+
+        private void frmPrincipalAfiliado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

@@ -16,5 +16,10 @@ namespace ClinicaFrba.Abm_Planes
         {
             InitializeComponent();
         }
+
+        private void frmPlanes_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
