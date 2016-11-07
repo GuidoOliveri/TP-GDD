@@ -74,6 +74,12 @@
     <Compile Include="Abm Afiliado\frmModificarAfiliado.Designer.cs">
       <DependentUpon>frmModificarAfiliado.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Afiliado\frmPrincipalAfiliado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\frmPrincipalAfiliado.Designer.cs">
+      <DependentUpon>frmPrincipalAfiliado.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Profesional\frmProfesional.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -245,6 +251,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\frmModificarAfiliado.resx">
       <DependentUpon>frmModificarAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\frmPrincipalAfiliado.resx">
+      <DependentUpon>frmPrincipalAfiliado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Profesional\frmProfesional.resx">
       <DependentUpon>frmProfesional.cs</DependentUpon>

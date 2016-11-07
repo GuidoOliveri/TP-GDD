@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
-    public partial class frmModifcarAfiliado : Form
+    public partial class frmBuscarAfiliado : Form
     {
-        public frmModifcarAfiliado()
+        public frmBuscarAfiliado()
         {
             InitializeComponent();
         }
@@ -59,6 +59,11 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
         {
 
         }

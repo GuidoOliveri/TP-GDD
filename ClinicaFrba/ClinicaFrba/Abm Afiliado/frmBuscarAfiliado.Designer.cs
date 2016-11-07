@@ -1,6 +1,6 @@
 ﻿namespace ClinicaFrba.Abm_Afiliado
 {
-    partial class frmModifcarAfiliado
+    partial class frmBuscarAfiliado
     {
         /// <summary>
         /// Required designer variable.
@@ -162,6 +162,7 @@
             this.btnLimpiar.TabIndex = 1;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // btnBuscar
             // 
@@ -289,7 +290,7 @@
             // 
             this.afiliadoTableAdapter.ClearBeforeFill = true;
             // 
-            // frmModifcarAfiliado
+            // frmBuscarAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -300,7 +301,7 @@
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.pnlFiltroBusqueda);
-            this.Name = "frmModifcarAfiliado";
+            this.Name = "frmBuscarAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modificacion Afiliado ";
             this.Load += new System.EventHandler(this.frmModifcarAfiliadoGrupo_Load);

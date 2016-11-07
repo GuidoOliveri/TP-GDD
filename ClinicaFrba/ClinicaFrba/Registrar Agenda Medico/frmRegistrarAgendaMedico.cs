@@ -60,6 +60,11 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 
         }
 
+        public frmRegistrarAgendaMedico()
+        {
+            // TODO: Complete member initialization
+        }
+
         private void cargarDias()
         {
             dias.Clear();
