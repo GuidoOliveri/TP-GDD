@@ -218,6 +218,23 @@ namespace ClinicaFrba.Clases
                 return resultados;
             }
         }
+
+        public List<String> ObtenerListado1(string queryString, string campo, string campo2, DataGridView dg)
+        {
+            SqlCommand command = new SqlCommand(queryString, conexion);
+            command.ExecuteNonQuery();
+            List<String> resultados = new List<String>();
+            int fila = 0;
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    dg[fila, 0].Value = String.Format("{0}", reader[campo]);
+                    dg[fila, 1].Value = String.Format("{0}", reader[campo2]);
+                }
+            }
+            return resultados;
+        }
         /*
         public static Boolean validarCampo(string queryString, string connectionString)
         {
