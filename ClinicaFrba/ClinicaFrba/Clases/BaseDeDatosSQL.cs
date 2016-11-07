@@ -136,6 +136,35 @@ namespace ClinicaFrba.Clases
             return resultados;
         }
 
+        public DataTable obtenerRow(String comando)
+        {
+            using (conexion)
+            {
+                SqlCommand command = new SqlCommand(
+                  comando,
+                  conexion);
+
+                command.ExecuteNonQuery();
+                SqlDataReader reader = command.ExecuteReader();
+
+                DataTable row = new DataTable();
+                List<string> rowEnLista = new List<string>();
+                if (reader.HasRows)
+                {
+                 
+                        row = reader.GetSchemaTable();
+                 
+                }
+                else
+                {
+                    Console.WriteLine("No rows found.");
+                }
+                reader.Close();
+                return row;
+            }
+
+        }
+
         public string buscarCampo(string queryString)
         {
             SqlCommand command = new SqlCommand(queryString, conexion);
