@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.warning3 = new System.Windows.Forms.Label();
             this.warning1 = new System.Windows.Forms.Label();
             this.btnAgregar = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -58,7 +59,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning2 = new System.Windows.Forms.Label();
-            this.warning3 = new System.Windows.Forms.Label();
+            this.cmdVolver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -86,6 +87,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Registrar agenda";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // warning3
+            // 
+            this.warning3.AutoSize = true;
+            this.warning3.ForeColor = System.Drawing.Color.Red;
+            this.warning3.Location = new System.Drawing.Point(377, 68);
+            this.warning3.Name = "warning3";
+            this.warning3.Size = new System.Drawing.Size(113, 13);
+            this.warning3.TabIndex = 12;
+            this.warning3.Text = "Ya existe una agenda.";
+            this.warning3.Click += new System.EventHandler(this.warning3_Click);
             // 
             // warning1
             // 
@@ -349,22 +361,22 @@
             this.warning2.TabIndex = 2;
             this.warning2.Text = "Faltan seleccionar campos";
             // 
-            // warning3
+            // cmdVolver
             // 
-            this.warning3.AutoSize = true;
-            this.warning3.ForeColor = System.Drawing.Color.Red;
-            this.warning3.Location = new System.Drawing.Point(377, 68);
-            this.warning3.Name = "warning3";
-            this.warning3.Size = new System.Drawing.Size(113, 13);
-            this.warning3.TabIndex = 12;
-            this.warning3.Text = "Ya existe una agenda.";
-            this.warning3.Click += new System.EventHandler(this.warning3_Click);
+            this.cmdVolver.Location = new System.Drawing.Point(344, 383);
+            this.cmdVolver.Name = "cmdVolver";
+            this.cmdVolver.Size = new System.Drawing.Size(75, 23);
+            this.cmdVolver.TabIndex = 4;
+            this.cmdVolver.Text = "Volver";
+            this.cmdVolver.UseVisualStyleBackColor = true;
+            this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
             // 
             // frmRegistrarAgendaMedico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 413);
+            this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.warning2);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.btnIngresar);
@@ -420,5 +432,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.Label warning3;
+        private System.Windows.Forms.Button cmdVolver;
     }
 }

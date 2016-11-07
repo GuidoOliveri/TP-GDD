@@ -30,10 +30,11 @@
         {
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.warning1 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning2 = new System.Windows.Forms.Label();
+            this.cmdVolver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,7 +46,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.warning1);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.monthCalendar1);
             this.groupBox1.Location = new System.Drawing.Point(8, 8);
@@ -54,6 +54,16 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cancelar Atencion Medica";
+            // 
+            // warning1
+            // 
+            this.warning1.AutoSize = true;
+            this.warning1.ForeColor = System.Drawing.Color.Red;
+            this.warning1.Location = new System.Drawing.Point(32, 246);
+            this.warning1.Name = "warning1";
+            this.warning1.Size = new System.Drawing.Size(205, 13);
+            this.warning1.TabIndex = 10;
+            this.warning1.Text = "No puede cancelar el mismo dia del turno.";
             // 
             // label1
             // 
@@ -64,19 +74,9 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Seleccione fecha a cancelar:";
             // 
-            // warning1
-            // 
-            this.warning1.AutoSize = true;
-            this.warning1.ForeColor = System.Drawing.Color.Red;
-            this.warning1.Location = new System.Drawing.Point(24, 212);
-            this.warning1.Name = "warning1";
-            this.warning1.Size = new System.Drawing.Size(205, 13);
-            this.warning1.TabIndex = 10;
-            this.warning1.Text = "No puede cancelar el mismo dia del turno.";
-            // 
             // btnIngresar
             // 
-            this.btnIngresar.Location = new System.Drawing.Point(101, 254);
+            this.btnIngresar.Location = new System.Drawing.Point(68, 279);
             this.btnIngresar.Name = "btnIngresar";
             this.btnIngresar.Size = new System.Drawing.Size(75, 23);
             this.btnIngresar.TabIndex = 9;
@@ -93,16 +93,28 @@
             this.warning2.TabIndex = 10;
             this.warning2.Text = "Falta Completar Campos";
             // 
+            // cmdVolver
+            // 
+            this.cmdVolver.Location = new System.Drawing.Point(162, 279);
+            this.cmdVolver.Name = "cmdVolver";
+            this.cmdVolver.Size = new System.Drawing.Size(75, 23);
+            this.cmdVolver.TabIndex = 11;
+            this.cmdVolver.Text = "Volver";
+            this.cmdVolver.UseVisualStyleBackColor = true;
+            this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
+            // 
             // frmCancelarAtencionMedico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(275, 289);
+            this.ClientSize = new System.Drawing.Size(322, 314);
+            this.Controls.Add(this.cmdVolver);
+            this.Controls.Add(this.warning1);
             this.Controls.Add(this.warning2);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmCancelarAtencionMedico";
-            this.Text = "frmCancelarAtencionMedico";
+            this.Text = "Cancelar Atencion";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -118,5 +130,6 @@
         private System.Windows.Forms.Label warning1;
         private System.Windows.Forms.Button btnIngresar;
         private System.Windows.Forms.Label warning2;
+        private System.Windows.Forms.Button cmdVolver;
     }
 }

@@ -34,6 +34,7 @@
             this.lblPrecioBonos = new System.Windows.Forms.Label();
             this.txtPrecioBonos = new System.Windows.Forms.TextBox();
             this.lblSignoPesos = new System.Windows.Forms.Label();
+            this.cmdVolver = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblCantBonos
@@ -48,7 +49,7 @@
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(176, 132);
+            this.btnAceptar.Location = new System.Drawing.Point(95, 133);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(75, 23);
             this.btnAceptar.TabIndex = 1;
@@ -88,11 +89,22 @@
             this.lblSignoPesos.TabIndex = 5;
             this.lblSignoPesos.Text = "$";
             // 
+            // cmdVolver
+            // 
+            this.cmdVolver.Location = new System.Drawing.Point(249, 133);
+            this.cmdVolver.Name = "cmdVolver";
+            this.cmdVolver.Size = new System.Drawing.Size(69, 22);
+            this.cmdVolver.TabIndex = 6;
+            this.cmdVolver.Text = "Volver";
+            this.cmdVolver.UseVisualStyleBackColor = true;
+            this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
+            // 
             // frmCompraBonos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(430, 181);
+            this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.lblSignoPesos);
             this.Controls.Add(this.txtPrecioBonos);
             this.Controls.Add(this.lblPrecioBonos);
@@ -116,5 +128,6 @@
         private System.Windows.Forms.Label lblPrecioBonos;
         private System.Windows.Forms.TextBox txtPrecioBonos;
         private System.Windows.Forms.Label lblSignoPesos;
+        private System.Windows.Forms.Button cmdVolver;
     }
 }

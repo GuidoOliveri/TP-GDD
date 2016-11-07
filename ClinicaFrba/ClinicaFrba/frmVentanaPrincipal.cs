@@ -26,6 +26,11 @@ namespace ClinicaFrba
             this.bdd = bdd;
         }
 
+        public frmVentanaPrincipal()
+        {
+            // TODO: Complete member initialization
+        }
+
         public Usuario User { get; set; }
 
         private void cmdIngresar_Click(object sender, EventArgs e)

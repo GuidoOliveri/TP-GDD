@@ -13,7 +13,10 @@ namespace ClinicaFrba.Registro_Resultado
 
     public partial class frmRegistroResultado : Form
     {
+        private string rol = "";
+        private string usuario = "";
         private Clases.BaseDeDatosSQL bdd;
+        
         private string comando = "";
         private string consulta = "";
         private string afiliado = ""; //para filtrar
@@ -24,13 +27,13 @@ namespace ClinicaFrba.Registro_Resultado
         private string descripcion = "";
 
         //SE HARDCODEA, TENDRIA QUE SER EL MEDICO LOGUEADO
-        private string usuario = "";
+        
         private string id_persona = "3116603"; //id_persona del usuario
 
-        public frmRegistroResultado(Clases.BaseDeDatosSQL bdd,string usuario)
+        public frmRegistroResultado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
-
+            this.rol = rol;
             this.usuario = usuario;
             this.bdd = bdd;
 
@@ -117,7 +120,7 @@ namespace ClinicaFrba.Registro_Resultado
             {
                 //FALTA CREAR EL STORED PROCEDURE
 
-                frmRegistroResultado NewForm = new frmRegistroResultado(bdd,usuario);
+                frmRegistroResultado NewForm = new frmRegistroResultado(rol,usuario,bdd);
                 NewForm.Show();
                 this.Dispose(false);
 
@@ -167,6 +170,13 @@ namespace ClinicaFrba.Registro_Resultado
         private void cmbConsulta_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void cmdVolver_Click(object sender, EventArgs e)
+        {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            this.Hide();
+            menuAbm.Show();
         }
     }
 }

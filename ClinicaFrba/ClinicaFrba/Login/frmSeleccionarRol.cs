@@ -45,9 +45,9 @@ namespace ClinicaFrba.AbmRol
 
         private void btnVolverMenuPrincipal_Click(object sender, EventArgs e)
         {
-            //frmVentanaPrincipal principal = new frmVentanaPrincipal();
-            //this.Hide();
-            //principal.Show();
+            frmVentanaPrincipal principal = new frmVentanaPrincipal(bdd);
+            this.Hide();
+            principal.Show();
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)

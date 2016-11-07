@@ -12,9 +12,16 @@ namespace ClinicaFrba.Listados
 {
     public partial class frmListado : Form
     {
-        public frmListado()
+        private string rol = "";
+        private string usuario = "";
+        private Clases.BaseDeDatosSQL bdd;
+
+        public frmListado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
+            this.rol = rol;
+            this.usuario = usuario;
+            this.bdd = bdd;
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -37,6 +44,18 @@ namespace ClinicaFrba.Listados
             // TODO: esta línea de código carga datos en la tabla 'gD2C2016DataSet.Maestra' Puede moverla o quitarla según sea necesario.
             this.maestraTableAdapter.Fill(this.gD2C2016DataSet.Maestra);
 
+        }
+
+        private void btnBorrar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmdVolver_Click(object sender, EventArgs e)
+        {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            this.Hide();
+            menuAbm.Show();
         }
     }
 }

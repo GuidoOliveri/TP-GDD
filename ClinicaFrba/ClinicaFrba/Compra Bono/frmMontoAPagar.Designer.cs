@@ -32,6 +32,7 @@
             this.lblSignoPesos2 = new System.Windows.Forms.Label();
             this.btnAceptarMonto = new System.Windows.Forms.Button();
             this.txtMonto = new System.Windows.Forms.TextBox();
+            this.cmdVolver = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblMontoAPagar
@@ -54,12 +55,13 @@
             // 
             // btnAceptarMonto
             // 
-            this.btnAceptarMonto.Location = new System.Drawing.Point(164, 94);
+            this.btnAceptarMonto.Location = new System.Drawing.Point(103, 94);
             this.btnAceptarMonto.Name = "btnAceptarMonto";
             this.btnAceptarMonto.Size = new System.Drawing.Size(75, 23);
             this.btnAceptarMonto.TabIndex = 2;
             this.btnAceptarMonto.Text = "Aceptar";
             this.btnAceptarMonto.UseVisualStyleBackColor = true;
+            this.btnAceptarMonto.Click += new System.EventHandler(this.btnAceptarMonto_Click);
             // 
             // txtMonto
             // 
@@ -68,11 +70,22 @@
             this.txtMonto.Size = new System.Drawing.Size(146, 20);
             this.txtMonto.TabIndex = 3;
             // 
+            // cmdVolver
+            // 
+            this.cmdVolver.Location = new System.Drawing.Point(229, 94);
+            this.cmdVolver.Name = "cmdVolver";
+            this.cmdVolver.Size = new System.Drawing.Size(75, 23);
+            this.cmdVolver.TabIndex = 4;
+            this.cmdVolver.Text = "Volver";
+            this.cmdVolver.UseVisualStyleBackColor = true;
+            this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
+            // 
             // frmMontoAPagar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(412, 142);
+            this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.txtMonto);
             this.Controls.Add(this.btnAceptarMonto);
             this.Controls.Add(this.lblSignoPesos2);
@@ -92,5 +105,6 @@
         private System.Windows.Forms.Label lblSignoPesos2;
         private System.Windows.Forms.Button btnAceptarMonto;
         private System.Windows.Forms.TextBox txtMonto;
+        private System.Windows.Forms.Button cmdVolver;
     }
 }
