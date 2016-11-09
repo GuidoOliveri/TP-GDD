@@ -128,7 +128,7 @@ CREATE TABLE NEXTGDD.Persona (
 	sexo char (1) not null default 'X',
 	estado_civil tinyint not null default 6 REFERENCES NEXTGDD.Estado_Civil(id),
 	nro_documento numeric(18,0) NOT NULL,
-	tipo_doc varchar (50) NOT NULL DEFAULT 'DNI',
+	tipo_doc varchar (50) NOT NULL DEFAULT 'D.N.I.',
 
 	/*me tira error por fk, tendriamos que agregar la constraint despues de crear las tablas,
 	por ahora lo anulo, despues lo agrego.
@@ -139,6 +139,7 @@ CREATE TABLE NEXTGDD.Persona (
 	*/
 
 	CONSTRAINT check_s2 check (sexo IN ('H', 'M','X')),
+	CONSTRAINT tipodoc_2 check (tipo_doc IN ('L.E.', 'Pasaporte','D.N.I.','L.C','C.I.')),
 	CONSTRAINT unique_tipo_nro_Doc unique (nro_documento,tipo_doc)
 	)
 
@@ -1135,7 +1136,6 @@ DROP FUNCTION NEXTGDD.listado5
 GO
 */
 
-
 /************ Migracion *************/
 
 
@@ -1265,8 +1265,6 @@ EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'ABM de pla
 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Registrar agenda profesional';
 
-EXEC NEXTGDD.agregar_funcionalidad	@rol = 'Profesional', @func = 'Registrar agenda profesional';
-
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Compra de bonos';	
 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Afiliado', @func = 'Compra de bonos';
@@ -1276,6 +1274,8 @@ EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Pedido de 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Afiliado', @func = 'Pedido de turno';
 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Registro de llegada para atencion medica';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Registro de resultado para atencion medica';
 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Profesional', @func = 'Registro de resultado para atencion medica';
 
@@ -1303,12 +1303,12 @@ SET IDENTITY_INSERT NEXTGDD.Bono_Consulta OFF
 
 
 GO
-
+/*
 INSERT NEXTGDD.Agenda (matricula, cod_especialidad)
 		(select matricula,cod_especialidad
 		 from NEXTGDD.Profesional_X_Especialidad);
 GO
-
+*/
 
 
 SET IDENTITY_INSERT NEXTGDD.Turno ON
@@ -1331,7 +1331,7 @@ SET IDENTITY_INSERT NEXTGDD.Diagnostico ON
 
 
 INSERT NEXTGDD.Diagnostico (cod_diagnostico,fecha_diagnostico, sintoma,enfermedad)
-	   (select Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades
+	   (select Bono_Consulta_Numero,Turno_Fecha, Consulta_Sintomas, Consulta_Enfermedades
 		from gd_esquema.Maestra
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
 GO
@@ -1341,7 +1341,7 @@ SET IDENTITY_INSERT NEXTGDD.Diagnostico OFF
 SET IDENTITY_INSERT NEXTGDD.Profesional ON
 
 INSERT NEXTGDD.Consulta (cod_diagnostico, hora_registro_consulta, nro_bono ,nro_turno)
-	   (select Bono_Consulta_Numero,convert (time,Bono_Consulta_Fecha_Impresion), Bono_Consulta_Numero, Turno_Numero
+	   (select Bono_Consulta_Numero,convert (time,Turno_Fecha), Bono_Consulta_Numero, Turno_Numero
 		from gd_esquema.Maestra
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
 GO
