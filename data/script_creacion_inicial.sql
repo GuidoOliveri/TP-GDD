@@ -128,7 +128,7 @@ CREATE TABLE NEXTGDD.Persona (
 	sexo char (1) not null default 'X',
 	estado_civil tinyint not null default 6 REFERENCES NEXTGDD.Estado_Civil(id),
 	nro_documento numeric(18,0) NOT NULL,
-	tipo_doc varchar (50) NOT NULL DEFAULT 'DNI',
+	tipo_doc varchar (50) NOT NULL DEFAULT 'D.N.I.',
 
 	/*me tira error por fk, tendriamos que agregar la constraint despues de crear las tablas,
 	por ahora lo anulo, despues lo agrego.
@@ -139,6 +139,7 @@ CREATE TABLE NEXTGDD.Persona (
 	*/
 
 	CONSTRAINT check_s2 check (sexo IN ('H', 'M','X')),
+	CONSTRAINT tipodoc_2 check (tipo_doc IN ('L.E.', 'Pasaporte','D.N.I.','L.C','C.I.')),
 	CONSTRAINT unique_tipo_nro_Doc unique (nro_documento,tipo_doc)
 	)
 
@@ -438,6 +439,25 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Medic
     DROP VIEW NEXTGDD.Medicos	
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado1'))
+    DROP FUNCTION NEXTGDD.listado1
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado2'))
+    DROP FUNCTION NEXTGDD.listado2
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado3'))
+    DROP FUNCTION NEXTGDD.listado3
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado4'))
+    DROP FUNCTION NEXTGDD.listado4
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado5'))
+    DROP FUNCTION NEXTGDD.listado5	
+GO
 
 /*********************Creacion de Stored Procedure, Function,Triggers, vistas************************/
 
@@ -876,12 +896,13 @@ GO
 
 CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
                                                @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
-                                               @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0),@nro_afiliado_princ numeric(18,0), 
+                                               @mail varchar(255), @cant_familiares numeric(18,0),@nro_afiliado_princ numeric(18,0), 
 											   @nro_afiliado_integrante numeric(2,0),@ret numeric(20,0) output)
 AS BEGIN
 
 DECLARE @integrante_grupo numeric(2,0);
 DECLARE @pers numeric (18,0)
+DECLARE @cod_plan numeric (18,0)
 DECLARE @nro_afiliado numeric (20,0) 
 DECLARE @usr VARCHAR(255)
 DECLARE @grupo_afiliado numeric (18,0)
@@ -896,7 +917,7 @@ DECLARE @TransactionName varchar (50)= 'Transaccion1'
 
 SET @pers = SCOPE_IDENTITY()
 
-SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado_princ
+SELECT @grupo_afiliado = grupo_afiliado, @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado_princ
 
  --select * from NEXTGDD.Afiliado 
    IF @nro_afiliado_integrante = 1
@@ -904,7 +925,7 @@ SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado
 		   SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ '02'
 		
 		   INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	                VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, 02) 
+	                VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, 02) 
 	
        
           END  
@@ -917,7 +938,7 @@ SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado
 		       SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ '03'
 		       
 			   INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	           VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, 03) 
+	           VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, 03) 
 	         END
 	        
 	        	ELSE IF  ((@integrante_grupo >= 03)  AND ( @integrante_grupo < 9) ) BEGIN
@@ -926,7 +947,7 @@ SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado
 		           SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+'0' +cast (@integrante_grupo as varchar)
 
 		           INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	               VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
+	               VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
 			    END
 
 				   ELSE  BEGIN
@@ -935,7 +956,7 @@ SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado
 		            SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ cast (@integrante_grupo as varchar)
 
 		            INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	                VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
+	                VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
 			       END
 
 		   END	
@@ -1011,59 +1032,110 @@ AS BEGIN
 END
 GO
 
-/* LISTADOS *********************************************
+/***************LISTADOS******************/
 
-select top 5 (p.nombre+' '+p.apellido) as 'Nombre Afiliado',count(a.nro_afiliado) as 'Cantidad de Bonos Comprados'
-from NEXTGDD.Afiliado a,NEXTGDD.Compra_Bono c,NEXTGDD.Persona p
-where c.id_afiliado=a.nro_afiliado and a.id_persona=p.id_persona
-group by p.nombre,p.apellido,a.nro_afiliado
-order by 2 DESC;
+CREATE FUNCTION NEXTGDD.listado1(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+RETURNS TABLE
+AS
+	RETURN
+		select top 5 e.descripcion as 'Especialidad', count(e.cod_especialidad) 'Cantidad cancelaciones'
+		from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Cancelacion c,NEXTGDD.Agenda a
+		where c.cod_cancelacion=t.cod_cancelacion and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
+				and year(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+		group by e.cod_especialidad,e.descripcion
+		order by count(e.cod_especialidad) DESC
+GO
 
-select top 5 (p.nombre+' '+p.apellido) as 'Profesional',
-		sum(((r.dia_semanal_final-r.dia_semanal_inicial+1)*(DATEDIFF(MINUTE,r.hora_inicial,r.hora_final)))/60) as 'Horas trabajadas'
-from NEXTGDD.Profesional pr,NEXTGDD.Agenda a,NEXTGDD.Rango_Atencion r,NEXTGDD.Persona p
-where pr.id_persona=p.id_persona and pr.matricula=a.matricula and a.cod_agenda=r.cod_agenda
-group by p.nombre,p.apellido,pr.matricula
-order by 2 ASC;
-
-select top 5 p.nombre+' '+p.apellido as 'Profesional',e.descripcion as 'Especialidad',count(pr.matricula) as 'Cantidad de Consultas'
-from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Persona p
-where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
-		and a.cod_especialidad=e.cod_especialidad and p.id_persona=pr.id_persona
-group by p.nombre,p.apellido,e.descripcion,pr.matricula,e.cod_especialidad
-order by count(pr.matricula) DESC;
-
-select distinct p.descripcion as 'Plan',pe.nombre+' '+pe.apellido as 'Profesional',e.descripcion 'Especialidad'
-from NEXTGDD.Plan_Medico p,NEXTGDD.Consulta c,NEXTGDD.Turno t,NEXTGDD.Afiliado a,NEXTGDD.Agenda ag,NEXTGDD.Profesional pr,
-	NEXTGDD.Persona pe,NEXTGDD.Especialidad e
-where c.nro_turno=t.nro_turno and t.nro_afiliado=a.nro_afiliado and p.cod_plan=a.cod_plan and
-		t.cod_agenda=ag.cod_agenda and ag.matricula=pr.matricula and ag.cod_especialidad=e.cod_especialidad
-		and pr.id_persona=pe.id_persona
-group by p.descripcion,p.cod_plan,pe.id_persona,pe.nombre,pe.apellido,e.cod_especialidad,e.descripcion
-having pe.id_persona in 
-		(select top 5 pr.id_persona 
-		from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Afiliado af
-		where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
-			and a.cod_especialidad=e.cod_especialidad and af.nro_afiliado=t.nro_afiliado
-			and af.cod_plan=p.cod_plan
-		group by pr.matricula,e.cod_especialidad,pr.id_persona
-		order by count(pr.matricula) DESC) and
-		e.cod_especialidad in
-		(select top 5 e.cod_especialidad
-		from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Afiliado af
-		where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
-			and a.cod_especialidad=e.cod_especialidad and af.nro_afiliado=t.nro_afiliado
-			and af.cod_plan=p.cod_plan
-		group by pr.id_persona,pr.matricula,e.cod_especialidad
-		order by count(pr.matricula) DESC);
-
-select top 5 e.descripcion as 'Especialidad', count(e.cod_especialidad) 'Cantidad cancelaciones'
-from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Cancelacion c,NEXTGDD.Agenda a
-where c.cod_cancelacion=t.cod_cancelacion and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
-group by e.cod_especialidad,e.descripcion
-order by count(e.cod_especialidad) DESC;
+/*
+DROP FUNCTION NEXTGDD.listado1
+GO
 */
 
+CREATE FUNCTION NEXTGDD.listado2(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+RETURNS TABLE
+AS
+	RETURN
+		select distinct p.descripcion as 'Plan',pe.nombre+' '+pe.apellido as 'Profesional',e.descripcion 'Especialidad'
+		from NEXTGDD.Plan_Medico p,NEXTGDD.Consulta c,NEXTGDD.Turno t,NEXTGDD.Afiliado a,NEXTGDD.Agenda ag,NEXTGDD.Profesional pr,
+			NEXTGDD.Persona pe,NEXTGDD.Especialidad e
+		where c.nro_turno=t.nro_turno and t.nro_afiliado=a.nro_afiliado and p.cod_plan=a.cod_plan and
+				t.cod_agenda=ag.cod_agenda and ag.matricula=pr.matricula and ag.cod_especialidad=e.cod_especialidad
+				and pr.id_persona=pe.id_persona and YEAR(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+		group by p.descripcion,p.cod_plan,pe.id_persona,pe.nombre,pe.apellido,e.cod_especialidad,e.descripcion
+		having pe.id_persona in 
+				(select top 5 pr.id_persona 
+				from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Afiliado af
+				where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
+					and a.cod_especialidad=e.cod_especialidad and af.nro_afiliado=t.nro_afiliado
+					and af.cod_plan=p.cod_plan and 
+					YEAR(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+				group by pr.matricula,e.cod_especialidad,pr.id_persona
+				order by count(pr.matricula) DESC) and
+				e.cod_especialidad in
+				(select top 5 e.cod_especialidad
+				from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Afiliado af
+				where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
+					and a.cod_especialidad=e.cod_especialidad and af.nro_afiliado=t.nro_afiliado
+					and af.cod_plan=p.cod_plan and YEAR(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+				group by pr.id_persona,pr.matricula,e.cod_especialidad
+				order by count(pr.matricula) DESC)
+GO
+
+/*
+DROP FUNCTION NEXTGDD.listado2
+GO
+*/
+
+CREATE FUNCTION NEXTGDD.listado3(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+RETURNS TABLE
+AS
+	RETURN
+		select top 5 (p.nombre+' '+p.apellido) as 'Profesional',
+				sum(((r.dia_semanal_final-r.dia_semanal_inicial+1)*(DATEDIFF(MINUTE,r.hora_inicial,r.hora_final)))/60) as 'Horas trabajadas'
+		from NEXTGDD.Profesional pr,NEXTGDD.Agenda a,NEXTGDD.Rango_Atencion r,NEXTGDD.Persona p,NEXTGDD.Turno t
+		where pr.id_persona=p.id_persona and pr.matricula=a.matricula and a.cod_agenda=r.cod_agenda and t.cod_agenda=a.cod_agenda
+				and YEAR(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+		group by p.nombre,p.apellido,pr.matricula
+		order by 2 ASC;
+GO
+
+/*
+DROP FUNCTION NEXTGDD.listado3
+GO
+*/
+
+CREATE FUNCTION NEXTGDD.listado4(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+RETURNS TABLE
+AS
+	RETURN
+		select top 5 (p.nombre+' '+p.apellido) as 'Nombre Afiliado',count(a.nro_afiliado) as 'Cantidad de Bonos Comprados'
+		from NEXTGDD.Afiliado a,NEXTGDD.Compra_Bono c,NEXTGDD.Persona p
+		where c.id_afiliado=a.nro_afiliado and a.id_persona=p.id_persona 
+		group by p.nombre,p.apellido,a.nro_afiliado
+		order by 2 DESC; 
+GO
+
+/*
+DROP FUNCTION NEXTGDD.listado4
+GO
+*/
+
+CREATE FUNCTION NEXTGDD.listado5(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+RETURNS TABLE
+AS
+	RETURN
+		select top 5 e.descripcion as 'Especialidad',count(e.cod_especialidad) as 'Cantidad de Bonos'
+		from NEXTGDD.Consulta c,NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Agenda a
+		where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
+			  and year(t.fecha)=@anio and month(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+		group by e.cod_especialidad,e.descripcion
+		order by count(e.cod_especialidad) DESC
+GO
+
+/*
+DROP FUNCTION NEXTGDD.listado5
+GO
+*/
 
 /************ Migracion *************/
 
@@ -1194,8 +1266,6 @@ EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'ABM de pla
 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Registrar agenda profesional';
 
-EXEC NEXTGDD.agregar_funcionalidad	@rol = 'Profesional', @func = 'Registrar agenda profesional';
-
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Compra de bonos';	
 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Afiliado', @func = 'Compra de bonos';
@@ -1205,6 +1275,8 @@ EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Pedido de 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Afiliado', @func = 'Pedido de turno';
 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Registro de llegada para atencion medica';
+
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Registro de resultado para atencion medica';
 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Profesional', @func = 'Registro de resultado para atencion medica';
 
@@ -1232,12 +1304,12 @@ SET IDENTITY_INSERT NEXTGDD.Bono_Consulta OFF
 
 
 GO
-
+/*
 INSERT NEXTGDD.Agenda (matricula, cod_especialidad)
 		(select matricula,cod_especialidad
 		 from NEXTGDD.Profesional_X_Especialidad);
 GO
-
+*/
 
 
 SET IDENTITY_INSERT NEXTGDD.Turno ON
@@ -1260,7 +1332,7 @@ SET IDENTITY_INSERT NEXTGDD.Diagnostico ON
 
 
 INSERT NEXTGDD.Diagnostico (cod_diagnostico,fecha_diagnostico, sintoma,enfermedad)
-	   (select Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion, Consulta_Sintomas, Consulta_Enfermedades
+	   (select Bono_Consulta_Numero,Turno_Fecha, Consulta_Sintomas, Consulta_Enfermedades
 		from gd_esquema.Maestra
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
 GO
@@ -1270,7 +1342,7 @@ SET IDENTITY_INSERT NEXTGDD.Diagnostico OFF
 SET IDENTITY_INSERT NEXTGDD.Profesional ON
 
 INSERT NEXTGDD.Consulta (cod_diagnostico, hora_registro_consulta, nro_bono ,nro_turno)
-	   (select Bono_Consulta_Numero,convert (time,Bono_Consulta_Fecha_Impresion), Bono_Consulta_Numero, Turno_Numero
+	   (select Bono_Consulta_Numero,convert (time,Turno_Fecha), Bono_Consulta_Numero, Turno_Numero
 		from gd_esquema.Maestra
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
 GO

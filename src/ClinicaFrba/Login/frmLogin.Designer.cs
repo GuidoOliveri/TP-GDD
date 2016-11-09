@@ -57,7 +57,11 @@
             // 
             // btnIniciarSesion
             // 
+<<<<<<< HEAD:ClinicaFrba/ClinicaFrba/Login/frmLogin.Designer.cs
             this.btnIniciarSesion.Location = new System.Drawing.Point(270, 124);
+=======
+            this.btnIniciarSesion.Location = new System.Drawing.Point(193, 142);
+>>>>>>> a21145754840bc29f2448efdb0168a39a0310db0:src/ClinicaFrba/Login/frmLogin.Designer.cs
             this.btnIniciarSesion.Name = "btnIniciarSesion";
             this.btnIniciarSesion.Size = new System.Drawing.Size(142, 23);
             this.btnIniciarSesion.TabIndex = 7;
@@ -86,7 +90,7 @@
             // 
             this.warning.AutoSize = true;
             this.warning.ForeColor = System.Drawing.Color.Red;
-            this.warning.Location = new System.Drawing.Point(355, 86);
+            this.warning.Location = new System.Drawing.Point(221, 106);
             this.warning.Name = "warning";
             this.warning.Size = new System.Drawing.Size(114, 13);
             this.warning.TabIndex = 10;
@@ -94,7 +98,7 @@
             // 
             // cmdVolverMenuPrincipal
             // 
-            this.cmdVolverMenuPrincipal.Location = new System.Drawing.Point(35, 124);
+            this.cmdVolverMenuPrincipal.Location = new System.Drawing.Point(12, 142);
             this.cmdVolverMenuPrincipal.Name = "cmdVolverMenuPrincipal";
             this.cmdVolverMenuPrincipal.Size = new System.Drawing.Size(151, 23);
             this.cmdVolverMenuPrincipal.TabIndex = 11;
@@ -106,7 +110,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 177);
+            this.ClientSize = new System.Drawing.Size(350, 177);
             this.Controls.Add(this.cmdVolverMenuPrincipal);
             this.Controls.Add(this.warning);
             this.Controls.Add(this.lblContrasenia);

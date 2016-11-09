@@ -220,21 +220,28 @@ namespace ClinicaFrba.Clases
             }
         }
 
-        public List<String> ObtenerListado1(string queryString, string campo, string campo2, DataGridView dg)
+        public DataTable ObtenerListado(string queryString, List<string> campos)
         {
+            DataTable dt = new DataTable();
+            foreach (string campo in campos)
+            {
+                dt.Columns.Add(campo);
+            }
             SqlCommand command = new SqlCommand(queryString, conexion);
             command.ExecuteNonQuery();
-            List<String> resultados = new List<String>();
-            int fila = 0;
             using (SqlDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
-                    dg[fila, 0].Value = String.Format("{0}", reader[campo]);
-                    dg[fila, 1].Value = String.Format("{0}", reader[campo2]);
+                    DataRow fila = dt.NewRow();
+                    for (int i=0;i<campos.Count();i++)
+                    {
+                        fila[i] = String.Format("{0}", reader[campos.ElementAt(i)]);
+                    }
+                    dt.Rows.Add(fila);
                 }
             }
-            return resultados;
+            return dt;
         }
         /*
         public static Boolean validarCampo(string queryString, string connectionString)
