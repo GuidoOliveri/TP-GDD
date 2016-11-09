@@ -896,12 +896,13 @@ GO
 
 CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
                                                @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
-                                               @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0),@nro_afiliado_princ numeric(18,0), 
+                                               @mail varchar(255), @cant_familiares numeric(18,0),@nro_afiliado_princ numeric(18,0), 
 											   @nro_afiliado_integrante numeric(2,0),@ret numeric(20,0) output)
 AS BEGIN
 
 DECLARE @integrante_grupo numeric(2,0);
 DECLARE @pers numeric (18,0)
+DECLARE @cod_plan numeric (18,0)
 DECLARE @nro_afiliado numeric (20,0) 
 DECLARE @usr VARCHAR(255)
 DECLARE @grupo_afiliado numeric (18,0)
@@ -916,7 +917,7 @@ DECLARE @TransactionName varchar (50)= 'Transaccion1'
 
 SET @pers = SCOPE_IDENTITY()
 
-SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado_princ
+SELECT @grupo_afiliado = grupo_afiliado, @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado_princ
 
  --select * from NEXTGDD.Afiliado 
    IF @nro_afiliado_integrante = 1
@@ -924,7 +925,7 @@ SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado
 		   SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ '02'
 		
 		   INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	                VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, 02) 
+	                VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, 02) 
 	
        
           END  
@@ -937,7 +938,7 @@ SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado
 		       SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ '03'
 		       
 			   INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	           VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, 03) 
+	           VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, 03) 
 	         END
 	        
 	        	ELSE IF  ((@integrante_grupo >= 03)  AND ( @integrante_grupo < 9) ) BEGIN
@@ -946,7 +947,7 @@ SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado
 		           SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+'0' +cast (@integrante_grupo as varchar)
 
 		           INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	               VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
+	               VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
 			    END
 
 				   ELSE  BEGIN
@@ -955,7 +956,7 @@ SELECT @grupo_afiliado = grupo_afiliado FROM NEXTGDD.Afiliado WHERE nro_afiliado
 		            SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ cast (@integrante_grupo as varchar)
 
 		            INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	                VALUES (@nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
+	                VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
 			       END
 
 		   END	
