@@ -34,6 +34,8 @@ namespace ClinicaFrba.Listados
             cargarSemestres(bdd.ObtenerLista(comando,"anio"),cmbSemestre);
 
             btnSeleccionar.Click += new EventHandler(btnSeleccionar_OnClick);
+            btnLimpiar.Click += new EventHandler(btnLimpiar_OnClick);
+            btnBorrar.Click += new EventHandler(btnBorrar_OnClick);
         }
 
         private void cargarSemestres(List<string> lista, ComboBox cmb)
@@ -80,6 +82,19 @@ namespace ClinicaFrba.Listados
             else
             {
                 return "6,12";
+            }
+        }
+
+        private void btnLimpiar_OnClick(object sender, EventArgs e)
+        {
+            dgListado.Columns.Clear();
+        }
+
+        private void btnBorrar_OnClick(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow item in dgListado.SelectedRows)
+            {
+                dgListado.Rows.RemoveAt(item.Index);
             }
         }
 
