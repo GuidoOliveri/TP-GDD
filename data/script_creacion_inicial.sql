@@ -438,6 +438,9 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Medic
     DROP VIEW NEXTGDD.Medicos	
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado5'))
+    DROP FUNCTION NEXTGDD.listado5	
+GO
 
 /*********************Creacion de Stored Procedure, Function,Triggers, vistas************************/
 
@@ -1011,7 +1014,30 @@ AS BEGIN
 END
 GO
 
+CREATE FUNCTION NEXTGDD.listado5(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+RETURNS TABLE
+AS
+	RETURN
+		select top 5 e.descripcion as 'Especialidad',count(e.cod_especialidad) as 'Cantidad de Bonos'
+		from NEXTGDD.Consulta c,NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Agenda a
+		where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
+			  and year(t.fecha)=@anio and month(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+		group by e.cod_especialidad,e.descripcion
+		order by count(e.cod_especialidad) DESC
+GO
+
+/*
+DROP FUNCTION NEXTGDD.listado5
+GO
+*/
+
 /* LISTADOS *********************************************
+
+select top 5 (p.nombre+' '+p.apellido) as 'Nombre Afiliado',count(a.nro_afiliado) as 'Cantidad de Bonos Comprados'
+	from NEXTGDD.Afiliado a,NEXTGDD.Compra_Bono c,NEXTGDD.Persona p
+	where c.id_afiliado=a.nro_afiliado and a.id_persona=p.id_persona
+	group by p.nombre,p.apellido,a.nro_afiliado
+	order by 2 DESC;
 
 select top 5 (p.nombre+' '+p.apellido) as 'Nombre Afiliado',count(a.nro_afiliado) as 'Cantidad de Bonos Comprados'
 from NEXTGDD.Afiliado a,NEXTGDD.Compra_Bono c,NEXTGDD.Persona p

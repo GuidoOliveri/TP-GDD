@@ -87,9 +87,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void txtDir_TextChanged(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
-            this.Hide();
-            menuAbm.Show();
+          //  Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+           // this.Hide();
+            //menuAbm.Show();
         }
 
         private void frmModificarAfiliado_FormClosing(object sender, FormClosingEventArgs e)

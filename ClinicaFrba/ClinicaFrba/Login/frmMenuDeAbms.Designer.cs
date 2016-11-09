@@ -37,52 +37,57 @@
             // lblDale
             // 
             this.lblDale.AutoSize = true;
-            this.lblDale.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDale.Location = new System.Drawing.Point(77, 18);
+            this.lblDale.Font = new System.Drawing.Font("Century Schoolbook", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDale.ForeColor = System.Drawing.Color.Teal;
+            this.lblDale.Location = new System.Drawing.Point(66, 40);
             this.lblDale.Name = "lblDale";
-            this.lblDale.Size = new System.Drawing.Size(464, 29);
+            this.lblDale.Size = new System.Drawing.Size(493, 30);
             this.lblDale.TabIndex = 0;
             this.lblDale.Text = "Seleccione la funcionalidad a ejecutar:";
             // 
             // cmdLogueo
             // 
-            this.cmdLogueo.Location = new System.Drawing.Point(136, 247);
+            this.cmdLogueo.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.cmdLogueo.Location = new System.Drawing.Point(136, 166);
             this.cmdLogueo.Name = "cmdLogueo";
             this.cmdLogueo.Size = new System.Drawing.Size(142, 27);
             this.cmdLogueo.TabIndex = 32;
             this.cmdLogueo.Text = "Volver a Loguearse";
-            this.cmdLogueo.UseVisualStyleBackColor = true;
+            this.cmdLogueo.UseVisualStyleBackColor = false;
             this.cmdLogueo.Click += new System.EventHandler(this.cmdLogueo_Click);
             // 
             // cmbFuncionalidades
             // 
             this.cmbFuncionalidades.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.cmbFuncionalidades.FormattingEnabled = true;
-            this.cmbFuncionalidades.Location = new System.Drawing.Point(136, 139);
+            this.cmbFuncionalidades.ItemHeight = 13;
+            this.cmbFuncionalidades.Location = new System.Drawing.Point(136, 93);
             this.cmbFuncionalidades.Name = "cmbFuncionalidades";
-            this.cmbFuncionalidades.Size = new System.Drawing.Size(338, 21);
+            this.cmbFuncionalidades.Size = new System.Drawing.Size(347, 21);
             this.cmbFuncionalidades.TabIndex = 33;
             this.cmbFuncionalidades.SelectedIndexChanged += new System.EventHandler(this.cmbFuncionalidades_SelectedIndexChanged);
             // 
             // btnEjecutar
             // 
-            this.btnEjecutar.Location = new System.Drawing.Point(361, 247);
+            this.btnEjecutar.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.btnEjecutar.Location = new System.Drawing.Point(346, 166);
             this.btnEjecutar.Name = "btnEjecutar";
             this.btnEjecutar.Size = new System.Drawing.Size(137, 27);
             this.btnEjecutar.TabIndex = 35;
             this.btnEjecutar.Text = "Ejecutar";
-            this.btnEjecutar.UseVisualStyleBackColor = true;
+            this.btnEjecutar.UseVisualStyleBackColor = false;
             this.btnEjecutar.Click += new System.EventHandler(this.btnEjecutar_Click);
             // 
             // frmMenuDeAbms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(655, 361);
+            this.ClientSize = new System.Drawing.Size(620, 236);
             this.Controls.Add(this.btnEjecutar);
             this.Controls.Add(this.cmbFuncionalidades);
             this.Controls.Add(this.cmdLogueo);
             this.Controls.Add(this.lblDale);
+            this.ForeColor = System.Drawing.Color.Black;
             this.Name = "frmMenuDeAbms";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu de ABMs";

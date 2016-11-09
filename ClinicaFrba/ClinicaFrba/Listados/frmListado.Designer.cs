@@ -32,6 +32,9 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.pnlFiltroBusqueda = new System.Windows.Forms.Panel();
+            this.warning = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmbSemestre = new System.Windows.Forms.ComboBox();
             this.btnSeleccionar = new System.Windows.Forms.Button();
             this.cmbListado = new System.Windows.Forms.ComboBox();
             this.lblSeleccioneUnaOpcion = new System.Windows.Forms.Label();
@@ -43,9 +46,6 @@
             this.listaDeAfiliadosBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.listaDeAfiliados = new ClinicaFrba.ListaDeAfiliados();
             this.cmdVolver = new System.Windows.Forms.Button();
-            this.cmbSemestre = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.warning = new System.Windows.Forms.Label();
             this.pnlFiltroBusqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet)).BeginInit();
@@ -88,13 +88,40 @@
             this.pnlFiltroBusqueda.Cursor = System.Windows.Forms.Cursors.Default;
             this.pnlFiltroBusqueda.Location = new System.Drawing.Point(12, 10);
             this.pnlFiltroBusqueda.Name = "pnlFiltroBusqueda";
-            this.pnlFiltroBusqueda.Size = new System.Drawing.Size(587, 108);
+            this.pnlFiltroBusqueda.Size = new System.Drawing.Size(553, 108);
             this.pnlFiltroBusqueda.TabIndex = 2;
             this.pnlFiltroBusqueda.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // warning
+            // 
+            this.warning.AutoSize = true;
+            this.warning.ForeColor = System.Drawing.Color.Red;
+            this.warning.Location = new System.Drawing.Point(25, 84);
+            this.warning.Name = "warning";
+            this.warning.Size = new System.Drawing.Size(133, 13);
+            this.warning.TabIndex = 6;
+            this.warning.Text = "Faltan seleccionar campos";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(25, 51);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(54, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Semestre:";
+            // 
+            // cmbSemestre
+            // 
+            this.cmbSemestre.FormattingEnabled = true;
+            this.cmbSemestre.Location = new System.Drawing.Point(359, 48);
+            this.cmbSemestre.Name = "cmbSemestre";
+            this.cmbSemestre.Size = new System.Drawing.Size(168, 21);
+            this.cmbSemestre.TabIndex = 9;
+            // 
             // btnSeleccionar
             // 
-            this.btnSeleccionar.Location = new System.Drawing.Point(474, 78);
+            this.btnSeleccionar.Location = new System.Drawing.Point(439, 78);
             this.btnSeleccionar.Name = "btnSeleccionar";
             this.btnSeleccionar.Size = new System.Drawing.Size(88, 25);
             this.btnSeleccionar.TabIndex = 8;
@@ -111,7 +138,7 @@
             "Top 5 profesionales con menos horas trabajadas",
             "Top 5 afiliados con mayor cantidad de bonos comprados",
             "Top 5 especialidades médicas con más bonos utilizados"});
-            this.cmbListado.Location = new System.Drawing.Point(216, 21);
+            this.cmbListado.Location = new System.Drawing.Point(181, 21);
             this.cmbListado.Name = "cmbListado";
             this.cmbListado.Size = new System.Drawing.Size(346, 21);
             this.cmbListado.TabIndex = 6;
@@ -150,12 +177,17 @@
             // 
             // dgListado
             // 
+            this.dgListado.AllowUserToAddRows = false;
+            this.dgListado.AllowUserToDeleteRows = false;
+            this.dgListado.AllowUserToResizeColumns = false;
+            this.dgListado.AllowUserToResizeRows = false;
             this.dgListado.AutoGenerateColumns = false;
+            this.dgListado.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgListado.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgListado.DataSource = this.listaDeAfiliadosBindingSource;
             this.dgListado.Location = new System.Drawing.Point(12, 185);
             this.dgListado.Name = "dgListado";
-            this.dgListado.Size = new System.Drawing.Size(563, 167);
+            this.dgListado.Size = new System.Drawing.Size(553, 167);
             this.dgListado.TabIndex = 4;
             // 
             // listaDeAfiliadosBindingSource
@@ -170,7 +202,7 @@
             // 
             // cmdVolver
             // 
-            this.cmdVolver.Location = new System.Drawing.Point(233, 367);
+            this.cmdVolver.Location = new System.Drawing.Point(223, 367);
             this.cmdVolver.Name = "cmdVolver";
             this.cmdVolver.Size = new System.Drawing.Size(136, 36);
             this.cmdVolver.TabIndex = 5;
@@ -178,38 +210,11 @@
             this.cmdVolver.UseVisualStyleBackColor = true;
             this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
             // 
-            // cmbSemestre
-            // 
-            this.cmbSemestre.FormattingEnabled = true;
-            this.cmbSemestre.Location = new System.Drawing.Point(394, 48);
-            this.cmbSemestre.Name = "cmbSemestre";
-            this.cmbSemestre.Size = new System.Drawing.Size(168, 21);
-            this.cmbSemestre.TabIndex = 9;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(25, 51);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Semestre:";
-            // 
-            // warning
-            // 
-            this.warning.AutoSize = true;
-            this.warning.ForeColor = System.Drawing.Color.Red;
-            this.warning.Location = new System.Drawing.Point(25, 84);
-            this.warning.Name = "warning";
-            this.warning.Size = new System.Drawing.Size(133, 13);
-            this.warning.TabIndex = 6;
-            this.warning.Text = "Faltan seleccionar campos";
-            // 
             // frmListado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(611, 415);
+            this.ClientSize = new System.Drawing.Size(578, 415);
             this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.dgListado);
             this.Controls.Add(this.lblFiltroBusqueda);

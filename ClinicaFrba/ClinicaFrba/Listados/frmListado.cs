@@ -52,22 +52,16 @@ namespace ClinicaFrba.Listados
             listado = (string)cmbListado.SelectedItem;
             if (semestre != null && listado != null)
             {
+                string[] parametros=semestre.Split(' ');
                 if (cmbListado.SelectedIndex == 4)
                 {
-                    /*
-                    DataGridTextColumn esp = new DataGridTextColumn();
-                    esp.HeaderText="Especialidad";
-                    DataGridTextColumn bon = new DataGridTextColumn();
-                    esp.HeaderText="Cantidad Bonos";
-                    dgListado.Columns.Add(esp);
-                    dgListado.Columns.Add(bon);
-                    comando = "select top 5 e.descripcion as 'Especialidad',count(e.cod_especialidad) as 'Cantidad de Bonos'" +
-                            "from NEXTGDD.Consulta c,NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Agenda a" +
-                            "where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad" +
-                            "group by e.cod_especialidad,e.descripcion" +
-                            "order by count(e.cod_especialidad) DESC";
-                    bdd.ObtenerListado1(comando, "Especialidad", "Cantidad de Bonos",dgListado);
-                     */
+                    comando = "select * from NEXTGDD.listado5("+parametros[2]+","+parsearSemestre(parametros)+")";
+                    List<string> campos = new List<string>();
+                    campos.Add("Especialidad");
+                    campos.Add("Cantidad de Bonos");
+                    DataTable dt = bdd.ObtenerListado(comando, campos);
+                    dgListado.AutoGenerateColumns = true;
+                    dgListado.DataSource = dt;
                 }
             }
             else
@@ -75,6 +69,18 @@ namespace ClinicaFrba.Listados
                 warning.Visible = true;
             }
             
+        }
+
+        private string parsearSemestre(string[] parametros)
+        {
+            if (parametros[0] == "1er")
+            {
+                return "1,6";
+            }
+            else
+            {
+                return "6,12";
+            }
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -94,8 +100,6 @@ namespace ClinicaFrba.Listados
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // TODO: esta línea de código carga datos en la tabla 'gD2C2016DataSet.Maestra' Puede moverla o quitarla según sea necesario.
-           // this.maestraTableAdapter.Fill(this.gD2C2016DataSet.Maestra);
 
         }
 
