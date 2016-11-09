@@ -55,6 +55,50 @@ namespace ClinicaFrba.Listados
             if (semestre != null && listado != null)
             {
                 string[] parametros=semestre.Split(' ');
+
+                if (cmbListado.SelectedIndex == 0)
+                {
+                    comando = "select * from NEXTGDD.listado1(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
+                    List<string> campos = new List<string>();
+                    campos.Add("Especialidad");
+                    campos.Add("Cantidad cancelaciones");
+                    DataTable dt = bdd.ObtenerListado(comando, campos);
+                    dgListado.AutoGenerateColumns = true;
+                    dgListado.DataSource = dt;
+                }
+                /*
+                if (cmbListado.SelectedIndex == 1)
+                {
+                    comando = "select * from NEXTGDD.listado2(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
+                    List<string> campos = new List<string>();
+                    campos.Add("Plan");
+                    campos.Add("Profesional");
+                    campos.Add("Especialidad");
+                    DataTable dt = bdd.ObtenerListado(comando, campos);
+                    dgListado.AutoGenerateColumns = true;
+                    dgListado.DataSource = dt;
+                }
+                 */
+                if (cmbListado.SelectedIndex == 2)
+                {
+                    comando = "select * from NEXTGDD.listado3(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
+                    List<string> campos = new List<string>();
+                    campos.Add("Profesional");
+                    campos.Add("Horas Trabajadas");
+                    DataTable dt = bdd.ObtenerListado(comando, campos);
+                    dgListado.AutoGenerateColumns = true;
+                    dgListado.DataSource = dt;
+                }
+                if (cmbListado.SelectedIndex == 3)
+                {
+                    comando = "select * from NEXTGDD.listado4(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
+                    List<string> campos = new List<string>();
+                    campos.Add("Nombre Afiliado");
+                    campos.Add("Cantidad de Bonos Comprados");
+                    DataTable dt = bdd.ObtenerListado(comando, campos);
+                    dgListado.AutoGenerateColumns = true;
+                    dgListado.DataSource = dt;
+                }
                 if (cmbListado.SelectedIndex == 4)
                 {
                     comando = "select * from NEXTGDD.listado5("+parametros[2]+","+parsearSemestre(parametros)+")";
@@ -65,6 +109,7 @@ namespace ClinicaFrba.Listados
                     dgListado.AutoGenerateColumns = true;
                     dgListado.DataSource = dt;
                 }
+
             }
             else
             {

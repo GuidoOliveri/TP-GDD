@@ -48,6 +48,7 @@
             // 
             this.cmdIngresar.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.cmdIngresar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmdIngresar.ForeColor = System.Drawing.SystemColors.ControlText;
             this.cmdIngresar.Location = new System.Drawing.Point(43, 173);
             this.cmdIngresar.Name = "cmdIngresar";
             this.cmdIngresar.Size = new System.Drawing.Size(212, 42);
