@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abm Afiliado\frmAsociarAfiliado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\frmAsociarAfiliado.Designer.cs">
+      <DependentUpon>frmAsociarAfiliado.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Afiliado\frmHistorialCambios.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -239,6 +245,9 @@
     </Compile>
     <EmbeddedResource Include="Abm Afiliado\frmAltaAfiliado.resx">
       <DependentUpon>frmAltaAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\frmAsociarAfiliado.resx">
+      <DependentUpon>frmAsociarAfiliado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\frmBajaAfiliado.resx">
       <DependentUpon>frmBajaAfiliado.cs</DependentUpon>

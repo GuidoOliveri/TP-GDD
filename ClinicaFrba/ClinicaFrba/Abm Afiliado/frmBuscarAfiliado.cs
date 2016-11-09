@@ -64,7 +64,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnModificarAfiliado_Click(object sender, EventArgs e)
         {
-
+            frmModificarAfiliado este = new frmModificarAfiliado(rol,usuario,bdd);
+            this.Hide();
+            este.Show();
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -79,7 +81,14 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmBuscarAfiliado_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
     }

@@ -333,7 +333,14 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 
         private void frmRegistrarAgendaMedico_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
     }

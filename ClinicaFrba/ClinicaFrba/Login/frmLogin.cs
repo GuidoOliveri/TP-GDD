@@ -67,6 +67,7 @@ namespace ClinicaFrba.Login
             {
                 MessageBox.Show("Logueo exitoso! Entrando al sistema...", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
+                // para que me de el nombre del rol, lo busco yo, no me lo devuelve en el stored procedure 
                 query = "SELECT  R.nombre as nom FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U WHERE R_U.id_rol = R.id_rol AND U.username = @user AND U.username = R_U.username ";
                 SqlCommand comandito = new SqlCommand(query, conn);
                 SqlParameter parametroUsuario = new SqlParameter("@user", uname);
@@ -122,7 +123,16 @@ namespace ClinicaFrba.Login
 
         private void frmLogin_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+
+            DialogResult dialog = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialog == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

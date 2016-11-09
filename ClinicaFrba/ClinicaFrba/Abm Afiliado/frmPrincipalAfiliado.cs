@@ -32,12 +32,6 @@ namespace ClinicaFrba.Abm_Afiliado
             menuAbm.Show();
         }
 
-        private void cmdModificarAfiliado_Click(object sender, EventArgs e)
-        {
-            frmBuscarAfiliado mod = new frmBuscarAfiliado(rol,usuario,bdd);
-            this.Hide();
-            mod.Show();
-        }
 
         private void cmdHistorialCambios_Click(object sender, EventArgs e)
         {
@@ -69,7 +63,14 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmPrincipalAfiliado_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

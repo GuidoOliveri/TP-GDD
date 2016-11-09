@@ -31,9 +31,11 @@
             this.btnRegistrar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.pnlDatosPersonales = new System.Windows.Forms.Panel();
+            this.lblFlecha = new System.Windows.Forms.Label();
+            this.lblCampo = new System.Windows.Forms.Label();
             this.txtCantFam = new System.Windows.Forms.TextBox();
             this.lblCantFam = new System.Windows.Forms.Label();
-            this.cboEstadoCivil = new System.Windows.Forms.ComboBox();
+            this.cmbEstadoCivil = new System.Windows.Forms.ComboBox();
             this.lblEstadoCivil = new System.Windows.Forms.Label();
             this.lblDatosPersonales = new System.Windows.Forms.Label();
             this.optFemenino = new System.Windows.Forms.RadioButton();
@@ -48,7 +50,7 @@
             this.txtDir = new System.Windows.Forms.TextBox();
             this.lblDireccionCompleta = new System.Windows.Forms.Label();
             this.txtNroDoc = new System.Windows.Forms.TextBox();
-            this.cboTipoDoc = new System.Windows.Forms.ComboBox();
+            this.cmbTipoDoc = new System.Windows.Forms.ComboBox();
             this.lblDni = new System.Windows.Forms.Label();
             this.txtApellido = new System.Windows.Forms.TextBox();
             this.lblApellido = new System.Windows.Forms.Label();
@@ -56,25 +58,20 @@
             this.lblNombre = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.pnlDatosEspecificos = new System.Windows.Forms.Panel();
-            this.dtpFechaCambioPlan = new System.Windows.Forms.DateTimePicker();
-            this.lblFechaCambioPlan = new System.Windows.Forms.Label();
-            this.txtMotivo = new System.Windows.Forms.TextBox();
-            this.lblMotivoCambio = new System.Windows.Forms.Label();
+            this.cmbPlanMedico = new System.Windows.Forms.ComboBox();
             this.lblAltaFamiliar = new System.Windows.Forms.Label();
-            this.txtNroAfiliado = new System.Windows.Forms.TextBox();
-            this.lblNroAfiliado = new System.Windows.Forms.Label();
-            this.txtPlanMedico = new System.Windows.Forms.TextBox();
             this.lblPlanMedico = new System.Windows.Forms.Label();
             this.lblDatosEspecificos = new System.Windows.Forms.Label();
             this.lblAclaracion = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
+            this.cmdAsociarAfiliado = new System.Windows.Forms.Button();
             this.pnlDatosPersonales.SuspendLayout();
             this.pnlDatosEspecificos.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnRegistrar
             // 
-            this.btnRegistrar.Location = new System.Drawing.Point(176, 308);
+            this.btnRegistrar.Location = new System.Drawing.Point(141, 309);
             this.btnRegistrar.Name = "btnRegistrar";
             this.btnRegistrar.Size = new System.Drawing.Size(91, 41);
             this.btnRegistrar.TabIndex = 0;
@@ -94,9 +91,12 @@
             // 
             // pnlDatosPersonales
             // 
+            this.pnlDatosPersonales.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlDatosPersonales.Controls.Add(this.lblFlecha);
+            this.pnlDatosPersonales.Controls.Add(this.lblCampo);
             this.pnlDatosPersonales.Controls.Add(this.txtCantFam);
             this.pnlDatosPersonales.Controls.Add(this.lblCantFam);
-            this.pnlDatosPersonales.Controls.Add(this.cboEstadoCivil);
+            this.pnlDatosPersonales.Controls.Add(this.cmbEstadoCivil);
             this.pnlDatosPersonales.Controls.Add(this.lblEstadoCivil);
             this.pnlDatosPersonales.Controls.Add(this.lblDatosPersonales);
             this.pnlDatosPersonales.Controls.Add(this.optFemenino);
@@ -111,7 +111,7 @@
             this.pnlDatosPersonales.Controls.Add(this.txtDir);
             this.pnlDatosPersonales.Controls.Add(this.lblDireccionCompleta);
             this.pnlDatosPersonales.Controls.Add(this.txtNroDoc);
-            this.pnlDatosPersonales.Controls.Add(this.cboTipoDoc);
+            this.pnlDatosPersonales.Controls.Add(this.cmbTipoDoc);
             this.pnlDatosPersonales.Controls.Add(this.lblDni);
             this.pnlDatosPersonales.Controls.Add(this.txtApellido);
             this.pnlDatosPersonales.Controls.Add(this.lblApellido);
@@ -123,9 +123,27 @@
             this.pnlDatosPersonales.TabIndex = 2;
             this.pnlDatosPersonales.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlDatosPersonales_Paint);
             // 
+            // lblFlecha
+            // 
+            this.lblFlecha.AutoSize = true;
+            this.lblFlecha.Location = new System.Drawing.Point(339, 90);
+            this.lblFlecha.Name = "lblFlecha";
+            this.lblFlecha.Size = new System.Drawing.Size(16, 13);
+            this.lblFlecha.TabIndex = 23;
+            this.lblFlecha.Text = "->";
+            // 
+            // lblCampo
+            // 
+            this.lblCampo.AutoSize = true;
+            this.lblCampo.Location = new System.Drawing.Point(364, 91);
+            this.lblCampo.Name = "lblCampo";
+            this.lblCampo.Size = new System.Drawing.Size(185, 13);
+            this.lblCampo.TabIndex = 22;
+            this.lblCampo.Text = "En campo DNI, ingresar solo numeros";
+            // 
             // txtCantFam
             // 
-            this.txtCantFam.Location = new System.Drawing.Point(469, 148);
+            this.txtCantFam.Location = new System.Drawing.Point(469, 167);
             this.txtCantFam.Name = "txtCantFam";
             this.txtCantFam.Size = new System.Drawing.Size(149, 20);
             this.txtCantFam.TabIndex = 21;
@@ -133,31 +151,31 @@
             // lblCantFam
             // 
             this.lblCantFam.AutoSize = true;
-            this.lblCantFam.Location = new System.Drawing.Point(364, 148);
+            this.lblCantFam.Location = new System.Drawing.Point(364, 167);
             this.lblCantFam.Name = "lblCantFam";
             this.lblCantFam.Size = new System.Drawing.Size(80, 13);
             this.lblCantFam.TabIndex = 20;
             this.lblCantFam.Text = "*Cantidad hijos:";
             // 
-            // cboEstadoCivil
+            // cmbEstadoCivil
             // 
-            this.cboEstadoCivil.FormattingEnabled = true;
-            this.cboEstadoCivil.Items.AddRange(new object[] {
+            this.cmbEstadoCivil.FormattingEnabled = true;
+            this.cmbEstadoCivil.Items.AddRange(new object[] {
             "Soltero/a",
             "Casado/a",
             "Viudo/a",
             "Concubinato",
             "Divorciado/a"});
-            this.cboEstadoCivil.Location = new System.Drawing.Point(439, 117);
-            this.cboEstadoCivil.Name = "cboEstadoCivil";
-            this.cboEstadoCivil.Size = new System.Drawing.Size(179, 21);
-            this.cboEstadoCivil.TabIndex = 19;
-            this.cboEstadoCivil.SelectedIndexChanged += new System.EventHandler(this.cboEstadoCivil_SelectedIndexChanged);
+            this.cmbEstadoCivil.Location = new System.Drawing.Point(439, 140);
+            this.cmbEstadoCivil.Name = "cmbEstadoCivil";
+            this.cmbEstadoCivil.Size = new System.Drawing.Size(179, 21);
+            this.cmbEstadoCivil.TabIndex = 19;
+            this.cmbEstadoCivil.SelectedIndexChanged += new System.EventHandler(this.cboEstadoCivil_SelectedIndexChanged);
             // 
             // lblEstadoCivil
             // 
             this.lblEstadoCivil.AutoSize = true;
-            this.lblEstadoCivil.Location = new System.Drawing.Point(364, 120);
+            this.lblEstadoCivil.Location = new System.Drawing.Point(364, 140);
             this.lblEstadoCivil.Name = "lblEstadoCivil";
             this.lblEstadoCivil.Size = new System.Drawing.Size(69, 13);
             this.lblEstadoCivil.TabIndex = 18;
@@ -175,29 +193,27 @@
             // optFemenino
             // 
             this.optFemenino.AutoSize = true;
-            this.optFemenino.Location = new System.Drawing.Point(518, 88);
+            this.optFemenino.Location = new System.Drawing.Point(540, 117);
             this.optFemenino.Name = "optFemenino";
             this.optFemenino.Size = new System.Drawing.Size(71, 17);
             this.optFemenino.TabIndex = 17;
-            this.optFemenino.TabStop = true;
             this.optFemenino.Text = "Femenino";
             this.optFemenino.UseVisualStyleBackColor = true;
             // 
             // optMasculino
             // 
             this.optMasculino.AutoSize = true;
-            this.optMasculino.Location = new System.Drawing.Point(417, 86);
+            this.optMasculino.Location = new System.Drawing.Point(452, 117);
             this.optMasculino.Name = "optMasculino";
             this.optMasculino.Size = new System.Drawing.Size(73, 17);
             this.optMasculino.TabIndex = 16;
-            this.optMasculino.TabStop = true;
             this.optMasculino.Text = "Masculino";
             this.optMasculino.UseVisualStyleBackColor = true;
             // 
             // lblSexo
             // 
             this.lblSexo.AutoSize = true;
-            this.lblSexo.Location = new System.Drawing.Point(364, 88);
+            this.lblSexo.Location = new System.Drawing.Point(364, 117);
             this.lblSexo.Name = "lblSexo";
             this.lblSexo.Size = new System.Drawing.Size(38, 13);
             this.lblSexo.TabIndex = 15;
@@ -208,7 +224,7 @@
             this.dtpFecNac.Cursor = System.Windows.Forms.Cursors.Default;
             this.dtpFecNac.CustomFormat = "dd-MM-yyyy";
             this.dtpFecNac.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFecNac.Location = new System.Drawing.Point(485, 54);
+            this.dtpFecNac.Location = new System.Drawing.Point(485, 61);
             this.dtpFecNac.Name = "dtpFecNac";
             this.dtpFecNac.Size = new System.Drawing.Size(126, 20);
             this.dtpFecNac.TabIndex = 14;
@@ -216,7 +232,7 @@
             // lblFecNac
             // 
             this.lblFecNac.AutoSize = true;
-            this.lblFecNac.Location = new System.Drawing.Point(364, 57);
+            this.lblFecNac.Location = new System.Drawing.Point(364, 61);
             this.lblFecNac.Name = "lblFecNac";
             this.lblFecNac.Size = new System.Drawing.Size(113, 13);
             this.lblFecNac.TabIndex = 13;
@@ -228,6 +244,7 @@
             this.txtMail.Name = "txtMail";
             this.txtMail.Size = new System.Drawing.Size(194, 20);
             this.txtMail.TabIndex = 12;
+            this.txtMail.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMail_KeyPress);
             // 
             // lblMail
             // 
@@ -240,7 +257,7 @@
             // 
             // txtTel
             // 
-            this.txtTel.Location = new System.Drawing.Point(153, 152);
+            this.txtTel.Location = new System.Drawing.Point(157, 167);
             this.txtTel.Name = "txtTel";
             this.txtTel.Size = new System.Drawing.Size(181, 20);
             this.txtTel.TabIndex = 10;
@@ -248,7 +265,7 @@
             // lblTel
             // 
             this.lblTel.AutoSize = true;
-            this.lblTel.Location = new System.Drawing.Point(14, 155);
+            this.lblTel.Location = new System.Drawing.Point(14, 170);
             this.lblTel.Name = "lblTel";
             this.lblTel.Size = new System.Drawing.Size(137, 13);
             this.lblTel.TabIndex = 9;
@@ -260,6 +277,7 @@
             this.txtDir.Name = "txtDir";
             this.txtDir.Size = new System.Drawing.Size(217, 20);
             this.txtDir.TabIndex = 8;
+            this.txtDir.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDir_KeyPress);
             // 
             // lblDireccionCompleta
             // 
@@ -277,20 +295,21 @@
             this.txtNroDoc.Size = new System.Drawing.Size(150, 20);
             this.txtNroDoc.TabIndex = 6;
             this.txtNroDoc.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.txtNroDoc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNroDoc_KeyPress);
             // 
-            // cboTipoDoc
+            // cmbTipoDoc
             // 
-            this.cboTipoDoc.FormattingEnabled = true;
-            this.cboTipoDoc.Items.AddRange(new object[] {
+            this.cmbTipoDoc.FormattingEnabled = true;
+            this.cmbTipoDoc.Items.AddRange(new object[] {
             "D.N.I.",
             "L.E.",
             "L.C.",
             "C.I.",
             "Pasaporte"});
-            this.cboTipoDoc.Location = new System.Drawing.Point(93, 88);
-            this.cboTipoDoc.Name = "cboTipoDoc";
-            this.cboTipoDoc.Size = new System.Drawing.Size(85, 21);
-            this.cboTipoDoc.TabIndex = 5;
+            this.cmbTipoDoc.Location = new System.Drawing.Point(93, 88);
+            this.cmbTipoDoc.Name = "cmbTipoDoc";
+            this.cmbTipoDoc.Size = new System.Drawing.Size(85, 21);
+            this.cmbTipoDoc.TabIndex = 5;
             // 
             // lblDni
             // 
@@ -307,6 +326,7 @@
             this.txtApellido.Name = "txtApellido";
             this.txtApellido.Size = new System.Drawing.Size(241, 20);
             this.txtApellido.TabIndex = 3;
+            this.txtApellido.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtApellido_KeyPress);
             // 
             // lblApellido
             // 
@@ -323,6 +343,7 @@
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(241, 20);
             this.txtNombre.TabIndex = 1;
+            this.txtNombre.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNombre_KeyPress);
             // 
             // lblNombre
             // 
@@ -335,53 +356,23 @@
             // 
             // pnlDatosEspecificos
             // 
-            this.pnlDatosEspecificos.Controls.Add(this.dtpFechaCambioPlan);
-            this.pnlDatosEspecificos.Controls.Add(this.lblFechaCambioPlan);
-            this.pnlDatosEspecificos.Controls.Add(this.txtMotivo);
-            this.pnlDatosEspecificos.Controls.Add(this.lblMotivoCambio);
+            this.pnlDatosEspecificos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlDatosEspecificos.Controls.Add(this.cmbPlanMedico);
             this.pnlDatosEspecificos.Controls.Add(this.lblAltaFamiliar);
-            this.pnlDatosEspecificos.Controls.Add(this.txtNroAfiliado);
-            this.pnlDatosEspecificos.Controls.Add(this.lblNroAfiliado);
-            this.pnlDatosEspecificos.Controls.Add(this.txtPlanMedico);
             this.pnlDatosEspecificos.Controls.Add(this.lblPlanMedico);
             this.pnlDatosEspecificos.Controls.Add(this.lblDatosEspecificos);
-            this.pnlDatosEspecificos.Location = new System.Drawing.Point(23, 216);
+            this.pnlDatosEspecificos.Location = new System.Drawing.Point(23, 235);
             this.pnlDatosEspecificos.Name = "pnlDatosEspecificos";
-            this.pnlDatosEspecificos.Size = new System.Drawing.Size(639, 86);
+            this.pnlDatosEspecificos.Size = new System.Drawing.Size(639, 67);
             this.pnlDatosEspecificos.TabIndex = 3;
             // 
-            // dtpFechaCambioPlan
+            // cmbPlanMedico
             // 
-            this.dtpFechaCambioPlan.Location = new System.Drawing.Point(311, 47);
-            this.dtpFechaCambioPlan.Name = "dtpFechaCambioPlan";
-            this.dtpFechaCambioPlan.Size = new System.Drawing.Size(121, 20);
-            this.dtpFechaCambioPlan.TabIndex = 20;
-            // 
-            // lblFechaCambioPlan
-            // 
-            this.lblFechaCambioPlan.AutoSize = true;
-            this.lblFechaCambioPlan.Location = new System.Drawing.Point(204, 47);
-            this.lblFechaCambioPlan.Name = "lblFechaCambioPlan";
-            this.lblFechaCambioPlan.Size = new System.Drawing.Size(100, 13);
-            this.lblFechaCambioPlan.TabIndex = 19;
-            this.lblFechaCambioPlan.Text = "Fecha cambio plan:";
-            // 
-            // txtMotivo
-            // 
-            this.txtMotivo.Location = new System.Drawing.Point(324, 22);
-            this.txtMotivo.Name = "txtMotivo";
-            this.txtMotivo.Size = new System.Drawing.Size(109, 20);
-            this.txtMotivo.TabIndex = 18;
-            this.txtMotivo.TextChanged += new System.EventHandler(this.txtMotivo_TextChanged);
-            // 
-            // lblMotivoCambio
-            // 
-            this.lblMotivoCambio.AutoSize = true;
-            this.lblMotivoCambio.Location = new System.Drawing.Point(204, 22);
-            this.lblMotivoCambio.Name = "lblMotivoCambio";
-            this.lblMotivoCambio.Size = new System.Drawing.Size(117, 13);
-            this.lblMotivoCambio.TabIndex = 17;
-            this.lblMotivoCambio.Text = "Motivo cambio de plan:";
+            this.cmbPlanMedico.FormattingEnabled = true;
+            this.cmbPlanMedico.Location = new System.Drawing.Point(260, 22);
+            this.cmbPlanMedico.Name = "cmbPlanMedico";
+            this.cmbPlanMedico.Size = new System.Drawing.Size(167, 21);
+            this.cmbPlanMedico.TabIndex = 15;
             // 
             // lblAltaFamiliar
             // 
@@ -391,34 +382,10 @@
             this.lblAltaFamiliar.Size = new System.Drawing.Size(0, 13);
             this.lblAltaFamiliar.TabIndex = 14;
             // 
-            // txtNroAfiliado
-            // 
-            this.txtNroAfiliado.Enabled = false;
-            this.txtNroAfiliado.Location = new System.Drawing.Point(89, 44);
-            this.txtNroAfiliado.Name = "txtNroAfiliado";
-            this.txtNroAfiliado.Size = new System.Drawing.Size(109, 20);
-            this.txtNroAfiliado.TabIndex = 13;
-            // 
-            // lblNroAfiliado
-            // 
-            this.lblNroAfiliado.AutoSize = true;
-            this.lblNroAfiliado.Location = new System.Drawing.Point(10, 45);
-            this.lblNroAfiliado.Name = "lblNroAfiliado";
-            this.lblNroAfiliado.Size = new System.Drawing.Size(67, 13);
-            this.lblNroAfiliado.TabIndex = 12;
-            this.lblNroAfiliado.Text = "*Nro afiliado:";
-            // 
-            // txtPlanMedico
-            // 
-            this.txtPlanMedico.Location = new System.Drawing.Point(89, 19);
-            this.txtPlanMedico.Name = "txtPlanMedico";
-            this.txtPlanMedico.Size = new System.Drawing.Size(109, 20);
-            this.txtPlanMedico.TabIndex = 11;
-            // 
             // lblPlanMedico
             // 
             this.lblPlanMedico.AutoSize = true;
-            this.lblPlanMedico.Location = new System.Drawing.Point(10, 19);
+            this.lblPlanMedico.Location = new System.Drawing.Point(181, 30);
             this.lblPlanMedico.Name = "lblPlanMedico";
             this.lblPlanMedico.Size = new System.Drawing.Size(73, 13);
             this.lblPlanMedico.TabIndex = 1;
@@ -427,7 +394,7 @@
             // lblDatosEspecificos
             // 
             this.lblDatosEspecificos.AutoSize = true;
-            this.lblDatosEspecificos.Location = new System.Drawing.Point(18, 0);
+            this.lblDatosEspecificos.Location = new System.Drawing.Point(25, -1);
             this.lblDatosEspecificos.Name = "lblDatosEspecificos";
             this.lblDatosEspecificos.Size = new System.Drawing.Size(126, 13);
             this.lblDatosEspecificos.TabIndex = 0;
@@ -436,7 +403,7 @@
             // lblAclaracion
             // 
             this.lblAclaracion.AutoSize = true;
-            this.lblAclaracion.Location = new System.Drawing.Point(453, 331);
+            this.lblAclaracion.Location = new System.Drawing.Point(490, 323);
             this.lblAclaracion.Name = "lblAclaracion";
             this.lblAclaracion.Size = new System.Drawing.Size(209, 13);
             this.lblAclaracion.TabIndex = 4;
@@ -444,7 +411,7 @@
             // 
             // btnVolver
             // 
-            this.btnVolver.Location = new System.Drawing.Point(318, 308);
+            this.btnVolver.Location = new System.Drawing.Point(384, 308);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(84, 42);
             this.btnVolver.TabIndex = 5;
@@ -452,11 +419,22 @@
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
+            // cmdAsociarAfiliado
+            // 
+            this.cmdAsociarAfiliado.Location = new System.Drawing.Point(258, 309);
+            this.cmdAsociarAfiliado.Name = "cmdAsociarAfiliado";
+            this.cmdAsociarAfiliado.Size = new System.Drawing.Size(100, 42);
+            this.cmdAsociarAfiliado.TabIndex = 6;
+            this.cmdAsociarAfiliado.Text = "Asociar Afiliado a un Grupo";
+            this.cmdAsociarAfiliado.UseVisualStyleBackColor = true;
+            this.cmdAsociarAfiliado.Click += new System.EventHandler(this.button1_Click);
+            // 
             // frmAltaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(689, 353);
+            this.ClientSize = new System.Drawing.Size(712, 380);
+            this.Controls.Add(this.cmdAsociarAfiliado);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.lblAclaracion);
             this.Controls.Add(this.pnlDatosEspecificos);
@@ -486,7 +464,7 @@
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.Label lblDatosPersonales;
-        private System.Windows.Forms.ComboBox cboTipoDoc;
+        private System.Windows.Forms.ComboBox cmbTipoDoc;
         private System.Windows.Forms.Label lblDni;
         private System.Windows.Forms.TextBox txtNroDoc;
         private System.Windows.Forms.TextBox txtMail;
@@ -501,22 +479,19 @@
         private System.Windows.Forms.RadioButton optFemenino;
         private System.Windows.Forms.RadioButton optMasculino;
         private System.Windows.Forms.Label lblSexo;
-        private System.Windows.Forms.ComboBox cboEstadoCivil;
+        private System.Windows.Forms.ComboBox cmbEstadoCivil;
         private System.Windows.Forms.Label lblEstadoCivil;
         private System.Windows.Forms.TextBox txtCantFam;
         private System.Windows.Forms.Label lblCantFam;
         private System.Windows.Forms.Panel pnlDatosEspecificos;
         private System.Windows.Forms.Label lblDatosEspecificos;
-        private System.Windows.Forms.TextBox txtPlanMedico;
         private System.Windows.Forms.Label lblPlanMedico;
         private System.Windows.Forms.Label lblAclaracion;
         private System.Windows.Forms.Label lblAltaFamiliar;
         private System.Windows.Forms.Button btnVolver;
-        private System.Windows.Forms.Label lblFechaCambioPlan;
-        private System.Windows.Forms.TextBox txtMotivo;
-        private System.Windows.Forms.Label lblMotivoCambio;
-        private System.Windows.Forms.DateTimePicker dtpFechaCambioPlan;
-        private System.Windows.Forms.TextBox txtNroAfiliado;
-        private System.Windows.Forms.Label lblNroAfiliado;
+        private System.Windows.Forms.ComboBox cmbPlanMedico;
+        private System.Windows.Forms.Label lblCampo;
+        private System.Windows.Forms.Label lblFlecha;
+        private System.Windows.Forms.Button cmdAsociarAfiliado;
     }
 }

@@ -150,7 +150,15 @@ namespace ClinicaFrba.Login
 
         private void frmMenuDeAbms_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            DialogResult dialog = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialog == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
 
     }

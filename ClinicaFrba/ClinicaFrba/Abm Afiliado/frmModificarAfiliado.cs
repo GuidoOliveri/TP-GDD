@@ -13,6 +13,8 @@ namespace ClinicaFrba.Abm_Afiliado
     public partial class frmModificarAfiliado : Form {
         
         private string comando = "";
+        private string rol = "";
+        private string usuario = "";
         Clases.BaseDeDatosSQL bdd;
 
         int idAfiliado;
@@ -21,13 +23,15 @@ namespace ClinicaFrba.Abm_Afiliado
         private String telefono = "";
         private String mail = "";
 
-        public frmModificarAfiliado(Clases.BaseDeDatosSQL bdd, int idAfiliado)
+        public frmModificarAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
             InitializeComponent();
 
+            this.rol = rol;
+            this.usuario = usuario;
             this.bdd = bdd; 
 
-            this.idAfiliado = idAfiliado;
+            this.idAfiliado = 27281; //hardcodeado, despues vemos 
 
             int idPersona = 1123960; // Hardcode de prueba
             comando = "select * from GD2C2016.NEXTGDD.Persona where id_persona ="+idPersona;
@@ -82,19 +86,26 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            frmBuscarAfiliado buscar = new frmBuscarAfiliado(rol,usuario,bdd);
+            this.Hide();
+            buscar.Show();
         }
 
         private void txtDir_TextChanged(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
-            this.Hide();
-            menuAbm.Show();
+            
         }
 
         private void frmModificarAfiliado_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

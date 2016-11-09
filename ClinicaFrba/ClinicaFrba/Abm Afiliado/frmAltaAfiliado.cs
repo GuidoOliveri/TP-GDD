@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Clases;
-using System.Data.SqlClient;
+//using System.Data.SqlClient;
 using ClinicaFrba.Abm_Afiliado;
+using System.Data.SqlClient;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
@@ -18,6 +19,11 @@ namespace ClinicaFrba.Abm_Afiliado
         private string rol = "";
         private string usuario = "";
         private Clases.BaseDeDatosSQL bdd;
+        private string comando = "";
+        private string plan = "";
+        private string estadoCivil = "";
+        private string tipoDoc = "";
+        private SqlConnection conn = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
 
         public frmAltaAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
@@ -25,6 +31,20 @@ namespace ClinicaFrba.Abm_Afiliado
             this.rol = rol;
             this.usuario = usuario;
             this.bdd = bdd;
+            plan = (string)cmbPlanMedico.SelectedItem;
+
+            comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
+            cargar(bdd.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
+
+            btnRegistrar.Click += new EventHandler(btnRegistrar_Click);
+        }
+
+        private void cargar(List<string> lista, ComboBox cmb)
+        {
+            foreach (string elemento in lista)
+            {
+                cmb.Items.Add(elemento);
+            }
         }
 
         public String Operacion { get; set; }
@@ -39,16 +59,13 @@ namespace ClinicaFrba.Abm_Afiliado
             txtApellido.Text = "";
             txtCantFam.Text = "";
             txtMail.Text = "";
-            txtNroAfiliado.Text = "";
             txtNroDoc.Text = "";
-            txtPlanMedico.Text = "";
             txtTel.Text = "";
-            txtPlanMedico.Text = "";
-            txtMotivo.Text = "";
 
             // limpio combo box
-            cboEstadoCivil.SelectedIndex = -1;
-            cboTipoDoc.SelectedIndex = -1;
+            cmbEstadoCivil.SelectedIndex = -1;
+            cmbTipoDoc.SelectedIndex = -1;
+            cmbPlanMedico.SelectedIndex = -1;
 
             //limpio radio button
             optMasculino.Checked = false;
@@ -56,7 +73,6 @@ namespace ClinicaFrba.Abm_Afiliado
 
             //date time picker
             dtpFecNac.Value = Today;
-            dtpFechaCambioPlan.Value = Today;
         }
 
 
@@ -72,25 +88,89 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
-            if (txtNombre.Text == "" || txtNombre.Text == null || txtApellido.Text == "" || txtApellido.Text == null || txtNroDoc.Text == "" || txtNroDoc.Text== null || txtDir.Text == "" || txtDir.Text==null || txtTel.Text == "" || txtTel.Text== null || txtMail.Text == "" || txtMail.Text==null || txtCantFam.Text == "" || txtCantFam.Text==null || Int32.Parse(txtCantFam.Text) < 0 || txtCantFam.Text==null || cboEstadoCivil.SelectedItem==null || cboTipoDoc.SelectedItem == null || dtpFecNac.Value > dtpFechaCambioPlan.Value)
+            
+            int nroAfiliado = 0;
+
+            string nombre = txtNombre.Text;
+            string apellido = txtApellido.Text;
+            string fecha = dtpFecNac.Value.ToString;
+            char opcionSexo;
+            tipoDoc = (string)cmbTipoDoc.SelectedItem;
+            int nroDoc = (int)txtNroDoc.Text;
+            string direccion = txtDir.Text;
+            int telefono = (int)txtTel.Text;
+            estadoCivil = (string)cmbEstadoCivil.SelectedItem;
+            string mail = txtMail.Text;
+            int cantFam =(int)txtCantFam.Text;
+            plan = (string)cmbPlanMedico.SelectedItem;
+            int retorno = 0;
+
+            if(optMasculino.Checked == true){
+                opcionSexo = 'H';
+            } else
             {
-                MessageBox.Show("Todos los campos no estan llenos o no estan llenos correctamente", "Alta afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                opcionSexo = 'M';
+            }
+/*
+            if (txtNombre.Text == null || txtApellido.Text == null || txtNroDoc.Text == null || int.Parse(txtNroDoc.Text) <= 0 || txtDir.Text == null || txtTel.Text == null || txtMail.Text == null || txtCantFam.Text == null || int.Parse(txtCantFam.Text) < 0 || plan == null || tipoDoc == null || estadoCivil == null)
+            {
+                MessageBox.Show("Todos los campos no estan llenos correctamente o estan vacios", "Alta afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
-            {
-                DialogResult dialogResult = MessageBox.Show("Registrado exitosamente! Desea Registrar a algun familiar?", "Alta afiliado", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information);
-                if (dialogResult == DialogResult.Yes)
-                {
+            {*/
                     //aca tengo que enganchar el stored procedure de lo que hace el afiliado
-                    cargarTodoLimpio();
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                    Login.frmMenuDeAbms elegirOtra = new Login.frmMenuDeAbms(rol,usuario,bdd);
-                    this.Hide();
-                    elegirOtra.Show();
-                }
-            }
+                    conn.Open();
+                    SqlCommand command = new SqlCommand("NEXTGDD.agregarAfiliadoPrincipal", conn);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    SqlParameter parNombre = new SqlParameter("@nombre", nombre );                
+                    SqlParameter parApellido = new SqlParameter("@apellido", apellido);
+                    SqlParameter parFecNac = new SqlParameter("@fecha_nac", fecha);
+                    SqlParameter parSexo = new SqlParameter("@sexo", opcionSexo );
+                    SqlParameter parTipoDoc = new SqlParameter("@tipo_doc", tipoDoc);
+                    SqlParameter parNroDoc = new SqlParameter("@nrodocumento", nroDoc);
+                    SqlParameter parDomicilio = new SqlParameter("@domicilio", direccion);
+                    SqlParameter parTel = new SqlParameter("@telefono", telefono);
+                    SqlParameter parEstadoCivil = new SqlParameter("@estado_civil", estadoCivil );
+                    SqlParameter parMail = new SqlParameter("@mail", mail);
+                    SqlParameter parCantFam = new SqlParameter("@cant_familiares",cantFam);
+                    SqlParameter parCodMedico = new SqlParameter("@cod_medico",plan);
+                    SqlParameter parRet = new SqlParameter("@ret", retorno);
+
+                    parRet.Direction = ParameterDirection.Output;
+
+                    command.Parameters.Add(parNombre);
+                    command.Parameters.Add(parApellido);
+                    command.Parameters.Add(parFecNac);
+                    command.Parameters.Add(parSexo);
+                    command.Parameters.Add(parTipoDoc);
+                    command.Parameters.Add(parNroDoc);
+                    command.Parameters.Add(parDomicilio);
+                    command.Parameters.Add(parTel);
+                    command.Parameters.Add(parEstadoCivil);
+                    command.Parameters.Add(parMail);
+                    command.Parameters.Add(parCantFam);
+                    command.Parameters.Add(parCodMedico);
+                    command.Parameters.Add(parRet);
+
+                    SqlDataReader dr = command.ExecuteReader();
+                    dr.Read();
+                    dr.Close();
+
+                    int resu = Int32.Parse(parRet.Value.ToString());
+                    if (resu.Equals(-1))
+                    {
+                        MessageBox.Show("No se pudo registrar su afiliado, hubo un problema", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else 
+                    {
+                        nroAfiliado = resu;
+                        MessageBox.Show("Registrado exitosamente! Tu nro de afiliado es \n" + nroAfiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        cargarTodoLimpio();
+                    }
+                    conn.Close();
+          
+          //}
 
         }
 
@@ -132,7 +212,80 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmAltaAfiliado_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (plan == null)
+            {
+                frmAsociarAfiliado asocio = new frmAsociarAfiliado(rol,usuario,bdd);
+                this.Hide();
+                asocio.Show();
+            }
+            else
+            {
+                MessageBox.Show("El afiliado que se asocie ya tiene un grupo familiar asignado", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); 
+            }
+
+        }
+
+        /////// valido lo que no puede ingresar en el campo ////////
+
+        private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar))
+                e.Handled = true;
+            else if (char.IsNumber(e.KeyChar))
+                e.Handled=true;
+            else if (char.IsSymbol(e.KeyChar))
+                e.Handled = true;
+            else if (char.IsPunctuation(e.KeyChar))
+                e.Handled = true;
+
+        }
+
+        private void txtApellido_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar))
+                e.Handled = true;
+            else if (char.IsNumber(e.KeyChar))
+                e.Handled = true;
+            else if (char.IsSymbol(e.KeyChar))
+                e.Handled = true;
+            else if (char.IsPunctuation(e.KeyChar))
+                e.Handled = true;
+        }
+
+        private void txtMail_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void txtNroDoc_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (char.IsSymbol(e.KeyChar))
+                e.Handled = true;
+            else if (char.IsPunctuation(e.KeyChar))
+                e.Handled = true;
+            else if (char.IsLetter(e.KeyChar))
+                e.Handled = true;
+            else if (char.IsWhiteSpace(e.KeyChar))
+                e.Handled = true;
+        }
+
+        private void txtDir_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsSymbol(e.KeyChar))
+                e.Handled = true;
         }
     }
 }

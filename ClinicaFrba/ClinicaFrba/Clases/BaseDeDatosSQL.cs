@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Data.OleDb;
 using System.Linq;
+using System.Windows.Forms;
 
 
 namespace ClinicaFrba.Clases

@@ -57,7 +57,7 @@
             // 
             // btnIniciarSesion
             // 
-            this.btnIniciarSesion.Location = new System.Drawing.Point(208, 124);
+            this.btnIniciarSesion.Location = new System.Drawing.Point(270, 124);
             this.btnIniciarSesion.Name = "btnIniciarSesion";
             this.btnIniciarSesion.Size = new System.Drawing.Size(142, 23);
             this.btnIniciarSesion.TabIndex = 7;
