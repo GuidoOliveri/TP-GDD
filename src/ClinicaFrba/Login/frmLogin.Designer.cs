@@ -57,11 +57,8 @@
             // 
             // btnIniciarSesion
             // 
-<<<<<<< HEAD:ClinicaFrba/ClinicaFrba/Login/frmLogin.Designer.cs
-            this.btnIniciarSesion.Location = new System.Drawing.Point(270, 124);
-=======
+
             this.btnIniciarSesion.Location = new System.Drawing.Point(193, 142);
->>>>>>> a21145754840bc29f2448efdb0168a39a0310db0:src/ClinicaFrba/Login/frmLogin.Designer.cs
             this.btnIniciarSesion.Name = "btnIniciarSesion";
             this.btnIniciarSesion.Size = new System.Drawing.Size(142, 23);
             this.btnIniciarSesion.TabIndex = 7;

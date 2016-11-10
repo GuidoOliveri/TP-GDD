@@ -47,7 +47,7 @@
     <Compile Include="Abm Afiliado\frmAsociarAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Afiliado\frmAsociarAfiliado.Designer.cs">
+    <Compile Include="Abm Afiliado\frmAsociarAfiliado.designer.cs">
       <DependentUpon>frmAsociarAfiliado.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Afiliado\frmHistorialCambios.cs">

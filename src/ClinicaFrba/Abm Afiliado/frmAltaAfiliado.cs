@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Clases;
-//using System.Data.SqlClient;
 using ClinicaFrba.Abm_Afiliado;
 using System.Data.SqlClient;
 
@@ -93,15 +92,14 @@ namespace ClinicaFrba.Abm_Afiliado
 
             string nombre = txtNombre.Text;
             string apellido = txtApellido.Text;
-            string fecha = dtpFecNac.Value.ToString;
             char opcionSexo;
             tipoDoc = (string)cmbTipoDoc.SelectedItem;
-            int nroDoc = (int)txtNroDoc.Text;
+            int nroDoc = Convert.ToInt32(txtNroDoc.Text);
             string direccion = txtDir.Text;
-            int telefono = (int)txtTel.Text;
+            int telefono = Convert.ToInt32(txtTel.Text);
             estadoCivil = (string)cmbEstadoCivil.SelectedItem;
             string mail = txtMail.Text;
-            int cantFam =(int)txtCantFam.Text;
+            int cantFam = Convert.ToInt32(txtCantFam.Text);
             plan = (string)cmbPlanMedico.SelectedItem;
             int retorno = 0;
 
@@ -111,21 +109,21 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 opcionSexo = 'M';
             }
-/*
-            if (txtNombre.Text == null || txtApellido.Text == null || txtNroDoc.Text == null || int.Parse(txtNroDoc.Text) <= 0 || txtDir.Text == null || txtTel.Text == null || txtMail.Text == null || txtCantFam.Text == null || int.Parse(txtCantFam.Text) < 0 || plan == null || tipoDoc == null || estadoCivil == null)
-            {
-                MessageBox.Show("Todos los campos no estan llenos correctamente o estan vacios", "Alta afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {*/
-                    //aca tengo que enganchar el stored procedure de lo que hace el afiliado
+            /*
+                        if (txtNombre.Text == null || txtApellido.Text == null || txtNroDoc.Text == null || int.Parse(txtNroDoc.Text) <= 0 || txtDir.Text == null || txtTel.Text == null || txtMail.Text == null || txtCantFam.Text == null || int.Parse(txtCantFam.Text) < 0 || plan == null || tipoDoc == null || estadoCivil == null || !validarEmail(txtMail.Text))
+                        {
+                            MessageBox.Show("Todos los campos no estan llenos correctamente o estan vacios", "Alta afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        else
+                        {*/
+            //aca tengo que enganchar el stored procedure de lo que hace el afiliado
                     conn.Open();
                     SqlCommand command = new SqlCommand("NEXTGDD.agregarAfiliadoPrincipal", conn);
                     command.CommandType = CommandType.StoredProcedure;
 
                     SqlParameter parNombre = new SqlParameter("@nombre", nombre );                
                     SqlParameter parApellido = new SqlParameter("@apellido", apellido);
-                    SqlParameter parFecNac = new SqlParameter("@fecha_nac", fecha);
+                    SqlParameter parFecNac = new SqlParameter("@fecha_nac", SqlDbType.Date);
                     SqlParameter parSexo = new SqlParameter("@sexo", opcionSexo );
                     SqlParameter parTipoDoc = new SqlParameter("@tipo_doc", tipoDoc);
                     SqlParameter parNroDoc = new SqlParameter("@nrodocumento", nroDoc);
@@ -138,6 +136,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     SqlParameter parRet = new SqlParameter("@ret", retorno);
 
                     parRet.Direction = ParameterDirection.Output;
+                    parFecNac.Value = dtpFecNac.Value;
 
                     command.Parameters.Add(parNombre);
                     command.Parameters.Add(parApellido);
@@ -222,7 +221,7 @@ namespace ClinicaFrba.Abm_Afiliado
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void cmdAsociarAfiliado_Click(object sender, EventArgs e)
         {
             if (plan == null)
             {
@@ -234,6 +233,14 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 MessageBox.Show("El afiliado que se asocie ya tiene un grupo familiar asignado", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); 
             }
+            /*if ()
+            {
+                MessageBox.Show("bien", "Mail", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+            {
+                MessageBox.Show("mail", "Mail", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }*/
 
         }
 
@@ -242,50 +249,180 @@ namespace ClinicaFrba.Abm_Afiliado
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (char.IsDigit(e.KeyChar))
+            {
                 e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else if (char.IsNumber(e.KeyChar))
-                e.Handled=true;
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else if (char.IsSymbol(e.KeyChar))
+            {
                 e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else if (char.IsPunctuation(e.KeyChar))
+            {
                 e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
         }
 
         private void txtApellido_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (char.IsDigit(e.KeyChar))
+            {
                 e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else if (char.IsNumber(e.KeyChar))
+            {
                 e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else if (char.IsSymbol(e.KeyChar))
+            {
                 e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else if (char.IsPunctuation(e.KeyChar))
+            {
                 e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void txtMail_KeyPress(object sender, KeyPressEventArgs e)
         {
-
+            
         }
 
         private void txtNroDoc_KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            if (char.IsSymbol(e.KeyChar))
+            if (char.IsSymbol(e.KeyChar)){
                 e.Handled = true;
-            else if (char.IsPunctuation(e.KeyChar))
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }else if (char.IsPunctuation(e.KeyChar)){
                 e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else if (char.IsLetter(e.KeyChar))
+            {
                 e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else if (char.IsWhiteSpace(e.KeyChar))
+            {
                 e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void txtDir_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (char.IsSymbol(e.KeyChar))
+            {
                 e.Handled = true;
+                MessageBox.Show("Solo letras y numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras y numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsNumber(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            else if (char.IsLetter(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+        }
+
+        private void txtTel_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsLetter(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public static bool validarEmail(string email)
+        {
+            bool validar = false;
+            int analizar = email.IndexOf("@");
+            if (analizar > 0)
+            {
+                if (email.IndexOf("@", analizar + 1) > 0)
+                {
+                    return validar;
+                }
+                int a = email.IndexOf(".",analizar);
+                if (a - 1 > analizar)
+                {
+                    if (a + 1 < email.Length)
+                    {
+                        string r = email.Substring(a + 1, 1);
+                        if (r != ".")
+                        {
+                            validar = true;
+                        }
+                    }
+                }
+            }
+            return validar;
+        }
+
+        private void txtMail_Leave(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtCantFam_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo cantidad en numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo cantidad en numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsLetter(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo cantidad en numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo cantidad en numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

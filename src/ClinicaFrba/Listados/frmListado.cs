@@ -30,8 +30,8 @@ namespace ClinicaFrba.Listados
 
             warning.Visible = false;
 
-            comando="select distinct year(fecha) as anio from NEXTGDD.Turno;";
-            cargarSemestres(bdd.ObtenerLista(comando,"anio"),cmbSemestre);
+            comando = "select distinct year(fecha) as anio from NEXTGDD.Turno;";
+            cargarSemestres(bdd.ObtenerLista(comando, "anio"), cmbSemestre);
 
             btnSeleccionar.Click += new EventHandler(btnSeleccionar_OnClick);
             btnLimpiar.Click += new EventHandler(btnLimpiar_OnClick);
@@ -42,7 +42,7 @@ namespace ClinicaFrba.Listados
         {
             foreach (string elemento in lista)
             {
-                cmb.Items.Add("1er Semestre "+elemento);
+                cmb.Items.Add("1er Semestre " + elemento);
                 cmb.Items.Add("2ndo Semestre " + elemento);
             }
         }
@@ -54,7 +54,7 @@ namespace ClinicaFrba.Listados
             listado = (string)cmbListado.SelectedItem;
             if (semestre != null && listado != null)
             {
-                string[] parametros=semestre.Split(' ');
+                string[] parametros = semestre.Split(' ');
 
                 if (cmbListado.SelectedIndex == 0)
                 {
@@ -101,7 +101,7 @@ namespace ClinicaFrba.Listados
                 }
                 if (cmbListado.SelectedIndex == 4)
                 {
-                    comando = "select * from NEXTGDD.listado5("+parametros[2]+","+parsearSemestre(parametros)+")";
+                    comando = "select * from NEXTGDD.listado5(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
                     List<string> campos = new List<string>();
                     campos.Add("Especialidad");
                     campos.Add("Cantidad de Bonos");
@@ -115,7 +115,7 @@ namespace ClinicaFrba.Listados
             {
                 warning.Visible = true;
             }
-            
+
         }
 
         private string parsearSemestre(string[] parametros)
@@ -177,7 +177,14 @@ namespace ClinicaFrba.Listados
 
         private void frmListado_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

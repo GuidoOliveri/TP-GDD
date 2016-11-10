@@ -31,8 +31,6 @@
             this.btnRegistrar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.pnlDatosPersonales = new System.Windows.Forms.Panel();
-            this.lblFlecha = new System.Windows.Forms.Label();
-            this.lblCampo = new System.Windows.Forms.Label();
             this.txtCantFam = new System.Windows.Forms.TextBox();
             this.lblCantFam = new System.Windows.Forms.Label();
             this.cmbEstadoCivil = new System.Windows.Forms.ComboBox();
@@ -92,8 +90,6 @@
             // pnlDatosPersonales
             // 
             this.pnlDatosPersonales.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlDatosPersonales.Controls.Add(this.lblFlecha);
-            this.pnlDatosPersonales.Controls.Add(this.lblCampo);
             this.pnlDatosPersonales.Controls.Add(this.txtCantFam);
             this.pnlDatosPersonales.Controls.Add(this.lblCantFam);
             this.pnlDatosPersonales.Controls.Add(this.cmbEstadoCivil);
@@ -123,35 +119,18 @@
             this.pnlDatosPersonales.TabIndex = 2;
             this.pnlDatosPersonales.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlDatosPersonales_Paint);
             // 
-            // lblFlecha
-            // 
-            this.lblFlecha.AutoSize = true;
-            this.lblFlecha.Location = new System.Drawing.Point(339, 90);
-            this.lblFlecha.Name = "lblFlecha";
-            this.lblFlecha.Size = new System.Drawing.Size(16, 13);
-            this.lblFlecha.TabIndex = 23;
-            this.lblFlecha.Text = "->";
-            // 
-            // lblCampo
-            // 
-            this.lblCampo.AutoSize = true;
-            this.lblCampo.Location = new System.Drawing.Point(364, 91);
-            this.lblCampo.Name = "lblCampo";
-            this.lblCampo.Size = new System.Drawing.Size(185, 13);
-            this.lblCampo.TabIndex = 22;
-            this.lblCampo.Text = "En campo DNI, ingresar solo numeros";
-            // 
             // txtCantFam
             // 
-            this.txtCantFam.Location = new System.Drawing.Point(469, 167);
+            this.txtCantFam.Location = new System.Drawing.Point(469, 154);
             this.txtCantFam.Name = "txtCantFam";
             this.txtCantFam.Size = new System.Drawing.Size(149, 20);
             this.txtCantFam.TabIndex = 21;
+            this.txtCantFam.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCantFam_KeyPress);
             // 
             // lblCantFam
             // 
             this.lblCantFam.AutoSize = true;
-            this.lblCantFam.Location = new System.Drawing.Point(364, 167);
+            this.lblCantFam.Location = new System.Drawing.Point(364, 157);
             this.lblCantFam.Name = "lblCantFam";
             this.lblCantFam.Size = new System.Drawing.Size(80, 13);
             this.lblCantFam.TabIndex = 20;
@@ -166,7 +145,7 @@
             "Viudo/a",
             "Concubinato",
             "Divorciado/a"});
-            this.cmbEstadoCivil.Location = new System.Drawing.Point(439, 140);
+            this.cmbEstadoCivil.Location = new System.Drawing.Point(439, 123);
             this.cmbEstadoCivil.Name = "cmbEstadoCivil";
             this.cmbEstadoCivil.Size = new System.Drawing.Size(179, 21);
             this.cmbEstadoCivil.TabIndex = 19;
@@ -175,7 +154,7 @@
             // lblEstadoCivil
             // 
             this.lblEstadoCivil.AutoSize = true;
-            this.lblEstadoCivil.Location = new System.Drawing.Point(364, 140);
+            this.lblEstadoCivil.Location = new System.Drawing.Point(364, 127);
             this.lblEstadoCivil.Name = "lblEstadoCivil";
             this.lblEstadoCivil.Size = new System.Drawing.Size(69, 13);
             this.lblEstadoCivil.TabIndex = 18;
@@ -193,7 +172,7 @@
             // optFemenino
             // 
             this.optFemenino.AutoSize = true;
-            this.optFemenino.Location = new System.Drawing.Point(540, 117);
+            this.optFemenino.Location = new System.Drawing.Point(540, 96);
             this.optFemenino.Name = "optFemenino";
             this.optFemenino.Size = new System.Drawing.Size(71, 17);
             this.optFemenino.TabIndex = 17;
@@ -203,7 +182,7 @@
             // optMasculino
             // 
             this.optMasculino.AutoSize = true;
-            this.optMasculino.Location = new System.Drawing.Point(452, 117);
+            this.optMasculino.Location = new System.Drawing.Point(439, 96);
             this.optMasculino.Name = "optMasculino";
             this.optMasculino.Size = new System.Drawing.Size(73, 17);
             this.optMasculino.TabIndex = 16;
@@ -213,7 +192,7 @@
             // lblSexo
             // 
             this.lblSexo.AutoSize = true;
-            this.lblSexo.Location = new System.Drawing.Point(364, 117);
+            this.lblSexo.Location = new System.Drawing.Point(364, 96);
             this.lblSexo.Name = "lblSexo";
             this.lblSexo.Size = new System.Drawing.Size(38, 13);
             this.lblSexo.TabIndex = 15;
@@ -245,6 +224,7 @@
             this.txtMail.Size = new System.Drawing.Size(194, 20);
             this.txtMail.TabIndex = 12;
             this.txtMail.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMail_KeyPress);
+            this.txtMail.Leave += new System.EventHandler(this.txtMail_Leave);
             // 
             // lblMail
             // 
@@ -257,15 +237,16 @@
             // 
             // txtTel
             // 
-            this.txtTel.Location = new System.Drawing.Point(157, 167);
+            this.txtTel.Location = new System.Drawing.Point(146, 150);
             this.txtTel.Name = "txtTel";
             this.txtTel.Size = new System.Drawing.Size(181, 20);
             this.txtTel.TabIndex = 10;
+            this.txtTel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTel_KeyPress);
             // 
             // lblTel
             // 
             this.lblTel.AutoSize = true;
-            this.lblTel.Location = new System.Drawing.Point(14, 170);
+            this.lblTel.Location = new System.Drawing.Point(3, 157);
             this.lblTel.Name = "lblTel";
             this.lblTel.Size = new System.Drawing.Size(137, 13);
             this.lblTel.TabIndex = 9;
@@ -403,7 +384,7 @@
             // lblAclaracion
             // 
             this.lblAclaracion.AutoSize = true;
-            this.lblAclaracion.Location = new System.Drawing.Point(490, 323);
+            this.lblAclaracion.Location = new System.Drawing.Point(491, 324);
             this.lblAclaracion.Name = "lblAclaracion";
             this.lblAclaracion.Size = new System.Drawing.Size(209, 13);
             this.lblAclaracion.TabIndex = 4;
@@ -427,7 +408,7 @@
             this.cmdAsociarAfiliado.TabIndex = 6;
             this.cmdAsociarAfiliado.Text = "Asociar Afiliado a un Grupo";
             this.cmdAsociarAfiliado.UseVisualStyleBackColor = true;
-            this.cmdAsociarAfiliado.Click += new System.EventHandler(this.button1_Click);
+            this.cmdAsociarAfiliado.Click += new System.EventHandler(this.cmdAsociarAfiliado_Click);
             // 
             // frmAltaAfiliado
             // 
@@ -490,8 +471,6 @@
         private System.Windows.Forms.Label lblAltaFamiliar;
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.ComboBox cmbPlanMedico;
-        private System.Windows.Forms.Label lblCampo;
-        private System.Windows.Forms.Label lblFlecha;
         private System.Windows.Forms.Button cmdAsociarAfiliado;
     }
 }

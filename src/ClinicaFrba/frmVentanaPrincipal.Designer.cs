@@ -36,11 +36,11 @@
             // lblTitulo
             // 
             this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Font = new System.Drawing.Font("Script MT Bold", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitulo.ForeColor = System.Drawing.Color.RoyalBlue;
             this.lblTitulo.Location = new System.Drawing.Point(57, 77);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(420, 35);
+            this.lblTitulo.Size = new System.Drawing.Size(507, 33);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "Bienvenido al Sistema de la Clínica";
             // 
@@ -49,9 +49,9 @@
             this.cmdIngresar.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.cmdIngresar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmdIngresar.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.cmdIngresar.Location = new System.Drawing.Point(43, 173);
+            this.cmdIngresar.Location = new System.Drawing.Point(63, 173);
             this.cmdIngresar.Name = "cmdIngresar";
-            this.cmdIngresar.Size = new System.Drawing.Size(212, 42);
+            this.cmdIngresar.Size = new System.Drawing.Size(201, 42);
             this.cmdIngresar.TabIndex = 2;
             this.cmdIngresar.Text = "Ingresar";
             this.cmdIngresar.UseVisualStyleBackColor = false;
@@ -62,7 +62,7 @@
             this.cmdSalir.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.cmdSalir.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cmdSalir.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cmdSalir.Location = new System.Drawing.Point(308, 173);
+            this.cmdSalir.Location = new System.Drawing.Point(375, 173);
             this.cmdSalir.Name = "cmdSalir";
             this.cmdSalir.Size = new System.Drawing.Size(189, 42);
             this.cmdSalir.TabIndex = 3;
@@ -74,7 +74,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(541, 297);
+            this.ClientSize = new System.Drawing.Size(630, 297);
             this.Controls.Add(this.cmdSalir);
             this.Controls.Add(this.cmdIngresar);
             this.Controls.Add(this.lblTitulo);
