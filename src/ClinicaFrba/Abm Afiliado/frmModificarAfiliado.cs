@@ -22,6 +22,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private String direccion = "";
         private String telefono = "";
         private String mail = "";
+        private string plan = "";
 
         public frmModificarAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
@@ -29,7 +30,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd; 
+            this.bdd = bdd;
+            plan = (string)cmbPlanMedico.SelectedItem;
 
             this.idAfiliado = 27281; //hardcodeado, despues vemos 
 
@@ -45,8 +47,21 @@ namespace ClinicaFrba.Abm_Afiliado
             txtDir.Text = direccion;
             txtMail.Text = mail;
             txtTel.Text = telefono;
+
+            comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
+            cargar(bdd.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
+
+            btnGuardar.Click += new EventHandler(btnGuardar_Click);
             
             
+        }
+
+        private void cargar(List<string> lista, ComboBox cmb)
+        {
+            foreach (string elemento in lista)
+            {
+                cmb.Items.Add(elemento);
+            }
         }
 
         private void frmModificarAfiliado_Load(object sender, EventArgs e)
@@ -61,27 +76,28 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (txtDir.Text != direccion)
+            if (txtDir.Text != direccion && txtDir.Text!=null )
             {
                 comando = "EXECUTE NEXTGDD.modificar_Afiliado_Domic @id='" + idAfiliado + "',@nuevo_dom='" + txtDir.Text;
                 bdd.ExecStoredProcedure2(comando);
                 MessageBox.Show("Actualizacion exitosa!", "Actualizacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
-            if (txtTel.Text != telefono)
+            if (txtTel.Text != telefono && txtTel.Text!=null)
             {
                 comando = "EXECUTE NEXTGDD.modificar_Afiliado_Telef @id='" + idAfiliado + "',@nuevo_nuevo_telef='" + txtTel.Text;
                 bdd.ExecStoredProcedure2(comando);
                 MessageBox.Show("Actualizacion exitosa!", "Actualizacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
-            if (txtMail.Text != mail)
+            if (txtMail.Text != mail && txtMail.Text!=null)
             {
                 comando = "EXECUTE NEXTGDD.modificar_Afiliado_Mail @id='" + idAfiliado + "',@nuevo_mail='" + txtDir.Text;
                 bdd.ExecStoredProcedure2(comando);
                 MessageBox.Show("Actualizacion exitosa!", "Actualizacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
+
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

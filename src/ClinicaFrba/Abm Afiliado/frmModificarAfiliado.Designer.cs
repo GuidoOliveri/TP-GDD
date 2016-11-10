@@ -29,7 +29,14 @@
         private void InitializeComponent()
         {
             this.pnlModDatosPersonales = new System.Windows.Forms.Panel();
-            this.lblDatosAfiliado = new System.Windows.Forms.Label();
+            this.cmdEstadoCivil = new System.Windows.Forms.ComboBox();
+            this.cmbPlanMedico = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtMotivo = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.lblCantHijos = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.txtMail = new System.Windows.Forms.TextBox();
             this.lblMail = new System.Windows.Forms.Label();
             this.txtTel = new System.Windows.Forms.TextBox();
@@ -37,16 +44,9 @@
             this.txtDir = new System.Windows.Forms.TextBox();
             this.lblDireccionCompleta = new System.Windows.Forms.Label();
             this.lblNombreAfiliado = new System.Windows.Forms.Label();
+            this.lblDatosAfiliado = new System.Windows.Forms.Label();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblCantHijos = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.txtMotivo = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cmbPlanMedico = new System.Windows.Forms.ComboBox();
-            this.cmdEstadoCivil = new System.Windows.Forms.ComboBox();
             this.pnlModDatosPersonales.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,14 +74,77 @@
             this.pnlModDatosPersonales.TabIndex = 3;
             this.pnlModDatosPersonales.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlModDatosPersonales_Paint);
             // 
-            // lblDatosAfiliado
+            // cmdEstadoCivil
             // 
-            this.lblDatosAfiliado.AutoSize = true;
-            this.lblDatosAfiliado.Location = new System.Drawing.Point(45, 9);
-            this.lblDatosAfiliado.Name = "lblDatosAfiliado";
-            this.lblDatosAfiliado.Size = new System.Drawing.Size(144, 13);
-            this.lblDatosAfiliado.TabIndex = 0;
-            this.lblDatosAfiliado.Text = "Datos Personales del Afiliado";
+            this.cmdEstadoCivil.FormattingEnabled = true;
+            this.cmdEstadoCivil.Items.AddRange(new object[] {
+            "Soltero/a",
+            "Casado/a",
+            "Viudo/a",
+            "Concubinato",
+            "Divorciado/a"});
+            this.cmdEstadoCivil.Location = new System.Drawing.Point(131, 113);
+            this.cmdEstadoCivil.Name = "cmdEstadoCivil";
+            this.cmdEstadoCivil.Size = new System.Drawing.Size(216, 21);
+            this.cmdEstadoCivil.TabIndex = 22;
+            // 
+            // cmbPlanMedico
+            // 
+            this.cmbPlanMedico.FormattingEnabled = true;
+            this.cmbPlanMedico.Location = new System.Drawing.Point(131, 181);
+            this.cmbPlanMedico.Name = "cmbPlanMedico";
+            this.cmbPlanMedico.Size = new System.Drawing.Size(216, 21);
+            this.cmbPlanMedico.TabIndex = 21;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(19, 216);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(102, 13);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Motivo cambio plan:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(19, 179);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(69, 13);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "Plan Medico:";
+            // 
+            // txtMotivo
+            // 
+            this.txtMotivo.Location = new System.Drawing.Point(131, 216);
+            this.txtMotivo.Name = "txtMotivo";
+            this.txtMotivo.Size = new System.Drawing.Size(217, 20);
+            this.txtMotivo.TabIndex = 18;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(131, 144);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(217, 20);
+            this.textBox1.TabIndex = 16;
+            // 
+            // lblCantHijos
+            // 
+            this.lblCantHijos.AutoSize = true;
+            this.lblCantHijos.Location = new System.Drawing.Point(19, 144);
+            this.lblCantHijos.Name = "lblCantHijos";
+            this.lblCantHijos.Size = new System.Drawing.Size(55, 13);
+            this.lblCantHijos.TabIndex = 15;
+            this.lblCantHijos.Text = "CantHijos:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 113);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Estado Civil:";
             // 
             // txtMail
             // 
@@ -141,6 +204,15 @@
             this.lblNombreAfiliado.TabIndex = 2;
             this.lblNombreAfiliado.Text = "-";
             // 
+            // lblDatosAfiliado
+            // 
+            this.lblDatosAfiliado.AutoSize = true;
+            this.lblDatosAfiliado.Location = new System.Drawing.Point(45, 9);
+            this.lblDatosAfiliado.Name = "lblDatosAfiliado";
+            this.lblDatosAfiliado.Size = new System.Drawing.Size(144, 13);
+            this.lblDatosAfiliado.TabIndex = 0;
+            this.lblDatosAfiliado.Text = "Datos Personales del Afiliado";
+            // 
             // btnGuardar
             // 
             this.btnGuardar.Location = new System.Drawing.Point(35, 288);
@@ -160,72 +232,6 @@
             this.btnCancelar.Text = "Cancelar Y Volver";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 113);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 13);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "Estado Civil:";
-            // 
-            // lblCantHijos
-            // 
-            this.lblCantHijos.AutoSize = true;
-            this.lblCantHijos.Location = new System.Drawing.Point(19, 144);
-            this.lblCantHijos.Name = "lblCantHijos";
-            this.lblCantHijos.Size = new System.Drawing.Size(55, 13);
-            this.lblCantHijos.TabIndex = 15;
-            this.lblCantHijos.Text = "CantHijos:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(131, 144);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(217, 20);
-            this.textBox1.TabIndex = 16;
-            // 
-            // txtMotivo
-            // 
-            this.txtMotivo.Location = new System.Drawing.Point(131, 216);
-            this.txtMotivo.Name = "txtMotivo";
-            this.txtMotivo.Size = new System.Drawing.Size(217, 20);
-            this.txtMotivo.TabIndex = 18;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 179);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(69, 13);
-            this.label2.TabIndex = 19;
-            this.label2.Text = "Plan Medico:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 216);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(102, 13);
-            this.label3.TabIndex = 20;
-            this.label3.Text = "Motivo cambio plan:";
-            // 
-            // cmbPlanMedico
-            // 
-            this.cmbPlanMedico.FormattingEnabled = true;
-            this.cmbPlanMedico.Location = new System.Drawing.Point(131, 181);
-            this.cmbPlanMedico.Name = "cmbPlanMedico";
-            this.cmbPlanMedico.Size = new System.Drawing.Size(216, 21);
-            this.cmbPlanMedico.TabIndex = 21;
-            // 
-            // cmdEstadoCivil
-            // 
-            this.cmdEstadoCivil.FormattingEnabled = true;
-            this.cmdEstadoCivil.Location = new System.Drawing.Point(131, 113);
-            this.cmdEstadoCivil.Name = "cmdEstadoCivil";
-            this.cmdEstadoCivil.Size = new System.Drawing.Size(216, 21);
-            this.cmdEstadoCivil.TabIndex = 22;
             // 
             // frmModificarAfiliado
             // 
