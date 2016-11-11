@@ -206,5 +206,10 @@ namespace ClinicaFrba.Registro_Resultado
                 e.Cancel = true;
             }
         }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

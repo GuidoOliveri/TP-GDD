@@ -22,6 +22,7 @@ namespace ClinicaFrba.Registro_Llegada
         private string turno = "";//muestra fecha del turno
         private string bono = "";//nro bono
         private string horaLLegada = "";
+        private string fechaLLegada = "";
 
         public frmRegistroLlegadaAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
@@ -36,6 +37,7 @@ namespace ClinicaFrba.Registro_Llegada
             warning1.Visible = false;
             warning2.Visible = false;
             warning3.Visible = false;
+            warning4.Visible = false;
 
             //SE CARGAN LOS PROF
             comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Persona p,NEXTGDD.Profesional pr where p.id_persona=pr.id_persona order by p.nombre ASC";
@@ -65,7 +67,8 @@ namespace ClinicaFrba.Registro_Llegada
                 profesional = (string)cmbProfesional.SelectedItem;
                 cmbTurno.Items.Clear();
                 cmbTurno.Text = "";
-                comando = "select t.fecha as fecha from NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Profesional p,NEXTGDD.Persona pe where t.cod_agenda=a.cod_agenda and a.matricula=p.matricula and p.id_persona=pe.id_persona and (pe.nombre+' '+pe.apellido LIKE '" + profesional + "')  group by t.fecha order by t.fecha ASC";
+                /* FILTRA POR FECHA ACTUAL*/
+                comando = "select t.fecha as fecha from NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Profesional p,NEXTGDD.Persona pe where t.cod_agenda=a.cod_agenda and a.matricula=p.matricula and p.id_persona=pe.id_persona and (pe.nombre+' '+pe.apellido LIKE '" + profesional + "') and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())  group by t.fecha order by t.fecha ASC";
                 cargar(bdd.ObtenerLista(comando,"fecha"), cmbTurno);
             }
             if (cmbProfesional.SelectedItem != null && especialidad != "")
@@ -92,6 +95,8 @@ namespace ClinicaFrba.Registro_Llegada
             {
                 warning2.Visible = false;
                 turno = (string) cmbTurno.SelectedItem;
+                txtFechaLlegada.Text = "";
+                txtHoraLlegada.Text = "";
                 if (!verificarTurno() )
                 {
                     warning1.Visible = false;
@@ -102,6 +107,9 @@ namespace ClinicaFrba.Registro_Llegada
                     }
                     comando = "select b.nro_bono as bono from NEXTGDD.Turno t,NEXTGDD.Afiliado a,NEXTGDD.Bono_Consulta b,NEXTGDD.Agenda ag,NEXTGDD.Profesional pr,NEXTGDD.Persona p where (p.nombre+' '+p.apellido) LIKE '" + profesional + "' and pr.id_persona=p.id_persona and pr.matricula=ag.matricula and t.cod_agenda=ag.cod_agenda and t.fecha LIKE CONVERT(datetime,'" + convertirFecha(turno) + "',120) and t.nro_afiliado=a.nro_afiliado and b.nro_afiliado=a.nro_afiliado" /* and (select isnull(count(*),0) from NEXTGDD.Consulta c where c.nro_bono=b.nro_bono)=0*/+" order by b.nro_bono ASC";
                     cargar(bdd.ObtenerLista(comando, "bono"), cmbBono);
+                    
+                    txtFechaLlegada.Text = turno.Split(' ')[0];
+                    txtHoraLlegada.Text = turno.Split(' ')[1];
                 }
                 else
                 {
@@ -111,7 +119,6 @@ namespace ClinicaFrba.Registro_Llegada
                 }
                 
             }
-            
         }
 
         private string convertirFecha(string fecha)
@@ -161,10 +168,12 @@ namespace ClinicaFrba.Registro_Llegada
             warning2.Visible = false;
             bono = (string) cmbBono.SelectedItem;
             horaLLegada= txtHoraLlegada.Text;
+            fechaLLegada = txtFechaLlegada.Text;
             verificarFecha(horaLLegada,':',warning3);
-            if (profesional != null && turno != null && bono != null && horaLLegada!="" && warning2.Visible!=true && warning3.Visible!=true && warning1.Visible!=true)
+            verificarFecha(fechaLLegada, '/', warning4);
+            if (profesional != null && turno != null && bono != null && horaLLegada != "" && warning2.Visible != true && warning4.Visible != true && warning3.Visible != true && warning1.Visible != true)
             {
-                comando = "EXECUTE NEXTGDD.registrarConsulta @horaLlegada='"+horaLLegada+"',@nomProf='" + profesional + "', @fechaTurno='" +convertirFecha(turno) + "', @nroBono='" + bono+ "'";
+                comando = "EXECUTE NEXTGDD.registrarConsulta @fechaLlegada='"+convertirFecha(fechaLLegada+' '+horaLLegada)+"',@nomProf='" + profesional + "', @fechaTurno='" +convertirFecha(turno) + "', @nroBono='" + bono+ "'";
                 bdd.ExecStoredProcedure2(comando);
 
                 frmRegistroLlegadaAfiliado NewForm = new frmRegistroLlegadaAfiliado(rol,usuario,bdd);
@@ -191,9 +200,22 @@ namespace ClinicaFrba.Registro_Llegada
         {
             string[] fechaPartida = str.Split(c);
             Boolean b = true;
-            if (fechaPartida.Length == 3 && fechaPartida[0].Length == 2 && fechaPartida[1].Length == 2 && fechaPartida[2].Length == 2)
+            if (fechaPartida.Length == 3 && fechaPartida[0].Length == 2 && fechaPartida[1].Length == 2)
             {
-                b = false;
+                if (c == '/')
+                {
+                    if (fechaPartida[2].Length == 4)
+                    {
+                        b = false;
+                    }
+                }
+                if (c == ':')
+                {
+                    if (fechaPartida[2].Length == 2)
+                    {
+                        b = false;
+                    }
+                }
             }
             l.Visible = b;
         }

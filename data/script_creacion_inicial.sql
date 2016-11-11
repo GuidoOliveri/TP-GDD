@@ -9,7 +9,7 @@ BEGIN
 END
 
 GO
-
+select * from NEXTGDD.Afiliado
 /******** VALIDACION DE TABLAS ********/
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Rango_Atencion_Clinica'))
@@ -310,7 +310,7 @@ CREATE TABLE NEXTGDD.Diagnostico (
 CREATE TABLE NEXTGDD.Consulta (
  
    cod_consulta numeric (18,0) PRIMARY KEY IDENTITY (1000,1),
-   hora_registro_consulta time,
+   fecha_consulta datetime,
    cod_diagnostico numeric (18,0) REFERENCES NextGDD.Diagnostico(cod_diagnostico),
    nro_bono numeric (18,0) REFERENCES NextGDD.Bono_Consulta(nro_bono),
    nro_turno numeric (18,0) REFERENCES NextGDD.Turno(nro_turno)
@@ -675,7 +675,7 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE NEXTGDD.registrarConsulta (@horaLlegada time,@nomProf varchar(255),@fechaTurno datetime,@nroBono numeric(18,0))
+CREATE PROCEDURE NEXTGDD.registrarConsulta (@fechaLlegada datetime,@nomProf varchar(255),@fechaTurno datetime,@nroBono numeric(18,0))
 AS
 BEGIN
 	DECLARE @nro_turno numeric(18,0)=(select t.nro_turno
@@ -684,8 +684,8 @@ BEGIN
 											p.nombre+' '+p.apellido LIKE @nomProf and
 											p.id_persona=pr.id_persona and pr.matricula=ag.matricula and
 											t.cod_agenda=ag.cod_agenda)
-	INSERT NEXTGDD.Consulta (hora_registro_consulta,nro_bono,nro_turno) values
-			(@horaLlegada,@nroBono,@nro_turno)
+	INSERT NEXTGDD.Consulta (fecha_consulta,nro_bono,nro_turno) values
+			(@fechaLlegada,@nroBono,@nro_turno)
 END;
 GO
 
@@ -1318,12 +1318,11 @@ SET IDENTITY_INSERT NEXTGDD.Bono_Consulta OFF
 
 
 GO
-/*
+
 INSERT NEXTGDD.Agenda (matricula, cod_especialidad)
 		(select matricula,cod_especialidad
 		 from NEXTGDD.Profesional_X_Especialidad);
 GO
-*/
 
 
 SET IDENTITY_INSERT NEXTGDD.Turno ON
@@ -1355,8 +1354,8 @@ SET IDENTITY_INSERT NEXTGDD.Diagnostico OFF
 
 SET IDENTITY_INSERT NEXTGDD.Profesional ON
 
-INSERT NEXTGDD.Consulta (cod_diagnostico, hora_registro_consulta, nro_bono ,nro_turno)
-	   (select Bono_Consulta_Numero,convert (time,Turno_Fecha), Bono_Consulta_Numero, Turno_Numero
+INSERT NEXTGDD.Consulta (cod_diagnostico, fecha_consulta, nro_bono ,nro_turno)
+	   (select Bono_Consulta_Numero,Turno_Fecha, Bono_Consulta_Numero, Turno_Numero
 		from gd_esquema.Maestra
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
 GO
