@@ -404,8 +404,11 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.darDeBajaAfiliado'))
     DROP PROCEDURE NEXTGDD.darDeBajaAfiliado
 GO
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarRangoDeAtencion'))
-    DROP FUNCTION NEXTGDD.verificarRangoDeAtencion
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.obtenerRangoHorario'))
+    DROP FUNCTION NEXTGDD.obtenerRangoHorario
+GO
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.obtenerRangoClinica'))
+    DROP FUNCTION NEXTGDD.obtenerRangoClinica
 GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarCodigoAgenda'))
     DROP FUNCTION NEXTGDD.buscarCodigoAgenda
@@ -425,10 +428,6 @@ GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarRangoHorario'))
     DROP PROCEDURE NEXTGDD.registrarRangoHorario
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.pedirTurno'))
-    DROP TRIGGER NEXTGDD.pedirTurno
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes'))
@@ -673,6 +672,23 @@ BEGIN
 	INSERT NEXTGDD.Turno (nro_afiliado,cod_agenda,fecha) values
 			(@nroAf,@codAgenda,@fecha)
 END;
+GO
+
+CREATE FUNCTION NEXTGDD.obtenerRangoHorario(@fecha datetime,@profesional varchar(255),@especialidad varchar(255),@dia numeric(18,0),@hora time) 
+RETURNS TABLE
+AS
+	RETURN (select isnull(count(*),0) as 'cantidad rangos'
+		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a,NEXTGDD.Rango_Atencion r
+	       where p.nombre+' '+p.apellido LIKE @profesional and e.descripcion LIKE @especialidad and pr.id_persona=p.id_persona
+			     and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad and r.cod_agenda=a.cod_agenda
+				 and @fecha>=a.rango_fecha_desde and @fecha<=a.rango_fecha_hasta 
+			     and r.dia_semanal_inicial<=@dia and r.dia_semanal_final>=@dia and r.hora_inicial<=@hora and r.hora_final>=@hora)
+GO
+ 
+CREATE FUNCTION NEXTGDD.obtenerRangoClinica(@diaSemana numeric(18,0)) 
+RETURNS TABLE
+AS
+	RETURN select hora_inicial,hora_final from NEXTGDD.Rango_Atencion_Clinica where @diaSemana>=dia_inicial and @diaSemana<=dia_final;
 GO
 
 CREATE PROCEDURE NEXTGDD.registrarConsulta (@fechaLlegada datetime,@nomProf varchar(255),@fechaTurno datetime,@nroBono numeric(18,0))
@@ -1373,3 +1389,7 @@ GO
 
 EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 0, @id_persona = 3116603
 GO
+
+--select * from NEXTGDD.Turno t,NEXTGDD.Profesional pr,NEXTGDD.Agenda a,NEXTGDD.Persona p,ne
+--where t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula and p.id_persona=pr.id_persona
+--order by t.fecha DESC

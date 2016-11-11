@@ -177,43 +177,15 @@
             // 
             this.warning1.AutoSize = true;
             this.warning1.ForeColor = System.Drawing.Color.Red;
-            this.warning1.Location = new System.Drawing.Point(153, 155);
+            this.warning1.Location = new System.Drawing.Point(132, 155);
             this.warning1.Name = "warning1";
-            this.warning1.Size = new System.Drawing.Size(255, 13);
+            this.warning1.Size = new System.Drawing.Size(271, 13);
             this.warning1.TabIndex = 12;
-            this.warning1.Text = "No hay disponibilidad en esa fecha. Seleccione otra.";
+            this.warning1.Text = "El profesional no atiende en esa fecha. Seleccione otra.";
             // 
             // cmbHorario
             // 
             this.cmbHorario.FormattingEnabled = true;
-            this.cmbHorario.Items.AddRange(new object[] {
-            "07:00",
-            "07:30",
-            "08:00",
-            "08:30",
-            "09:00",
-            "09:30",
-            "10:00",
-            "10:30",
-            "11:00",
-            "11:30",
-            "12:00",
-            "12:30",
-            "13:00",
-            "13:30",
-            "14:00",
-            "14:30",
-            "15:00",
-            "15:30",
-            "16:00",
-            "16:30",
-            "17:00",
-            "17:30",
-            "18:00",
-            "18:30",
-            "19:00",
-            "19:30",
-            "20:00"});
             this.cmbHorario.Location = new System.Drawing.Point(175, 170);
             this.cmbHorario.Name = "cmbHorario";
             this.cmbHorario.Size = new System.Drawing.Size(228, 21);

@@ -40,7 +40,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             this.bdd = bdd;
 
             cargarDias();
-            cargarHorarios();
 
             cargar(dias, cmbDiaDesde);
             cargar(dias, cmbDiaHasta);
@@ -49,17 +48,15 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona order by (p.nombre+' '+p.apellido) ASC";
             cargar(bdd.ObtenerLista(comando,"nombre"), cmbProfesional);
 
-            //cargarGrilla();
-
             cmbProfesional.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbEspecialidad.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbDiaDesde.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbDiaHasta.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbHorarioDesde.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbHorarioHasta.SelectedIndexChanged += OnSelectedIndexChanged;
-           // dgRangoAtencion.CellValueChanged += new DataGridViewCellEventHandler(dgRangoAtencion_CellContentClick);
             dpFechaDesde.ValueChanged += new EventHandler(dpFechaDesde_ValueChanged);
             btnAgregar.Click += new EventHandler(btn_Click);
+            btnBorrar.Click += new EventHandler(btn_Click);
             btnIngresar.Click += new EventHandler(btn_Click);
 
         }
@@ -80,45 +77,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             dias.Add("Sabado");
         }
 
-        private void cargarHorarios()
-        {
-            horarios.Clear();
-            //La fecha es cualquiera, solo se usa el tiempo
-            DateTime dt = new DateTime(2000, 11, 3, 7, 0, 0);
-            while (dt<= new DateTime(2000,11,3,20,0,0))
-            {
-                horarios.Add(dt.ToString("HH:mm"));
-                dt=dt.AddMinutes(30);
-            }
-        }
-/*
-        private void cargarGrilla()
-        {
-            DataGridViewComboBoxColumn dgDiaDesde = new DataGridViewComboBoxColumn();
-            dgDiaDesde.DataSource = dias;
-            dgDiaDesde.HeaderText = "Dia (Desde)";
-            dgDiaDesde.DataPropertyName = "Dia (Desde)";
-            dgRangoAtencion.Columns.AddRange(dgDiaDesde);
-
-            DataGridViewComboBoxColumn dgDiaHasta = new DataGridViewComboBoxColumn();
-            dgDiaHasta.DataSource = dias;
-            dgDiaHasta.HeaderText = "Dia (Hasta)";
-            dgDiaHasta.DataPropertyName = "Dia (Hasta)";
-            dgRangoAtencion.Columns.AddRange(dgDiaHasta);
-
-            DataGridViewComboBoxColumn dgHoraDesde = new DataGridViewComboBoxColumn();
-            dgHoraDesde.DataSource = horarios;
-            dgHoraDesde.HeaderText = "Hora (Desde)";
-            dgHoraDesde.DataPropertyName = "Hora (Desde)";
-            dgRangoAtencion.Columns.AddRange(dgHoraDesde);
-
-            DataGridViewComboBoxColumn dgHoraHasta = new DataGridViewComboBoxColumn();
-            dgHoraHasta.DataSource = horarios;
-            dgHoraHasta.HeaderText = "Hora (Hasta)";
-            dgHoraHasta.DataPropertyName = "Hora (Hasta)";
-            dgRangoAtencion.Columns.AddRange(dgHoraHasta);
-        }
-*/
         private void cargar(List<string> lista, ComboBox cmb)
         {
             foreach (string elemento in lista)
@@ -145,6 +103,19 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 diaDesde = (string)cmbDiaDesde.SelectedItem;
                 filtrarFechas(cmbDiaDesde, cmbDiaHasta, dias);
             }
+            if (cmbDiaHasta.SelectedItem != null && (string)cmbDiaHasta.SelectedItem != diaHasta)
+            {
+                warning2.Visible = false;
+                diaHasta = (string)cmbDiaHasta.SelectedItem;
+                cmbHorarioDesde.Text = "";
+                cmbHorarioHasta.Text = "";
+                cmbHorarioDesde.Items.Clear();
+                cmbHorarioHasta.Items.Clear();
+                DataTable rangos = buscarRangoAtencionClinica();
+                cargarHorarios(rangos);
+                cargar(horarios, cmbHorarioDesde);
+                cargar(horarios, cmbHorarioHasta);
+            }
             if (cmbHorarioDesde.SelectedItem != null && (string)cmbHorarioDesde.SelectedItem != horaDesde)
             {
                 warning2.Visible = false;
@@ -164,6 +135,33 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 }
             }
 
+        }
+
+        private DataTable buscarRangoAtencionClinica()
+        {
+            diaHasta =(string) cmbDiaHasta.SelectedItem;
+            int nroDiaHasta;
+            for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+            comando = "select * from NEXTGDD.obtenerRangoClinica(" + nroDiaHasta + ")";
+            List<String> campos = new List<string>();
+            campos.Add("hora_inicial");
+            campos.Add("hora_final");
+            return bdd.ObtenerListado(comando, campos);
+        }
+
+        private void cargarHorarios(DataTable rangos)
+        {
+            horarios.Clear();
+            foreach (DataRow fila in rangos.Rows)
+            {
+                //La fecha es cualquiera, solo se usa el tiempo
+                DateTime dt = DateTime.Parse("3/11/2000 " + fila[0]);
+                while (dt <= DateTime.Parse("3/11/2000 " + fila[1]))
+                {
+                    horarios.Add(dt.ToString("HH:mm"));
+                    dt = dt.AddMinutes(30);
+                }
+            }
         }
 
         private void filtrarFechas(ComboBox cmbDesde, ComboBox cmbHasta, List<string> lista)
@@ -197,7 +195,17 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 {
                     dgRangoAtencion.Rows.Add(cmbDiaDesde.SelectedIndex, nroDiaHasta, horaDesde, horaHasta);
                 }
-
+                cmbDiaDesde.Text = "";
+                cmbDiaHasta.Text = "";
+                cmbHorarioDesde.Text = "";
+                cmbHorarioHasta.Text = "";
+            }
+            if (((Button)sender).Text.Equals(btnBorrar.Text))
+            {
+                foreach (DataGridViewRow item in dgRangoAtencion.SelectedRows)
+                {
+                    dgRangoAtencion.Rows.RemoveAt(item.Index);
+                }
             }
             if (((Button)sender).Text.Equals(btnIngresar.Text))
             {
@@ -208,8 +216,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 fechaHasta = dpFechaHasta.Value.Date.ToString();
                 if (especialidad != "" && profesional != "" && dgRangoAtencion.Rows.Count!=0 && fechaDesde!="" && fechaHasta!="" && warning1.Visible == false && warning2.Visible == false &&warning3.Visible==false)
                 {
-                    //FALTA CREAR EL STORED PROCEDURE
-                    //Clases.BaseDeDatosSQL.ExecStoredProcedure2(comando, conexion);
                     comando = "EXECUTE NEXTGDD.registrarAgenda @nomProfesional='"+profesional+"', @nomEspecialidad='"+especialidad+"', @fechaD='"+convertirFecha(fechaDesde)+"', @fechaH='"+convertirFecha(fechaHasta)+"'";
                     bdd.ExecStoredProcedure2(comando);
 
@@ -294,24 +300,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 
         private void dgRangoAtencion_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            
-            /*
-            string a = "";
-            a = (string)dgRangoAtencion.CurrentCell.Value;
-            if (a != null)
-            {
-                Console.Write(a);
-            }
-            int nroColumna=dgRangoAtencion.CurrentCell.ColumnIndex;
-            int nroFila = dgRangoAtencion.CurrentCell.RowIndex;
-            if (nroColumna == 0)
-            {
-                DataGridViewComboBoxColumn dgDiaDesde = new DataGridViewComboBoxColumn();
-                dgRangoAtencion[nroFila, nroColumna + 1].;
-                dgRangoAtencion[nroFila, nroColumna + 1].DataSource = dias;
-            }
-             * */
-            //if(dgRangoAtencion.CurrentCell.Value)
         }
 
         private void btnAgregar_Click_1(object sender, EventArgs e)

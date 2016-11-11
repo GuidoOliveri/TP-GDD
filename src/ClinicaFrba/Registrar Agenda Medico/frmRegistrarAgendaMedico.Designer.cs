@@ -60,6 +60,7 @@
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning2 = new System.Windows.Forms.Label();
             this.cmdVolver = new System.Windows.Forms.Button();
+            this.btnBorrar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -69,6 +70,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnBorrar);
             this.groupBox1.Controls.Add(this.warning3);
             this.groupBox1.Controls.Add(this.warning1);
             this.groupBox1.Controls.Add(this.btnAgregar);
@@ -227,6 +229,7 @@
             // 
             this.dgRangoAtencion.AllowDrop = true;
             this.dgRangoAtencion.AllowUserToAddRows = false;
+            this.dgRangoAtencion.AllowUserToDeleteRows = false;
             this.dgRangoAtencion.AllowUserToResizeColumns = false;
             this.dgRangoAtencion.AllowUserToResizeRows = false;
             this.dgRangoAtencion.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -371,6 +374,15 @@
             this.cmdVolver.UseVisualStyleBackColor = true;
             this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
             // 
+            // btnBorrar
+            // 
+            this.btnBorrar.Location = new System.Drawing.Point(332, 196);
+            this.btnBorrar.Name = "btnBorrar";
+            this.btnBorrar.Size = new System.Drawing.Size(75, 23);
+            this.btnBorrar.TabIndex = 13;
+            this.btnBorrar.Text = "Borrar";
+            this.btnBorrar.UseVisualStyleBackColor = true;
+            // 
             // frmRegistrarAgendaMedico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -434,5 +446,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.Label warning3;
         private System.Windows.Forms.Button cmdVolver;
+        private System.Windows.Forms.Button btnBorrar;
     }
 }

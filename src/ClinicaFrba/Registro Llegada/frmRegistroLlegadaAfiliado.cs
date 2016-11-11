@@ -68,7 +68,7 @@ namespace ClinicaFrba.Registro_Llegada
                 cmbTurno.Items.Clear();
                 cmbTurno.Text = "";
                 /* FILTRA POR FECHA ACTUAL*/
-                comando = "select t.fecha as fecha from NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Profesional p,NEXTGDD.Persona pe where t.cod_agenda=a.cod_agenda and a.matricula=p.matricula and p.id_persona=pe.id_persona and (pe.nombre+' '+pe.apellido LIKE '" + profesional + "') and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())  group by t.fecha order by t.fecha ASC";
+                comando = "select t.fecha as fecha from NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Profesional p,NEXTGDD.Persona pe where t.cod_agenda=a.cod_agenda and a.matricula=p.matricula and p.id_persona=pe.id_persona and (pe.nombre+' '+pe.apellido LIKE '" + profesional + "') "+/*and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())*/"  group by t.fecha order by t.fecha ASC";
                 cargar(bdd.ObtenerLista(comando,"fecha"), cmbTurno);
             }
             if (cmbProfesional.SelectedItem != null && especialidad != "")
@@ -105,7 +105,9 @@ namespace ClinicaFrba.Registro_Llegada
                         cmbBono.Items.Clear();
                         cmbBono.Text = "";
                     }
-                    comando = "select b.nro_bono as bono from NEXTGDD.Turno t,NEXTGDD.Afiliado a,NEXTGDD.Bono_Consulta b,NEXTGDD.Agenda ag,NEXTGDD.Profesional pr,NEXTGDD.Persona p where (p.nombre+' '+p.apellido) LIKE '" + profesional + "' and pr.id_persona=p.id_persona and pr.matricula=ag.matricula and t.cod_agenda=ag.cod_agenda and t.fecha LIKE CONVERT(datetime,'" + convertirFecha(turno) + "',120) and t.nro_afiliado=a.nro_afiliado and b.nro_afiliado=a.nro_afiliado" /* and (select isnull(count(*),0) from NEXTGDD.Consulta c where c.nro_bono=b.nro_bono)=0*/+" order by b.nro_bono ASC";
+                    //Descomentar-> todos los bonos fueron usados,ver de usar los de consultas canceladas 
+                    //puede usar los de familiares
+                    comando = "select b.nro_bono as bono from NEXTGDD.Turno t,NEXTGDD.Afiliado a,NEXTGDD.Afiliado a2,NEXTGDD.Bono_Consulta b,NEXTGDD.Agenda ag,NEXTGDD.Profesional pr,NEXTGDD.Persona p where (p.nombre+' '+p.apellido) LIKE '" + profesional + "' and pr.id_persona=p.id_persona and pr.matricula=ag.matricula and t.cod_agenda=ag.cod_agenda and t.fecha LIKE CONVERT(datetime,'" + convertirFecha(turno) + "',120) and t.nro_afiliado=a.nro_afiliado and b.nro_afiliado=a2.nro_afiliado and a2.grupo_afiliado=a.grupo_afiliado and a.cod_plan=a2.cod_plan" /* and (select isnull(count(*),0) from NEXTGDD.Consulta c where c.nro_bono=b.nro_bono)=0*/+" order by b.nro_bono ASC";
                     cargar(bdd.ObtenerLista(comando, "bono"), cmbBono);
                     
                     txtFechaLlegada.Text = turno.Split(' ')[0];
