@@ -29,10 +29,12 @@ namespace ClinicaFrba.Listados
             this.bdd = bdd;
 
             warning.Visible = false;
+            cmbFiltro.Enabled = false;
 
             comando = "select distinct year(fecha) as anio from NEXTGDD.Turno;";
             cargarSemestres(bdd.ObtenerLista(comando, "anio"), cmbSemestre);
 
+            cmbListado.SelectedIndexChanged += OnSelectedIndexChanged;
             btnSeleccionar.Click += new EventHandler(btnSeleccionar_OnClick);
             btnLimpiar.Click += new EventHandler(btnLimpiar_OnClick);
             btnBorrar.Click += new EventHandler(btnBorrar_OnClick);
@@ -46,6 +48,41 @@ namespace ClinicaFrba.Listados
                 cmb.Items.Add("2ndo Semestre " + elemento);
             }
         }
+
+        private void OnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            cmbFiltro.Enabled = false;
+            cmbFiltro.Items.Clear();
+            cmbFiltro.Text = "";
+            if (cmbListado.SelectedIndex == 0)
+            {
+                cmbFiltro.Enabled = true;
+                cmbFiltro.Items.Add("Afiliado");
+                cmbFiltro.Items.Add("Profesional");
+                cmbFiltro.Items.Add("Ambos");
+            }
+            if (cmbListado.SelectedIndex == 1)
+            {
+                cmbFiltro.Enabled = true;
+                comando="select descripcion as 'plan' from NEXTGDD.Plan_Medico order by descripcion ASC";
+                cargar(bdd.ObtenerLista(comando,"plan"),cmbFiltro);
+            }
+            if (cmbListado.SelectedIndex == 2)
+            {
+                cmbFiltro.Enabled = true;
+                comando = "select descripcion as 'especialidad' from NEXTGDD.Especialidad order by descripcion ASC";
+                cargar(bdd.ObtenerLista(comando, "especialidad"), cmbFiltro);
+            }
+        }
+
+        private void cargar(List<string> lista, ComboBox cmb)
+        {
+            foreach (string elemento in lista)
+            {
+                cmb.Items.Add(elemento);
+            }
+        }
+
 
         private void btnSeleccionar_OnClick(object sender, EventArgs e)
         {

@@ -46,6 +46,8 @@
             this.listaDeAfiliadosBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.listaDeAfiliados = new ClinicaFrba.ListaDeAfiliados();
             this.cmdVolver = new System.Windows.Forms.Button();
+            this.cmbFiltro = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.pnlFiltroBusqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet)).BeginInit();
@@ -79,6 +81,8 @@
             // pnlFiltroBusqueda
             // 
             this.pnlFiltroBusqueda.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlFiltroBusqueda.Controls.Add(this.label2);
+            this.pnlFiltroBusqueda.Controls.Add(this.cmbFiltro);
             this.pnlFiltroBusqueda.Controls.Add(this.warning);
             this.pnlFiltroBusqueda.Controls.Add(this.label1);
             this.pnlFiltroBusqueda.Controls.Add(this.cmbSemestre);
@@ -114,7 +118,7 @@
             // cmbSemestre
             // 
             this.cmbSemestre.FormattingEnabled = true;
-            this.cmbSemestre.Location = new System.Drawing.Point(359, 48);
+            this.cmbSemestre.Location = new System.Drawing.Point(85, 48);
             this.cmbSemestre.Name = "cmbSemestre";
             this.cmbSemestre.Size = new System.Drawing.Size(168, 21);
             this.cmbSemestre.TabIndex = 9;
@@ -210,6 +214,23 @@
             this.cmdVolver.UseVisualStyleBackColor = true;
             this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
             // 
+            // cmbFiltro
+            // 
+            this.cmbFiltro.FormattingEnabled = true;
+            this.cmbFiltro.Location = new System.Drawing.Point(359, 48);
+            this.cmbFiltro.Name = "cmbFiltro";
+            this.cmbFiltro.Size = new System.Drawing.Size(168, 21);
+            this.cmbFiltro.TabIndex = 11;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(293, 51);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Filtrar por:";
+            // 
             // frmListado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -257,5 +278,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbSemestre;
         private System.Windows.Forms.Label warning;
+        private System.Windows.Forms.ComboBox cmbFiltro;
+        private System.Windows.Forms.Label label2;
     }
 }
