@@ -9,7 +9,7 @@ BEGIN
 END
 
 GO
-select * from NEXTGDD.Afiliado
+
 /******** VALIDACION DE TABLAS ********/
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Rango_Atencion_Clinica'))
