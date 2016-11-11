@@ -17,6 +17,7 @@ namespace ClinicaFrba.Listados
         private string comando = "";
         private string semestre = "";
         private string listado = "";
+        private string filtro = "";
         private Clases.BaseDeDatosSQL bdd;
         private List<String> años = new List<string>();
 
@@ -89,70 +90,71 @@ namespace ClinicaFrba.Listados
             warning.Visible = false;
             semestre = (string)cmbSemestre.SelectedItem;
             listado = (string)cmbListado.SelectedItem;
-            if (semestre != null && listado != null)
+            filtro = "";
+            if (cmbFiltro.Enabled == true)
+            {
+                filtro = (string)cmbFiltro.SelectedItem;
+            }
+            if (semestre != null && listado != null && filtro!=null)
             {
                 string[] parametros = semestre.Split(' ');
+                List<string> campos = new List<string>();
+                DataTable dt = new DataTable();
 
                 if (cmbListado.SelectedIndex == 0)
                 {
-                    comando = "select * from NEXTGDD.listado1(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
-                    List<string> campos = new List<string>();
                     campos.Add("Especialidad");
                     campos.Add("Cantidad cancelaciones");
-                    DataTable dt = bdd.ObtenerListado(comando, campos);
-                    dgListado.AutoGenerateColumns = true;
-                    dgListado.DataSource = dt;
+                    comando = evaluarListado(filtro,parametros,campos);
+                    
                 }
-                /*
                 if (cmbListado.SelectedIndex == 1)
                 {
-                    comando = "select * from NEXTGDD.listado2(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
-                    List<string> campos = new List<string>();
-                    campos.Add("Plan");
+                    comando = "select * from NEXTGDD.listado2(" + parametros[2] + "," + parsearSemestre(parametros) + ",'"+filtro+"')";
                     campos.Add("Profesional");
                     campos.Add("Especialidad");
-                    DataTable dt = bdd.ObtenerListado(comando, campos);
-                    dgListado.AutoGenerateColumns = true;
-                    dgListado.DataSource = dt;
+                    campos.Add("Veces consultado");
                 }
-                 */
                 if (cmbListado.SelectedIndex == 2)
                 {
-                    comando = "select * from NEXTGDD.listado3(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
-                    List<string> campos = new List<string>();
+                    comando = "select * from NEXTGDD.listado3(" + parametros[2] + "," + parsearSemestre(parametros) + ",'"+filtro+"')";
                     campos.Add("Profesional");
                     campos.Add("Horas Trabajadas");
-                    DataTable dt = bdd.ObtenerListado(comando, campos);
-                    dgListado.AutoGenerateColumns = true;
-                    dgListado.DataSource = dt;
                 }
                 if (cmbListado.SelectedIndex == 3)
                 {
                     comando = "select * from NEXTGDD.listado4(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
-                    List<string> campos = new List<string>();
                     campos.Add("Nombre Afiliado");
-                    campos.Add("Cantidad de Bonos Comprados");
-                    DataTable dt = bdd.ObtenerListado(comando, campos);
-                    dgListado.AutoGenerateColumns = true;
-                    dgListado.DataSource = dt;
+                    campos.Add("Bonos Comprados");
+                    campos.Add("Pertenece a Grupo Familiar");
                 }
                 if (cmbListado.SelectedIndex == 4)
                 {
                     comando = "select * from NEXTGDD.listado5(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
-                    List<string> campos = new List<string>();
                     campos.Add("Especialidad");
                     campos.Add("Cantidad de Bonos");
-                    DataTable dt = bdd.ObtenerListado(comando, campos);
-                    dgListado.AutoGenerateColumns = true;
-                    dgListado.DataSource = dt;
                 }
-
+                dt = bdd.ObtenerListado(comando, campos);
+                dgListado.AutoGenerateColumns = true;
+                dgListado.DataSource = dt;
             }
             else
             {
                 warning.Visible = true;
             }
 
+        }
+
+        private string evaluarListado(string filtro,String[] parametros,List<String> campos)
+        {
+            if (filtro == "Ambos")
+            {
+                return "select * from NEXTGDD.listado1Ambos(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
+            }
+            else
+            {
+                return "select * from NEXTGDD.listado1(" + parametros[2] + "," + parsearSemestre(parametros) + ",'" + filtro + "')";
+            }
         }
 
         private string parsearSemestre(string[] parametros)

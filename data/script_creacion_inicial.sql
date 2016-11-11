@@ -443,6 +443,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.lista
     DROP FUNCTION NEXTGDD.listado1
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado1Ambos'))
+    DROP FUNCTION NEXTGDD.listado1Ambos
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado2'))
     DROP FUNCTION NEXTGDD.listado2
 GO
@@ -1034,51 +1038,54 @@ GO
 
 /***************LISTADOS******************/
 
-CREATE FUNCTION NEXTGDD.listado1(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+CREATE FUNCTION NEXTGDD.listado1(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0),@tipoCanc varchar(255))
 RETURNS TABLE
 AS
 	RETURN
-		select top 5 e.descripcion as 'Especialidad', count(e.cod_especialidad) 'Cantidad cancelaciones'
+		select top 5 e.descripcion as 'Especialidad', count(*) 'Cantidad cancelaciones'
+		from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Cancelacion c,NEXTGDD.Agenda a,NEXTGDD.Tipo_cancelacion tc
+		where c.cod_cancelacion=t.cod_cancelacion and tc.nombre=@tipoCanc and tc.tipo_cancelacion=c.tipo_cancelacion
+			  and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
+			  and year(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+		group by e.descripcion
+		order by count(*) DESC
+GO
+
+/*tipoCanc: Afiliado/Profesional */
+
+CREATE FUNCTION NEXTGDD.listado1Ambos(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+RETURNS TABLE
+AS
+	RETURN
+		select top 5 e.descripcion as 'Especialidad', count(*) 'Cantidad cancelaciones'
 		from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Cancelacion c,NEXTGDD.Agenda a
 		where c.cod_cancelacion=t.cod_cancelacion and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
-				and year(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
-		group by e.cod_especialidad,e.descripcion
-		order by count(e.cod_especialidad) DESC
+			  and year(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+		group by e.descripcion
+		order by count(*) DESC
 GO
 
 /*
 DROP FUNCTION NEXTGDD.listado1
 GO
+
+DROP FUNCTION NEXTGDD.listado1Ambos
+GO
 */
 
-CREATE FUNCTION NEXTGDD.listado2(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+CREATE FUNCTION NEXTGDD.listado2(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0),@plan varchar(255))
 RETURNS TABLE
 AS
 	RETURN
-		select distinct p.descripcion as 'Plan',pe.nombre+' '+pe.apellido as 'Profesional',e.descripcion 'Especialidad'
-		from NEXTGDD.Plan_Medico p,NEXTGDD.Consulta c,NEXTGDD.Turno t,NEXTGDD.Afiliado a,NEXTGDD.Agenda ag,NEXTGDD.Profesional pr,
-			NEXTGDD.Persona pe,NEXTGDD.Especialidad e
-		where c.nro_turno=t.nro_turno and t.nro_afiliado=a.nro_afiliado and p.cod_plan=a.cod_plan and
-				t.cod_agenda=ag.cod_agenda and ag.matricula=pr.matricula and ag.cod_especialidad=e.cod_especialidad
-				and pr.id_persona=pe.id_persona and YEAR(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
-		group by p.descripcion,p.cod_plan,pe.id_persona,pe.nombre,pe.apellido,e.cod_especialidad,e.descripcion
-		having pe.id_persona in 
-				(select top 5 pr.id_persona 
-				from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Afiliado af
-				where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
-					and a.cod_especialidad=e.cod_especialidad and af.nro_afiliado=t.nro_afiliado
-					and af.cod_plan=p.cod_plan and 
-					YEAR(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
-				group by pr.matricula,e.cod_especialidad,pr.id_persona
-				order by count(pr.matricula) DESC) and
-				e.cod_especialidad in
-				(select top 5 e.cod_especialidad
-				from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Afiliado af
-				where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
-					and a.cod_especialidad=e.cod_especialidad and af.nro_afiliado=t.nro_afiliado
-					and af.cod_plan=p.cod_plan and YEAR(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
-				group by pr.id_persona,pr.matricula,e.cod_especialidad
-				order by count(pr.matricula) DESC)
+		select top 5 (p.nombre+' '+p.apellido) as 'Profesional',e.descripcion as 'Especialidad',count(*) as 'Veces consultado'
+		from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Especialidad e,
+		     NEXTGDD.Afiliado af,NEXTGDD.Plan_Medico pl,NEXTGDD.Persona p
+		where c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula 
+		   	  and a.cod_especialidad=e.cod_especialidad and af.nro_afiliado=t.nro_afiliado
+			  and af.cod_plan=pl.cod_plan and pl.descripcion=@plan and p.id_persona=pr.id_persona and
+			  YEAR(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+		group by e.descripcion,p.nombre,p.apellido,pr.id_persona
+		order by count(*) DESC
 GO
 
 /*
@@ -1086,19 +1093,20 @@ DROP FUNCTION NEXTGDD.listado2
 GO
 */
 
-CREATE FUNCTION NEXTGDD.listado3(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+CREATE FUNCTION NEXTGDD.listado3(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0),@espec varchar(255))
 RETURNS TABLE
 AS
 	RETURN
-		select top 5 (p.nombre+' '+p.apellido) as 'Profesional',
-				sum(((r.dia_semanal_final-r.dia_semanal_inicial+1)*(DATEDIFF(MINUTE,r.hora_inicial,r.hora_final)))/60) as 'Horas trabajadas'
-		from NEXTGDD.Profesional pr,NEXTGDD.Agenda a,NEXTGDD.Rango_Atencion r,NEXTGDD.Persona p,NEXTGDD.Turno t
-		where pr.id_persona=p.id_persona and pr.matricula=a.matricula and a.cod_agenda=r.cod_agenda and t.cod_agenda=a.cod_agenda
-				and YEAR(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
+		select top 5 (p.nombre+' '+p.apellido) as 'Profesional',(isnull(count(*),0)*30)/60 as 'Horas trabajadas'
+		from NEXTGDD.Profesional pr,NEXTGDD.Agenda a,NEXTGDD.Persona p,NEXTGDD.Turno t,NEXTGDD.Especialidad e,NEXTGDD.Consulta c
+		where pr.id_persona=p.id_persona and pr.matricula=a.matricula and a.cod_especialidad=e.cod_especialidad
+			  and e.descripcion=@espec and t.cod_agenda=a.cod_agenda and c.nro_turno=t.nro_turno
+			  and YEAR(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
 		group by p.nombre,p.apellido,pr.matricula
 		order by 2 ASC;
 GO
 
+/*evalua segun la cantidad de consultas, no el rango horario*/
 /*
 DROP FUNCTION NEXTGDD.listado3
 GO
@@ -1108,10 +1116,16 @@ CREATE FUNCTION NEXTGDD.listado4(@anio numeric(18,0),@mesInicio numeric(18,0),@m
 RETURNS TABLE
 AS
 	RETURN
-		select top 5 (p.nombre+' '+p.apellido) as 'Nombre Afiliado',count(a.nro_afiliado) as 'Cantidad de Bonos Comprados'
-		from NEXTGDD.Afiliado a,NEXTGDD.Compra_Bono c,NEXTGDD.Persona p
-		where c.id_afiliado=a.nro_afiliado and a.id_persona=p.id_persona 
-		group by p.nombre,p.apellido,a.nro_afiliado
+		select top 5 (p.nombre+' '+p.apellido) as 'Nombre Afiliado',count(*) as 'Bonos Comprados',
+					 (CASE WHEN(select isnull(count(*),0) from NEXTGDD.Afiliado a2
+								where a2.grupo_afiliado=a.grupo_afiliado and a2.nro_afiliado<>a.nro_afiliado)=0
+						   THEN 'No'
+						   ELSE 'Si'
+						   END) as 'Pertenece a Grupo Familiar'
+		from NEXTGDD.Afiliado a,NEXTGDD.Persona p,NEXTGDD.Bono_Consulta bc
+		where a.id_persona=p.id_persona and bc.nro_afiliado=a.nro_afiliado 
+			  and year(bc.compra_fecha)=@anio and month(bc.compra_fecha)>=@mesInicio and month(bc.compra_fecha)<=@mesFin
+		group by p.nombre,p.apellido,a.nro_afiliado,a.grupo_afiliado
 		order by 2 DESC; 
 GO
 
