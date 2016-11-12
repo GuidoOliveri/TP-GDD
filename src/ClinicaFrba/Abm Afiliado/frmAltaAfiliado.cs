@@ -49,7 +49,7 @@ namespace ClinicaFrba.Abm_Afiliado
             comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
             cargar(bdd.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
 
-            btnRegistrar.Click += new EventHandler(btnRegistrar_Click);
+           // btnRegistrar.Click += new EventHandler(btnRegistrar_Click);
         }
 
         private void cargar(List<string> lista, ComboBox cmb)
@@ -74,7 +74,7 @@ namespace ClinicaFrba.Abm_Afiliado
             txtMail.Clear();
             txtNroDoc.Clear();
             txtTel.Clear();
-
+            txtDir.Clear();
             // limpio combo box
             cmbEstadoCivil.SelectedIndex = -1;
             cmbTipoDoc.SelectedIndex = -1;
@@ -102,9 +102,9 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
 
-            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtTel.Text) || String.IsNullOrEmpty(txtNroDoc.Text))
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || String.IsNullOrEmpty(txtNroDoc.Text) || String.IsNullOrEmpty(txtDir.Text) || String.IsNullOrEmpty(txtCantFam.Text) || (cmbEstadoCivil.Items.Count <= 0) ||  (cmbTipoDoc.Items.Count <= 0) ||( cmbPlanMedico.Items.Count <= 0) ||( ( optMasculino.Checked = false) &&  (optFemenino.Checked = false) ))
             {
-                MessageBox.Show("Por favor, Ingrese datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, Ingrese datos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cargarTodoLimpio();
             }
             else{
@@ -140,8 +140,8 @@ namespace ClinicaFrba.Abm_Afiliado
                     conn.Open();
                     SqlCommand command = new SqlCommand("NEXTGDD.agregarAfiliadoPrincipal", conn);
                     command.CommandType = CommandType.StoredProcedure;
-                    int estadoCivil2 = 1;
-                    int plan2 = 555555;
+                    //int estadoCivil2 = 1;
+                    //int plan2 = 555555;
 
                     SqlParameter parNombre = new SqlParameter("@nombre", nombre );                
                     SqlParameter parApellido = new SqlParameter("@apellido", apellido);
@@ -153,10 +153,10 @@ namespace ClinicaFrba.Abm_Afiliado
                     parNroDoc.SqlDbType = SqlDbType.Decimal;
             SqlParameter parDomicilio = new SqlParameter("@domicilio", direccion);
                     SqlParameter parTel = new SqlParameter("@telefono", telefono);
-                    SqlParameter parEstadoCivil = new SqlParameter("@estado_civil", estadoCivil2 );
+                    SqlParameter parEstadoCivil = new SqlParameter("@estado_civil", estadoCivil);
                     SqlParameter parMail = new SqlParameter("@mail", mail);
                     SqlParameter parCantFam = new SqlParameter("@cant_familiares",cantFam);
-                    SqlParameter parCodMedico = new SqlParameter("@cod_medico",plan2);
+                    SqlParameter parCodMedico = new SqlParameter("@cod_medico",plan);
                     SqlParameter parRet = new SqlParameter("@ret", retorno);
 
                     parRet.Direction = ParameterDirection.Output;

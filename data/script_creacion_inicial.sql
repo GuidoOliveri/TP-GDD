@@ -864,26 +864,31 @@ GO
 
 
 CREATE PROCEDURE NEXTGDD.agregarAfiliadoPrincipal(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
-                                               @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
-                                               @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico numeric(18,0), @ret numeric(20,0) output)
+                                               @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil varchar(255),
+                                               @mail varchar(255), @cant_familiares numeric(18,0), @cod_medico  varchar(255), @ret numeric(20,0) output)
 AS BEGIN
 
 DECLARE @pers numeric (18,0)
 DECLARE @nro_afiliado numeric (20,0) 
 DECLARE @usr VARCHAR(255)
 DECLARE @TransactionName varchar (20)= 'Transaccion1'
+DECLARE @plan_medico numeric (18,0)
+DECLARE @est_civ tinyint
+
+SET @plan_medico= (Select cod_plan FROM NEXTGDD.Plan_Medico WHERE descripcion=  @cod_medico )
+SET @est_civ= (Select id FROM NEXTGDD.Estado_Civil WHERE nombre= @estado_civil )
 
  BEGIN TRY
 	BEGIN TRANSACTION @TransactionName
 			
-		INSERT INTO NEXTGDD.Persona (nombre, apellido, nro_documento, fecha_nac, domicilio , telefono, mail, tipo_doc, sexo)
-	                         VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo)
+		INSERT INTO NEXTGDD.Persona (nombre, apellido, nro_documento, fecha_nac, domicilio , telefono, mail, tipo_doc, sexo,estado_civil)
+	                         VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo, @est_civ )
 
 SET @pers = SCOPE_IDENTITY()
 SET @nro_afiliado =  cast (@pers as varchar)+ '01'
 
 		 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	                VALUES ( @nro_afiliado, @cant_familiares , @cod_medico, 0 , 1, null, @pers, @pers, 01 ) 
+	                VALUES ( @nro_afiliado, @cant_familiares , @plan_medico, 0 , 1, null, @pers, @pers, 01 ) 
 	
      SET @usr = CONVERT(VARCHAR(255),@nrodocumento)
 	 DECLARE @pass varchar (100)
@@ -894,7 +899,6 @@ SET @nro_afiliado =  cast (@pers as varchar)+ '01'
      	INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos)
 		VALUES (@usr, HASHBYTES('SHA2_256', @pass), 1, 0)
 
-
 		INSERT INTO NEXTGDD.Usuario_X_Rol(id_rol, username)
 		VALUES (2, @usr)
 
@@ -903,7 +907,7 @@ SET @nro_afiliado =  cast (@pers as varchar)+ '01'
 	  COMMIT TRANSACTION @TransactionName
 
  END TRY
-  
+ 
       BEGIN CATCH
          -- No hago nada si hubo un error ( duplicado)
       SET @ret= -1
