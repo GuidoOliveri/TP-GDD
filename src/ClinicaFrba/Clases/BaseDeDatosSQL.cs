@@ -220,7 +220,7 @@ namespace ClinicaFrba.Clases
             }
         }
 
-        public DataTable ObtenerListado(string queryString, List<string> campos)
+        public DataTable ObtenerTabla(string queryString, List<string> campos)
         {
             DataTable dt = new DataTable();
             foreach (string campo in campos)

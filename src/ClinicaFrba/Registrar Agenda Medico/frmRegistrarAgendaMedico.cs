@@ -94,8 +94,8 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 cmbEspecialidad.Items.Clear();
                 cmbEspecialidad.Text = "";
                 profesional = (string) cmbProfesional.SelectedItem;
-                comando = "select e.descripcion as descripcion from NEXTGDD.Persona persona,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e where (persona.nombre+' '+persona.apellido) LIKE '"+profesional+"' and persona.id_persona=p.id_persona and pe.matricula=p.matricula and e.cod_especialidad=pe.cod_especialidad order by e.descripcion ASC;";
-                cargar(bdd.ObtenerLista(comando, "descripcion"), cmbEspecialidad);
+                comando = "select * from NEXTGDD.buscarEspecialidades('"+profesional+"') order by especialidad ASC";
+                cargar(bdd.ObtenerLista(comando, "especialidad"), cmbEspecialidad);
             }
             if (cmbDiaDesde.SelectedItem != null && (string)cmbDiaDesde.SelectedItem!=diaDesde)
             {
@@ -125,8 +125,8 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             if (cmbEspecialidad.SelectedItem != null && (string)cmbEspecialidad.SelectedItem != especialidad)
             {
                 especialidad = (string)cmbEspecialidad.SelectedItem;
-                comando = "select isnull(count(*),0) from NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e where p.nombre+' '+p.apellido LIKE '" + profesional + "' and p.id_persona=pr.id_persona and a.matricula=pr.matricula and a.cod_especialidad=e.cod_especialidad and e.descripcion LIKE '" + especialidad + "'";
-                if (bdd.validarCampo(comando))
+                comando = "select NEXTGDD.validarAgendaUnica('"+especialidad+"','"+profesional+"')";
+                if (bdd.buscarCampo(comando) == "No existe una agenda")
                 {
                     warning3.Visible = false;
                 }
@@ -146,7 +146,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             List<String> campos = new List<string>();
             campos.Add("hora_inicial");
             campos.Add("hora_final");
-            return bdd.ObtenerListado(comando, campos);
+            return bdd.ObtenerTabla(comando, campos);
         }
 
         private void cargarHorarios(DataTable rangos)
@@ -229,6 +229,8 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                         bdd.ExecStoredProcedure2(comando);
                         nroRango++;
                     }
+
+                    MessageBox.Show("La agenda se ha registrado correctamente." , "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(rol,usuario,bdd);
                     NewForm.Show();

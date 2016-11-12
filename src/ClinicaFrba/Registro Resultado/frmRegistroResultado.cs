@@ -42,11 +42,8 @@ namespace ClinicaFrba.Registro_Resultado
             cmbAfiliado.Enabled = false;
 
             //Habria que filtrar por fecha actual
-            comando = "select t.fecha as consulta from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Turno t,NEXTGDD.Agenda a where pr.id_persona LIKE '"+id_persona+"' and pr.matricula=a.matricula and c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda";
+            comando = "select * from NEXTGDD.buscarConsultasAtendidas('"+id_persona+"') order by consulta ASC";
             cargar(bdd.ObtenerLista(comando,"consulta"),cmbConsulta);
-
-            comando = "select p.nombre+' '+p.apellido as nombre from NEXTGDD.Afiliado a,NEXTGDD.Persona p,NEXTGDD.Profesional pr,NEXTGDD.Turno t,NEXTGDD.Agenda ag where p.id_persona=a.id_persona and t.nro_afiliado=a.nro_afiliado and t.cod_agenda=ag.cod_agenda and pr.matricula=ag.matricula and pr.id_persona LIKE '"+id_persona+"' group by p.nombre,p.apellido order by p.nombre ASC";
-            cargar(bdd.ObtenerLista(comando, "nombre"), cmbAfiliado);
 
             comando = "select sintoma from NEXTGDD.Sintoma ";
             cargar (bdd.ObtenerLista(comando,"sintoma"),cmbSintoma);
@@ -74,15 +71,18 @@ namespace ClinicaFrba.Registro_Resultado
             if (cmbAfiliado.Enabled == false)
             {
                 cmbAfiliado.Enabled = true;
+                comando = "select * from NEXTGDD.buscarAfiliadosAtendidos('" + id_persona + "') order by nombre ASC";
+                cargar(bdd.ObtenerLista(comando, "nombre"), cmbAfiliado);
             }
             else
             {
                 cmbConsulta.Items.Clear();
                 cmbConsulta.Text = "";
-                //Filtra las consultas
-                comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Afiliado a,NEXTGDD.Persona p,NEXTGDD.Profesional pr,NEXTGDD.Turno t,NEXTGDD.Agenda ag where p.id_persona=a.id_persona and t.nro_afiliado=a.nro_afiliado and t.cod_agenda=ag.cod_agenda and pr.matricula=ag.matricula and pr.id_persona LIKE '" + id_persona + "' group by p.nombre,p.apellido order by p.nombre ASC";
-                cargar(bdd.ObtenerLista(comando, "nombre"), cmbConsulta);
-                cmbConsulta.Enabled = false;
+                comando = "select * from NEXTGDD.buscarConsultasAtendidas('" + id_persona + "') order by consulta ASC";
+                cargar(bdd.ObtenerLista(comando, "consulta"), cmbConsulta);
+                cmbAfiliado.Text = "";
+                cmbAfiliado.Items.Clear();
+                cmbAfiliado.Enabled = false;
             }
 
         }
@@ -94,7 +94,8 @@ namespace ClinicaFrba.Registro_Resultado
                 afiliado = (string)cmbAfiliado.SelectedItem;
                 cmbConsulta.Items.Clear();
                 cmbConsulta.Text = "";
-                comando = "select t.fecha as consulta from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Turno t,NEXTGDD.Agenda a,NEXTGDD.Afiliado af,NEXTGDD.Persona p where pr.id_persona LIKE '"+id_persona+"' and pr.matricula=a.matricula and c.nro_turno=t.nro_turno and t.cod_agenda=a.cod_agenda and t.nro_afiliado=af.nro_afiliado and af.id_persona=p.id_persona and (p.nombre+' '+p.apellido) LIKE '"+afiliado+"' group by t.fecha order by t.fecha ASC";
+                //Filtra las consultas
+                comando = "select * from NEXTGDD.filtrarConsultasPorAfiliado('"+id_persona+"','"+afiliado+"') order by consulta ASC";
                 cargar(bdd.ObtenerLista(comando, "consulta"), cmbConsulta);
             }
             if (cmbConsulta.SelectedItem != null && (string)cmbConsulta.SelectedItem != consulta)
@@ -119,6 +120,8 @@ namespace ClinicaFrba.Registro_Resultado
             {
                 comando = "EXECUTE NEXTGDD.registrarDiagnostico @medico='" + id_persona + "',@fechaConsulta='" + convertirFecha(consulta) + "', @fechaAtencion='" + convertirFecha(fecha+' '+hora) + "', @enfermedad='" + enfermedad + "',@sintoma='"+sintoma+"',@descripcion='"+descripcion+"'";
                 bdd.ExecStoredProcedure2(comando);
+
+                MessageBox.Show("El diagnóstico se ingreso correctamente.", "Diagnostico", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 frmRegistroResultado NewForm = new frmRegistroResultado(rol,usuario,bdd);
                 NewForm.Show();
