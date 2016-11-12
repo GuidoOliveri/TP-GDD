@@ -890,17 +890,17 @@ SET @nro_afiliado =  cast (@pers as varchar)+ '01'
 		 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
 	                VALUES ( @nro_afiliado, @cant_familiares , @plan_medico, 0 , 1, null, @pers, @pers, 01 ) 
 	
-     SET @usr = CONVERT(VARCHAR(255),@nrodocumento)
+     SET @usr = CONVERT(VARCHAR(255),@nro_afiliado)
 	 DECLARE @pass varchar (100)
-	 SET @pass = CONVERT(VARCHAR(100),@nro_afiliado)
+	 SET @pass = @usr
 
 --utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
 
      	INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos)
-		VALUES (@usr, HASHBYTES('SHA2_256', @pass), 1, 0)
+		VALUES (@usr+'@NEXTGDD', HASHBYTES('SHA2_256', @pass), 1, 0)
 
 		INSERT INTO NEXTGDD.Usuario_X_Rol(id_rol, username)
-		VALUES (2, @usr)
+		VALUES (2, @usr+'@NEXTGDD')
 
 	  SET @ret= @nro_afiliado
      
@@ -919,8 +919,8 @@ GO
 
 
 CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
-                                               @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil numeric(18,0),
-                                               @mail varchar(255), @cant_familiares numeric(18,0),@nro_afiliado_princ numeric(18,0), 
+                                               @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil varchar(255),
+                                               @mail varchar(255), @cant_familiares numeric(18,0),@nro_afiliado_princ numeric(20,0), 
 											   @nro_afiliado_integrante numeric(2,0),@ret numeric(20,0) output)
 AS BEGIN
 
@@ -931,12 +931,17 @@ DECLARE @nro_afiliado numeric (20,0)
 DECLARE @usr VARCHAR(255)
 DECLARE @grupo_afiliado numeric (18,0)
 DECLARE @pass varchar (100)
-DECLARE @TransactionName varchar (50)= 'Transaccion1'
+DECLARE @TransactionName1 varchar (50)= 'Transaccion1'
+DECLARE @est_civ tinyint
+
+
  BEGIN TRY
-	BEGIN TRANSACTION
+	BEGIN TRANSACTION @TransactionName1
 			
-		INSERT INTO NEXTGDD.Persona (nombre, apellido, nro_documento, fecha_nac, domicilio , telefono, mail, tipo_doc, sexo)
-	                         VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo)
+     SET @est_civ= (Select id FROM NEXTGDD.Estado_Civil WHERE nombre= @estado_civil )
+
+	 INSERT INTO NEXTGDD.Persona (nombre, apellido, nro_documento, fecha_nac, domicilio , telefono, mail, tipo_doc, sexo, estado_civil)
+	                 VALUES (@nombre, @apellido, @nrodocumento, @fecha_nac, @domicilio, @telefono,@mail, @tipo_doc, @sexo, @est_civ)
 
 
 SET @pers = SCOPE_IDENTITY()
@@ -984,20 +989,20 @@ SELECT @grupo_afiliado = grupo_afiliado, @cod_plan= cod_plan  FROM NEXTGDD.Afili
 			       END
 
 		   END	
-  SET @usr = CONVERT(VARCHAR(255),@nrodocumento)
-  SET @pass = CONVERT(VARCHAR(255),@nro_afiliado)
+  SET @usr = CONVERT(VARCHAR(255),@nro_afiliado)
+  SET @pass = @usr
 --utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
 
   INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos)
-  VALUES (@usr, HASHBYTES('SHA2_256', @pass), 1, 0)
+  VALUES (@usr+'@NEXTGDD', HASHBYTES('SHA2_256', @pass), 1, 0)
 
 
   INSERT INTO NEXTGDD.Usuario_X_Rol(id_rol, username)
-  VALUES (2, @usr)
+  VALUES (2, @usr+'@NEXTGDD')
 
   SET @ret= @nro_afiliado
      
-  COMMIT TRANSACTION @TransactionName
+  COMMIT TRANSACTION @TransactionName1
                 	    
  END TRY
   
@@ -1005,7 +1010,7 @@ SELECT @grupo_afiliado = grupo_afiliado, @cod_plan= cod_plan  FROM NEXTGDD.Afili
          -- No hago nada si hubo un error ( duplicado)
       SET @ret= -1
      		 
-      ROLLBACK TRANSACTION @TransactionName
+      ROLLBACK TRANSACTION @TransactionName1
       END CATCH
 END
 GO

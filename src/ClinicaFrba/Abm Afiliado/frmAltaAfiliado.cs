@@ -37,6 +37,7 @@ namespace ClinicaFrba.Abm_Afiliado
         int cantFam ;
         Int64 retorno ;
 
+        DateTime fechaF;
 
         public frmAltaAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
@@ -142,7 +143,10 @@ namespace ClinicaFrba.Abm_Afiliado
                     command.CommandType = CommandType.StoredProcedure;
                     //int estadoCivil2 = 1;
                     //int plan2 = 555555;
-
+                  //  DateTime fechaF = DateTime.Parse(dtpFecNac.Text.ToString());              //Convert.ToDateTime(SqlDbType.Date).Date;
+            //        DateTime fechaF = Convert.ToDateTime(dtpFecNac.Value).Date;   
+          //      DateTime.Parse(dtpFechaNacimiento.Text.ToString())
+                //Fecha.ToShortDateString();
                     SqlParameter parNombre = new SqlParameter("@nombre", nombre );                
                     SqlParameter parApellido = new SqlParameter("@apellido", apellido);
                     SqlParameter parFecNac = new SqlParameter("@fecha_nac", SqlDbType.Date);
@@ -151,7 +155,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     SqlParameter parNroDoc = new SqlParameter("@nrodocumento", nroDoc);
                     parNroDoc.Direction = ParameterDirection.Input;
                     parNroDoc.SqlDbType = SqlDbType.Decimal;
-            SqlParameter parDomicilio = new SqlParameter("@domicilio", direccion);
+                    SqlParameter parDomicilio = new SqlParameter("@domicilio", direccion);
                     SqlParameter parTel = new SqlParameter("@telefono", telefono);
                     SqlParameter parEstadoCivil = new SqlParameter("@estado_civil", estadoCivil);
                     SqlParameter parMail = new SqlParameter("@mail", mail);
@@ -187,14 +191,14 @@ namespace ClinicaFrba.Abm_Afiliado
                     if (resu.Equals(-1))
                     {
                         cargarTodoLimpio();
-                        MessageBox.Show("No se pudo registrar su afiliado, hubo un problema", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Lo sentimos, no podemos procesar tu solicitud. Inténtalo de nuevo más tarde.", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         cargarTodoLimpio();
                     }
                     else 
                     {
                         nroAfiliado = resu;
-                        
-                        MessageBox.Show("Registrado exitosamente! Tu nro de afiliado es \n" + nroAfiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        MessageBox.Show("Registrado exitosamente!\nTu nro de afiliado es:  " + nroAfiliado+"\nNombre de usuario:  " + nroAfiliado +"@NEXTGDD"+  "\nContraseña:  " + nroAfiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         cargarTodoLimpio();
                     }
                   
@@ -252,26 +256,62 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void cmdAsociarAfiliado_Click(object sender, EventArgs e)
         {
-            if (plan == null)
-            {
-                frmAsociarAfiliado asocio = new frmAsociarAfiliado(rol,usuario,bdd);
-                this.Hide();
-                asocio.Show();
-            }
-            else
-            {
-                MessageBox.Show("El afiliado que se asocie ya tiene un grupo familiar asignado", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); 
-            }
-            /*if ()
-            {
-                MessageBox.Show("bien", "Mail", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-            else
-            {
-                MessageBox.Show("mail", "Mail", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }*/
 
+
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || String.IsNullOrEmpty(txtNroDoc.Text) || String.IsNullOrEmpty(txtDir.Text) || String.IsNullOrEmpty(txtCantFam.Text) || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || (cmbPlanMedico.Items.Count <= 0) || ((optMasculino.Checked = false) && (optFemenino.Checked = false)))
+            {
+                MessageBox.Show("Por favor, Ingrese datos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cargarTodoLimpio();
+            }
+            else
+            {
+                nroAfiliado = 0;
+                fechaF = dtpFecNac.Value;      
+                nombre = txtNombre.Text;
+                apellido = txtApellido.Text;
+                tipoDoc = (string)cmbTipoDoc.SelectedItem;
+                nroDoc = Convert.ToInt64(txtNroDoc.Text);
+                direccion = txtDir.Text;
+                telefono = Convert.ToInt32(txtTel.Text);
+                estadoCivil = (string)cmbEstadoCivil.SelectedItem;
+                mail = txtMail.Text;
+                cantFam = Convert.ToInt32(txtCantFam.Text);
+                plan = (string)cmbPlanMedico.SelectedItem;
+                retorno = 0;
+
+                if (optMasculino.Checked == true)
+                {
+                    opcionSexo = 'H';
+                }
+                else
+                {
+                    opcionSexo = 'M';
+                }
+
+
+                if (plan != null)
+                {
+                    MessageBox.Show("El afiliado tendra el plan medico del grupo familiar al que se asocie", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                 
+                }
+               
+
+                    frmAsociarAfiliado asocio = new frmAsociarAfiliado(rol, usuario, bdd, nombre, apellido, tipoDoc, nroDoc, direccion, telefono, estadoCivil, mail, fechaF, opcionSexo, cantFam);
+                    this.Hide();
+                    asocio.Show();
+                    
+                
+                /*if ()
+                {
+                    MessageBox.Show("bien", "Mail", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else
+                {
+                    MessageBox.Show("mail", "Mail", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }*/
+            }
         }
+        
 
         /////// valido lo que no puede ingresar en el campo ////////
 

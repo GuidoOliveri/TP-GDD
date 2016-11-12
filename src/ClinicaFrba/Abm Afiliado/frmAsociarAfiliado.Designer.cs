@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.pnlAsociar = new System.Windows.Forms.Panel();
-            this.lblNroAfiliadoPrincipal = new System.Windows.Forms.Label();
+            this.lblDatos = new System.Windows.Forms.Label();
+            this.lblFamAsoc = new System.Windows.Forms.Label();
+            this.optConyuge = new System.Windows.Forms.RadioButton();
+            this.optHijo = new System.Windows.Forms.RadioButton();
             this.txtNroAfiliadoPrincipal = new System.Windows.Forms.TextBox();
+            this.lblNroAfiliadoPrincipal = new System.Windows.Forms.Label();
             this.btnAsociar = new System.Windows.Forms.Button();
             this.btnVolver = new System.Windows.Forms.Button();
-            this.optHijo = new System.Windows.Forms.RadioButton();
-            this.optConyuge = new System.Windows.Forms.RadioButton();
-            this.lblFamAsoc = new System.Windows.Forms.Label();
-            this.lblDatos = new System.Windows.Forms.Label();
             this.pnlAsociar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,6 +54,53 @@
             this.pnlAsociar.Size = new System.Drawing.Size(418, 105);
             this.pnlAsociar.TabIndex = 0;
             // 
+            // lblDatos
+            // 
+            this.lblDatos.AutoSize = true;
+            this.lblDatos.Location = new System.Drawing.Point(13, -1);
+            this.lblDatos.Name = "lblDatos";
+            this.lblDatos.Size = new System.Drawing.Size(92, 13);
+            this.lblDatos.TabIndex = 5;
+            this.lblDatos.Text = "Datos importantes";
+            // 
+            // lblFamAsoc
+            // 
+            this.lblFamAsoc.AutoSize = true;
+            this.lblFamAsoc.Location = new System.Drawing.Point(22, 66);
+            this.lblFamAsoc.Name = "lblFamAsoc";
+            this.lblFamAsoc.Size = new System.Drawing.Size(89, 13);
+            this.lblFamAsoc.TabIndex = 4;
+            this.lblFamAsoc.Text = "Familiar a Asociar";
+            // 
+            // optConyuge
+            // 
+            this.optConyuge.AutoSize = true;
+            this.optConyuge.Location = new System.Drawing.Point(295, 64);
+            this.optConyuge.Name = "optConyuge";
+            this.optConyuge.Size = new System.Drawing.Size(67, 17);
+            this.optConyuge.TabIndex = 3;
+            this.optConyuge.TabStop = true;
+            this.optConyuge.Text = "Conyuge";
+            this.optConyuge.UseVisualStyleBackColor = true;
+            // 
+            // optHijo
+            // 
+            this.optHijo.AutoSize = true;
+            this.optHijo.Location = new System.Drawing.Point(153, 64);
+            this.optHijo.Name = "optHijo";
+            this.optHijo.Size = new System.Drawing.Size(124, 17);
+            this.optHijo.TabIndex = 2;
+            this.optHijo.TabStop = true;
+            this.optHijo.Text = "Hijo/a u Otro Familiar";
+            this.optHijo.UseVisualStyleBackColor = true;
+            // 
+            // txtNroAfiliadoPrincipal
+            // 
+            this.txtNroAfiliadoPrincipal.Location = new System.Drawing.Point(215, 29);
+            this.txtNroAfiliadoPrincipal.Name = "txtNroAfiliadoPrincipal";
+            this.txtNroAfiliadoPrincipal.Size = new System.Drawing.Size(111, 20);
+            this.txtNroAfiliadoPrincipal.TabIndex = 1;
+            // 
             // lblNroAfiliadoPrincipal
             // 
             this.lblNroAfiliadoPrincipal.AutoSize = true;
@@ -62,13 +109,6 @@
             this.lblNroAfiliadoPrincipal.Size = new System.Drawing.Size(104, 13);
             this.lblNroAfiliadoPrincipal.TabIndex = 0;
             this.lblNroAfiliadoPrincipal.Text = "Nro Afiliado Principal";
-            // 
-            // txtNroAfiliadoPrincipal
-            // 
-            this.txtNroAfiliadoPrincipal.Location = new System.Drawing.Point(215, 29);
-            this.txtNroAfiliadoPrincipal.Name = "txtNroAfiliadoPrincipal";
-            this.txtNroAfiliadoPrincipal.Size = new System.Drawing.Size(111, 20);
-            this.txtNroAfiliadoPrincipal.TabIndex = 1;
             // 
             // btnAsociar
             // 
@@ -90,46 +130,6 @@
             this.btnVolver.UseVisualStyleBackColor = true;
             this.btnVolver.Click += new System.EventHandler(this.btnVolver_Click);
             // 
-            // optHijo
-            // 
-            this.optHijo.AutoSize = true;
-            this.optHijo.Location = new System.Drawing.Point(153, 64);
-            this.optHijo.Name = "optHijo";
-            this.optHijo.Size = new System.Drawing.Size(124, 17);
-            this.optHijo.TabIndex = 2;
-            this.optHijo.TabStop = true;
-            this.optHijo.Text = "Hijo/a u Otro Familiar";
-            this.optHijo.UseVisualStyleBackColor = true;
-            // 
-            // optConyuge
-            // 
-            this.optConyuge.AutoSize = true;
-            this.optConyuge.Location = new System.Drawing.Point(295, 64);
-            this.optConyuge.Name = "optConyuge";
-            this.optConyuge.Size = new System.Drawing.Size(67, 17);
-            this.optConyuge.TabIndex = 3;
-            this.optConyuge.TabStop = true;
-            this.optConyuge.Text = "Conyuge";
-            this.optConyuge.UseVisualStyleBackColor = true;
-            // 
-            // lblFamAsoc
-            // 
-            this.lblFamAsoc.AutoSize = true;
-            this.lblFamAsoc.Location = new System.Drawing.Point(22, 66);
-            this.lblFamAsoc.Name = "lblFamAsoc";
-            this.lblFamAsoc.Size = new System.Drawing.Size(89, 13);
-            this.lblFamAsoc.TabIndex = 4;
-            this.lblFamAsoc.Text = "Familiar a Asociar";
-            // 
-            // lblDatos
-            // 
-            this.lblDatos.AutoSize = true;
-            this.lblDatos.Location = new System.Drawing.Point(13, -1);
-            this.lblDatos.Name = "lblDatos";
-            this.lblDatos.Size = new System.Drawing.Size(92, 13);
-            this.lblDatos.TabIndex = 5;
-            this.lblDatos.Text = "Datos importantes";
-            // 
             // frmAsociarAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -141,6 +141,7 @@
             this.Name = "frmAsociarAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Asociar Afiliado";
+            this.Load += new System.EventHandler(this.frmAsociarAfiliado_Load);
             this.pnlAsociar.ResumeLayout(false);
             this.pnlAsociar.PerformLayout();
             this.ResumeLayout(false);

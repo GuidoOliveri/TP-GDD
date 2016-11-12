@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClinicaFrba.Clases;
+using ClinicaFrba.Abm_Afiliado;
+using System.Data.SqlClient;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
@@ -15,13 +18,40 @@ namespace ClinicaFrba.Abm_Afiliado
         private string rol = "";
         private string usuario = "";
         private Clases.BaseDeDatosSQL bdd;
-
-        public frmAsociarAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        private SqlConnection conexion = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+        private string fname = "";
+        private string lname = "";
+        private string tipodocu = "";
+        private Int64 nrodocu ;
+        private char sexo ;
+        private string direc;
+        private Int64 telef;
+        private string estciv;
+        private string email ;
+        DateTime fechanac ; 
+        private int cantfami ;
+        private Int64 nroafiliado ;
+        private Int64 retorno;
+        private Int64 resu;
+        private int nroafilint;
+        
+        public frmAsociarAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd, string nombre, string apellido, string tipoDoc, Int64 nroDoc, string direccion, Int64 telefono, string estadocivil, string mail,  DateTime fecha , char sexo, int cant_familiar)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
             this.bdd = bdd;
+            fname = nombre ;
+            lname= apellido ;
+            tipodocu= tipoDoc ;
+            nrodocu = nroDoc ;
+            this.sexo = sexo;
+            direc = direccion ;
+            telef = telefono ;
+            estciv= estadocivil ;
+            email= mail ;
+            fechanac = fecha ;
+            cantfami = cant_familiar ;
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
@@ -31,9 +61,118 @@ namespace ClinicaFrba.Abm_Afiliado
             alta.Show();
         }
 
+
+
+        private void limpiar()
+        {
+            
+            txtNroAfiliadoPrincipal.Clear();
+           
+            //limpio radio button
+            optHijo.Checked = false;
+            optConyuge.Checked = false;
+
+
+        }
+
+
+
         private void btnAsociar_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Asociado exitosamente", "Asociar Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            if (String.IsNullOrEmpty(txtNroAfiliadoPrincipal.Text) || ((optHijo.Checked == false) && (optConyuge.Checked == false)))
+            {
+                MessageBox.Show("Por favor, Ingrese datos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            }
+            else
+            {
+                if (optConyuge.Checked == true)
+                {
+                    nroafilint = 1;
+                }
+                else
+                {
+                    nroafilint = 0;
+                }
+                retorno = 0;
+                nroafiliado = Convert.ToInt64(txtNroAfiliadoPrincipal.Text);
+                //aca tengo que enganchar el stored procedure de lo que hace el afiliado
+                conexion.Open();
+                SqlCommand command = new SqlCommand("NEXTGDD.agregarAfiliadoFamilia", conexion);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter parNombre = new SqlParameter("@nombre", fname);
+                SqlParameter parApellido = new SqlParameter("@apellido", lname);
+                SqlParameter parFecNac = new SqlParameter("@fecha_nac", fechanac);
+                SqlParameter parSexo = new SqlParameter("@sexo", sexo);
+                SqlParameter parTipoDoc = new SqlParameter("@tipo_doc", tipodocu);
+                SqlParameter parNroDoc = new SqlParameter("@nrodocumento", nrodocu);
+                parNroDoc.Direction = ParameterDirection.Input;
+                parNroDoc.SqlDbType = SqlDbType.Decimal;
+                SqlParameter parDomicilio = new SqlParameter("@domicilio", direc);
+                SqlParameter parTel = new SqlParameter("@telefono", telef);
+                SqlParameter parEstadoCivil = new SqlParameter("@estado_civil", estciv);
+                SqlParameter parMail = new SqlParameter("@mail", email);
+                SqlParameter parCantFam = new SqlParameter("@cant_familiares", cantfami);
+
+                SqlParameter parNroAfiliadoPrinc = new SqlParameter("@nro_afiliado_princ", nroafiliado);
+                SqlParameter parIntegranteFam = new SqlParameter("@nro_afiliado_integrante", nroafilint);
+               
+             
+                SqlParameter parRet = new SqlParameter("@ret", retorno);
+
+                parRet.Direction = ParameterDirection.Output;
+                parRet.SqlDbType = SqlDbType.Decimal;
+                parFecNac.Value = fechanac;
+
+                command.Parameters.Add(parNombre);
+                command.Parameters.Add(parApellido);
+                command.Parameters.Add(parFecNac);
+                command.Parameters.Add(parSexo);
+                command.Parameters.Add(parTipoDoc);
+                command.Parameters.Add(parNroDoc);
+                command.Parameters.Add(parDomicilio);
+                command.Parameters.Add(parTel);
+                command.Parameters.Add(parEstadoCivil);
+                command.Parameters.Add(parMail);
+                command.Parameters.Add(parCantFam);
+                command.Parameters.Add(parNroAfiliadoPrinc);
+                command.Parameters.Add(parIntegranteFam);
+                command.Parameters.Add(parRet);
+
+                command.ExecuteNonQuery();
+               
+                resu = Int64.Parse(command.Parameters["@ret"].Value.ToString());
+                conexion.Close();
+                if (resu.Equals(-1))
+                {
+                    
+                    MessageBox.Show( "Lo sentimos, no podemos procesar tu solicitud. Ingrese otro Nro de Afiliado Raiz o Inténtalo de nuevo más tarde.", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    limpiar();
+                }
+                else
+                {
+                    nroafiliado = resu;
+
+                    MessageBox.Show("Registrado exitosamente!\n Tu nro de afiliado es:  " + nroafiliado + "\nNombre de usuario:  " + nroafiliado +"@NEXTGDD" + "\nContraseña:  " + nroafiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    frmAltaAfiliado alta = new frmAltaAfiliado(rol, usuario, bdd);
+                    this.Hide();
+                    alta.Show();
+                }
+
+
+                //MessageBox.Show("Asociado exitosamente", "Asociar Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
         }
+
+
+        private void frmAsociarAfiliado_Load(object sender, EventArgs e)
+        {
+        
+        }
+        
+
     }
 }
