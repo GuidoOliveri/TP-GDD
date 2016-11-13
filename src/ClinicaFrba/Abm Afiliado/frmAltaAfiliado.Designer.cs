@@ -181,36 +181,36 @@
             this.lblDepto.AutoSize = true;
             this.lblDepto.Location = new System.Drawing.Point(145, 41);
             this.lblDepto.Name = "lblDepto";
-            this.lblDepto.Size = new System.Drawing.Size(36, 13);
+            this.lblDepto.Size = new System.Drawing.Size(39, 13);
             this.lblDepto.TabIndex = 4;
-            this.lblDepto.Text = "Depto";
+            this.lblDepto.Text = "Depto:";
             // 
             // lblPiso
             // 
             this.lblPiso.AutoSize = true;
             this.lblPiso.Location = new System.Drawing.Point(13, 38);
             this.lblPiso.Name = "lblPiso";
-            this.lblPiso.Size = new System.Drawing.Size(27, 13);
+            this.lblPiso.Size = new System.Drawing.Size(30, 13);
             this.lblPiso.TabIndex = 3;
-            this.lblPiso.Text = "Piso";
+            this.lblPiso.Text = "Piso:";
             // 
             // lblAlt
             // 
             this.lblAlt.AutoSize = true;
             this.lblAlt.Location = new System.Drawing.Point(145, 15);
             this.lblAlt.Name = "lblAlt";
-            this.lblAlt.Size = new System.Drawing.Size(34, 13);
+            this.lblAlt.Size = new System.Drawing.Size(41, 13);
             this.lblAlt.TabIndex = 2;
-            this.lblAlt.Text = "Altura";
+            this.lblAlt.Text = "*Altura:";
             // 
             // lblCalle
             // 
             this.lblCalle.AutoSize = true;
             this.lblCalle.Location = new System.Drawing.Point(13, 15);
             this.lblCalle.Name = "lblCalle";
-            this.lblCalle.Size = new System.Drawing.Size(30, 13);
+            this.lblCalle.Size = new System.Drawing.Size(37, 13);
             this.lblCalle.TabIndex = 1;
-            this.lblCalle.Text = "Calle";
+            this.lblCalle.Text = "*Calle:";
             // 
             // lblDir
             // 
@@ -436,6 +436,8 @@
             // cmbPlanMedico
             // 
             this.cmbPlanMedico.FormattingEnabled = true;
+            this.cmbPlanMedico.Items.AddRange(new object[] {
+            "(ninguno)"});
             this.cmbPlanMedico.Location = new System.Drawing.Point(260, 22);
             this.cmbPlanMedico.Name = "cmbPlanMedico";
             this.cmbPlanMedico.Size = new System.Drawing.Size(167, 21);
