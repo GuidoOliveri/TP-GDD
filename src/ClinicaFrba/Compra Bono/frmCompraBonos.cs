@@ -131,7 +131,8 @@ namespace ClinicaFrba.Compra_Bono
             }
             else
             {
-                // lblTotalAPagar.Text = cantBonosUpDown.Value * int.Parse(lblPrecioBonos.Text); 
+                lblTotalAPagar.Text = (cantBonosUpDown.Value * int.Parse(lblPrecioBonos.Text)).ToString();
+               
             }
         }
 
