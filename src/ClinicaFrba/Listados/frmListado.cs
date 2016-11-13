@@ -134,7 +134,7 @@ namespace ClinicaFrba.Listados
                     campos.Add("Especialidad");
                     campos.Add("Cantidad de Bonos");
                 }
-                dt = bdd.ObtenerListado(comando, campos);
+                dt = bdd.ObtenerTabla(comando, campos);
                 dgListado.AutoGenerateColumns = true;
                 dgListado.DataSource = dt;
             }

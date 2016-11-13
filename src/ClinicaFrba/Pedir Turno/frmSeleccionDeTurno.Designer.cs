@@ -177,7 +177,7 @@
             // 
             this.warning1.AutoSize = true;
             this.warning1.ForeColor = System.Drawing.Color.Red;
-            this.warning1.Location = new System.Drawing.Point(132, 155);
+            this.warning1.Location = new System.Drawing.Point(132, 154);
             this.warning1.Name = "warning1";
             this.warning1.Size = new System.Drawing.Size(271, 13);
             this.warning1.TabIndex = 12;

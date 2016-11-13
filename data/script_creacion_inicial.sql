@@ -404,14 +404,58 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.darDeBajaAfiliado'))
     DROP PROCEDURE NEXTGDD.darDeBajaAfiliado
 GO
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.obtenerRangoHorario'))
-    DROP FUNCTION NEXTGDD.obtenerRangoHorario
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.validarConRangoHorario'))
+    DROP FUNCTION NEXTGDD.validarConRangoHorario
 GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.obtenerRangoClinica'))
     DROP FUNCTION NEXTGDD.obtenerRangoClinica
 GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarCodigoAgenda'))
     DROP FUNCTION NEXTGDD.buscarCodigoAgenda
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarProfesionales'))
+    DROP FUNCTION NEXTGDD.buscarProfesionales
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.tieneRangosHorarios'))
+    DROP FUNCTION NEXTGDD.tieneRangosHorarios
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.validarTurnoDisponible'))
+    DROP FUNCTION NEXTGDD.validarTurnoDisponible
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarTurnosDelDia'))
+    DROP FUNCTION NEXTGDD.buscarTurnosDelDia
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.validarUsoDelTurno'))
+    DROP FUNCTION NEXTGDD.validarUsoDelTurno
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarBonosDisponibles'))
+    DROP FUNCTION NEXTGDD.buscarBonosDisponibles
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarAfiliadosAtendidos'))
+    DROP FUNCTION NEXTGDD.buscarAfiliadosAtendidos
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarConsultasAtendidas'))
+    DROP FUNCTION NEXTGDD.buscarConsultasAtendidas
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.filtrarConsultasPorAfiliado'))
+    DROP FUNCTION NEXTGDD.filtrarConsultasPorAfiliado
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarEspecialidades'))
+    DROP FUNCTION NEXTGDD.buscarEspecialidades
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.validarAgendaUnica'))
+    DROP FUNCTION NEXTGDD.validarAgendaUnica
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarConsulta'))
@@ -659,7 +703,6 @@ CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smal
 END
 GO
 
-
 CREATE PROCEDURE NEXTGDD.crearTurno (@nroAf numeric(18,0),@nombreEsp varchar(255),@nomProf varchar(255),@fecha datetime)
 AS
 BEGIN
@@ -674,21 +717,64 @@ BEGIN
 END;
 GO
 
-CREATE FUNCTION NEXTGDD.obtenerRangoHorario(@fecha datetime,@profesional varchar(255),@especialidad varchar(255),@dia numeric(18,0),@hora time) 
+CREATE FUNCTION NEXTGDD.buscarProfesionales(@especialidad varchar(255))
 RETURNS TABLE
 AS
-	RETURN (select isnull(count(*),0) as 'cantidad rangos'
+	RETURN select distinct (p.nombre+' '+p.apellido) as nombre 
+			from NEXTGDD.Persona p,NEXTGDD.Profesional pr,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e 
+			where pr.id_persona=p.id_persona and pe.matricula=pr.matricula and pe.cod_especialidad=e.cod_especialidad 
+			and e.descripcion LIKE @especialidad 
+GO
+
+CREATE FUNCTION NEXTGDD.obtenerRangoClinica(@diaSemana numeric(18,0)) 
+RETURNS TABLE
+AS
+	RETURN select hora_inicial,hora_final from NEXTGDD.Rango_Atencion_Clinica where @diaSemana>=dia_inicial and @diaSemana<=dia_final;
+GO
+
+CREATE FUNCTION NEXTGDD.validarTurnoDisponible(@fecha datetime,@profesional varchar(255))
+RETURNS varchar(255)
+AS
+BEGIN
+	RETURN (select CASE WHEN (isnull(count(*),0)=0)
+					THEN 'true'
+					ELSE 'false'
+					END 
+		   from NEXTGDD.Turno t,NEXTGDD.Agenda a, NEXTGDD.Profesional p,NEXTGDD.Persona pers 
+  		   where t.fecha LIKE @fecha and (pers.nombre+' '+pers.apellido) LIKE @profesional
+		   and pers.id_persona=p.id_persona and a.matricula=p.matricula and t.cod_agenda=a.cod_agenda)
+END;
+GO
+
+CREATE FUNCTION NEXTGDD.tieneRangosHorarios(@especialidad varchar(255),@profesional varchar(255))
+RETURNS varchar(255)
+AS
+BEGIN
+	RETURN (select CASE WHEN (isnull(count(*),0)=0)
+					THEN 'false'
+					ELSE 'true'
+					END 
+		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a, NEXTGDD.Rango_Atencion r 
+		   where (p.nombre+' '+p.apellido) LIKE @profesional and e.descripcion LIKE @especialidad
+				 and pr.id_persona=p.id_persona and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad 
+				 and r.cod_agenda=a.cod_agenda)
+END;
+GO
+
+CREATE FUNCTION NEXTGDD.validarConRangoHorario(@fecha datetime,@profesional varchar(255),@especialidad varchar(255),@dia numeric(18,0),@hora time) 
+RETURNS varchar(255)
+AS
+BEGIN
+	RETURN (select CASE WHEN (isnull(count(*),0)=0)
+					THEN 'fuera del rango horario'
+					ELSE 'dentro de rango horario'
+					END 
 		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a,NEXTGDD.Rango_Atencion r
 	       where p.nombre+' '+p.apellido LIKE @profesional and e.descripcion LIKE @especialidad and pr.id_persona=p.id_persona
 			     and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad and r.cod_agenda=a.cod_agenda
 				 and @fecha>=a.rango_fecha_desde and @fecha<=a.rango_fecha_hasta 
 			     and r.dia_semanal_inicial<=@dia and r.dia_semanal_final>=@dia and r.hora_inicial<=@hora and r.hora_final>=@hora)
-GO
- 
-CREATE FUNCTION NEXTGDD.obtenerRangoClinica(@diaSemana numeric(18,0)) 
-RETURNS TABLE
-AS
-	RETURN select hora_inicial,hora_final from NEXTGDD.Rango_Atencion_Clinica where @diaSemana>=dia_inicial and @diaSemana<=dia_final;
+END;
 GO
 
 CREATE PROCEDURE NEXTGDD.registrarConsulta (@fechaLlegada datetime,@nomProf varchar(255),@fechaTurno datetime,@nroBono numeric(18,0))
@@ -703,6 +789,48 @@ BEGIN
 	INSERT NEXTGDD.Consulta (fecha_consulta,nro_bono,nro_turno) values
 			(@fechaLlegada,@nroBono,@nro_turno)
 END;
+GO
+
+CREATE FUNCTION NEXTGDD.buscarTurnosDelDia(@profesional varchar(255))
+RETURNS TABLE
+AS
+	RETURN select t.fecha as fecha 
+			from NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Profesional p,NEXTGDD.Persona pe 
+			where t.cod_agenda=a.cod_agenda and a.matricula=p.matricula and p.id_persona=pe.id_persona 
+				  and (pe.nombre+' '+pe.apellido LIKE @profesional) 
+				  /*and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())*/
+			group by t.fecha 
+GO
+
+CREATE FUNCTION NEXTGDD.validarUsoDelTurno(@fecha datetime,@profesional varchar(255)) 
+RETURNS varchar(255)
+AS
+BEGIN
+	RETURN (select CASE WHEN (isnull(count(*),0)=0)
+					THEN 'El turno no fue utilizado'
+					ELSE 'El turno ya fue usado'
+					END 
+		   from NEXTGDD.Turno t,NEXTGDD.Agenda ag,NEXTGDD.Profesional p,NEXTGDD.Consulta c,NEXTGDD.Persona pe 
+		   where (pe.nombre+' '+pe.apellido) LIKE @profesional and pe.id_persona=p.id_persona and p.matricula=ag.matricula 
+				 and t.cod_agenda=ag.cod_agenda and t.fecha LIKE @fecha
+				 and c.nro_turno=t.nro_turno)
+END;
+GO
+
+CREATE FUNCTION NEXTGDD.buscarBonosDisponibles(@profesional varchar(255),@fecha datetime)
+RETURNS TABLE
+AS
+	RETURN select b.nro_bono as bono 
+			from NEXTGDD.Turno t,NEXTGDD.Afiliado a,NEXTGDD.Afiliado a2,NEXTGDD.Bono_Consulta b,NEXTGDD.Agenda ag,
+				 NEXTGDD.Profesional pr,NEXTGDD.Persona p 
+			where (p.nombre+' '+p.apellido) LIKE @profesional and pr.id_persona=p.id_persona 
+				  and pr.matricula=ag.matricula and t.cod_agenda=ag.cod_agenda 
+				  and t.fecha LIKE @fecha and t.nro_afiliado=a.nro_afiliado 
+				  --puede usar el de un familiar que pertenezca al mismo plan--
+				  and b.nro_afiliado=a2.nro_afiliado and a2.grupo_afiliado=a.grupo_afiliado and a.cod_plan=a2.cod_plan 
+				  --se verfica que no se haya usado, a menos que el turno figure cancelado--
+				  /* and (select isnull(count(*),0) from NEXTGDD.Consulta c,NEXTGDD.Turno t2 where c.nro_bono=b.nro_bono and
+				  t2.nro_turno=c.nro_turno and isnull(t2.cod_cancelacion,0)=0)=0*/
 GO
 
 CREATE PROCEDURE NEXTGDD.registrarDiagnostico (@medico numeric(18,0),@fechaConsulta datetime,@fechaAtencion datetime,@enfermedad varchar(255),@sintoma varchar(255),@descripcion varchar(255))
@@ -720,6 +848,45 @@ BEGIN
 								  t.cod_agenda=a.cod_agenda and
 								  a.matricula=pr.matricula and pr.id_persona=@medico)
 END;
+GO
+
+CREATE FUNCTION NEXTGDD.buscarAfiliadosAtendidos(@idMedico varchar(255))
+RETURNS TABLE
+AS
+	RETURN select (p.nombre+' '+p.apellido) as nombre 
+			from NEXTGDD.Afiliado a,NEXTGDD.Persona p,NEXTGDD.Profesional pr,NEXTGDD.Turno t,NEXTGDD.Agenda ag 
+			where p.id_persona=a.id_persona and t.nro_afiliado=a.nro_afiliado and t.cod_agenda=ag.cod_agenda 
+				  and pr.matricula=ag.matricula and pr.id_persona LIKE @idMedico
+			group by p.nombre,p.apellido 
+GO
+
+
+CREATE FUNCTION NEXTGDD.buscarConsultasAtendidas(@idMedico varchar(255))
+RETURNS TABLE
+AS
+	RETURN select t.fecha as consulta 
+			from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Turno t,NEXTGDD.Agenda a 
+			where pr.id_persona LIKE @idMedico and pr.matricula=a.matricula and c.nro_turno=t.nro_turno 
+				  and t.cod_agenda=a.cod_agenda
+				  --Se fija las consultas que no tienen diagnostico--
+				  and isnull(c.cod_diagnostico,0)=0
+				  --Filtra por fecha actual--
+				  /*and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())*/
+GO
+
+CREATE FUNCTION NEXTGDD.filtrarConsultasPorAfiliado(@idMedico varchar(255),@afiliado varchar(255))
+RETURNS TABLE
+AS
+	RETURN select t.fecha as consulta 
+			from NEXTGDD.Profesional pr,NEXTGDD.Consulta c,NEXTGDD.Turno t,NEXTGDD.Agenda a,NEXTGDD.Afiliado af,NEXTGDD.Persona p 
+			where pr.id_persona LIKE @idMedico and pr.matricula=a.matricula and c.nro_turno=t.nro_turno 
+				  and t.cod_agenda=a.cod_agenda and t.nro_afiliado=af.nro_afiliado and af.id_persona=p.id_persona 
+				  and (p.nombre+' '+p.apellido) LIKE @afiliado 
+				  --Se fija las consultas que no tienen diagnostico--
+				  and isnull(c.cod_diagnostico,0)=0
+				  --Filtra por fecha actual--
+				  /*and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())*/
+			group by t.fecha 
 GO
 
 CREATE PROCEDURE NEXTGDD.registrarAgenda (@nomProfesional varchar(255),@nomEspecialidad varchar(255),@fechaD datetime,@fechaH datetime)
@@ -755,6 +922,26 @@ AS
 BEGIN
 	INSERT NEXTGDD.Compra_Bono(cant,id_afiliado,precio_total) values
 			(@cant,@idAfiliado,@precioTotal)
+CREATE FUNCTION NEXTGDD.buscarEspecialidades(@profesional varchar(255))
+RETURNS TABLE
+AS
+	RETURN select e.descripcion as especialidad 
+			from NEXTGDD.Persona persona,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e 
+			where (persona.nombre+' '+persona.apellido) LIKE @profesional and persona.id_persona=p.id_persona 
+				  and pe.matricula=p.matricula and e.cod_especialidad=pe.cod_especialidad 
+GO
+
+CREATE FUNCTION NEXTGDD.validarAgendaUnica(@especialidad varchar(255),@profesional varchar(255)) 
+RETURNS varchar(255)
+AS
+BEGIN
+	RETURN (select CASE WHEN (isnull(count(*),0)=0)
+					THEN 'No existe una agenda'
+					ELSE 'Ya existe una agenda'
+					END 
+		   from NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e 
+		   where p.nombre+' '+p.apellido LIKE @profesional and p.id_persona=pr.id_persona and a.matricula=pr.matricula 
+		         and a.cod_especialidad=e.cod_especialidad and e.descripcion LIKE @especialidad)
 END;
 GO
 
