@@ -874,6 +874,14 @@ AS
 				  /*and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())*/
 GO
 
+CREATE PROCEDURE NEXTGDD.registrarCompra (@cant numeric(18,0),@idAfiliado varchar(255),@precioTotal numeric(18,0))
+AS
+BEGIN
+	INSERT NEXTGDD.Compra_Bono(cant,id_afiliado,precio_total) values
+			(@cant,@idAfiliado,@precioTotal)
+END;
+GO
+
 CREATE FUNCTION NEXTGDD.filtrarConsultasPorAfiliado(@idMedico varchar(255),@afiliado varchar(255))
 RETURNS TABLE
 AS
