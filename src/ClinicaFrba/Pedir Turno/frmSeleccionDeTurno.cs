@@ -117,7 +117,7 @@ namespace ClinicaFrba.Pedir_Turno
         private void dtpFecha_ValueChanged(object sender, EventArgs e)
         {
             //CARGA LOS HORARIOS A PARTIR DE LA FECHA SELECCIONADA
-            warning4.Visible = false;
+            warning1.Visible = false;
             cmbHorario.Items.Clear();
             cmbHorario.Text = "";
             DataTable rangos = buscarRangoAtencionClinica();
