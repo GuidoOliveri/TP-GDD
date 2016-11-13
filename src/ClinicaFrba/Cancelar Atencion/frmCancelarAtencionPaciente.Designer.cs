@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.warning2 = new System.Windows.Forms.Label();
+            this.faltanCamposWarning = new System.Windows.Forms.Label();
             this.btnIngresar = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBoxDetalleCancelacion = new System.Windows.Forms.TextBox();
-            this.warning1 = new System.Windows.Forms.Label();
+            this.txtBoxDetalleCancelacion = new System.Windows.Forms.TextBox();
+            this.cancelarMismoDiaWarning = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbMotivoCancelacion = new System.Windows.Forms.ComboBox();
@@ -44,15 +44,15 @@
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // warning2
+            // faltanCamposWarning
             // 
-            this.warning2.AutoSize = true;
-            this.warning2.ForeColor = System.Drawing.Color.Red;
-            this.warning2.Location = new System.Drawing.Point(67, 75);
-            this.warning2.Name = "warning2";
-            this.warning2.Size = new System.Drawing.Size(121, 13);
-            this.warning2.TabIndex = 5;
-            this.warning2.Text = "Falta Completar Campos";
+            this.faltanCamposWarning.AutoSize = true;
+            this.faltanCamposWarning.ForeColor = System.Drawing.Color.Red;
+            this.faltanCamposWarning.Location = new System.Drawing.Point(67, 75);
+            this.faltanCamposWarning.Name = "faltanCamposWarning";
+            this.faltanCamposWarning.Size = new System.Drawing.Size(121, 13);
+            this.faltanCamposWarning.TabIndex = 5;
+            this.faltanCamposWarning.Text = "Falta Completar Campos";
             // 
             // btnIngresar
             // 
@@ -75,12 +75,11 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cancelar Atencion Medica";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.textBoxDetalleCancelacion);
-            this.groupBox2.Controls.Add(this.warning1);
+            this.groupBox2.Controls.Add(this.txtBoxDetalleCancelacion);
+            this.groupBox2.Controls.Add(this.cancelarMismoDiaWarning);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.cmbMotivoCancelacion);
@@ -91,23 +90,23 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Motivo";
             // 
-            // textBoxDetalleCancelacion
+            // txtBoxDetalleCancelacion
             // 
-            this.textBoxDetalleCancelacion.Location = new System.Drawing.Point(10, 87);
-            this.textBoxDetalleCancelacion.Multiline = true;
-            this.textBoxDetalleCancelacion.Name = "textBoxDetalleCancelacion";
-            this.textBoxDetalleCancelacion.Size = new System.Drawing.Size(272, 56);
-            this.textBoxDetalleCancelacion.TabIndex = 9;
+            this.txtBoxDetalleCancelacion.Location = new System.Drawing.Point(10, 87);
+            this.txtBoxDetalleCancelacion.Multiline = true;
+            this.txtBoxDetalleCancelacion.Name = "txtBoxDetalleCancelacion";
+            this.txtBoxDetalleCancelacion.Size = new System.Drawing.Size(272, 56);
+            this.txtBoxDetalleCancelacion.TabIndex = 9;
             // 
-            // warning1
+            // cancelarMismoDiaWarning
             // 
-            this.warning1.AutoSize = true;
-            this.warning1.ForeColor = System.Drawing.Color.Red;
-            this.warning1.Location = new System.Drawing.Point(57, 0);
-            this.warning1.Name = "warning1";
-            this.warning1.Size = new System.Drawing.Size(205, 13);
-            this.warning1.TabIndex = 8;
-            this.warning1.Text = "No puede cancelar el mismo dia del turno.";
+            this.cancelarMismoDiaWarning.AutoSize = true;
+            this.cancelarMismoDiaWarning.ForeColor = System.Drawing.Color.Red;
+            this.cancelarMismoDiaWarning.Location = new System.Drawing.Point(57, 0);
+            this.cancelarMismoDiaWarning.Name = "cancelarMismoDiaWarning";
+            this.cancelarMismoDiaWarning.Size = new System.Drawing.Size(205, 13);
+            this.cancelarMismoDiaWarning.TabIndex = 8;
+            this.cancelarMismoDiaWarning.Text = "No puede cancelar el mismo dia del turno.";
             // 
             // label3
             // 
@@ -168,7 +167,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(321, 262);
             this.Controls.Add(this.cmdVolver);
-            this.Controls.Add(this.warning2);
+            this.Controls.Add(this.faltanCamposWarning);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmCancelarAtencionPaciente";
@@ -186,17 +185,17 @@
 
         #endregion
 
-        private System.Windows.Forms.Label warning2;
+        private System.Windows.Forms.Label faltanCamposWarning;
         private System.Windows.Forms.Button btnIngresar;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label warning1;
+        private System.Windows.Forms.Label cancelarMismoDiaWarning;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbMotivoCancelacion;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbSeleccionTurno;
-        private System.Windows.Forms.TextBox textBoxDetalleCancelacion;
+        private System.Windows.Forms.TextBox txtBoxDetalleCancelacion;
         private System.Windows.Forms.Button cmdVolver;
     }
 }

@@ -482,6 +482,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.compr
     DROP PROCEDURE NEXTGDD.comprarBono
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.cancelarTurno'))
+    DROP PROCEDURE NEXTGDD.cancelarTurno
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes'))
     DROP VIEW NEXTGDD.Pacientes
 GO
@@ -898,6 +902,17 @@ BEGIN
 			(@fechaImpresion,@compraFecha,
 			@codPlan, @nroAfiliado)
 END;
+GO
+
+CREATE PROCEDURE NEXTGDD.cancelarTurno(@nroTurno numeric(18,0), @tipoCancelacion tinyInt, @motivo varchar(255)) 
+AS BEGIN
+IF EXISTS (SELECT * FROM NEXTGDD.Turno WHERE nro_turno = @nroTurno)
+	INSERT NEXTGDD.Cancelacion(tipo_cancelacion, motivo) values
+			(@tipoCancelacion,@motivo)
+	UPDATE  NEXTGDD.Turno 
+	SET cod_cancelacion = SCOPE_IDENTITY()
+	WHERE Turno.nro_turno = @nroTurno
+END
 GO
 
 CREATE FUNCTION NEXTGDD.filtrarConsultasPorAfiliado(@idMedico varchar(255),@afiliado varchar(255))

@@ -15,6 +15,12 @@ namespace ClinicaFrba.Cancelar_Atencion
         private string rol = "";
         private string usuario = "";
         private Clases.BaseDeDatosSQL bdd;
+        string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
+
+        String comando;
+
+        private String matriculaProfesional;
+        private String especialidad;
 
         public frmCancelarAtencionMedico(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
@@ -22,6 +28,22 @@ namespace ClinicaFrba.Cancelar_Atencion
             this.rol = rol;
             this.usuario = usuario;
             this.bdd = bdd;
+
+            matriculaProfesional = "1002";
+            especialidad = "10000";
+            comando = "select nombre from NEXTGDD.Tipo_cancelacion";
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "nombre"), cmbMotivoCancelacion);
+
+        }
+
+        private void cargar(List<string> lista, ComboBox cmb)
+        {
+            foreach (string elemento in lista)
+            {
+                cmb.Items.Add(elemento);
+            }
+
+            cmb.Enabled = true;
         }
 
         public Clases.Profesional unProfesional { get; set; }
@@ -43,6 +65,54 @@ namespace ClinicaFrba.Cancelar_Atencion
             {
                 e.Cancel = true;
             }
+        }
+
+        private void btnCancelarTurnos_Click(object sender, EventArgs e)
+        {
+            if (pickerFecha.SelectionRange.Start == null)
+            {
+                warningSinSeleccionarFechas.Visible = true;
+                return;
+            }
+
+            warningSinSeleccionarFechas.Visible = false;
+
+            if (cmbMotivoCancelacion.SelectedItem == null)
+            {
+                faltanDatosWarning.Visible = true;
+                return;
+            }
+
+            faltanDatosWarning.Visible = true;
+
+            //if (elTurnoEsHoy(cmbSeleccionTurno.SelectedText))
+            //{
+            //    cancelarMismoDiaWarning.Visible = true;
+            //    return;
+            //}
+
+            String codAgenda = bdd.buscarCampo("select cod_agenda from NEXTGDD.Agenda where '" + matriculaProfesional
+                        +"' = Agenda.matricula and '"+ especialidad +"' = Agenda.cod_especialidad");
+
+            String tipoCancelacion = bdd.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '" +
+                cmbMotivoCancelacion.SelectedItem.ToString() + "'");
+
+            // Por cada dia (for each DateTime)
+            
+            // Otro for, esta vez dentro de un mismo dia, por cada uno de los posibles horarios
+            DateTime fecha = new DateTime();
+            String nroTurno = bdd.buscarCampo("select nro_turno from NEXTGDD.Turno where cod_agenda = '"+codAgenda
+                +"' and fecha = '"+fecha.ToString()+"'");
+            cancelarTurnos(nroTurno, fecha, tipoCancelacion);
+
+
+        }
+
+        private void cancelarTurnos(string nroTurno, DateTime fecha, String tipoCancelacion)
+        {
+            comando = "EXECUTE NEXTGDD.cancelarTurno @nroTurno='" + nroTurno + "',@tipoCancelacion'" + tipoCancelacion +
+                "', @motivo='" + txtBoxDetalleCancelacion.Text + "'";
+            bdd.ExecStoredProcedure2(comando);
         }
     }
 }

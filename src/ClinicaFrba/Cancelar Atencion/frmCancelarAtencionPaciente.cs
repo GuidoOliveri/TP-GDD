@@ -14,6 +14,7 @@ namespace ClinicaFrba.Cancelar_Atencion
     {
         private string rol = "";
         private string usuario = "";
+        private string idAfiliado = "124453901";
         private Clases.BaseDeDatosSQL bdd;
         string comando = "";
         string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
@@ -25,50 +26,63 @@ namespace ClinicaFrba.Cancelar_Atencion
             this.rol = rol;
             this.usuario = usuario;
             this.bdd = bdd;
-            warning1.Visible = false;
-            warning2.Visible = false;
+            cancelarMismoDiaWarning.Visible = false;
+            faltanCamposWarning.Visible = false;
             cmbMotivoCancelacion.Enabled = false;
             cmbSeleccionTurno.Enabled = false;
 
             //SE CARGAN LOS TURNOS
 
-            comando = "select nro_turno as 'Numero De Turno', fecha as 'Fecha' from NEXTGDD.Turno where nro_afiliado =" + "replace with nro afiliado";
-            //cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "Fecha"), cmbSeleccionTurno);
+            comando = "select fecha from NEXTGDD.Turno where nro_afiliado = '" + idAfiliado + "'";
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "fecha"), cmbSeleccionTurno);
+
+            comando = "select nombre from NEXTGDD.Tipo_cancelacion";
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "nombre"), cmbMotivoCancelacion);
 
         }
 
-        private void cargar(List<string> lista,ComboBox cmb)
+        private void cargar(List<string> lista, ComboBox cmb)
         {
             foreach (string elemento in lista)
             {
                 cmb.Items.Add(elemento);
             }
-        }
 
-        private void btnIngresar_Click(object sender, EventArgs e)
-        {
-            // Falta comprobar que no sea la fecha de hoy
-            if (2 > 1)
-            {
-               
-                //FALTA CREAR EL STORED PROCEDURE
-                this.Dispose(false);
-
-            }
-            else
-            {
-                warning2.Visible = true;
-            }
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-         
+            cmb.Enabled = true;
         }
 
         private void btnIngresar_Click_1(object sender, EventArgs e)
         {
+
+            if (cmbMotivoCancelacion.SelectedItem == null || cmbSeleccionTurno.SelectedItem == null)
+            {
+                faltanCamposWarning.Visible = true;
+                return;
+            }
+
+            faltanCamposWarning.Visible = false;
+
+            //if (elTurnoEsHoy(cmbSeleccionTurno.SelectedText))
+            //{
+            //    cancelarMismoDiaWarning.Visible = true;
+            //    return;
+            //}
+
+            // Cancelar el bono
+
+            string nroTurno = bdd.buscarCampo("select nro_turno from NEXTGDD.Turno where fecha = '"+ 
+                cmbSeleccionTurno.SelectedItem.ToString() + "' and nro_afiliado = '" + idAfiliado + "'");
+            string tipoCancelacion = bdd.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '"+
+                cmbMotivoCancelacion.SelectedItem.ToString()+"'");
+
+            comando = "EXECUTE NEXTGDD.cancelarTurno @nroTurno='" + nroTurno + "',@tipoCancelacion'" + tipoCancelacion + 
+                "', @motivo='" + txtBoxDetalleCancelacion.Text + "'";
+            bdd.ExecStoredProcedure2(comando);
+
+            MessageBox.Show("Turno Cancelado Exitosamente", "Cancelar Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.Dispose(false);
+
+
 
         }
 
@@ -89,6 +103,23 @@ namespace ClinicaFrba.Cancelar_Atencion
             {
                 e.Cancel = true;
             }
+        }
+
+        private string convertirFecha(string fecha)
+        {
+            string fechaSinTiempo = fecha.Split(' ')[0];
+            string dia = fechaSinTiempo.Split('/')[0];
+            if (dia.Length == 1)
+            {
+                dia = '0' + dia;
+            }
+            string mes = fechaSinTiempo.Split('/')[1];
+            if (mes.Length == 1)
+            {
+                mes = '0' + mes;
+            }
+            string año = fechaSinTiempo.Split('/')[2];
+            return año + "/" + mes + "/" + dia + " " + fecha.Split(' ')[1];
         }
     }
 }
