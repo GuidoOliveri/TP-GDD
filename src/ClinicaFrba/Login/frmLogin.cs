@@ -66,7 +66,7 @@ namespace ClinicaFrba.Login
             if (resu.Equals(0))
             {
                 MessageBox.Show("Logueo exitoso! Entrando al sistema...", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+                Usuario.Name = txtUsuario.Text;
                 // para que me de el nombre del rol, lo busco yo, no me lo devuelve en el stored procedure 
                 query = "SELECT  R.nombre as nom FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U WHERE R_U.id_rol = R.id_rol AND U.username = @user AND U.username = R_U.username ";
                 SqlCommand comandito = new SqlCommand(query, conn);
@@ -87,6 +87,7 @@ namespace ClinicaFrba.Login
                     frmMenuDeAbms elegiaccion = new frmMenuDeAbms(nombreRoles.ElementAt(0),uname,bdd);
                     this.Hide();
                     elegiaccion.Show();
+                    Usuario.id_rol = nombreRoles.ElementAt(0);
                 }
                 dataReader.Close();
             }

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClinicaFrba.Clases;
+
 
 namespace ClinicaFrba.Abm_Afiliado
 {
@@ -27,8 +29,10 @@ namespace ClinicaFrba.Abm_Afiliado
         private void frmHistorialCambios_Load(object sender, EventArgs e)
         {
             // TODO: esta línea de código carga datos en la tabla 'historialDeCambios.Historial' Puede moverla o quitarla según sea necesario.
-            this.historialTableAdapter.Fill(this.historialDeCambios.Historial);
-
+           // this.historialTableAdapter.Fill(this.historialDeCambios.Historial);
+            DataTable tabla = new DataTable();
+            tabla = Afiliado.obtenerHistorial() ;
+            dataGridView1.DataSource = tabla;
         }
 
         private void btnAceptarYVolver_Click(object sender, EventArgs e)

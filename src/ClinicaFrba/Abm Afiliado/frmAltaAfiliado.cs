@@ -198,7 +198,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     {
                         nroAfiliado = resu;
 
-                        MessageBox.Show("Registrado exitosamente!\nTu nro de afiliado es:  " + nroAfiliado+"\nNombre de usuario:  " + nroAfiliado +"@NEXTGDD"+  "\nContraseña:  " + nroAfiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show( "Registrado exitosamente!\nTu nro de afiliado es:  " + nroAfiliado+"\nNombre de usuario:  " + nroAfiliado +"@NEXTGDD"+  "\nContraseña:  " + nroAfiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         cargarTodoLimpio();
                     }
                   
@@ -492,6 +492,11 @@ namespace ClinicaFrba.Abm_Afiliado
                 e.Handled = true;
                 MessageBox.Show("Solo cantidad en numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void frmAltaAfiliado_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
