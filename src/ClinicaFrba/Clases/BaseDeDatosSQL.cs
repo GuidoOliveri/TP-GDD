@@ -11,14 +11,41 @@ using System.Data.SqlTypes;
 using System.Data.OleDb;
 using System.Linq;
 using System.Windows.Forms;
-
+using System.Xml;
 
 namespace ClinicaFrba.Clases
 {
     public class BaseDeDatosSQL
     {
-        //private static SqlConnection _conexion = new SqlConnection();
+        //HAY QUE SACAR LA CONEXION ESTATICA
         private static SqlConnection conexion = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+        private SqlConnection conex;
+
+        public BaseDeDatosSQL()
+        {
+            conex = new SqlConnection(parsearArchivoDeConfiguracion());
+        }
+
+        private string parsearArchivoDeConfiguracion()
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load("..\\..\\App.config");
+            XmlNode node = doc.DocumentElement.SelectSingleNode("/configuration/connectionStrings/add");
+            string stringConexion = node.Attributes["connectionString"].InnerText;
+            string usuario = ";User ID=" + node.Attributes["userID"].InnerText;
+            string password = ";Password=" + node.Attributes["password"].InnerText;
+            return stringConexion + usuario + password;
+        }
+
+        public void abrirConexion()
+        {
+            conex.Open();
+        }
+
+        public void cerrarConexion()
+        {
+            conex.Close();
+        }
 
         public static SqlConnection ObtenerConexion()
         {
@@ -29,6 +56,8 @@ namespace ClinicaFrba.Clases
             }
             return conexion;
         }
+
+        /********************** METODOS PARA QUERYS *****************/
 
         public static SqlDataReader ObtenerDataReader(string commandtext, string commandtype, List<SqlParameter> ListaParametro)
         {
@@ -112,19 +141,10 @@ namespace ClinicaFrba.Clases
 
         /* VER DE UNIR AL RESTO ************/
 
-        public void abrirConexion()
-        {
-            conexion.Open();
-        }
-
-        public void cerrarConexion()
-        {
-            conexion.Close();
-        }
 
         public List<String> ObtenerLista(string queryString, string campo)
         {
-            SqlCommand command = new SqlCommand(queryString, conexion);
+            SqlCommand command = new SqlCommand(queryString, conex);
             command.ExecuteNonQuery();
             List<String> resultados = new List<String>();
             using (SqlDataReader reader = command.ExecuteReader())
@@ -171,7 +191,7 @@ namespace ClinicaFrba.Clases
 
         public string buscarCampo(string queryString)
         {
-            SqlCommand command = new SqlCommand(queryString, conexion);
+            SqlCommand command = new SqlCommand(queryString, conex);
             string result= (string) command.ExecuteScalar().ToString();
             if (result != null)
             {
@@ -182,7 +202,7 @@ namespace ClinicaFrba.Clases
 
         public Boolean validarCampo(string queryString)
         {
-            SqlCommand command = new SqlCommand(queryString, conexion);
+            SqlCommand command = new SqlCommand(queryString, conex);
             command.ExecuteNonQuery();
             int num = (int)command.ExecuteScalar();
             if (num > 0)
@@ -196,7 +216,7 @@ namespace ClinicaFrba.Clases
         }
         public void ExecStoredProcedure2(string commandtext)
         {
-            SqlCommand comando = new SqlCommand(commandtext, conexion);
+            SqlCommand comando = new SqlCommand(commandtext, conex);
             comando.CommandText = commandtext;
             comando.ExecuteNonQuery();
         }
@@ -227,7 +247,7 @@ namespace ClinicaFrba.Clases
             {
                 dt.Columns.Add(campo);
             }
-            SqlCommand command = new SqlCommand(queryString, conexion);
+            SqlCommand command = new SqlCommand(queryString, conex);
             command.ExecuteNonQuery();
             using (SqlDataReader reader = command.ExecuteReader())
             {
