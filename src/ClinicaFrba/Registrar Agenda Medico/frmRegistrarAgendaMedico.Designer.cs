@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnBorrar = new System.Windows.Forms.Button();
             this.warning3 = new System.Windows.Forms.Label();
             this.warning1 = new System.Windows.Forms.Label();
             this.btnAgregar = new System.Windows.Forms.Button();
@@ -60,7 +61,6 @@
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning2 = new System.Windows.Forms.Label();
             this.cmdVolver = new System.Windows.Forms.Button();
-            this.btnBorrar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -90,15 +90,24 @@
             this.groupBox1.Text = "Registrar agenda";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // btnBorrar
+            // 
+            this.btnBorrar.Location = new System.Drawing.Point(332, 196);
+            this.btnBorrar.Name = "btnBorrar";
+            this.btnBorrar.Size = new System.Drawing.Size(75, 23);
+            this.btnBorrar.TabIndex = 13;
+            this.btnBorrar.Text = "Borrar";
+            this.btnBorrar.UseVisualStyleBackColor = true;
+            // 
             // warning3
             // 
             this.warning3.AutoSize = true;
             this.warning3.ForeColor = System.Drawing.Color.Red;
-            this.warning3.Location = new System.Drawing.Point(377, 68);
+            this.warning3.Location = new System.Drawing.Point(199, 70);
             this.warning3.Name = "warning3";
-            this.warning3.Size = new System.Drawing.Size(113, 13);
+            this.warning3.Size = new System.Drawing.Size(290, 13);
             this.warning3.TabIndex = 12;
-            this.warning3.Text = "Ya existe una agenda.";
+            this.warning3.Text = "Ya existe una agenda con rangos de atención establecidos.";
             this.warning3.Click += new System.EventHandler(this.warning3_Click);
             // 
             // warning1
@@ -373,15 +382,6 @@
             this.cmdVolver.Text = "Volver";
             this.cmdVolver.UseVisualStyleBackColor = true;
             this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
-            // 
-            // btnBorrar
-            // 
-            this.btnBorrar.Location = new System.Drawing.Point(332, 196);
-            this.btnBorrar.Name = "btnBorrar";
-            this.btnBorrar.Size = new System.Drawing.Size(75, 23);
-            this.btnBorrar.TabIndex = 13;
-            this.btnBorrar.Text = "Borrar";
-            this.btnBorrar.UseVisualStyleBackColor = true;
             // 
             // frmRegistrarAgendaMedico
             // 

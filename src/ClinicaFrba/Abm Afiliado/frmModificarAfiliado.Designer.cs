@@ -70,7 +70,7 @@
             this.pnlModDatosPersonales.Controls.Add(this.lblNombreAfiliado);
             this.pnlModDatosPersonales.Location = new System.Drawing.Point(12, 16);
             this.pnlModDatosPersonales.Name = "pnlModDatosPersonales";
-            this.pnlModDatosPersonales.Size = new System.Drawing.Size(460, 251);
+            this.pnlModDatosPersonales.Size = new System.Drawing.Size(460, 283);
             this.pnlModDatosPersonales.TabIndex = 3;
             this.pnlModDatosPersonales.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlModDatosPersonales_Paint);
             // 
@@ -118,7 +118,7 @@
             // 
             this.txtMotivo.Location = new System.Drawing.Point(131, 216);
             this.txtMotivo.Name = "txtMotivo";
-            this.txtMotivo.Size = new System.Drawing.Size(217, 20);
+            this.txtMotivo.Size = new System.Drawing.Size(304, 20);
             this.txtMotivo.TabIndex = 18;
             // 
             // textBox1
@@ -215,7 +215,7 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(35, 288);
+            this.btnGuardar.Location = new System.Drawing.Point(35, 318);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(112, 23);
             this.btnGuardar.TabIndex = 4;
@@ -225,7 +225,7 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(360, 288);
+            this.btnCancelar.Location = new System.Drawing.Point(360, 318);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(112, 23);
             this.btnCancelar.TabIndex = 5;
@@ -237,7 +237,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(589, 338);
+            this.ClientSize = new System.Drawing.Size(553, 365);
             this.Controls.Add(this.lblDatosAfiliado);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGuardar);

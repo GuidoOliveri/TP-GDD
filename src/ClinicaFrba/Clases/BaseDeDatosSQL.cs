@@ -161,9 +161,7 @@ namespace ClinicaFrba.Clases
         {
             using (conexion)
             {
-                SqlCommand command = new SqlCommand(
-                  comando,
-                  conexion);
+                SqlCommand command = new SqlCommand( comando, conexion);
 
                 command.ExecuteNonQuery();
                 SqlDataReader reader = command.ExecuteReader();

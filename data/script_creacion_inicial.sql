@@ -332,8 +332,8 @@ CREATE TABLE NEXTGDD.Rango_Atencion (
    rango_atencion numeric (18,0) ,
    hora_inicial time,
    hora_final time,
-   dia_semanal_inicial numeric(8,0), 
-   dia_semanal_final numeric(8,0),
+   dia_semanal_inicial numeric(18,0), 
+   dia_semanal_final numeric(18,0),
    PRIMARY KEY (cod_agenda, rango_atencion) 
    )
 GO
@@ -475,6 +475,14 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.regis
     DROP PROCEDURE NEXTGDD.registrarDiagnostico
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.restringirHorarios'))
+    DROP FUNCTION NEXTGDD.restringirHorarios
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.restringirFechas'))
+    DROP FUNCTION NEXTGDD.restringirFechas
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarAgenda'))
     DROP PROCEDURE NEXTGDD.registrarAgenda
 GO
@@ -499,8 +507,16 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacie
     DROP VIEW NEXTGDD.Pacientes
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes'))
+    DROP VIEW NEXTGDD.Pacientes_Afil
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Medicos'))
     DROP VIEW NEXTGDD.Medicos	
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes_Afil'))
+    DROP VIEW NEXTGDD.Pacientes_Afil
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado1'))
@@ -553,6 +569,13 @@ afiliado, es necesario que se registre cuando se ha producido dicha modificación
 motivo que la originó, de manera de poder obtener un historial de dichos cambios.
 Dicho historial debe poder ser consultado de alguna manera dentro del sistema.*/
 
+
+CREATE VIEW NEXTGDD.Pacientes_Afil (Nro_Afiliado, Nombre, Apellido,Tipo_Doc, Nro_Doc, Direccion, Telefono, Mail,Fecha_Nac,Estado_Civil,Cant_Hijos,Plan_Medico)
+AS
+select nro_afiliado, nombre,apellido, tipo_doc, nro_documento, domicilio, telefono, mail,fecha_nac ,estado_civil , cant_familiares, cod_plan
+from NEXTGDD.Persona p Join NEXTGDD.Afiliado a ON(p.id_persona= a.id_persona)
+GO
+
  CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Domic(@id numeric(20,0), @nuevo_dom varchar(255))
   AS BEGIN
   
@@ -589,6 +612,7 @@ AS BEGIN
 select * from NEXTGDD.Afiliado
 END
 GO
+
  
  CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Telef(@id numeric(20,0), @nuevo_telef numeric(18,0))
  AS BEGIN
@@ -755,7 +779,7 @@ GO
 CREATE FUNCTION NEXTGDD.obtenerRangoClinica(@diaSemana numeric(18,0)) 
 RETURNS TABLE
 AS
-	RETURN select hora_inicial,hora_final from NEXTGDD.Rango_Atencion_Clinica where @diaSemana>=dia_inicial and @diaSemana<=dia_final;
+	RETURN select hora_inicial as 'horaD',hora_final as 'horaH' from NEXTGDD.Rango_Atencion_Clinica where @diaSemana>=dia_inicial and @diaSemana<=dia_final;
 GO
 
 CREATE FUNCTION NEXTGDD.validarTurnoDisponible(@fecha datetime,@profesional varchar(255))
@@ -770,6 +794,25 @@ BEGIN
   		   where t.fecha LIKE @fecha and (pers.nombre+' '+pers.apellido) LIKE @profesional
 		   and pers.id_persona=p.id_persona and a.matricula=p.matricula and t.cod_agenda=a.cod_agenda)
 END;
+GO
+
+CREATE FUNCTION NEXTGDD.restringirFechas(@especialidad varchar(255),@profesional varchar(255))
+RETURNS TABLE
+AS
+	RETURN (select a.rango_fecha_desde as 'fechaD',a.rango_fecha_hasta as 'fechaH'
+		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a 
+		   where (p.nombre+' '+p.apellido) LIKE @profesional and e.descripcion LIKE @especialidad
+				 and pr.id_persona=p.id_persona and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad)
+GO
+
+CREATE FUNCTION NEXTGDD.restringirHorarios(@especialidad varchar(255),@profesional varchar(255),@dia numeric(18,0))
+RETURNS TABLE
+AS
+	RETURN (select r.hora_inicial as 'horaD',r.hora_final as 'horaH'
+		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a, NEXTGDD.Rango_Atencion r 
+		   where (p.nombre+' '+p.apellido) LIKE @profesional and e.descripcion LIKE @especialidad
+				 and pr.id_persona=p.id_persona and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad 
+				 and r.cod_agenda=a.cod_agenda and @dia<=r.dia_semanal_final and @dia>=r.dia_semanal_inicial)
 GO
 
 CREATE FUNCTION NEXTGDD.tieneRangosHorarios(@especialidad varchar(255),@profesional varchar(255))
@@ -944,24 +987,6 @@ AS
 			group by t.fecha 
 GO
 
-CREATE PROCEDURE NEXTGDD.registrarAgenda (@nomProfesional varchar(255),@nomEspecialidad varchar(255),@fechaD datetime,@fechaH datetime)
-AS
-BEGIN
-	DECLARE @cod_esp numeric(18,0)=(select cod_especialidad from NEXTGDD.Especialidad where descripcion LIKE @nomEspecialidad)
-	DECLARE @matricula numeric(18,0)=(select pr.matricula from NEXTGDD.Profesional pr, NEXTGDD.Persona p where p.nombre+' '+p.apellido LIKE @nomProfesional and p.id_persona=pr.id_persona)
-	INSERT NEXTGDD.Agenda(rango_fecha_desde,rango_fecha_hasta,matricula,cod_especialidad) values
-			(@fechaD,@fechaH,@matricula,@cod_esp)
-END;
-GO
-
-CREATE PROCEDURE NEXTGDD.registrarRangoHorario (@cod_rango numeric(18,0),@codAgenda numeric(18,0),@diaD numeric(18,0),@diaH numeric(18,0),@horaD time,@horaH time)
-AS
-BEGIN
-	INSERT NEXTGDD.Rango_Atencion (rango_atencion,cod_agenda,hora_final,hora_inicial,dia_semanal_inicial,dia_semanal_final) values
-			(@cod_rango,@codAgenda,@horaD,@horaH,@diaD,@diaH)
-END;
-GO
-
 CREATE FUNCTION NEXTGDD.buscarCodigoAgenda(@nomProfesional varchar(255),@nomEsp varchar(255))
 returns numeric(18,0)
 BEGIN
@@ -972,6 +997,32 @@ BEGIN
 END;
 GO
 
+--Si existe la agenda, solo carga la fecha desde y hasta, sino crea una nueva agenda
+CREATE PROCEDURE NEXTGDD.registrarAgenda (@nomProfesional varchar(255),@nomEspecialidad varchar(255),@fechaD datetime,@fechaH datetime)
+AS
+BEGIN
+	DECLARE @codAgenda numeric(18,0)=(select NEXTGDD.buscarCodigoAgenda(@nomProfesional,@nomEspecialidad))
+	IF isnull(@codAgenda,0)<>0
+	BEGIN
+		UPDATE NEXTGDD.Agenda SET rango_fecha_desde=@fechaD where cod_agenda=@codAgenda
+		UPDATE NEXTGDD.Agenda SET rango_fecha_hasta=@fechaH where cod_agenda=@codAgenda
+		RETURN
+	END
+	INSERT NEXTGDD.Agenda(rango_fecha_desde,rango_fecha_hasta,matricula,cod_especialidad) 
+			(select @fechaD,@fechaH,pr.matricula,e.cod_especialidad
+			 from NEXTGDD.Especialidad e,NEXTGDD.Profesional pr, NEXTGDD.Persona p 
+			 where e.descripcion LIKE @nomEspecialidad and p.nombre+' '+p.apellido LIKE @nomProfesional and p.id_persona=pr.id_persona)
+	RETURN
+END;
+GO
+
+CREATE PROCEDURE NEXTGDD.registrarRangoHorario (@cod_rango numeric(18,0),@codAgenda numeric(18,0),@diaD numeric(18,0),@diaH numeric(18,0),@horaD time,@horaH time)
+AS
+BEGIN
+	INSERT NEXTGDD.Rango_Atencion (rango_atencion,cod_agenda,hora_final,hora_inicial,dia_semanal_inicial,dia_semanal_final) values
+			(@cod_rango,@codAgenda,@horaH,@horaD,@diaD,@diaH)
+END;
+GO
 
 CREATE FUNCTION NEXTGDD.buscarEspecialidades(@profesional varchar(255))
 RETURNS Table
@@ -992,7 +1043,9 @@ BEGIN
 					END 
 		   from NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e 
 		   where p.nombre+' '+p.apellido LIKE @profesional and p.id_persona=pr.id_persona and a.matricula=pr.matricula 
-		         and a.cod_especialidad=e.cod_especialidad and e.descripcion LIKE @especialidad)
+		         and a.cod_especialidad=e.cod_especialidad and e.descripcion LIKE @especialidad and
+				 not(a.rango_fecha_desde IS NULL) and not(a.rango_fecha_hasta IS NULL) and
+				 (select isnull(count(*),0) from NEXTGDD.Rango_Atencion ra where ra.cod_agenda=a.cod_agenda)<>0)
 END;
 GO
 
@@ -1659,6 +1712,7 @@ GO
 EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 0, @id_persona = 3116603
 GO
 
---select * from NEXTGDD.Turno t,NEXTGDD.Profesional pr,NEXTGDD.Agenda a,NEXTGDD.Persona p,ne
---where t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula and p.id_persona=pr.id_persona
---order by t.fecha DESC
+
+
+
+

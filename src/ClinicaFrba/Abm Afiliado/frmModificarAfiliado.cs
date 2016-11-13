@@ -24,7 +24,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private String mail = "";
         private string plan = "";
 
-        public frmModificarAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmModificarAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd, UInt64 nroAfil)
         {
             InitializeComponent();
 
@@ -32,25 +32,28 @@ namespace ClinicaFrba.Abm_Afiliado
             this.usuario = usuario;
             this.bdd = bdd;
             plan = (string)cmbPlanMedico.SelectedItem;
+            
+            //this.idAfiliado = 27281; //hardcodeado, despues vemos 
 
-            this.idAfiliado = 27281; //hardcodeado, despues vemos 
+          ////  int idPersona = 1123960; // Hardcode de prueba
+          //  comando = "select * from GD2C2016.NEXTGDD.Persona where id_persona ="+idPersona;
+          //  System.Collections.ArrayList persona = this.bdd.obtenerRow(comando);
 
-            int idPersona = 1123960; // Hardcode de prueba
-            comando = "select * from GD2C2016.NEXTGDD.Persona where id_persona ="+idPersona;
-            System.Collections.ArrayList persona = this.bdd.obtenerRow(comando);
+          //  lblNombreAfiliado.Text = persona[1].ToString() +" "+ persona[2].ToString();
+          //  direccion = (string)persona[3];
+          //  telefono = persona[4].ToString();
+          //  mail = (string)persona[5];
 
-            lblNombreAfiliado.Text = persona[1].ToString() +" "+ persona[2].ToString();
-            direccion = (string)persona[3];
-            telefono = persona[4].ToString();
-            mail = (string)persona[5];
+            txtDir.Text = "direcion del afil "+ nroAfil  ;
+            txtMail.Text = "mail del afil " + nroAfil;
+            txtTel.Text = "telefono del afil "+ nroAfil;
+            textBox1.Text = " cant hijos" + nroAfil;
+            txtMotivo.Text = "Si cambia de Plan, Ingrese el motivo por favor" ;  
 
-            txtDir.Text = direccion;
-            txtMail.Text = mail;
-            txtTel.Text = telefono;
-
+          //  */
             comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
             cargar(bdd.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
-
+            
             btnGuardar.Click += new EventHandler(btnGuardar_Click);
             
             

@@ -46,15 +46,6 @@
             this.listaDeAfiliados = new ClinicaFrba.ListaDeAfiliados();
             this.listaDeAfiliadosBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.nroafiliadoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cantfamiliaresDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.codplanDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nroconsultaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.activoDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.fechabajalogicaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idpersonaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.grupoafiliadoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.integrantegrupoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.afiliadoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.afiliadoTableAdapter = new ClinicaFrba.ListaDeAfiliadosTableAdapters.AfiliadoTableAdapter();
             this.pnlFiltroBusqueda.SuspendLayout();
@@ -75,7 +66,7 @@
             this.pnlFiltroBusqueda.Controls.Add(this.lblApellido);
             this.pnlFiltroBusqueda.Controls.Add(this.lblNombreFiltrado);
             this.pnlFiltroBusqueda.Controls.Add(this.lblFiltroBusqueda);
-            this.pnlFiltroBusqueda.Location = new System.Drawing.Point(26, 12);
+            this.pnlFiltroBusqueda.Location = new System.Drawing.Point(74, 12);
             this.pnlFiltroBusqueda.Name = "pnlFiltroBusqueda";
             this.pnlFiltroBusqueda.Size = new System.Drawing.Size(535, 111);
             this.pnlFiltroBusqueda.TabIndex = 0;
@@ -156,7 +147,7 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(111, 138);
+            this.btnLimpiar.Location = new System.Drawing.Point(159, 137);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(118, 23);
             this.btnLimpiar.TabIndex = 1;
@@ -166,7 +157,7 @@
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(326, 138);
+            this.btnBuscar.Location = new System.Drawing.Point(374, 138);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(118, 23);
             this.btnBuscar.TabIndex = 2;
@@ -176,7 +167,7 @@
             // 
             // btnModificarAfiliado
             // 
-            this.btnModificarAfiliado.Location = new System.Drawing.Point(60, 361);
+            this.btnModificarAfiliado.Location = new System.Drawing.Point(108, 372);
             this.btnModificarAfiliado.Name = "btnModificarAfiliado";
             this.btnModificarAfiliado.Size = new System.Drawing.Size(178, 32);
             this.btnModificarAfiliado.TabIndex = 4;
@@ -186,7 +177,7 @@
             // 
             // btnVolver
             // 
-            this.btnVolver.Location = new System.Drawing.Point(349, 361);
+            this.btnVolver.Location = new System.Drawing.Point(374, 372);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(178, 32);
             this.btnVolver.TabIndex = 5;
@@ -211,78 +202,13 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.nroafiliadoDataGridViewTextBoxColumn,
-            this.cantfamiliaresDataGridViewTextBoxColumn,
-            this.codplanDataGridViewTextBoxColumn,
-            this.nroconsultaDataGridViewTextBoxColumn,
-            this.activoDataGridViewCheckBoxColumn,
-            this.fechabajalogicaDataGridViewTextBoxColumn,
-            this.idpersonaDataGridViewTextBoxColumn,
-            this.grupoafiliadoDataGridViewTextBoxColumn,
-            this.integrantegrupoDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.afiliadoBindingSource;
-            this.dataGridView1.Location = new System.Drawing.Point(26, 178);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 178);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(535, 150);
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(642, 177);
             this.dataGridView1.TabIndex = 6;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick_1);
-            // 
-            // nroafiliadoDataGridViewTextBoxColumn
-            // 
-            this.nroafiliadoDataGridViewTextBoxColumn.DataPropertyName = "nro_afiliado";
-            this.nroafiliadoDataGridViewTextBoxColumn.HeaderText = "nro_afiliado";
-            this.nroafiliadoDataGridViewTextBoxColumn.Name = "nroafiliadoDataGridViewTextBoxColumn";
-            // 
-            // cantfamiliaresDataGridViewTextBoxColumn
-            // 
-            this.cantfamiliaresDataGridViewTextBoxColumn.DataPropertyName = "cant_familiares";
-            this.cantfamiliaresDataGridViewTextBoxColumn.HeaderText = "cant_familiares";
-            this.cantfamiliaresDataGridViewTextBoxColumn.Name = "cantfamiliaresDataGridViewTextBoxColumn";
-            // 
-            // codplanDataGridViewTextBoxColumn
-            // 
-            this.codplanDataGridViewTextBoxColumn.DataPropertyName = "cod_plan";
-            this.codplanDataGridViewTextBoxColumn.HeaderText = "cod_plan";
-            this.codplanDataGridViewTextBoxColumn.Name = "codplanDataGridViewTextBoxColumn";
-            // 
-            // nroconsultaDataGridViewTextBoxColumn
-            // 
-            this.nroconsultaDataGridViewTextBoxColumn.DataPropertyName = "nro_consulta";
-            this.nroconsultaDataGridViewTextBoxColumn.HeaderText = "nro_consulta";
-            this.nroconsultaDataGridViewTextBoxColumn.Name = "nroconsultaDataGridViewTextBoxColumn";
-            // 
-            // activoDataGridViewCheckBoxColumn
-            // 
-            this.activoDataGridViewCheckBoxColumn.DataPropertyName = "activo";
-            this.activoDataGridViewCheckBoxColumn.HeaderText = "activo";
-            this.activoDataGridViewCheckBoxColumn.Name = "activoDataGridViewCheckBoxColumn";
-            // 
-            // fechabajalogicaDataGridViewTextBoxColumn
-            // 
-            this.fechabajalogicaDataGridViewTextBoxColumn.DataPropertyName = "fecha_baja_logica";
-            this.fechabajalogicaDataGridViewTextBoxColumn.HeaderText = "fecha_baja_logica";
-            this.fechabajalogicaDataGridViewTextBoxColumn.Name = "fechabajalogicaDataGridViewTextBoxColumn";
-            // 
-            // idpersonaDataGridViewTextBoxColumn
-            // 
-            this.idpersonaDataGridViewTextBoxColumn.DataPropertyName = "id_persona";
-            this.idpersonaDataGridViewTextBoxColumn.HeaderText = "id_persona";
-            this.idpersonaDataGridViewTextBoxColumn.Name = "idpersonaDataGridViewTextBoxColumn";
-            // 
-            // grupoafiliadoDataGridViewTextBoxColumn
-            // 
-            this.grupoafiliadoDataGridViewTextBoxColumn.DataPropertyName = "grupo_afiliado";
-            this.grupoafiliadoDataGridViewTextBoxColumn.HeaderText = "grupo_afiliado";
-            this.grupoafiliadoDataGridViewTextBoxColumn.Name = "grupoafiliadoDataGridViewTextBoxColumn";
-            // 
-            // integrantegrupoDataGridViewTextBoxColumn
-            // 
-            this.integrantegrupoDataGridViewTextBoxColumn.DataPropertyName = "integrante_grupo";
-            this.integrantegrupoDataGridViewTextBoxColumn.HeaderText = "integrante_grupo";
-            this.integrantegrupoDataGridViewTextBoxColumn.Name = "integrantegrupoDataGridViewTextBoxColumn";
             // 
             // afiliadoBindingSource
             // 
@@ -298,7 +224,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 402);
+            this.ClientSize = new System.Drawing.Size(666, 426);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.btnModificarAfiliado);
@@ -341,14 +267,5 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.BindingSource afiliadoBindingSource;
         private ListaDeAfiliadosTableAdapters.AfiliadoTableAdapter afiliadoTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nroafiliadoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn cantfamiliaresDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn codplanDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nroconsultaDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn activoDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fechabajalogicaDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idpersonaDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn grupoafiliadoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn integrantegrupoDataGridViewTextBoxColumn;
     }
 }
