@@ -933,12 +933,10 @@ GO
 CREATE FUNCTION NEXTGDD.buscarEspecialidades(@profesional varchar(255))
 RETURNS Table
 AS
-BEGIN 
 	RETURN (select e.descripcion as especialidad 
 			from NEXTGDD.Persona persona,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e 
 			where (persona.nombre+' '+persona.apellido) LIKE @profesional and persona.id_persona=p.id_persona 
 			  and pe.matricula=p.matricula and e.cod_especialidad=pe.cod_especialidad)
-END;
 GO
 
 CREATE FUNCTION NEXTGDD.validarAgendaUnica(@especialidad varchar(255),@profesional varchar(255)) 
