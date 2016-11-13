@@ -917,18 +917,16 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE NEXTGDD.registrarCompra (@cant numeric(18,0),@idAfiliado varchar(255),@precioTotal numeric(18,0))
-AS
-BEGIN
-	INSERT NEXTGDD.Compra_Bono(cant,id_afiliado,precio_total) values
-			(@cant,@idAfiliado,@precioTotal)
+
 CREATE FUNCTION NEXTGDD.buscarEspecialidades(@profesional varchar(255))
-RETURNS TABLE
+RETURNS Table
 AS
-	RETURN select e.descripcion as especialidad 
+BEGIN 
+	RETURN (select e.descripcion as especialidad 
 			from NEXTGDD.Persona persona,NEXTGDD.Profesional p,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e 
 			where (persona.nombre+' '+persona.apellido) LIKE @profesional and persona.id_persona=p.id_persona 
-				  and pe.matricula=p.matricula and e.cod_especialidad=pe.cod_especialidad 
+			  and pe.matricula=p.matricula and e.cod_especialidad=pe.cod_especialidad)
+END;
 GO
 
 CREATE FUNCTION NEXTGDD.validarAgendaUnica(@especialidad varchar(255),@profesional varchar(255)) 
