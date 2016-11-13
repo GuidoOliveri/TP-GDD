@@ -750,6 +750,14 @@ BEGIN
 END;
 GO
 
+CREATE PROCEDURE NEXTGDD.registrarCompra (@cant numeric(18,0),@idAfiliado varchar(255),@precioTotal numeric(18,0))
+AS
+BEGIN
+	INSERT NEXTGDD.Compra_Bono(cant,id_afiliado,precio_total) values
+			(@cant,@idAfiliado,@precioTotal)
+END;
+GO
+
 CREATE PROCEDURE NEXTGDD.agregar_funcionalidad(@rol varchar(255), @func varchar(255)) AS
 BEGIN
 	INSERT INTO NEXTGDD.Funcionalidad_X_Rol(id_rol,id_funcionalidad )
