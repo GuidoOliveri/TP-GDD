@@ -478,6 +478,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.regis
     DROP PROCEDURE NEXTGDD.registrarCompra
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.comprarBono'))
+    DROP PROCEDURE NEXTGDD.comprarBono
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes'))
     DROP VIEW NEXTGDD.Pacientes
 GO
@@ -883,6 +887,16 @@ AS
 BEGIN
 	INSERT NEXTGDD.Compra_Bono(cant,id_afiliado,precio_total) values
 			(@cant,@idAfiliado,@precioTotal)
+END;
+GO
+
+CREATE PROCEDURE NEXTGDD.comprarBono (@fechaImpresion datetime,@compraFecha dateTime,
+			@codPlan numeric(18,0), @nroAfiliado numeric(18,0))
+AS
+BEGIN
+	INSERT NEXTGDD.Bono_Consulta(fecha_impresion, compra_fecha, cod_plan, nro_afiliado) values
+			(@fechaImpresion,@compraFecha,
+			@codPlan, @nroAfiliado)
 END;
 GO
 
