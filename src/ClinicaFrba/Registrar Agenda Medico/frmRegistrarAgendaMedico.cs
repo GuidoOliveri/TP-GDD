@@ -126,10 +126,11 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             {
                 especialidad = (string)cmbEspecialidad.SelectedItem;
                 comando = "select NEXTGDD.validarAgendaUnica('"+especialidad+"','"+profesional+"')";
-                if (bdd.buscarCampo(comando) == "No existe una agenda")
+                if (bdd.buscarCampo(comando)=="No existe una agenda")
                 {
                     warning3.Visible = false;
                 }
+                else
                 {
                     warning3.Visible = true;
                 }
@@ -144,8 +145,8 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
             comando = "select * from NEXTGDD.obtenerRangoClinica(" + nroDiaHasta + ")";
             List<String> campos = new List<string>();
-            campos.Add("hora_inicial");
-            campos.Add("hora_final");
+            campos.Add("horaD");
+            campos.Add("horaH");
             return bdd.ObtenerTabla(comando, campos);
         }
 

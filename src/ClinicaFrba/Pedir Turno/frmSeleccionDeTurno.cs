@@ -105,6 +105,7 @@ namespace ClinicaFrba.Pedir_Turno
             {
                 warning3.Visible = false;
                 profesional = (string) cmbProfesional.SelectedItem;
+                restringirRangoFechas();
             }
             if (cmbHorario.SelectedItem != null)
             {
@@ -120,8 +121,7 @@ namespace ClinicaFrba.Pedir_Turno
             warning1.Visible = false;
             cmbHorario.Items.Clear();
             cmbHorario.Text = "";
-            DataTable rangos = buscarRangoAtencionClinica();
-            cargarHorarios(rangos);
+            restringirRangoHorario();
             cargar(horarios, cmbHorario);
             if (horarios.Count() == 0)
             {
@@ -139,28 +139,13 @@ namespace ClinicaFrba.Pedir_Turno
             return bdd.ObtenerTabla(comando, campos);
         }
 
-        private void cargarHorarios(DataTable rangos)
-        {
-            horarios.Clear();
-            foreach (DataRow fila in rangos.Rows)
-            {
-                //La fecha es cualquiera, solo se usa el tiempo
-                DateTime dt = DateTime.Parse("3/11/2000 "+fila[0]);
-                while (dt <= DateTime.Parse("3/11/2000 " + fila[1]))
-                {
-                    horarios.Add(dt.ToString("HH:mm"));
-                    dt = dt.AddMinutes(30);
-                }
-            }
-        }
-
         private void btnIngresarTurno_Click(object sender, EventArgs e)
         {
             nroAfiliado=(string) txtNroAfiliado.Text;
             this.verificarTextbox();
             verificarTurnoDisponible();
             verificarRangoHorario();
-            if (nroAfiliado != "" && warning4.Visible==false && especialidad != "" && profesional != "" && fecha != "")
+            if (nroAfiliado != "" && warning4.Visible==false && especialidad != "" && profesional != "" && fecha != "" && warning1.Visible==false && warning2.Visible==false)
             {
                 comando = "EXECUTE NEXTGDD.crearTurno @nroAf='"+nroAfiliado+"', @nombreEsp='"+especialidad+"', @nomProf='"+profesional+"', @fecha='"+fecha+"'";
                 bdd.ExecStoredProcedure2(comando);
@@ -206,6 +191,61 @@ namespace ClinicaFrba.Pedir_Turno
                 }
             }
         }
+
+        private void restringirRangoFechas()
+        {
+            comando = "select NEXTGDD.tieneRangosHorarios('" + especialidad + "','" + profesional + "')";
+            if (bdd.buscarCampo(comando) == "true")
+            {
+                comando = "select * from NEXTGDD.restringirFechas('" + especialidad + "','" + profesional + "')";
+                List<String> campos = new List<string>();
+                campos.Add("fechaD");
+                campos.Add("fechaH");
+                DataTable dt = bdd.ObtenerTabla(comando, campos);
+                dtpFecha.MinDate = DateTime.Parse((string)dt.Rows[0][0]);
+                dtpFecha.MaxDate = DateTime.Parse((string)dt.Rows[0][1]);
+            }
+            else
+            {
+                dtpFecha.MinDate = DateTimePicker.MinimumDateTime;
+                dtpFecha.MaxDate = DateTimePicker.MaximumDateTime;
+            }
+        }
+
+        private void restringirRangoHorario()
+        {
+            int diaSemana = (int)dtpFecha.Value.DayOfWeek - 1;
+            List<String> campos = new List<string>();
+            campos.Add("horaD");
+            campos.Add("horaH");
+            comando = "select NEXTGDD.tieneRangosHorarios('" + especialidad + "','" + profesional + "')";
+            if (bdd.buscarCampo(comando) == "true")
+            {
+                comando = "select * from NEXTGDD.restringirHorarios('" + especialidad + "','" + profesional + "',"+diaSemana+")";
+                cargarHorarios(bdd.ObtenerTabla(comando, campos));
+            }
+            else
+            {
+                comando = "select * from NEXTGDD.obtenerRangoClinica(" + diaSemana + ")";
+                cargarHorarios(bdd.ObtenerTabla(comando, campos));
+            }
+        }
+
+        private void cargarHorarios(DataTable rangos)
+        {
+            horarios.Clear();
+            foreach (DataRow fila in rangos.Rows)
+            {
+                //La fecha es cualquiera, solo se usa el tiempo
+                DateTime dt = DateTime.Parse("3/11/2000 " + fila[0]);
+                while (dt <= DateTime.Parse("3/11/2000 " + fila[1]))
+                {
+                    horarios.Add(dt.ToString("HH:mm"));
+                    dt = dt.AddMinutes(30);
+                }
+            }
+        }
+
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
         }
