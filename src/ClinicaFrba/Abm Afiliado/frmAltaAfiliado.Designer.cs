@@ -426,6 +426,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Alta de Afiliado";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAltaAfiliado_FormClosing);
+            this.Load += new System.EventHandler(this.frmAltaAfiliado_Load);
             this.pnlDatosPersonales.ResumeLayout(false);
             this.pnlDatosPersonales.PerformLayout();
             this.pnlDatosEspecificos.ResumeLayout(false);

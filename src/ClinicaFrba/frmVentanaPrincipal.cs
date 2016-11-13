@@ -31,7 +31,7 @@ namespace ClinicaFrba
             // TODO: Complete member initialization
         }
 
-        public Usuario User { get; set; }
+        //public Usuario User 
 
         private void cmdIngresar_Click(object sender, EventArgs e)
         {

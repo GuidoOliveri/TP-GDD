@@ -24,7 +24,7 @@ namespace ClinicaFrba.Clases
         {
             if (conexion.State == ConnectionState.Closed)
             {
-                conexion.ConnectionString = ConfigurationSettings.AppSettings["ConnectionString"];
+              //  conexion.ConnectionString = ConfigurationSettings.AppSettings["ConnectionString"];
                 conexion.Open();
             }
             return conexion;

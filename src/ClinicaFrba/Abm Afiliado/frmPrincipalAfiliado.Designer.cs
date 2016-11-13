@@ -68,7 +68,7 @@
             // 
             // cmdBuscarAfiliado
             // 
-            this.cmdBuscarAfiliado.Location = new System.Drawing.Point(361, 95);
+            this.cmdBuscarAfiliado.Location = new System.Drawing.Point(360, 95);
             this.cmdBuscarAfiliado.Name = "cmdBuscarAfiliado";
             this.cmdBuscarAfiliado.Size = new System.Drawing.Size(100, 44);
             this.cmdBuscarAfiliado.TabIndex = 3;

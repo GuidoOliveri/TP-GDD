@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClinicaFrba.Clases;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
@@ -15,6 +16,9 @@ namespace ClinicaFrba.Abm_Afiliado
         private string rol = "";
         private string usuario = "";
         private Clases.BaseDeDatosSQL bdd;
+        private UInt64 nroAfil;
+        private DateTime fechaBaja;
+        int resultado;
 
         public frmBajaAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
         {
@@ -34,10 +38,55 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
+        private void limpiar(){
+        
+             txtMatricula.Clear();
+             dtpFechaBaja.ResetText();
+        }
+
+
         private void btnAceptar_Click(object sender, EventArgs e)
         {
 
+
+            if (String.IsNullOrEmpty(txtMatricula.Text) )  // dtpFecha
+            {
+                MessageBox.Show("Por favor, Ingrese datos en los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+               
+            }
+            else
+            {
+                  
+              nroAfil = Convert.ToUInt64(txtMatricula.Text); 
+              fechaBaja= Convert.ToDateTime(dtpFechaBaja.Value).Date ;
+
+              resultado= Afiliado.darDeBajaAfiliado(nroAfil, fechaBaja);
+                
+                if (resultado.Equals(-1))
+                {
+                    
+                    MessageBox.Show("Lo sentimos, no podemos procesar tu solicitud. Inténtalo de nuevo más tarde.", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    limpiar();
+                }
+                else if (resultado.Equals(-2))
+                {
+                    
+                    MessageBox.Show("El Nro de Afiliado: " + nroAfil+ " No existe!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    limpiar();
+                }
+
+                else
+                {
+                    
+                    MessageBox.Show("El Nro de Afiliado: " + nroAfil+ "\nFue dado de baja exitosamente!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    limpiar();
+                }
+
+            }
+
+
         }
+
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {

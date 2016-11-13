@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClinicaFrba.Clases; 
 
 namespace ClinicaFrba.AbmRol
 {
@@ -41,6 +42,7 @@ namespace ClinicaFrba.AbmRol
         {
             warning.Visible = false;
             rol = (string) cboRoles.SelectedItem;
+            Usuario.id_rol = rol;
         }
 
         private void btnVolverMenuPrincipal_Click(object sender, EventArgs e)
@@ -81,6 +83,11 @@ namespace ClinicaFrba.AbmRol
             {
                 e.Cancel = true;
             }
+        }
+
+        private void cboRoles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

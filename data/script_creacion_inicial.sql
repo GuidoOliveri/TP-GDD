@@ -401,9 +401,18 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.mostr
     DROP PROCEDURE NEXTGDD.mostrarHistorial_ga
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.mostrarHistorialPlanes'))
+    DROP PROCEDURE NEXTGDD.mostrarHistorialPlanes
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.darDeBajaAfiliado'))
     DROP PROCEDURE NEXTGDD.darDeBajaAfiliado
 GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.obtenerAfiliados'))
+    DROP PROCEDURE NEXTGDD.obtenerAfiliados
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.validarConRangoHorario'))
     DROP FUNCTION NEXTGDD.validarConRangoHorario
 GO
@@ -575,6 +584,11 @@ ELSE
 END
 GO
 
+CREATE PROCEDURE NEXTGDD.obtenerAfiliados
+AS BEGIN
+select * from NEXTGDD.Afiliado
+END
+GO
  
  CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Telef(@id numeric(20,0), @nuevo_telef numeric(18,0))
  AS BEGIN
@@ -1260,6 +1274,16 @@ WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.gru
 END
 GO
 
+CREATE PROCEDURE NEXTGDD.mostrarHistorialPlanes
+AS
+BEGIN
+
+SELECT nro_historial,fecha_modificacion,motivo_modificacion, nro_afiliado, cod_plan_viejo, cod_plan_nuevo
+FROM NEXTGDD.Historial
+END
+GO
+
+
 CREATE PROCEDURE NEXTGDD.mostrarHistorial_ga(@grupoafiliado numeric(20,0) )
 AS
 BEGIN
@@ -1271,9 +1295,11 @@ END
 GO
 
 
-CREATE PROCEDURE NEXTGDD.darDeBajaAfiliado(@nro_afiliado numeric(20,0), @fecha_baja datetime)
+CREATE PROCEDURE NEXTGDD.darDeBajaAfiliado(@nro_afiliado numeric(20,0), @fecha_baja datetime, @ret smallint OUTPUT)
 AS BEGIN
 
+IF EXISTS (SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado)
+  BEGIN
     BEGIN TRY
 	  BEGIN TRANSACTION   
           UPDATE NEXTGDD.Afiliado 
@@ -1281,15 +1307,17 @@ AS BEGIN
 	      WHERE nro_afiliado = @nro_afiliado
               
 	  COMMIT TRANSACTION
-      RETURN 0
+      SET @ret= 0
     END TRY
   
    BEGIN CATCH
     ROLLBACK TRANSACTION
     
-    RETURN -1
+      SET @ret= -1
   END CATCH
-
+END
+ELSE
+SET @ret= -2
 END
 GO
 

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ClinicaFrba.Clases;
+
 
 namespace ClinicaFrba.Abm_Afiliado
 {
@@ -32,8 +34,11 @@ namespace ClinicaFrba.Abm_Afiliado
         private void frmModifcarAfiliadoGrupo_Load(object sender, EventArgs e)
         {
             // TODO: esta línea de código carga datos en la tabla 'listaDeAfiliados.Afiliado' Puede moverla o quitarla según sea necesario.
-            this.afiliadoTableAdapter.Fill(this.listaDeAfiliados.Afiliado);
-            
+            //this.afiliadoTableAdapter.Fill(this.listaDeAfiliados.Afiliado);
+            DataTable tabla = new DataTable();
+            tabla =Afiliado.obtenerAfilidos();
+            dataGridView1.DataSource  =tabla;
+
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
@@ -89,6 +94,11 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 e.Cancel = true;
             }
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
 
     }
