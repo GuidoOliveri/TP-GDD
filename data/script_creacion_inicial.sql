@@ -499,8 +499,16 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacie
     DROP VIEW NEXTGDD.Pacientes
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes'))
+    DROP VIEW NEXTGDD.Pacientes_Afil
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Medicos'))
     DROP VIEW NEXTGDD.Medicos	
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes_Afil'))
+    DROP VIEW NEXTGDD.Pacientes_Afil
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado1'))
@@ -553,6 +561,13 @@ afiliado, es necesario que se registre cuando se ha producido dicha modificación
 motivo que la originó, de manera de poder obtener un historial de dichos cambios.
 Dicho historial debe poder ser consultado de alguna manera dentro del sistema.*/
 
+
+CREATE VIEW NEXTGDD.Pacientes_Afil (Nro_Afiliado, Nombre, Apellido,Tipo_Doc, Nro_Doc, Direccion, Telefono, Mail,Fecha_Nac,Estado_Civil,Cant_Hijos,Plan_Medico)
+AS
+select nro_afiliado, nombre,apellido, tipo_doc, nro_documento, domicilio, telefono, mail,fecha_nac ,estado_civil , cant_familiares, cod_plan
+from NEXTGDD.Persona p Join NEXTGDD.Afiliado a ON(p.id_persona= a.id_persona)
+GO
+
  CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Domic(@id numeric(20,0), @nuevo_dom varchar(255))
   AS BEGIN
   
@@ -589,6 +604,7 @@ AS BEGIN
 select * from NEXTGDD.Afiliado
 END
 GO
+
  
  CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Telef(@id numeric(20,0), @nuevo_telef numeric(18,0))
  AS BEGIN
@@ -1662,3 +1678,7 @@ GO
 --select * from NEXTGDD.Turno t,NEXTGDD.Profesional pr,NEXTGDD.Agenda a,NEXTGDD.Persona p,ne
 --where t.cod_agenda=a.cod_agenda and a.matricula=pr.matricula and p.id_persona=pr.id_persona
 --order by t.fecha DESC
+
+
+
+

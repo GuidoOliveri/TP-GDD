@@ -69,7 +69,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnModificarAfiliado_Click(object sender, EventArgs e)
         {
-            frmModificarAfiliado este = new frmModificarAfiliado(rol,usuario,bdd);
+            UInt64 nroAfil = UInt64.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
+
+            frmModificarAfiliado este = new frmModificarAfiliado(rol, usuario, bdd, nroAfil);
             this.Hide();
             este.Show();
         }

@@ -16,10 +16,10 @@ namespace ClinicaFrba.Clases
 
             DataTable tabla = new DataTable();
 
-            SqlConnection conexion = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016"); //BaseDeDatosSQL.ObtenerConexion();
-            conexion.Open();
-            SqlCommand cmd = new SqlCommand("NEXTGDD.obtenerAfiliados", conexion);
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlConnection conexion = BaseDeDatosSQL.ObtenerConexion();//new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016"); //BaseDeDatosSQL.ObtenerConexion();
+           // conexion.Open();
+            SqlCommand cmd = new SqlCommand("SELECT * FROM NEXTGDD.Pacientes_Afil", conexion);  //NEXTGDD.mostrar_Pacientes_Afil
+            cmd.CommandType = CommandType.Text ;//  .StoredProcedure;
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(tabla);
             conexion.Close();
