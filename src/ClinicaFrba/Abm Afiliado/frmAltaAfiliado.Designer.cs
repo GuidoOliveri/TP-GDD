@@ -31,6 +31,16 @@
             this.btnRegistrar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.pnlDatosPersonales = new System.Windows.Forms.Panel();
+            this.pnlDireccion = new System.Windows.Forms.Panel();
+            this.txtDepto = new System.Windows.Forms.TextBox();
+            this.txtPiso = new System.Windows.Forms.TextBox();
+            this.txtAltura = new System.Windows.Forms.TextBox();
+            this.txtCalle = new System.Windows.Forms.TextBox();
+            this.lblDepto = new System.Windows.Forms.Label();
+            this.lblPiso = new System.Windows.Forms.Label();
+            this.lblAlt = new System.Windows.Forms.Label();
+            this.lblCalle = new System.Windows.Forms.Label();
+            this.lblDir = new System.Windows.Forms.Label();
             this.txtCantFam = new System.Windows.Forms.TextBox();
             this.lblCantFam = new System.Windows.Forms.Label();
             this.cmbEstadoCivil = new System.Windows.Forms.ComboBox();
@@ -45,8 +55,6 @@
             this.lblMail = new System.Windows.Forms.Label();
             this.txtTel = new System.Windows.Forms.TextBox();
             this.lblTel = new System.Windows.Forms.Label();
-            this.txtDir = new System.Windows.Forms.TextBox();
-            this.lblDireccionCompleta = new System.Windows.Forms.Label();
             this.txtNroDoc = new System.Windows.Forms.TextBox();
             this.cmbTipoDoc = new System.Windows.Forms.ComboBox();
             this.lblDni = new System.Windows.Forms.Label();
@@ -64,6 +72,7 @@
             this.btnVolver = new System.Windows.Forms.Button();
             this.cmdAsociarAfiliado = new System.Windows.Forms.Button();
             this.pnlDatosPersonales.SuspendLayout();
+            this.pnlDireccion.SuspendLayout();
             this.pnlDatosEspecificos.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,6 +99,7 @@
             // pnlDatosPersonales
             // 
             this.pnlDatosPersonales.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlDatosPersonales.Controls.Add(this.pnlDireccion);
             this.pnlDatosPersonales.Controls.Add(this.txtCantFam);
             this.pnlDatosPersonales.Controls.Add(this.lblCantFam);
             this.pnlDatosPersonales.Controls.Add(this.cmbEstadoCivil);
@@ -104,8 +114,6 @@
             this.pnlDatosPersonales.Controls.Add(this.lblMail);
             this.pnlDatosPersonales.Controls.Add(this.txtTel);
             this.pnlDatosPersonales.Controls.Add(this.lblTel);
-            this.pnlDatosPersonales.Controls.Add(this.txtDir);
-            this.pnlDatosPersonales.Controls.Add(this.lblDireccionCompleta);
             this.pnlDatosPersonales.Controls.Add(this.txtNroDoc);
             this.pnlDatosPersonales.Controls.Add(this.cmbTipoDoc);
             this.pnlDatosPersonales.Controls.Add(this.lblDni);
@@ -115,9 +123,103 @@
             this.pnlDatosPersonales.Controls.Add(this.lblNombre);
             this.pnlDatosPersonales.Location = new System.Drawing.Point(23, 9);
             this.pnlDatosPersonales.Name = "pnlDatosPersonales";
-            this.pnlDatosPersonales.Size = new System.Drawing.Size(640, 201);
+            this.pnlDatosPersonales.Size = new System.Drawing.Size(640, 220);
             this.pnlDatosPersonales.TabIndex = 2;
             this.pnlDatosPersonales.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlDatosPersonales_Paint);
+            // 
+            // pnlDireccion
+            // 
+            this.pnlDireccion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlDireccion.Controls.Add(this.txtDepto);
+            this.pnlDireccion.Controls.Add(this.txtPiso);
+            this.pnlDireccion.Controls.Add(this.txtAltura);
+            this.pnlDireccion.Controls.Add(this.txtCalle);
+            this.pnlDireccion.Controls.Add(this.lblDepto);
+            this.pnlDireccion.Controls.Add(this.lblPiso);
+            this.pnlDireccion.Controls.Add(this.lblAlt);
+            this.pnlDireccion.Controls.Add(this.lblCalle);
+            this.pnlDireccion.Controls.Add(this.lblDir);
+            this.pnlDireccion.Location = new System.Drawing.Point(17, 115);
+            this.pnlDireccion.Name = "pnlDireccion";
+            this.pnlDireccion.Size = new System.Drawing.Size(317, 68);
+            this.pnlDireccion.TabIndex = 22;
+            // 
+            // txtDepto
+            // 
+            this.txtDepto.Location = new System.Drawing.Point(185, 38);
+            this.txtDepto.Name = "txtDepto";
+            this.txtDepto.Size = new System.Drawing.Size(72, 20);
+            this.txtDepto.TabIndex = 8;
+            this.txtDepto.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDepto_KeyPress);
+            // 
+            // txtPiso
+            // 
+            this.txtPiso.Location = new System.Drawing.Point(61, 38);
+            this.txtPiso.Name = "txtPiso";
+            this.txtPiso.Size = new System.Drawing.Size(72, 20);
+            this.txtPiso.TabIndex = 7;
+            this.txtPiso.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPiso_KeyPress);
+            // 
+            // txtAltura
+            // 
+            this.txtAltura.Location = new System.Drawing.Point(185, 11);
+            this.txtAltura.Name = "txtAltura";
+            this.txtAltura.Size = new System.Drawing.Size(72, 20);
+            this.txtAltura.TabIndex = 6;
+            this.txtAltura.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAltura_KeyPress);
+            // 
+            // txtCalle
+            // 
+            this.txtCalle.Location = new System.Drawing.Point(61, 12);
+            this.txtCalle.Name = "txtCalle";
+            this.txtCalle.Size = new System.Drawing.Size(72, 20);
+            this.txtCalle.TabIndex = 5;
+            this.txtCalle.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCalle_KeyPress);
+            // 
+            // lblDepto
+            // 
+            this.lblDepto.AutoSize = true;
+            this.lblDepto.Location = new System.Drawing.Point(145, 41);
+            this.lblDepto.Name = "lblDepto";
+            this.lblDepto.Size = new System.Drawing.Size(36, 13);
+            this.lblDepto.TabIndex = 4;
+            this.lblDepto.Text = "Depto";
+            // 
+            // lblPiso
+            // 
+            this.lblPiso.AutoSize = true;
+            this.lblPiso.Location = new System.Drawing.Point(13, 38);
+            this.lblPiso.Name = "lblPiso";
+            this.lblPiso.Size = new System.Drawing.Size(27, 13);
+            this.lblPiso.TabIndex = 3;
+            this.lblPiso.Text = "Piso";
+            // 
+            // lblAlt
+            // 
+            this.lblAlt.AutoSize = true;
+            this.lblAlt.Location = new System.Drawing.Point(145, 15);
+            this.lblAlt.Name = "lblAlt";
+            this.lblAlt.Size = new System.Drawing.Size(34, 13);
+            this.lblAlt.TabIndex = 2;
+            this.lblAlt.Text = "Altura";
+            // 
+            // lblCalle
+            // 
+            this.lblCalle.AutoSize = true;
+            this.lblCalle.Location = new System.Drawing.Point(13, 15);
+            this.lblCalle.Name = "lblCalle";
+            this.lblCalle.Size = new System.Drawing.Size(30, 13);
+            this.lblCalle.TabIndex = 1;
+            this.lblCalle.Text = "Calle";
+            // 
+            // lblDir
+            // 
+            this.lblDir.AutoSize = true;
+            this.lblDir.Location = new System.Drawing.Point(7, -1);
+            this.lblDir.Name = "lblDir";
+            this.lblDir.Size = new System.Drawing.Size(52, 13);
+            this.lblDir.TabIndex = 0;
+            this.lblDir.Text = "Direccion";
             // 
             // txtCantFam
             // 
@@ -201,11 +303,11 @@
             // dtpFecNac
             // 
             this.dtpFecNac.Cursor = System.Windows.Forms.Cursors.Default;
-            this.dtpFecNac.CustomFormat = "dd-MM-yyyy";
+            this.dtpFecNac.CustomFormat = "dd-MM-yyyy 0:00:00";
             this.dtpFecNac.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpFecNac.Location = new System.Drawing.Point(485, 61);
             this.dtpFecNac.Name = "dtpFecNac";
-            this.dtpFecNac.Size = new System.Drawing.Size(126, 20);
+            this.dtpFecNac.Size = new System.Drawing.Size(133, 20);
             this.dtpFecNac.TabIndex = 14;
             // 
             // lblFecNac
@@ -221,7 +323,7 @@
             // 
             this.txtMail.Location = new System.Drawing.Point(417, 25);
             this.txtMail.Name = "txtMail";
-            this.txtMail.Size = new System.Drawing.Size(194, 20);
+            this.txtMail.Size = new System.Drawing.Size(201, 20);
             this.txtMail.TabIndex = 12;
             this.txtMail.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMail_KeyPress);
             this.txtMail.Leave += new System.EventHandler(this.txtMail_Leave);
@@ -237,7 +339,7 @@
             // 
             // txtTel
             // 
-            this.txtTel.Location = new System.Drawing.Point(146, 150);
+            this.txtTel.Location = new System.Drawing.Point(157, 189);
             this.txtTel.Name = "txtTel";
             this.txtTel.Size = new System.Drawing.Size(181, 20);
             this.txtTel.TabIndex = 10;
@@ -246,28 +348,11 @@
             // lblTel
             // 
             this.lblTel.AutoSize = true;
-            this.lblTel.Location = new System.Drawing.Point(3, 157);
+            this.lblTel.Location = new System.Drawing.Point(14, 192);
             this.lblTel.Name = "lblTel";
             this.lblTel.Size = new System.Drawing.Size(137, 13);
             this.lblTel.TabIndex = 9;
             this.lblTel.Text = "*Teléfono (Particular o Fijo):";
-            // 
-            // txtDir
-            // 
-            this.txtDir.Location = new System.Drawing.Point(117, 120);
-            this.txtDir.Name = "txtDir";
-            this.txtDir.Size = new System.Drawing.Size(217, 20);
-            this.txtDir.TabIndex = 8;
-            this.txtDir.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDir_KeyPress);
-            // 
-            // lblDireccionCompleta
-            // 
-            this.lblDireccionCompleta.AutoSize = true;
-            this.lblDireccionCompleta.Location = new System.Drawing.Point(14, 123);
-            this.lblDireccionCompleta.Name = "lblDireccionCompleta";
-            this.lblDireccionCompleta.Size = new System.Drawing.Size(106, 13);
-            this.lblDireccionCompleta.TabIndex = 7;
-            this.lblDireccionCompleta.Text = "*Direccion Completa:";
             // 
             // txtNroDoc
             // 
@@ -291,6 +376,7 @@
             this.cmbTipoDoc.Name = "cmbTipoDoc";
             this.cmbTipoDoc.Size = new System.Drawing.Size(85, 21);
             this.cmbTipoDoc.TabIndex = 5;
+            this.cmbTipoDoc.SelectedIndexChanged += new System.EventHandler(this.cmbTipoDoc_SelectedIndexChanged);
             // 
             // lblDni
             // 
@@ -429,6 +515,8 @@
             this.Load += new System.EventHandler(this.frmAltaAfiliado_Load);
             this.pnlDatosPersonales.ResumeLayout(false);
             this.pnlDatosPersonales.PerformLayout();
+            this.pnlDireccion.ResumeLayout(false);
+            this.pnlDireccion.PerformLayout();
             this.pnlDatosEspecificos.ResumeLayout(false);
             this.pnlDatosEspecificos.PerformLayout();
             this.ResumeLayout(false);
@@ -453,8 +541,6 @@
         private System.Windows.Forms.Label lblMail;
         private System.Windows.Forms.TextBox txtTel;
         private System.Windows.Forms.Label lblTel;
-        private System.Windows.Forms.TextBox txtDir;
-        private System.Windows.Forms.Label lblDireccionCompleta;
         private System.Windows.Forms.Label lblFecNac;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.DateTimePicker dtpFecNac;
@@ -473,5 +559,15 @@
         private System.Windows.Forms.Button btnVolver;
         private System.Windows.Forms.ComboBox cmbPlanMedico;
         private System.Windows.Forms.Button cmdAsociarAfiliado;
+        private System.Windows.Forms.Panel pnlDireccion;
+        private System.Windows.Forms.TextBox txtDepto;
+        private System.Windows.Forms.TextBox txtPiso;
+        private System.Windows.Forms.TextBox txtAltura;
+        private System.Windows.Forms.TextBox txtCalle;
+        private System.Windows.Forms.Label lblDepto;
+        private System.Windows.Forms.Label lblPiso;
+        private System.Windows.Forms.Label lblAlt;
+        private System.Windows.Forms.Label lblCalle;
+        private System.Windows.Forms.Label lblDir;
     }
 }

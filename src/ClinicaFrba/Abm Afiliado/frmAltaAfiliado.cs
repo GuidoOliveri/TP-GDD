@@ -30,7 +30,13 @@ namespace ClinicaFrba.Abm_Afiliado
         string nombre;
         string apellido ;
         char opcionSexo;  
-        string direccion ;
+
+        string calle ;
+        int altura;
+        int piso;
+        char depto;
+        string direccion;
+
         int telefono ;
            
         string mail;
@@ -49,6 +55,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
             comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
             cargar(bdd.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
+
+            cmbEstadoCivil.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPlanMedico.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTipoDoc.DropDownStyle = ComboBoxStyle.DropDownList;
 
            // btnRegistrar.Click += new EventHandler(btnRegistrar_Click);
         }
@@ -75,7 +85,11 @@ namespace ClinicaFrba.Abm_Afiliado
             txtMail.Clear();
             txtNroDoc.Clear();
             txtTel.Clear();
-            txtDir.Clear();
+            txtCalle.Clear();
+            txtAltura.Clear();
+            txtPiso.Clear();
+            txtDepto.Clear();
+
             // limpio combo box
             cmbEstadoCivil.SelectedIndex = -1;
             cmbTipoDoc.SelectedIndex = -1;
@@ -103,10 +117,10 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
 
-            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || String.IsNullOrEmpty(txtNroDoc.Text) || String.IsNullOrEmpty(txtDir.Text) || String.IsNullOrEmpty(txtCantFam.Text) || (cmbEstadoCivil.Items.Count <= 0) ||  (cmbTipoDoc.Items.Count <= 0) ||( cmbPlanMedico.Items.Count <= 0) ||( ( optMasculino.Checked = false) &&  (optFemenino.Checked = false) ))
+
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text)<0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text)<0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || Int32.Parse(txtPiso.Text) <0 || txtDepto.TextLength > 1|| String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text)<0 || (cmbEstadoCivil.Items.Count <= 0) ||  (cmbTipoDoc.Items.Count <= 0) ||( cmbPlanMedico.Items.Count <= 0) || (( optMasculino.Checked == false) &&  (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
             {
                 MessageBox.Show("Por favor, Ingrese datos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cargarTodoLimpio();
             }
             else{
              nroAfiliado = 0;
@@ -114,15 +128,22 @@ namespace ClinicaFrba.Abm_Afiliado
              nombre = txtNombre.Text;
              apellido = txtApellido.Text;
           
-            tipoDoc = (string)cmbTipoDoc.SelectedItem;
+             tipoDoc = (string)cmbTipoDoc.SelectedItem;
              nroDoc = Convert.ToInt64(txtNroDoc.Text);
-            direccion = txtDir.Text;
+
+             calle = txtCalle.Text;
+             altura = Convert.ToInt32(txtAltura.Text);
+             piso = Convert.ToInt32(txtPiso.Text);
+             depto = Convert.ToChar(txtDepto.Text);
+
+             direccion = calle + " " + altura + " " + piso + " " + depto; 
+
              telefono = Convert.ToInt32(txtTel.Text);
-            estadoCivil = (string)cmbEstadoCivil.SelectedItem;
-            mail = txtMail.Text;
-           cantFam = Convert.ToInt32(txtCantFam.Text);
-            plan = (string)cmbPlanMedico.SelectedItem;
-            retorno = 0;
+             estadoCivil = (string)cmbEstadoCivil.SelectedItem;
+             mail = txtMail.Text;
+             cantFam = Convert.ToInt32(txtCantFam.Text);
+             plan = (string)cmbPlanMedico.SelectedItem;
+             retorno = 0;
 
             if(optMasculino.Checked == true){
                 opcionSexo = 'H';
@@ -190,7 +211,6 @@ namespace ClinicaFrba.Abm_Afiliado
                     conn.Close();
                     if (resu.Equals(-1))
                     {
-                        cargarTodoLimpio();
                         MessageBox.Show("Lo sentimos, no podemos procesar tu solicitud. Inténtalo de nuevo más tarde.", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         cargarTodoLimpio();
                     }
@@ -258,20 +278,28 @@ namespace ClinicaFrba.Abm_Afiliado
         {
 
 
-            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || String.IsNullOrEmpty(txtNroDoc.Text) || String.IsNullOrEmpty(txtDir.Text) || String.IsNullOrEmpty(txtCantFam.Text) || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || (cmbPlanMedico.Items.Count <= 0) || ((optMasculino.Checked = false) && (optFemenino.Checked = false)))
+
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text) < 0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || Int32.Parse(txtPiso.Text) < 0 || txtDepto.TextLength > 1 || String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text) < 0 || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || (cmbPlanMedico.Items.Count <= 0) || ((optMasculino.Checked = false) && (optFemenino.Checked = false)))
             {
                 MessageBox.Show("Por favor, Ingrese datos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cargarTodoLimpio();
             }
             else
             {
                 nroAfiliado = 0;
-                fechaF = dtpFecNac.Value;      
+
                 nombre = txtNombre.Text;
                 apellido = txtApellido.Text;
+
                 tipoDoc = (string)cmbTipoDoc.SelectedItem;
                 nroDoc = Convert.ToInt64(txtNroDoc.Text);
-                direccion = txtDir.Text;
+
+                calle = txtCalle.Text;
+                altura = Convert.ToInt32(txtAltura.Text);
+                piso = Convert.ToInt32(txtPiso.Text);
+                depto = Convert.ToChar(txtDepto.Text);
+
+                direccion = calle + " " + altura + " " + piso + " " + depto;
+
                 telefono = Convert.ToInt32(txtTel.Text);
                 estadoCivil = (string)cmbEstadoCivil.SelectedItem;
                 mail = txtMail.Text;
@@ -300,15 +328,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     this.Hide();
                     asocio.Show();
                     
-                
-                /*if ()
-                {
-                    MessageBox.Show("bien", "Mail", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-                else
-                {
-                    MessageBox.Show("mail", "Mail", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }*/
+         
             }
         }
         
@@ -495,6 +515,112 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
         private void frmAltaAfiliado_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtCalle_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsNumber(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txtAltura_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsLetter(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txtPiso_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsLetter(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txtDepto_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsNumber(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void cmbTipoDoc_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
