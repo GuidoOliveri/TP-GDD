@@ -174,12 +174,6 @@
     <Compile Include="Compra Bono\frmCompraBonos.Designer.cs">
       <DependentUpon>frmCompraBonos.cs</DependentUpon>
     </Compile>
-    <Compile Include="Compra Bono\frmMontoAPagar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Compra Bono\frmMontoAPagar.Designer.cs">
-      <DependentUpon>frmMontoAPagar.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmVentanaPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -302,9 +296,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Compra Bono\frmCompraBonos.resx">
       <DependentUpon>frmCompraBonos.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Compra Bono\frmMontoAPagar.resx">
-      <DependentUpon>frmMontoAPagar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Listados\frmListado.resx">
       <DependentUpon>frmListado.cs</DependentUpon>
