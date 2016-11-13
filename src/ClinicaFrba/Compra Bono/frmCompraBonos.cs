@@ -86,7 +86,8 @@ namespace ClinicaFrba.Compra_Bono
         {
             try
             {
-                txtPrecioBono.Text = obtenerPrecioBono(txtNumeroAfiliado.Text);
+                idAfiliado = txtNumeroAfiliado.Text;
+                txtPrecioBono.Text = obtenerPrecioBono(idAfiliado);
             }
             catch 
             {
