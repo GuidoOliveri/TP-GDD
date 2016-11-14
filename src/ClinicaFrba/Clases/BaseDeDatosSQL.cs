@@ -32,11 +32,11 @@ namespace ClinicaFrba.Clases
 
         public static SqlDataReader ObtenerDataReader(string commandtext, string commandtype, List<SqlParameter> ListaParametro)
         {
-            using (SqlConnection conexionn = new SqlConnection(obtenerStringConexion()))
+            using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
             {
-                conexionn.Open();
+                conexion.Open();
                 SqlCommand comando = new SqlCommand();
-                comando.Connection = conexionn;
+                comando.Connection = conexion;
                 comando.CommandText = commandtext;
                 foreach (SqlParameter elemento in ListaParametro)
                 {
@@ -74,11 +74,11 @@ namespace ClinicaFrba.Clases
 
         public static bool EscribirEnBase(string commandtext, string commandtype, List<SqlParameter> ListaParametro)
         {
-            using (SqlConnection conexionn = new SqlConnection(obtenerStringConexion()))
+            using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
             {
-                conexionn.Open();
+                conexion.Open();
                 SqlCommand comando = new SqlCommand();
-                comando.Connection = conexionn;
+                comando.Connection = conexion;
                 comando.CommandText = commandtext;
                 foreach (SqlParameter elemento in ListaParametro)
                 {
@@ -150,13 +150,13 @@ namespace ClinicaFrba.Clases
          
         public static decimal ExecStoredProcedure(string commandtext, List<SqlParameter> ListaParametro)
         {
-            using (SqlConnection conexionn = new SqlConnection(obtenerStringConexion()))
+            using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
             {
                 try
                 {
-                    conexionn.Open();
+                    conexion.Open();
                     SqlCommand comando = new SqlCommand();
-                    comando.Connection = conexionn;
+                    comando.Connection = conexion;
                     comando.CommandText = commandtext;
                     comando.CommandType = CommandType.StoredProcedure;
 
@@ -177,10 +177,10 @@ namespace ClinicaFrba.Clases
 
         public static List<String> ObtenerLista(string queryString, string campo)
         {
-            using (SqlConnection conexionn = new SqlConnection(obtenerStringConexion()))
+            using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
             {
-                conexionn.Open();
-                SqlCommand command = new SqlCommand(queryString, conexionn);
+                conexion.Open();
+                SqlCommand command = new SqlCommand(queryString, conexion);
                 command.ExecuteNonQuery();
                 List<String> resultados = new List<String>();
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -197,10 +197,10 @@ namespace ClinicaFrba.Clases
 
         public static string buscarCampo(string queryString)
         {
-            using (SqlConnection conexionn = new SqlConnection(obtenerStringConexion()))
+            using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
             {
-                conexionn.Open();
-                SqlCommand command = new SqlCommand(queryString, conexionn);
+                conexion.Open();
+                SqlCommand command = new SqlCommand(queryString, conexion);
                 string result = (string)command.ExecuteScalar().ToString();
                 if (result != null)
                 {
@@ -212,10 +212,10 @@ namespace ClinicaFrba.Clases
 
         public static Boolean validarCampo(string queryString)
         {
-            using (SqlConnection conexionn = new SqlConnection(obtenerStringConexion()))
+            using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
             {
-                conexionn.Open();
-                SqlCommand command = new SqlCommand(queryString, conexionn);
+                conexion.Open();
+                SqlCommand command = new SqlCommand(queryString, conexion);
                 command.ExecuteNonQuery();
                 int num = (int)command.ExecuteScalar();
                 if (num > 0)
@@ -230,10 +230,10 @@ namespace ClinicaFrba.Clases
         }
         public static void EjecutarStoredProcedure(string commandtext)
         {
-            using (SqlConnection conexionn = new SqlConnection(obtenerStringConexion()))
+            using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
             {
-                conexionn.Open();
-                SqlCommand comando = new SqlCommand(commandtext, conexionn);
+                conexion.Open();
+                SqlCommand comando = new SqlCommand(commandtext, conexion);
                 comando.CommandText = commandtext;
                 comando.ExecuteNonQuery();
             }
@@ -241,15 +241,15 @@ namespace ClinicaFrba.Clases
 
         public static DataTable ObtenerTabla(string queryString, List<string> campos)
         {
-            using (SqlConnection conexionn = new SqlConnection(obtenerStringConexion()))
+            using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
             {
-                conexionn.Open();
+                conexion.Open();
                 DataTable dt = new DataTable();
                 foreach (string campo in campos)
                 {
                     dt.Columns.Add(campo);
                 }
-                SqlCommand command = new SqlCommand(queryString, conexionn);
+                SqlCommand command = new SqlCommand(queryString, conexion);
                 command.ExecuteNonQuery();
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
