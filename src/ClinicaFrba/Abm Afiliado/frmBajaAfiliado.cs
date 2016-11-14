@@ -49,9 +49,9 @@ namespace ClinicaFrba.Abm_Afiliado
         {
 
 
-            if (String.IsNullOrEmpty(txtMatricula.Text) )  // dtpFecha
+            if (String.IsNullOrEmpty(txtMatricula.Text) )  
             {
-                MessageBox.Show("Por favor, Ingrese datos en los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, ingrese algun nro de afiliado", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                
             }
             else
@@ -104,6 +104,30 @@ namespace ClinicaFrba.Abm_Afiliado
             else
             {
                 e.Cancel = true;
+            }
+        }
+
+        private void txtMatricula_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsLetter(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

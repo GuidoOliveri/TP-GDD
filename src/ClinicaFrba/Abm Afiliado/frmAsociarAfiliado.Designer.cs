@@ -100,6 +100,7 @@
             this.txtNroAfiliadoPrincipal.Name = "txtNroAfiliadoPrincipal";
             this.txtNroAfiliadoPrincipal.Size = new System.Drawing.Size(111, 20);
             this.txtNroAfiliadoPrincipal.TabIndex = 1;
+            this.txtNroAfiliadoPrincipal.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNroAfiliadoPrincipal_KeyPress);
             // 
             // lblNroAfiliadoPrincipal
             // 

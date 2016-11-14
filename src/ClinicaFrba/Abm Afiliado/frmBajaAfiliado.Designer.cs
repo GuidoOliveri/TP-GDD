@@ -75,17 +75,19 @@
             // 
             // dtpFechaBaja
             // 
+            this.dtpFechaBaja.Enabled = false;
             this.dtpFechaBaja.Location = new System.Drawing.Point(126, 96);
             this.dtpFechaBaja.Name = "dtpFechaBaja";
-            this.dtpFechaBaja.Size = new System.Drawing.Size(146, 20);
+            this.dtpFechaBaja.Size = new System.Drawing.Size(198, 20);
             this.dtpFechaBaja.TabIndex = 4;
             // 
             // txtMatricula
             // 
             this.txtMatricula.Location = new System.Drawing.Point(124, 50);
             this.txtMatricula.Name = "txtMatricula";
-            this.txtMatricula.Size = new System.Drawing.Size(149, 20);
+            this.txtMatricula.Size = new System.Drawing.Size(200, 20);
             this.txtMatricula.TabIndex = 3;
+            this.txtMatricula.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMatricula_KeyPress);
             // 
             // lblFecha
             // 
