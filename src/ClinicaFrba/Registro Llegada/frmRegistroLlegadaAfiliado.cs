@@ -61,7 +61,8 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbProfesional.SelectedItem != null && (string) cmbProfesional.SelectedItem!=profesional)
+            if ((cmbProfesional.SelectedItem != null && (string) cmbProfesional.SelectedItem!=profesional && cmbEspecialidad.Enabled==false)
+                || (cmbProfesional.SelectedItem != null && cmbEspecialidad.Enabled==true && (string)cmbProfesional.SelectedItem != profesional))
             {
                 warning2.Visible = false;
                 profesional = (string)cmbProfesional.SelectedItem;
@@ -70,11 +71,6 @@ namespace ClinicaFrba.Registro_Llegada
                 /* FILTRA POR FECHA ACTUAL*/
                 comando = "select * from NEXTGDD.buscarTurnosDelDia('"+profesional+"') order by fecha ASC";
                 cargar(bdd.ObtenerLista(comando,"fecha"), cmbTurno);
-            }
-            if (cmbProfesional.SelectedItem != null && especialidad != "")
-            {
-                warning2.Visible = false;
-                profesional = (string)cmbProfesional.SelectedItem;
             }
             if (cmbEspecialidad.SelectedItem != null && (string) cmbEspecialidad.SelectedItem!=especialidad)
             {
@@ -86,8 +82,6 @@ namespace ClinicaFrba.Registro_Llegada
                 cmbBono.Text = "";
                 cmbProfesional.Items.Clear();
                 cmbProfesional.Text = "";
-                cmbTurno.Items.Clear();
-                cmbTurno.Text = "";
 
                 //Carga los profesionales según la especialidad
                 comando = "select * from NEXTGDD.buscarProfesionales('" + especialidad + "') order by nombre ASC";
@@ -147,13 +141,24 @@ namespace ClinicaFrba.Registro_Llegada
         {
             if (cmbEspecialidad.Enabled == false)
             {
+                rbBusqueda.Checked = true;
                 cmbEspecialidad.Enabled = true;
+                cmbProfesional.Items.Clear();
+                cmbProfesional.Text = "";
+                cmbTurno.Items.Clear();
+                cmbTurno.Text = "";
+                cmbBono.Text = "";
+                profesional = "";
+                turno = "";
+                bono = "";
             }
             else
             {
+                rbBusqueda.Checked = false;
                 cmbProfesional.Items.Clear();
                 cmbProfesional.Text = "";
                 cmbEspecialidad.Text = "";
+                cmbTurno.Text = "";
                 //Carga de nuevo todos los profesionales
                 comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona order by p.nombre ASC";
                 cargar(bdd.ObtenerLista(comando, "nombre"),cmbProfesional);
@@ -170,6 +175,7 @@ namespace ClinicaFrba.Registro_Llegada
             fechaLLegada = txtFechaLlegada.Text;
             verificarFecha(horaLLegada,':',warning3);
             verificarFecha(fechaLLegada, '/', warning4);
+            verificarLlegadaTarde();
             if (profesional != null && turno != null && bono != null && horaLLegada != "" && warning2.Visible != true && warning4.Visible != true && warning3.Visible != true && warning1.Visible != true)
             {
                 comando = "EXECUTE NEXTGDD.registrarConsulta @fechaLlegada='"+convertirFecha(fechaLLegada+' '+horaLLegada)+"',@nomProf='" + profesional + "', @fechaTurno='" +convertirFecha(turno) + "', @nroBono='" + bono+ "'";
@@ -220,6 +226,20 @@ namespace ClinicaFrba.Registro_Llegada
                 }
             }
             l.Visible = b;
+        }
+
+        private void verificarLlegadaTarde()
+        {
+            if (DateTime.Parse(fechaLLegada + ' ' + horaLLegada) >= DateTime.Parse(turno))
+            {
+                warning3.Text = "No se permiten llegadas tardes.";
+                warning3.Visible = true;
+            }
+            else
+            {
+                warning3.Visible = false;
+                warning3.Text = "Formato de fecha incorrecto.";
+            }
         }
 
         private void frmRegistroLlegadaAfiliado_Load(object sender, EventArgs e)
