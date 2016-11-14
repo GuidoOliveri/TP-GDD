@@ -192,14 +192,15 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta);nroDiaHasta++){}
                 horaHasta = (string)cmbHorarioHasta.SelectedItem;
                 verificarRangoHospital();
+                verificarSuperposicionDeRangos();
                 if(warning1.Visible==false)
                 {
                     dgRangoAtencion.Rows.Add(cmbDiaDesde.SelectedIndex, nroDiaHasta, horaDesde, horaHasta);
+                    cmbDiaDesde.Text = "";
+                    cmbDiaHasta.Text = "";
+                    cmbHorarioDesde.Text = "";
+                    cmbHorarioHasta.Text = "";
                 }
-                cmbDiaDesde.Text = "";
-                cmbDiaHasta.Text = "";
-                cmbHorarioDesde.Text = "";
-                cmbHorarioHasta.Text = "";
             }
             if (((Button)sender).Text.Equals(btnBorrar.Text))
             {
@@ -258,26 +259,67 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         //0:Lunes 1:Martes 2:Miercoles 3:Jueves 4:Viernes 5:Sabado 
         private void verificarRangoHospital()
         {
-            int dia;
-            for (dia = 0; (dia < 6) && dias.ElementAt(dia)!=(string)cmbDiaHasta.SelectedItem; dia++) { };
-            if (dia <= 4)
+            DataTable dt = buscarRangoAtencionClinica();
+            foreach (DataRow fila in dt.Rows)
             {
-                warning1.Visible = false;
-            }
-            else
-            {
-                if (DateTime.Compare(DateTime.Parse("2000/02/20 " + horaDesde + ":00"), DateTime.Parse("2000/02/20 10:00:00")) > 0
-                    && DateTime.Compare(DateTime.Parse("2000/02/20 " + horaHasta + ":00"), DateTime.Parse("2000/02/20 15:00:00")) < 0)
+                if (DateTime.Parse(horaDesde) < DateTime.Parse((string)fila[0]) || DateTime.Parse(horaHasta) > DateTime.Parse((string)fila[1]))
                 {
-                    warning1.Visible = false;
+                    warning1.Text = "El rango horario no es válido. Seleccione otro.";
+                    warning1.Visible = true;
                 }
                 else
                 {
-                    warning1.Visible = true;
+                    warning1.Visible = false;
                 }
             }
         }
 
+        private void verificarSuperposicionDeRangos()
+        {
+            warning1.Visible = false;
+            int nroDesde = cmbDiaDesde.SelectedIndex;
+            int nroDiaHasta;
+            for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+            List<int> rangoDias1 = buscarDiasIntermedios(nroDesde,nroDiaHasta);
+            List<string> rangoHoras1 = buscarHorasIntermedias(horaDesde, horaHasta);
+
+            foreach (DataGridViewRow fila in dgRangoAtencion.Rows)
+            {
+                List<int> rangoDias2 = buscarDiasIntermedios(int.Parse(fila.Cells[0].Value.ToString()), int.Parse(fila.Cells[1].Value.ToString()));
+                List<string> rangoHoras2 = buscarHorasIntermedias((string)fila.Cells[2].Value,(string)fila.Cells[3].Value);
+                IEnumerable<int> intersecDias = rangoDias1.Intersect(rangoDias2);
+                IEnumerable<string> intersecHoras = rangoHoras1.Intersect(rangoHoras2);
+                if (intersecDias.Count() != 0 && intersecHoras.Count() != 0)
+                {
+                    warning1.Text = "El rango horario no es válido, se superoponen rangos de atención.";
+                    warning1.Visible = true;
+                }
+            }
+           
+        }
+
+        private List<int> buscarDiasIntermedios(int nroDesde,int nroDiaHasta)
+        {
+            List<int> rangoDias = new List<int>();
+            while (nroDesde <= nroDiaHasta)
+            {
+                rangoDias.Add(nroDesde);
+                nroDesde++;
+            }
+            return rangoDias;
+        }
+
+        private List<string> buscarHorasIntermedias(string horaD,string horaH)
+        {
+            List<string> rangoHoras1 = new List<string>();
+            DateTime dt = DateTime.Parse("3/11/2000 " + horaD);
+            while (dt <= DateTime.Parse("3/11/2000 " + horaH))
+            {
+                rangoHoras1.Add(dt.ToString().Split(' ')[1]);
+                dt = dt.AddMinutes(30);
+            }
+            return rangoHoras1;
+        }
 
         private void frmRegistrarAgendaMedico_Load(object sender, EventArgs e)
         {
