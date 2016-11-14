@@ -76,6 +76,7 @@
             // 
             // cmbAfiliado
             // 
+            this.cmbAfiliado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbAfiliado.FormattingEnabled = true;
             this.cmbAfiliado.Location = new System.Drawing.Point(36, 91);
             this.cmbAfiliado.Name = "cmbAfiliado";
@@ -115,6 +116,7 @@
             // 
             // cmbConsulta
             // 
+            this.cmbConsulta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbConsulta.FormattingEnabled = true;
             this.cmbConsulta.Location = new System.Drawing.Point(36, 41);
             this.cmbConsulta.Name = "cmbConsulta";
@@ -156,6 +158,7 @@
             // 
             // cmbEnfermedad
             // 
+            this.cmbEnfermedad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbEnfermedad.FormattingEnabled = true;
             this.cmbEnfermedad.Location = new System.Drawing.Point(238, 54);
             this.cmbEnfermedad.Name = "cmbEnfermedad";
@@ -164,6 +167,7 @@
             // 
             // cmbSintoma
             // 
+            this.cmbSintoma.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSintoma.FormattingEnabled = true;
             this.cmbSintoma.Location = new System.Drawing.Point(238, 27);
             this.cmbSintoma.Name = "cmbSintoma";

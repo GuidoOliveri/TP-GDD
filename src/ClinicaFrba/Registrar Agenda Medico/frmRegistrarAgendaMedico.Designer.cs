@@ -145,6 +145,7 @@
             // 
             // cmbDiaHasta
             // 
+            this.cmbDiaHasta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDiaHasta.FormattingEnabled = true;
             this.cmbDiaHasta.Location = new System.Drawing.Point(344, 16);
             this.cmbDiaHasta.Name = "cmbDiaHasta";
@@ -171,6 +172,7 @@
             // 
             // cmbDiaDesde
             // 
+            this.cmbDiaDesde.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDiaDesde.FormattingEnabled = true;
             this.cmbDiaDesde.Location = new System.Drawing.Point(82, 16);
             this.cmbDiaDesde.Name = "cmbDiaDesde";
@@ -201,6 +203,7 @@
             // 
             // cmbHorarioHasta
             // 
+            this.cmbHorarioHasta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbHorarioHasta.FormattingEnabled = true;
             this.cmbHorarioHasta.Location = new System.Drawing.Point(344, 17);
             this.cmbHorarioHasta.Name = "cmbHorarioHasta";
@@ -209,6 +212,7 @@
             // 
             // cmbHorarioDesde
             // 
+            this.cmbHorarioDesde.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbHorarioDesde.FormattingEnabled = true;
             this.cmbHorarioDesde.Location = new System.Drawing.Point(82, 17);
             this.cmbHorarioDesde.Name = "cmbHorarioDesde";
@@ -285,6 +289,7 @@
             // 
             // cmbProfesional
             // 
+            this.cmbProfesional.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbProfesional.FormattingEnabled = true;
             this.cmbProfesional.Location = new System.Drawing.Point(222, 21);
             this.cmbProfesional.Name = "cmbProfesional";
@@ -302,6 +307,7 @@
             // 
             // cmbEspecialidad
             // 
+            this.cmbEspecialidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbEspecialidad.FormattingEnabled = true;
             this.cmbEspecialidad.Location = new System.Drawing.Point(222, 46);
             this.cmbEspecialidad.Name = "cmbEspecialidad";

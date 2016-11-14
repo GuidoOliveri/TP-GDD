@@ -32,6 +32,8 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.pnlFiltroBusqueda = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cmbFiltro = new System.Windows.Forms.ComboBox();
             this.warning = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbSemestre = new System.Windows.Forms.ComboBox();
@@ -46,8 +48,6 @@
             this.listaDeAfiliadosBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.listaDeAfiliados = new ClinicaFrba.ListaDeAfiliados();
             this.cmdVolver = new System.Windows.Forms.Button();
-            this.cmbFiltro = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.pnlFiltroBusqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet)).BeginInit();
@@ -96,6 +96,24 @@
             this.pnlFiltroBusqueda.TabIndex = 2;
             this.pnlFiltroBusqueda.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(293, 51);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Filtrar por:";
+            // 
+            // cmbFiltro
+            // 
+            this.cmbFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFiltro.FormattingEnabled = true;
+            this.cmbFiltro.Location = new System.Drawing.Point(359, 48);
+            this.cmbFiltro.Name = "cmbFiltro";
+            this.cmbFiltro.Size = new System.Drawing.Size(168, 21);
+            this.cmbFiltro.TabIndex = 11;
+            // 
             // warning
             // 
             this.warning.AutoSize = true;
@@ -117,6 +135,7 @@
             // 
             // cmbSemestre
             // 
+            this.cmbSemestre.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSemestre.FormattingEnabled = true;
             this.cmbSemestre.Location = new System.Drawing.Point(85, 48);
             this.cmbSemestre.Name = "cmbSemestre";
@@ -135,6 +154,7 @@
             // 
             // cmbListado
             // 
+            this.cmbListado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbListado.FormattingEnabled = true;
             this.cmbListado.Items.AddRange(new object[] {
             "Top 5 especialidades con más cancelaciones",
@@ -213,23 +233,6 @@
             this.cmdVolver.Text = "Volver";
             this.cmdVolver.UseVisualStyleBackColor = true;
             this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
-            // 
-            // cmbFiltro
-            // 
-            this.cmbFiltro.FormattingEnabled = true;
-            this.cmbFiltro.Location = new System.Drawing.Point(359, 48);
-            this.cmbFiltro.Name = "cmbFiltro";
-            this.cmbFiltro.Size = new System.Drawing.Size(168, 21);
-            this.cmbFiltro.TabIndex = 11;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(293, 51);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Filtrar por:";
             // 
             // frmListado
             // 

@@ -29,25 +29,25 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.warning3 = new System.Windows.Forms.Label();
-            this.txtHoraLlegada = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
-            this.rbBusqueda = new System.Windows.Forms.RadioButton();
-            this.cmbProfesional = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.warning1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbBono = new System.Windows.Forms.ComboBox();
             this.cmbTurno = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.warning3 = new System.Windows.Forms.Label();
+            this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
+            this.rbBusqueda = new System.Windows.Forms.RadioButton();
+            this.txtHoraLlegada = new System.Windows.Forms.TextBox();
+            this.cmbProfesional = new System.Windows.Forms.ComboBox();
+            this.txtFechaLlegada = new System.Windows.Forms.TextBox();
+            this.warning4 = new System.Windows.Forms.Label();
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning2 = new System.Windows.Forms.Label();
             this.cmdVolver = new System.Windows.Forms.Button();
-            this.txtFechaLlegada = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.warning4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -72,69 +72,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Registro de llegada";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
-            // 
-            // warning3
-            // 
-            this.warning3.AutoSize = true;
-            this.warning3.ForeColor = System.Drawing.Color.Red;
-            this.warning3.Location = new System.Drawing.Point(209, 265);
-            this.warning3.Name = "warning3";
-            this.warning3.Size = new System.Drawing.Size(143, 13);
-            this.warning3.TabIndex = 9;
-            this.warning3.Text = "Formato de fecha incorrecto.";
-            // 
-            // txtHoraLlegada
-            // 
-            this.txtHoraLlegada.Location = new System.Drawing.Point(163, 242);
-            this.txtHoraLlegada.Name = "txtHoraLlegada";
-            this.txtHoraLlegada.Size = new System.Drawing.Size(189, 20);
-            this.txtHoraLlegada.TabIndex = 5;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 245);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(86, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Hora: (hh:mm:ss)";
-            this.label4.Click += new System.EventHandler(this.label4_Click_1);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Seleccione un profesional:";
-            // 
-            // cmbEspecialidad
-            // 
-            this.cmbEspecialidad.FormattingEnabled = true;
-            this.cmbEspecialidad.Location = new System.Drawing.Point(163, 75);
-            this.cmbEspecialidad.Name = "cmbEspecialidad";
-            this.cmbEspecialidad.Size = new System.Drawing.Size(189, 21);
-            this.cmbEspecialidad.TabIndex = 2;
-            // 
-            // rbBusqueda
-            // 
-            this.rbBusqueda.AutoSize = true;
-            this.rbBusqueda.Location = new System.Drawing.Point(163, 52);
-            this.rbBusqueda.Name = "rbBusqueda";
-            this.rbBusqueda.Size = new System.Drawing.Size(189, 17);
-            this.rbBusqueda.TabIndex = 1;
-            this.rbBusqueda.TabStop = true;
-            this.rbBusqueda.Text = "Refinar busqueda por especialidad";
-            this.rbBusqueda.UseVisualStyleBackColor = true;
-            // 
-            // cmbProfesional
-            // 
-            this.cmbProfesional.FormattingEnabled = true;
-            this.cmbProfesional.Location = new System.Drawing.Point(163, 25);
-            this.cmbProfesional.Name = "cmbProfesional";
-            this.cmbProfesional.Size = new System.Drawing.Size(189, 21);
-            this.cmbProfesional.TabIndex = 0;
             // 
             // groupBox2
             // 
@@ -180,6 +117,7 @@
             // 
             // cmbBono
             // 
+            this.cmbBono.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbBono.FormattingEnabled = true;
             this.cmbBono.Location = new System.Drawing.Point(163, 59);
             this.cmbBono.Name = "cmbBono";
@@ -188,12 +126,104 @@
             // 
             // cmbTurno
             // 
+            this.cmbTurno.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTurno.FormattingEnabled = true;
             this.cmbTurno.Location = new System.Drawing.Point(163, 19);
             this.cmbTurno.Name = "cmbTurno";
             this.cmbTurno.Size = new System.Drawing.Size(189, 21);
             this.cmbTurno.TabIndex = 4;
             this.cmbTurno.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 206);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(111, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Fecha: (dd/mm/aaaa)";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 245);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(86, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Hora: (hh:mm:ss)";
+            this.label4.Click += new System.EventHandler(this.label4_Click_1);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(132, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Seleccione un profesional:";
+            // 
+            // warning3
+            // 
+            this.warning3.AutoSize = true;
+            this.warning3.ForeColor = System.Drawing.Color.Red;
+            this.warning3.Location = new System.Drawing.Point(209, 265);
+            this.warning3.Name = "warning3";
+            this.warning3.Size = new System.Drawing.Size(143, 13);
+            this.warning3.TabIndex = 9;
+            this.warning3.Text = "Formato de fecha incorrecto.";
+            // 
+            // cmbEspecialidad
+            // 
+            this.cmbEspecialidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEspecialidad.FormattingEnabled = true;
+            this.cmbEspecialidad.Location = new System.Drawing.Point(163, 75);
+            this.cmbEspecialidad.Name = "cmbEspecialidad";
+            this.cmbEspecialidad.Size = new System.Drawing.Size(189, 21);
+            this.cmbEspecialidad.TabIndex = 2;
+            // 
+            // rbBusqueda
+            // 
+            this.rbBusqueda.AutoSize = true;
+            this.rbBusqueda.Location = new System.Drawing.Point(163, 52);
+            this.rbBusqueda.Name = "rbBusqueda";
+            this.rbBusqueda.Size = new System.Drawing.Size(189, 17);
+            this.rbBusqueda.TabIndex = 1;
+            this.rbBusqueda.TabStop = true;
+            this.rbBusqueda.Text = "Refinar busqueda por especialidad";
+            this.rbBusqueda.UseVisualStyleBackColor = true;
+            // 
+            // txtHoraLlegada
+            // 
+            this.txtHoraLlegada.Location = new System.Drawing.Point(163, 242);
+            this.txtHoraLlegada.Name = "txtHoraLlegada";
+            this.txtHoraLlegada.Size = new System.Drawing.Size(189, 20);
+            this.txtHoraLlegada.TabIndex = 5;
+            // 
+            // cmbProfesional
+            // 
+            this.cmbProfesional.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProfesional.FormattingEnabled = true;
+            this.cmbProfesional.Location = new System.Drawing.Point(163, 25);
+            this.cmbProfesional.Name = "cmbProfesional";
+            this.cmbProfesional.Size = new System.Drawing.Size(189, 21);
+            this.cmbProfesional.TabIndex = 0;
+            // 
+            // txtFechaLlegada
+            // 
+            this.txtFechaLlegada.Location = new System.Drawing.Point(163, 203);
+            this.txtFechaLlegada.Name = "txtFechaLlegada";
+            this.txtFechaLlegada.Size = new System.Drawing.Size(189, 20);
+            this.txtFechaLlegada.TabIndex = 10;
+            // 
+            // warning4
+            // 
+            this.warning4.AutoSize = true;
+            this.warning4.ForeColor = System.Drawing.Color.Red;
+            this.warning4.Location = new System.Drawing.Point(209, 226);
+            this.warning4.Name = "warning4";
+            this.warning4.Size = new System.Drawing.Size(143, 13);
+            this.warning4.TabIndex = 12;
+            this.warning4.Text = "Formato de fecha incorrecto.";
             // 
             // btnIngresar
             // 
@@ -225,32 +255,6 @@
             this.cmdVolver.Text = "Volver";
             this.cmdVolver.UseVisualStyleBackColor = true;
             this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
-            // 
-            // txtFechaLlegada
-            // 
-            this.txtFechaLlegada.Location = new System.Drawing.Point(163, 203);
-            this.txtFechaLlegada.Name = "txtFechaLlegada";
-            this.txtFechaLlegada.Size = new System.Drawing.Size(189, 20);
-            this.txtFechaLlegada.TabIndex = 10;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 206);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(111, 13);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Fecha: (dd/mm/aaaa)";
-            // 
-            // warning4
-            // 
-            this.warning4.AutoSize = true;
-            this.warning4.ForeColor = System.Drawing.Color.Red;
-            this.warning4.Location = new System.Drawing.Point(209, 226);
-            this.warning4.Name = "warning4";
-            this.warning4.Size = new System.Drawing.Size(143, 13);
-            this.warning4.TabIndex = 12;
-            this.warning4.Text = "Formato de fecha incorrecto.";
             // 
             // frmRegistroLlegadaAfiliado
             // 

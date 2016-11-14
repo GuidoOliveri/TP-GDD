@@ -80,6 +80,7 @@
             // 
             // cmbProfesional
             // 
+            this.cmbProfesional.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbProfesional.FormattingEnabled = true;
             this.cmbProfesional.Location = new System.Drawing.Point(175, 95);
             this.cmbProfesional.Name = "cmbProfesional";
@@ -123,6 +124,7 @@
             // 
             // cmbEspecialidad
             // 
+            this.cmbEspecialidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbEspecialidad.FormattingEnabled = true;
             this.cmbEspecialidad.Location = new System.Drawing.Point(175, 57);
             this.cmbEspecialidad.Name = "cmbEspecialidad";
@@ -185,6 +187,7 @@
             // 
             // cmbHorario
             // 
+            this.cmbHorario.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbHorario.FormattingEnabled = true;
             this.cmbHorario.Location = new System.Drawing.Point(175, 170);
             this.cmbHorario.Name = "cmbHorario";
