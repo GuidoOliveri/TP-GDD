@@ -33,7 +33,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
         string calle ;
         int altura;
+        string pisoSinConvertir;
         int piso;
+        string deptoSinConvertir;
         char depto;
         string direccion;
 
@@ -117,10 +119,11 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
 
+            
 
-            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text)<0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text)<0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || Int32.Parse(txtPiso.Text) <0 || txtDepto.TextLength > 1|| String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text)<0 || (cmbEstadoCivil.Items.Count <= 0) ||  (cmbTipoDoc.Items.Count <= 0) ||( cmbPlanMedico.Items.Count <= 0) || (( optMasculino.Checked == false) &&  (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text)<0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text)<0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || txtDepto.TextLength > 1|| String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text)<0 || (cmbEstadoCivil.Items.Count <= 0) ||  (cmbTipoDoc.Items.Count <= 0) ||( cmbPlanMedico.Items.Count <= 0) || cmbPlanMedico.SelectedItem == "(ninguno)" || (( optMasculino.Checked == false) &&  (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
             {
-                MessageBox.Show("Por favor, Ingrese datos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, ingrese datos en todos los campos obligatorios y de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else{
              nroAfiliado = 0;
@@ -131,11 +134,22 @@ namespace ClinicaFrba.Abm_Afiliado
              tipoDoc = (string)cmbTipoDoc.SelectedItem;
              nroDoc = Convert.ToInt64(txtNroDoc.Text);
 
+
              calle = txtCalle.Text;
              altura = Convert.ToInt32(txtAltura.Text);
-             piso = Convert.ToInt32(txtPiso.Text);
-             depto = Convert.ToChar(txtDepto.Text);
+             pisoSinConvertir = txtPiso.Text;
 
+             if (!String.IsNullOrEmpty(pisoSinConvertir))
+             {
+                 piso = Convert.ToInt32(pisoSinConvertir);
+             }
+             deptoSinConvertir = txtDepto.Text;
+             if (!String.IsNullOrEmpty(deptoSinConvertir))
+             {
+                 depto = Convert.ToChar(deptoSinConvertir);
+             }
+             
+          
              direccion = calle + " " + altura + " " + piso + " " + depto; 
 
              telefono = Convert.ToInt32(txtTel.Text);
@@ -277,11 +291,9 @@ namespace ClinicaFrba.Abm_Afiliado
         private void cmdAsociarAfiliado_Click(object sender, EventArgs e)
         {
 
-
-
-            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text) < 0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || Int32.Parse(txtPiso.Text) < 0 || txtDepto.TextLength > 1 || String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text) < 0 || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || (cmbPlanMedico.Items.Count <= 0) || ((optMasculino.Checked = false) && (optFemenino.Checked = false)))
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text) < 0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || Int32.Parse(txtPiso.Text) < 0 || txtDepto.TextLength > 1 || String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text) < 0 || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || (cmbPlanMedico.Items.Count <= 0) || ((optMasculino.Checked == false) && (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
             {
-                MessageBox.Show("Por favor, Ingrese datos los campos obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, ingrese datos en todos los campos obligatorios y de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
@@ -317,17 +329,18 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
 
 
-                if (plan != null)
+                if (plan != null && plan != "(ninguno)")
                 {
-                    MessageBox.Show("El afiliado tendra el plan medico del grupo familiar al que se asocie", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                 
-                }
-               
+                    MessageBox.Show("El afiliado tendra el plan medico del grupo familiar al que se asocie, no hace falta seleccionarlo", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
+                }
+                else
+                {
+                    MessageBox.Show("Datos ingresados correctamente", "Alta Afiliado", MessageBoxButtons.OK,MessageBoxIcon.Information);
                     frmAsociarAfiliado asocio = new frmAsociarAfiliado(rol, usuario, bdd, nombre, apellido, tipoDoc, nroDoc, direccion, telefono, estadoCivil, mail, fechaF, opcionSexo, cantFam);
                     this.Hide();
                     asocio.Show();
-                    
+                }                  
          
             }
         }
