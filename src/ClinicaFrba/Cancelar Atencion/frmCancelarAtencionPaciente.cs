@@ -15,17 +15,15 @@ namespace ClinicaFrba.Cancelar_Atencion
         private string rol = "";
         private string usuario = "";
         private string idAfiliado = "124453901";
-        private Clases.BaseDeDatosSQL bdd;
         string comando = "";
-        string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
+        //string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
 
 
-        public frmCancelarAtencionPaciente(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmCancelarAtencionPaciente(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
             cancelarMismoDiaWarning.Visible = false;
             faltanCamposWarning.Visible = false;
             cmbMotivoCancelacion.Enabled = false;
@@ -34,10 +32,10 @@ namespace ClinicaFrba.Cancelar_Atencion
             //SE CARGAN LOS TURNOS
 
             comando = "select fecha from NEXTGDD.Turno where nro_afiliado = '" + idAfiliado + "'";
-            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "fecha"), cmbSeleccionTurno);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"fecha"), cmbSeleccionTurno);
 
             comando = "select nombre from NEXTGDD.Tipo_cancelacion";
-            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "nombre"), cmbMotivoCancelacion);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"), cmbMotivoCancelacion);
 
         }
 
@@ -70,14 +68,14 @@ namespace ClinicaFrba.Cancelar_Atencion
 
             // Cancelar el bono
 
-            string nroTurno = bdd.buscarCampo("select nro_turno from NEXTGDD.Turno where fecha = '"+ 
+            string nroTurno = Clases.BaseDeDatosSQL.buscarCampo("select nro_turno from NEXTGDD.Turno where fecha = '"+ 
                 cmbSeleccionTurno.SelectedItem.ToString() + "' and nro_afiliado = '" + idAfiliado + "'");
-            string tipoCancelacion = bdd.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '"+
+            string tipoCancelacion = Clases.BaseDeDatosSQL.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '"+
                 cmbMotivoCancelacion.SelectedItem.ToString()+"'");
 
             comando = "EXECUTE NEXTGDD.cancelarTurno @nroTurno='" + nroTurno + "',@tipoCancelacion'" + tipoCancelacion + 
                 "', @motivo='" + txtBoxDetalleCancelacion.Text + "'";
-            bdd.ExecStoredProcedure2(comando);
+            Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
             MessageBox.Show("Turno Cancelado Exitosamente", "Cancelar Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Dispose(false);
@@ -88,7 +86,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
             this.Hide();
             menuAbm.Show();
         }
@@ -120,6 +118,11 @@ namespace ClinicaFrba.Cancelar_Atencion
             }
             string año = fechaSinTiempo.Split('/')[2];
             return año + "/" + mes + "/" + dia + " " + fecha.Split(' ')[1];
+        }
+
+        private void frmCancelarAtencionPaciente_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

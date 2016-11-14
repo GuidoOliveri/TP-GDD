@@ -16,14 +16,12 @@ namespace ClinicaFrba.AbmRol
     {
         private string usuario = "";
         private string rol = "";
-        private Clases.BaseDeDatosSQL bdd;
 
-        public frmSeleccionarRol(List<string> roles,Clases.BaseDeDatosSQL bdd,string usuario)
+        public frmSeleccionarRol(List<string> roles,string usuario)
         {
             InitializeComponent();
             warning.Visible = false;
 
-            this.bdd = bdd;
             this.usuario = usuario;
             cargar(roles,cboRoles);
 
@@ -47,7 +45,7 @@ namespace ClinicaFrba.AbmRol
 
         private void btnVolverMenuPrincipal_Click(object sender, EventArgs e)
         {
-            frmVentanaPrincipal principal = new frmVentanaPrincipal(bdd);
+            frmVentanaPrincipal principal = new frmVentanaPrincipal();
             this.Hide();
             principal.Show();
         }
@@ -57,7 +55,7 @@ namespace ClinicaFrba.AbmRol
 
             if (cboRoles.SelectedItem != null)
             {
-                frmMenuDeAbms abms = new frmMenuDeAbms(rol,usuario,bdd);
+                frmMenuDeAbms abms = new frmMenuDeAbms(rol,usuario);
                 this.Hide();
                 abms.Show();
             }
@@ -77,7 +75,6 @@ namespace ClinicaFrba.AbmRol
             
             if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Application.Exit();
             }
             else
             {

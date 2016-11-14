@@ -16,13 +16,10 @@ namespace ClinicaFrba
         [STAThread]
         static void Main()
         {
-            Clases.BaseDeDatosSQL bdd = new Clases.BaseDeDatosSQL();
-            bdd.abrirConexion();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new frmVentanaPrincipal(bdd));
+            Application.Run(new frmVentanaPrincipal());
         }
     }
 }

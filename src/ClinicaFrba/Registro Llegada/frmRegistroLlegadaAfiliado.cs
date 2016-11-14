@@ -14,7 +14,6 @@ namespace ClinicaFrba.Registro_Llegada
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
 
         private string comando = "";
         private string profesional = "";
@@ -24,13 +23,12 @@ namespace ClinicaFrba.Registro_Llegada
         private string horaLLegada = "";
         private string fechaLLegada = "";
 
-        public frmRegistroLlegadaAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmRegistroLlegadaAfiliado(string rol, string usuario)
         {
             InitializeComponent();
 
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
        
 
             cmbEspecialidad.Enabled = false;
@@ -41,11 +39,11 @@ namespace ClinicaFrba.Registro_Llegada
 
             //SE CARGAN LOS PROF
             comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Persona p,NEXTGDD.Profesional pr where p.id_persona=pr.id_persona order by p.nombre ASC";
-            cargar(bdd.ObtenerLista(comando, "nombre"),cmbProfesional);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"),cmbProfesional);
 
             //SE CARGAN LAS ESPEC
             comando = "select descripcion from NEXTGDD.Especialidad order by descripcion ASC";
-            cargar(bdd.ObtenerLista(comando,"descripcion"),cmbEspecialidad);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"descripcion"),cmbEspecialidad);
 
             rbBusqueda.Click += new EventHandler(rbBusqueda_Click);
             cmbEspecialidad.SelectedIndexChanged += OnSelectedIndexChanged;
@@ -70,7 +68,7 @@ namespace ClinicaFrba.Registro_Llegada
                 cmbTurno.Text = "";
                 /* FILTRA POR FECHA ACTUAL*/
                 comando = "select * from NEXTGDD.buscarTurnosDelDia('"+profesional+"') order by fecha ASC";
-                cargar(bdd.ObtenerLista(comando,"fecha"), cmbTurno);
+                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"fecha"), cmbTurno);
             }
             if (cmbEspecialidad.SelectedItem != null && (string) cmbEspecialidad.SelectedItem!=especialidad)
             {
@@ -85,7 +83,7 @@ namespace ClinicaFrba.Registro_Llegada
 
                 //Carga los profesionales según la especialidad
                 comando = "select * from NEXTGDD.buscarProfesionales('" + especialidad + "') order by nombre ASC";
-                cargar(bdd.ObtenerLista(comando,"nombre"), cmbProfesional);
+                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"nombre"), cmbProfesional);
             }
             if (cmbTurno.SelectedItem !=null && (string)cmbTurno.SelectedItem!=turno)
             {
@@ -94,7 +92,7 @@ namespace ClinicaFrba.Registro_Llegada
                 txtFechaLlegada.Text = "";
                 txtHoraLlegada.Text = "";
                 comando = "select NEXTGDD.validarUsoDelTurno('" + convertirFecha(turno) + "','" + profesional + "')";
-                if (bdd.buscarCampo(comando)=="El turno no fue utilizado")
+                if (Clases.BaseDeDatosSQL.buscarCampo(comando)=="El turno no fue utilizado")
                 {
                     warning1.Visible = false;
                     if ((string)cmbTurno.SelectedItem != turno)
@@ -105,7 +103,7 @@ namespace ClinicaFrba.Registro_Llegada
                     //Descomentar-> todos los bonos fueron usados,ver de usar los de consultas canceladas 
                     //puede usar los de familiares
                     comando = "select * from NEXTGDD.buscarBonosDisponibles('"+profesional+"','"+convertirFecha(turno)+"') order by bono ASC";
-                    cargar(bdd.ObtenerLista(comando, "bono"), cmbBono);
+                    cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "bono"), cmbBono);
                     
                     txtFechaLlegada.Text = turno.Split(' ')[0];
                     txtHoraLlegada.Text = turno.Split(' ')[1];
@@ -161,7 +159,7 @@ namespace ClinicaFrba.Registro_Llegada
                 cmbTurno.Text = "";
                 //Carga de nuevo todos los profesionales
                 comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona order by p.nombre ASC";
-                cargar(bdd.ObtenerLista(comando, "nombre"),cmbProfesional);
+                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"),cmbProfesional);
                 cmbEspecialidad.Enabled = false; 
             }
 
@@ -179,12 +177,12 @@ namespace ClinicaFrba.Registro_Llegada
             if (profesional != null && turno != null && bono != null && horaLLegada != "" && warning2.Visible != true && warning4.Visible != true && warning3.Visible != true && warning1.Visible != true)
             {
                 comando = "EXECUTE NEXTGDD.registrarConsulta @fechaLlegada='"+convertirFecha(fechaLLegada+' '+horaLLegada)+"',@nomProf='" + profesional + "', @fechaTurno='" +convertirFecha(turno) + "', @nroBono='" + bono+ "'";
-                bdd.ExecStoredProcedure2(comando);
+                Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
                 comando = "select top 1 str(cod_consulta) from NEXTGDD.Consulta order by cod_consulta DESC";
-                MessageBox.Show("La consulta se ha registrado correctamente \n Numero de consulta:  " + bdd.buscarCampo(comando), "Consulta", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("La consulta se ha registrado correctamente \n Numero de consulta:  " + Clases.BaseDeDatosSQL.buscarCampo(comando), "Consulta", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                frmRegistroLlegadaAfiliado NewForm = new frmRegistroLlegadaAfiliado(rol,usuario,bdd);
+                frmRegistroLlegadaAfiliado NewForm = new frmRegistroLlegadaAfiliado(rol,usuario);
                 NewForm.Show();
                 this.Dispose(false);
 
@@ -274,7 +272,7 @@ namespace ClinicaFrba.Registro_Llegada
             DialogResult dialogResult = MessageBox.Show("¿Seguro que desea volver? Se perderán los datos.", "Volver al Menu", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
                 this.Hide();
                 menuAbm.Show();
             }

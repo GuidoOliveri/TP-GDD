@@ -16,14 +16,12 @@ namespace ClinicaFrba.Abm_Afiliado
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
 
-        public frmBuscarAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmBuscarAfiliado(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
         }
 
         private void lblFiltroBusqueda_Click(object sender, EventArgs e)
@@ -43,7 +41,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
             this.Hide();
             menuAbm.Show();
         }
@@ -71,7 +69,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             UInt64 nroAfil = UInt64.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
 
-            frmModificarAfiliado este = new frmModificarAfiliado(rol, usuario, bdd, nroAfil);
+            frmModificarAfiliado este = new frmModificarAfiliado(rol, usuario, nroAfil);
             this.Hide();
             este.Show();
         }

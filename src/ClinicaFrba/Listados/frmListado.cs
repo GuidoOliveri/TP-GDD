@@ -18,22 +18,20 @@ namespace ClinicaFrba.Listados
         private string semestre = "";
         private string listado = "";
         private string filtro = "";
-        private Clases.BaseDeDatosSQL bdd;
         private List<String> años = new List<string>();
 
-        public frmListado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmListado(string rol, string usuario)
         {
             InitializeComponent();
 
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
 
             warning.Visible = false;
             cmbFiltro.Enabled = false;
 
             comando = "select distinct year(fecha) as anio from NEXTGDD.Turno;";
-            cargarSemestres(bdd.ObtenerLista(comando, "anio"), cmbSemestre);
+            cargarSemestres(Clases.BaseDeDatosSQL.ObtenerLista(comando, "anio"), cmbSemestre);
 
             cmbListado.SelectedIndexChanged += OnSelectedIndexChanged;
             btnSeleccionar.Click += new EventHandler(btnSeleccionar_OnClick);
@@ -66,13 +64,13 @@ namespace ClinicaFrba.Listados
             {
                 cmbFiltro.Enabled = true;
                 comando="select descripcion as 'plan' from NEXTGDD.Plan_Medico order by descripcion ASC";
-                cargar(bdd.ObtenerLista(comando,"plan"),cmbFiltro);
+                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"plan"),cmbFiltro);
             }
             if (cmbListado.SelectedIndex == 2)
             {
                 cmbFiltro.Enabled = true;
                 comando = "select descripcion as 'especialidad' from NEXTGDD.Especialidad order by descripcion ASC";
-                cargar(bdd.ObtenerLista(comando, "especialidad"), cmbFiltro);
+                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "especialidad"), cmbFiltro);
             }
         }
 
@@ -134,7 +132,7 @@ namespace ClinicaFrba.Listados
                     campos.Add("Especialidad");
                     campos.Add("Cantidad de Bonos");
                 }
-                dt = bdd.ObtenerTabla(comando, campos);
+                dt = Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos);
                 dgListado.AutoGenerateColumns = true;
                 dgListado.DataSource = dt;
             }
@@ -209,7 +207,7 @@ namespace ClinicaFrba.Listados
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
             this.Hide();
             menuAbm.Show();
         }

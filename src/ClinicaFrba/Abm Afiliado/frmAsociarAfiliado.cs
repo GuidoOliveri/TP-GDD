@@ -17,7 +17,6 @@ namespace ClinicaFrba.Abm_Afiliado
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
         private SqlConnection conexion = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
         private string fname = "";
         private string lname = "";
@@ -35,12 +34,11 @@ namespace ClinicaFrba.Abm_Afiliado
         private Int64 resu;
         private int nroafilint;
         
-        public frmAsociarAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd, string nombre, string apellido, string tipoDoc, Int64 nroDoc, string direccion, Int64 telefono, string estadocivil, string mail,  DateTime fecha , char sexo, int cant_familiar)
+        public frmAsociarAfiliado(string rol, string usuario, string nombre, string apellido, string tipoDoc, Int64 nroDoc, string direccion, Int64 telefono, string estadocivil, string mail,  DateTime fecha , char sexo, int cant_familiar)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
             fname = nombre ;
             lname= apellido ;
             tipodocu= tipoDoc ;
@@ -56,7 +54,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            frmAltaAfiliado alta = new frmAltaAfiliado(rol,usuario,bdd);
+            frmAltaAfiliado alta = new frmAltaAfiliado(rol,usuario);
             this.Hide();
             alta.Show();
         }
@@ -156,7 +154,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     nroafiliado = resu;
 
                     MessageBox.Show("Registrado exitosamente!\n Tu nro de afiliado es:  " + nroafiliado + "\nNombre de usuario:  " + nroafiliado +"@NEXTGDD" + "\nContraseña:  " + nroafiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    frmAltaAfiliado alta = new frmAltaAfiliado(rol, usuario, bdd);
+                    frmAltaAfiliado alta = new frmAltaAfiliado(rol, usuario);
                     this.Hide();
                     alta.Show();
                 }

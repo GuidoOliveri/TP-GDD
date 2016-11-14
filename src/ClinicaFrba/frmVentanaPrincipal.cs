@@ -18,24 +18,16 @@ namespace ClinicaFrba
 {
     public partial class frmVentanaPrincipal : Form
     {
-        Clases.BaseDeDatosSQL bdd;
-        public frmVentanaPrincipal(Clases.BaseDeDatosSQL bdd)
-        {
-            InitializeComponent();
-
-            this.bdd = bdd;
-        }
-
         public frmVentanaPrincipal()
         {
-            // TODO: Complete member initialization
+            InitializeComponent();
         }
 
         //public Usuario User 
 
         private void cmdIngresar_Click(object sender, EventArgs e)
         {
-            Login.frmLogin ingresa = new Login.frmLogin(bdd);
+            Login.frmLogin ingresa = new Login.frmLogin();
             this.Hide();
             ingresa.Show();
         }
@@ -55,7 +47,6 @@ namespace ClinicaFrba
           
             if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Application.Exit();
             }
             else
             {

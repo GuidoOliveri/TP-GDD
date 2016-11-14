@@ -14,25 +14,23 @@ namespace ClinicaFrba.Cancelar_Atencion
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
-        string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
+        //string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
 
         String comando;
 
         private String matriculaProfesional;
         private String especialidad;
 
-        public frmCancelarAtencionMedico(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmCancelarAtencionMedico(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
 
             matriculaProfesional = "1002";
             especialidad = "10000";
             comando = "select nombre from NEXTGDD.Tipo_cancelacion";
-            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, conexion, "nombre"), cmbMotivoCancelacion);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"), cmbMotivoCancelacion);
 
         }
 
@@ -50,7 +48,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
             this.Hide();
             menuAbm.Show();
         }
@@ -91,17 +89,17 @@ namespace ClinicaFrba.Cancelar_Atencion
             //    return;
             //}
 
-            String codAgenda = bdd.buscarCampo("select cod_agenda from NEXTGDD.Agenda where '" + matriculaProfesional
+            String codAgenda = Clases.BaseDeDatosSQL.buscarCampo("select cod_agenda from NEXTGDD.Agenda where '" + matriculaProfesional
                         +"' = Agenda.matricula and '"+ especialidad +"' = Agenda.cod_especialidad");
 
-            String tipoCancelacion = bdd.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '" +
+            String tipoCancelacion = Clases.BaseDeDatosSQL.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '" +
                 cmbMotivoCancelacion.SelectedItem.ToString() + "'");
 
             // Por cada dia (for each DateTime)
             
             // Otro for, esta vez dentro de un mismo dia, por cada uno de los posibles horarios
             DateTime fecha = new DateTime();
-            String nroTurno = bdd.buscarCampo("select nro_turno from NEXTGDD.Turno where cod_agenda = '"+codAgenda
+            String nroTurno = Clases.BaseDeDatosSQL.buscarCampo("select nro_turno from NEXTGDD.Turno where cod_agenda = '"+codAgenda
                 +"' and fecha = '"+fecha.ToString()+"'");
             cancelarTurnos(nroTurno, fecha, tipoCancelacion);
 
@@ -112,7 +110,12 @@ namespace ClinicaFrba.Cancelar_Atencion
         {
             comando = "EXECUTE NEXTGDD.cancelarTurno @nroTurno='" + nroTurno + "',@tipoCancelacion'" + tipoCancelacion +
                 "', @motivo='" + txtBoxDetalleCancelacion.Text + "'";
-            bdd.ExecStoredProcedure2(comando);
+            Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
+        }
+
+        private void frmCancelarAtencionMedico_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -14,14 +14,12 @@ namespace ClinicaFrba.AbmRol
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
 
-        public frmSeleccionRolBajaOModificacion(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmSeleccionRolBajaOModificacion(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
         }
 
         //lista de roles que voy a tener para mostrar
@@ -101,7 +99,7 @@ namespace ClinicaFrba.AbmRol
         
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            frmElegirAccionRol elegiUna = new frmElegirAccionRol(rol,usuario,bdd);
+            frmElegirAccionRol elegiUna = new frmElegirAccionRol(rol,usuario);
             this.Hide();
             elegiUna.Show();
 
@@ -129,7 +127,7 @@ namespace ClinicaFrba.AbmRol
             {
 
                 //ABRO UN NUEVO FORM CON LAS FUNC DE ESE ROL
-                frmModificacionRol formFunc = new frmModificacionRol(usuario,rol,bdd);
+                frmModificacionRol formFunc = new frmModificacionRol(usuario,rol);
                 formFunc.unRol = unRol;
                 this.Hide();
                 formFunc.Show();

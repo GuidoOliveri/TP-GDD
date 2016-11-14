@@ -15,7 +15,6 @@ namespace ClinicaFrba.Pedir_Turno
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
 
         private string comando = "";
         private string nroAfiliado = "";
@@ -24,13 +23,12 @@ namespace ClinicaFrba.Pedir_Turno
         private string fecha = "";
         private List<String> horarios = new List<string>();
 
-        public frmSeleccionDeTurno(string rol, string usuario,Clases.BaseDeDatosSQL bdd)
+        public frmSeleccionDeTurno(string rol, string usuario)
         {
             InitializeComponent();
 
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
 
             warning1.Visible=false;
             warning2.Visible = false;
@@ -39,7 +37,7 @@ namespace ClinicaFrba.Pedir_Turno
 
             //Carga especialidades
             comando = "select descripcion from NEXTGDD.Especialidad order by descripcion ASC";
-            cargar(bdd.ObtenerLista(comando, "descripcion"), cmbEspecialidad);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "descripcion"), cmbEspecialidad);
 
             cmbEspecialidad.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbProfesional.SelectedIndexChanged += OnSelectedIndexChanged;
@@ -72,7 +70,7 @@ namespace ClinicaFrba.Pedir_Turno
             if (nroAfiliado!="")
             {
                 comando = "select isnull(count(*),0) from NEXTGDD.Afiliado where nro_afiliado LIKE " + nroAfiliado;
-                if (bdd.validarCampo(comando))
+                if (Clases.BaseDeDatosSQL.validarCampo(comando))
                 {
                     warning4.Visible = false;
                 }
@@ -99,7 +97,7 @@ namespace ClinicaFrba.Pedir_Turno
 
                 //Carga los profesionales según la especialidad
                 comando = "select * from NEXTGDD.buscarProfesionales('"+especialidad+"')";
-                cargar(bdd.ObtenerLista(comando,"nombre"), cmbProfesional);
+                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"nombre"), cmbProfesional);
             }
             if (cmbProfesional.SelectedItem != null)
             {
@@ -136,7 +134,7 @@ namespace ClinicaFrba.Pedir_Turno
             List<String> campos = new List<string>();
             campos.Add("hora_inicial");
             campos.Add("hora_final"); 
-            return bdd.ObtenerTabla(comando, campos);
+            return Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos);
         }
 
         private void btnIngresarTurno_Click(object sender, EventArgs e)
@@ -148,12 +146,12 @@ namespace ClinicaFrba.Pedir_Turno
             if (nroAfiliado != "" && warning4.Visible==false && especialidad != "" && profesional != "" && fecha != "" && warning1.Visible==false && warning2.Visible==false)
             {
                 comando = "EXECUTE NEXTGDD.crearTurno @nroAf='"+nroAfiliado+"', @nombreEsp='"+especialidad+"', @nomProf='"+profesional+"', @fecha='"+fecha+"'";
-                bdd.ExecStoredProcedure2(comando);
+                Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
                 comando="select top 1 str(nro_turno) from NEXTGDD.Turno order by nro_turno DESC";
-                MessageBox.Show("El turno se ha igresado correctamente \n Numero de turno:  "+ bdd.buscarCampo(comando), "Turno", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("El turno se ha igresado correctamente \n Numero de turno:  "+ Clases.BaseDeDatosSQL.buscarCampo(comando), "Turno", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                frmSeleccionDeTurno NewForm=new frmSeleccionDeTurno(rol,usuario,bdd);
+                frmSeleccionDeTurno NewForm=new frmSeleccionDeTurno(rol,usuario);
                 NewForm.Show();
                 this.Dispose(false);
 
@@ -169,7 +167,7 @@ namespace ClinicaFrba.Pedir_Turno
         {
             fecha = (string)dtpFecha.Value.ToString("yyyy-MM-dd") + " " + (string)cmbHorario.SelectedItem + ":00";
             comando = "select NEXTGDD.validarTurnoDisponible('" + fecha + "','" + profesional + "')";
-            if (bdd.buscarCampo(comando)=="true")
+            if (Clases.BaseDeDatosSQL.buscarCampo(comando)=="true")
             {
                 warning2.Visible = false;
             }
@@ -182,10 +180,10 @@ namespace ClinicaFrba.Pedir_Turno
         private void verificarRangoHorario()
         {
             comando = "select NEXTGDD.tieneRangosHorarios('"+especialidad+"','"+profesional+"')";
-            if (bdd.buscarCampo(comando)=="true")
+            if (Clases.BaseDeDatosSQL.buscarCampo(comando)=="true")
             {
                 comando = "select NEXTGDD.validarConRangoHorario('" + fecha + "','" + profesional + "','" + especialidad + "'," + ((int)dtpFecha.Value.DayOfWeek - 1) + ",'" + fecha.Split(' ')[1] + "')";
-                if (bdd.buscarCampo(comando) == "fuera del rango horario")
+                if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "fuera del rango horario")
                 {
                     warning1.Visible = true;
                 }
@@ -195,13 +193,13 @@ namespace ClinicaFrba.Pedir_Turno
         private void restringirRangoFechas()
         {
             comando = "select NEXTGDD.tieneRangosHorarios('" + especialidad + "','" + profesional + "')";
-            if (bdd.buscarCampo(comando) == "true")
+            if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "true")
             {
                 comando = "select * from NEXTGDD.restringirFechas('" + especialidad + "','" + profesional + "')";
                 List<String> campos = new List<string>();
                 campos.Add("fechaD");
                 campos.Add("fechaH");
-                DataTable dt = bdd.ObtenerTabla(comando, campos);
+                DataTable dt = Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos);
                 dtpFecha.MinDate = DateTime.Parse((string)dt.Rows[0][0]);
                 dtpFecha.MaxDate = DateTime.Parse((string)dt.Rows[0][1]);
             }
@@ -219,15 +217,15 @@ namespace ClinicaFrba.Pedir_Turno
             campos.Add("horaD");
             campos.Add("horaH");
             comando = "select NEXTGDD.tieneRangosHorarios('" + especialidad + "','" + profesional + "')";
-            if (bdd.buscarCampo(comando) == "true")
+            if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "true")
             {
                 comando = "select * from NEXTGDD.restringirHorarios('" + especialidad + "','" + profesional + "',"+diaSemana+")";
-                cargarHorarios(bdd.ObtenerTabla(comando, campos));
+                cargarHorarios(Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos));
             }
             else
             {
                 comando = "select * from NEXTGDD.obtenerRangoClinica(" + diaSemana + ")";
-                cargarHorarios(bdd.ObtenerTabla(comando, campos));
+                cargarHorarios(Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos));
             }
         }
 
@@ -280,7 +278,7 @@ namespace ClinicaFrba.Pedir_Turno
             DialogResult dialogResult = MessageBox.Show("¿Seguro que desea volver? Se perderán los datos.", "Volver al Menu", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
                 this.Hide();
                 menuAbm.Show();
             }

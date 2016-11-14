@@ -17,7 +17,6 @@ namespace ClinicaFrba.Abm_Afiliado
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
         private string comando = "";
         private string plan = "";
         private string estadoCivil = "";
@@ -47,16 +46,15 @@ namespace ClinicaFrba.Abm_Afiliado
 
        // DateTime fechaF;
 
-        public frmAltaAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmAltaAfiliado(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
             plan = (string)cmbPlanMedico.SelectedItem;
 
             comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
-            cargar(bdd.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
 
             cmbEstadoCivil.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPlanMedico.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -121,7 +119,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
             
 
-            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text)<0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text)<0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || txtDepto.TextLength > 1|| String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text)<0 || (cmbEstadoCivil.Items.Count <= 0) ||  (cmbTipoDoc.Items.Count <= 0) ||( cmbPlanMedico.Items.Count <= 0) || cmbPlanMedico.SelectedItem == "(ninguno)" || (( optMasculino.Checked == false) &&  (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text)<0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text)<0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || txtDepto.TextLength > 1|| String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text)<0 || (cmbEstadoCivil.Items.Count <= 0) ||  (cmbTipoDoc.Items.Count <= 0) ||( cmbPlanMedico.Items.Count <= 0) || 
+                (( optMasculino.Checked == false) &&  (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
             {
                 MessageBox.Show("Por favor, ingrese datos en todos los campos obligatorios y de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -251,7 +250,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms abm = new Login.frmMenuDeAbms(rol,usuario,bdd);
+            Login.frmMenuDeAbms abm = new Login.frmMenuDeAbms(rol,usuario);
             this.Hide();
             abm.Show();
         }
@@ -343,7 +342,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 else
                 {
                     MessageBox.Show("Datos ingresados correctamente", "Alta Afiliado", MessageBoxButtons.OK,MessageBoxIcon.Information);
-                    frmAsociarAfiliado asocio = new frmAsociarAfiliado(rol, usuario, bdd, nombre, apellido, tipoDoc, nroDoc, direccion, telefono, estadoCivil, mail, fechaNac, opcionSexo, cantFam);
+                    frmAsociarAfiliado asocio = new frmAsociarAfiliado(rol, usuario, nombre, apellido, tipoDoc, nroDoc, direccion, telefono, estadoCivil, mail, fechaNac, opcionSexo, cantFam);
                     this.Hide();
                     asocio.Show();
                 }                  

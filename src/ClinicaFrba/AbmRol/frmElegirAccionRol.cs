@@ -14,33 +14,31 @@ namespace ClinicaFrba.AbmRol
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
 
-        public frmElegirAccionRol(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmElegirAccionRol(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
         }
 
         private void btnAgregarRol_Click(object sender, EventArgs e)
         {
-            frmAgregarNuevoRol agrega = new frmAgregarNuevoRol(rol,usuario,bdd);
+            frmAgregarNuevoRol agrega = new frmAgregarNuevoRol(rol,usuario);
             this.Hide();
             agrega.Show();
         }
 
         private void btnSeleccionRol_Click(object sender, EventArgs e)
         {
-            frmSeleccionRolBajaOModificacion seleccion = new frmSeleccionRolBajaOModificacion(rol,usuario,bdd);
+            frmSeleccionRolBajaOModificacion seleccion = new frmSeleccionRolBajaOModificacion(rol,usuario);
             this.Hide();
             seleccion.Show();
         }
 
         private void btnVolverALoguearse_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menu = new Login.frmMenuDeAbms(rol,usuario,bdd);
+            Login.frmMenuDeAbms menu = new Login.frmMenuDeAbms(rol,usuario);
             this.Hide();
             menu.Show();
 

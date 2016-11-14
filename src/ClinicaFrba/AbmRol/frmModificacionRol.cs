@@ -14,14 +14,12 @@ namespace ClinicaFrba.AbmRol
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
 
-        public frmModificacionRol(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmModificacionRol(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
         }
 
         //lista de roles que voy a tener para mostrar
@@ -91,7 +89,7 @@ namespace ClinicaFrba.AbmRol
 
             MessageBox.Show("Se ha modificado el rol con éxito", "Enhorabuena!", MessageBoxButtons.OK);
             this.Hide();
-            frmElegirAccionRol elegir = new frmElegirAccionRol(rol, usuario, bdd);
+            frmElegirAccionRol elegir = new frmElegirAccionRol(rol, usuario);
             elegir.Show();
         }
 

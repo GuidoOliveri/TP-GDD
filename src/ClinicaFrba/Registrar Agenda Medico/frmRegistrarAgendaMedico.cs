@@ -15,7 +15,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
 
         private string comando = "";
         private string especialidad = "";
@@ -29,7 +28,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         private List<string> horarios = new List<string>();
         private List<string> dias = new List<string>();
 
-        public frmRegistrarAgendaMedico(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmRegistrarAgendaMedico(string rol, string usuario)
         {
             InitializeComponent();
             warning1.Visible=false;
@@ -37,7 +36,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             warning3.Visible = false;
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
 
             cargarDias();
 
@@ -46,7 +44,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             cargar(horarios, cmbHorarioDesde);
             cargar(horarios, cmbHorarioHasta);
             comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona order by (p.nombre+' '+p.apellido) ASC";
-            cargar(bdd.ObtenerLista(comando,"nombre"), cmbProfesional);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"nombre"), cmbProfesional);
 
             cmbProfesional.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbEspecialidad.SelectedIndexChanged += OnSelectedIndexChanged;
@@ -95,7 +93,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 cmbEspecialidad.Text = "";
                 profesional = (string) cmbProfesional.SelectedItem;
                 comando = "select * from NEXTGDD.buscarEspecialidades('"+profesional+"') order by especialidad ASC";
-                cargar(bdd.ObtenerLista(comando, "especialidad"), cmbEspecialidad);
+                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "especialidad"), cmbEspecialidad);
             }
             if (cmbDiaDesde.SelectedItem != null && (string)cmbDiaDesde.SelectedItem!=diaDesde)
             {
@@ -126,7 +124,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             {
                 especialidad = (string)cmbEspecialidad.SelectedItem;
                 comando = "select NEXTGDD.validarAgendaUnica('"+especialidad+"','"+profesional+"')";
-                if (bdd.buscarCampo(comando)=="No existe una agenda")
+                if (Clases.BaseDeDatosSQL.buscarCampo(comando)=="No existe una agenda")
                 {
                     warning3.Visible = false;
                 }
@@ -147,7 +145,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             List<String> campos = new List<string>();
             campos.Add("horaD");
             campos.Add("horaH");
-            return bdd.ObtenerTabla(comando, campos);
+            return Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos);
         }
 
         private void cargarHorarios(DataTable rangos)
@@ -219,22 +217,22 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 if (especialidad != "" && profesional != "" && dgRangoAtencion.Rows.Count!=0 && fechaDesde!="" && fechaHasta!="" && warning1.Visible == false && warning2.Visible == false &&warning3.Visible==false)
                 {
                     comando = "EXECUTE NEXTGDD.registrarAgenda @nomProfesional='"+profesional+"', @nomEspecialidad='"+especialidad+"', @fechaD='"+convertirFecha(fechaDesde)+"', @fechaH='"+convertirFecha(fechaHasta)+"'";
-                    bdd.ExecStoredProcedure2(comando);
+                    Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
                     comando = "select NEXTGDD.buscarCodigoAgenda('" + profesional + "','" + especialidad + "')";
-                    string cod_agenda=bdd.buscarCampo(comando);
+                    string cod_agenda=Clases.BaseDeDatosSQL.buscarCampo(comando);
 
                     int nroRango = 0;
                     foreach(DataGridViewRow row in dgRangoAtencion.Rows)
                     {
                         comando = "EXECUTE NEXTGDD.registrarRangoHorario @cod_rango='"+nroRango+"', @codAgenda='" + cod_agenda+ "',@diaD='" + row.Cells[0].Value.ToString() + "',@diaH='" + row.Cells[1].Value.ToString() + "',@horaD='" + row.Cells[2].Value.ToString() + ":00',@horaH='" + row.Cells[3].Value.ToString() + ":00'";
-                        bdd.ExecStoredProcedure2(comando);
+                        Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
                         nroRango++;
                     }
 
                     MessageBox.Show("La agenda se ha registrado correctamente." , "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(rol,usuario,bdd);
+                    frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(rol,usuario);
                     NewForm.Show();
                     this.Dispose(false);
                 }
@@ -362,7 +360,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             DialogResult dialogResult = MessageBox.Show("¿Seguro que desea volver? Se perderán los datos.", "Volver al Menu", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
                 this.Hide();
                 menuAbm.Show();
             }

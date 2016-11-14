@@ -15,16 +15,14 @@ namespace ClinicaFrba.Compra_Bono
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
         private string idAfiliado = "";
 
 
-        public frmCompraBonos(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmCompraBonos(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
 
             if(rol.Equals("Administrativo")){
                 txtNumeroAfiliado.Visible = true;
@@ -42,7 +40,7 @@ namespace ClinicaFrba.Compra_Bono
         private String obtenerPrecioBono(string afiliado)
         {
             String queryString = "SELECT precio_bono_consulta FROM NEXTGDD.Afiliado RIGHT JOIN NEXTGDD.Plan_Medico ON Afiliado.cod_plan = Plan_Medico.cod_plan WHERE Afiliado.nro_afiliado ='" + txtNumeroAfiliado.Text + "'";
-            return bdd.buscarCampo(queryString);
+            return Clases.BaseDeDatosSQL.buscarCampo(queryString);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -57,7 +55,7 @@ namespace ClinicaFrba.Compra_Bono
      
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
             this.Hide();
             menuAbm.Show();
         }
@@ -103,7 +101,7 @@ namespace ClinicaFrba.Compra_Bono
             String comando;
 
             comando = "select cod_plan from NEXTGDD.Afiliado where nro_afiliado = '" + idAfiliado + "'";
-            String plan = bdd.buscarCampo(comando);
+            String plan = Clases.BaseDeDatosSQL.buscarCampo(comando);
 
             //String fecha = System.Configuration.ConfigurationSettings.AppSettings["date"];
 
@@ -111,13 +109,13 @@ namespace ClinicaFrba.Compra_Bono
             for (int i = 0; i < cantBonosUpDown.Value; i++)
             {
                 comando = "EXECUTE NEXTGDD.comprarBono @fechaImpresion='" + convertirFecha("7/11/2016") + "', @compraFecha='" + convertirFecha("7/11/2016") + "', @codPlan='" + plan + "', @nroAfiliado=" + idAfiliado + "'";
-                bdd.ExecStoredProcedure2(comando);
+                Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
             }
 
 
             // Registrar la compra
             comando = "EXECUTE NEXTGDD.registrarCompra @cant='" + cantBonosUpDown.Value + "', @idAfiliado='" + idAfiliado + "', @precioTotal='" + lblTotalAPagar.Text + "'";
-            bdd.ExecStoredProcedure2(comando);
+            Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
             MessageBox.Show("Compra completada con exito!", "Compra", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 

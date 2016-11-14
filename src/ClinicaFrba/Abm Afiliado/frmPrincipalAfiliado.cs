@@ -15,19 +15,17 @@ namespace ClinicaFrba.Abm_Afiliado
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
         
-        public frmPrincipalAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmPrincipalAfiliado(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
         }
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario,bdd);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
             this.Hide();
             menuAbm.Show();
         }
@@ -35,28 +33,28 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void cmdHistorialCambios_Click(object sender, EventArgs e)
         {
-            frmHistorialCambios historial = new frmHistorialCambios(rol,usuario,bdd);
+            frmHistorialCambios historial = new frmHistorialCambios(rol,usuario);
             this.Hide();
             historial.Show();
         }
 
         private void cmdBuscarAfiliado_Click(object sender, EventArgs e)
         {
-            frmBuscarAfiliado buscar = new frmBuscarAfiliado(rol,usuario,bdd);
+            frmBuscarAfiliado buscar = new frmBuscarAfiliado(rol,usuario);
             this.Hide();
             buscar.Show();           
         }
 
         private void cmdBajaAfiliado_Click(object sender, EventArgs e)
         {
-            frmBajaAfiliado baja = new frmBajaAfiliado(rol,usuario,bdd);
+            frmBajaAfiliado baja = new frmBajaAfiliado(rol,usuario);
             this.Hide();
             baja.Show();
         }
 
         private void cmdAltaAfiliado_Click(object sender, EventArgs e)
         {
-            frmAltaAfiliado alta = new frmAltaAfiliado(rol,usuario,bdd);
+            frmAltaAfiliado alta = new frmAltaAfiliado(rol,usuario);
             this.Hide();
             alta.Show();
         }
@@ -71,6 +69,11 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 e.Cancel = true;
             }
+        }
+
+        private void frmPrincipalAfiliado_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

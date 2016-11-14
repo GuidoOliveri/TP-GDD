@@ -15,7 +15,6 @@ namespace ClinicaFrba.Registro_Resultado
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
         
         private string comando = "";
         private string consulta = "";
@@ -27,14 +26,13 @@ namespace ClinicaFrba.Registro_Resultado
         private string descripcion = "";
         private string id_persona = ""; 
 
-        public frmRegistroResultado(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmRegistroResultado(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
             comando = "select u.id_persona as id from NEXTGDD.Usuario u where u.username LIKE '"+usuario+"'";
-            id_persona = bdd.buscarCampo(comando);
+            id_persona = Clases.BaseDeDatosSQL.buscarCampo(comando);
 
             warning1.Visible = false;
             warning2.Visible = false;
@@ -43,13 +41,13 @@ namespace ClinicaFrba.Registro_Resultado
 
             //Habria que filtrar por fecha actual
             comando = "select * from NEXTGDD.buscarConsultasAtendidas('"+id_persona+"') order by consulta ASC";
-            cargar(bdd.ObtenerLista(comando,"consulta"),cmbConsulta);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"consulta"),cmbConsulta);
 
             comando = "select sintoma from NEXTGDD.Sintoma ";
-            cargar (bdd.ObtenerLista(comando,"sintoma"),cmbSintoma);
+            cargar (Clases.BaseDeDatosSQL.ObtenerLista(comando,"sintoma"),cmbSintoma);
 
             comando = "select enfermedad from NEXTGDD.Enfermedad";
-            cargar(bdd.ObtenerLista(comando, "enfermedad"), cmbEnfermedad);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "enfermedad"), cmbEnfermedad);
 
             cmbConsulta.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbAfiliado.SelectedIndexChanged += OnSelectedIndexChanged;
@@ -72,14 +70,14 @@ namespace ClinicaFrba.Registro_Resultado
             {
                 cmbAfiliado.Enabled = true;
                 comando = "select * from NEXTGDD.buscarAfiliadosAtendidos('" + id_persona + "') order by nombre ASC";
-                cargar(bdd.ObtenerLista(comando, "nombre"), cmbAfiliado);
+                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"), cmbAfiliado);
             }
             else
             {
                 cmbConsulta.Items.Clear();
                 cmbConsulta.Text = "";
                 comando = "select * from NEXTGDD.buscarConsultasAtendidas('" + id_persona + "') order by consulta ASC";
-                cargar(bdd.ObtenerLista(comando, "consulta"), cmbConsulta);
+                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "consulta"), cmbConsulta);
                 cmbAfiliado.Text = "";
                 cmbAfiliado.Items.Clear();
                 cmbAfiliado.Enabled = false;
@@ -96,7 +94,7 @@ namespace ClinicaFrba.Registro_Resultado
                 cmbConsulta.Text = "";
                 //Filtra las consultas
                 comando = "select * from NEXTGDD.filtrarConsultasPorAfiliado('"+id_persona+"','"+afiliado+"') order by consulta ASC";
-                cargar(bdd.ObtenerLista(comando, "consulta"), cmbConsulta);
+                cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "consulta"), cmbConsulta);
             }
             if (cmbConsulta.SelectedItem != null && (string)cmbConsulta.SelectedItem != consulta)
             {
@@ -119,11 +117,11 @@ namespace ClinicaFrba.Registro_Resultado
             if (consulta != null && consulta!=""  && fecha != null && hora != null && enfermedad!=null && sintoma!= null && warning1.Visible==false && warning2.Visible==false)
             {
                 comando = "EXECUTE NEXTGDD.registrarDiagnostico @medico='" + id_persona + "',@fechaConsulta='" + convertirFecha(consulta) + "', @fechaAtencion='" + convertirFecha(fecha+' '+hora) + "', @enfermedad='" + enfermedad + "',@sintoma='"+sintoma+"',@descripcion='"+descripcion+"'";
-                bdd.ExecStoredProcedure2(comando);
+                Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
                 MessageBox.Show("El diagnóstico se ingreso correctamente.", "Diagnostico", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                frmRegistroResultado NewForm = new frmRegistroResultado(rol,usuario,bdd);
+                frmRegistroResultado NewForm = new frmRegistroResultado(rol,usuario);
                 NewForm.Show();
                 this.Dispose(false);
 
@@ -196,7 +194,7 @@ namespace ClinicaFrba.Registro_Resultado
             DialogResult dialogResult = MessageBox.Show("¿Seguro que desea volver? Se perderán los datos.", "Volver al Menu", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
                 this.Hide();
                 menuAbm.Show();
             }

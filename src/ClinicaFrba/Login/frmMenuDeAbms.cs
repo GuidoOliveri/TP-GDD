@@ -14,20 +14,18 @@ namespace ClinicaFrba.Login
     {
         private string rol="";
         private string usuario="";
-        private Clases.BaseDeDatosSQL bdd;
         private string comando = "";
         private string funcionalidad = "";
 
-        public frmMenuDeAbms(string rol,string usuario,Clases.BaseDeDatosSQL bdd)
+        public frmMenuDeAbms(string rol,string usuario)
         {
             InitializeComponent();
 
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
 
             comando = "select distinct f.nombre as funcionalidad from NEXTGDD.Funcionalidad f,NEXTGDD.Funcionalidad_X_Rol fr,NEXTGDD.Rol r where r.nombre LIKE '"+rol+"' and fr.id_rol=r.id_rol and fr.id_funcionalidad=f.id_funcionalidad";
-            cargar(bdd.ObtenerLista(comando,"funcionalidad"),cmbFuncionalidades);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"funcionalidad"),cmbFuncionalidades);
 
             btnEjecutar.Click += new EventHandler(btnEjecutar_OnClick);
 
@@ -48,7 +46,7 @@ namespace ClinicaFrba.Login
 
         private void cmdLogueo_Click(object sender, EventArgs e)
         {
-           frmLogin logueo = new frmLogin(bdd);
+           frmLogin logueo = new frmLogin();
            this.Hide();
            logueo.Show();
         }
@@ -62,19 +60,19 @@ namespace ClinicaFrba.Login
             {
                 if (funcionalidad == "Pedido de turno")
                 {
-                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(rol,usuario,bdd);
+                    Pedir_Turno.frmSeleccionDeTurno func = new Pedir_Turno.frmSeleccionDeTurno(rol,usuario);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "ABM de roles")
                 {
-                    AbmRol.frmElegirAccionRol func = new AbmRol.frmElegirAccionRol(rol, usuario,bdd);
+                    AbmRol.frmElegirAccionRol func = new AbmRol.frmElegirAccionRol(rol, usuario);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "ABM de afiliados")
                 {
-                    Abm_Afiliado.frmPrincipalAfiliado func = new Abm_Afiliado.frmPrincipalAfiliado(rol,usuario,bdd);
+                    Abm_Afiliado.frmPrincipalAfiliado func = new Abm_Afiliado.frmPrincipalAfiliado(rol,usuario);
                     this.Hide();
                     func.Show();
                 }
@@ -96,37 +94,37 @@ namespace ClinicaFrba.Login
                 }
                 if (funcionalidad == "Compra de bonos")
                 {
-                    Compra_Bono.frmCompraBonos func = new Compra_Bono.frmCompraBonos(rol,usuario,bdd);
+                    Compra_Bono.frmCompraBonos func = new Compra_Bono.frmCompraBonos(rol,usuario);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "Registrar agenda profesional")
                 {
-                    Registrar_Agenda_Medico.frmRegistrarAgendaMedico func = new Registrar_Agenda_Medico.frmRegistrarAgendaMedico(rol,usuario,bdd);
+                    Registrar_Agenda_Medico.frmRegistrarAgendaMedico func = new Registrar_Agenda_Medico.frmRegistrarAgendaMedico(rol,usuario);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "Registro de llegada para atencion medica")
                 {
-                    Registro_Llegada.frmRegistroLlegadaAfiliado func = new Registro_Llegada.frmRegistroLlegadaAfiliado(rol,usuario,bdd);
+                    Registro_Llegada.frmRegistroLlegadaAfiliado func = new Registro_Llegada.frmRegistroLlegadaAfiliado(rol,usuario);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "Registro de resultado para atencion medica")
                 {
-                    Registro_Resultado.frmRegistroResultado func = new Registro_Resultado.frmRegistroResultado(rol,usuario,bdd);
+                    Registro_Resultado.frmRegistroResultado func = new Registro_Resultado.frmRegistroResultado(rol,usuario);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "Cancelar atencion medica")
                 {
-                    Cancelar_Atencion.frmCancelarAtencionMedico func = new Cancelar_Atencion.frmCancelarAtencionMedico(rol,usuario,bdd);
+                    Cancelar_Atencion.frmCancelarAtencionMedico func = new Cancelar_Atencion.frmCancelarAtencionMedico(rol,usuario);
                     this.Hide();
                     func.Show();
                 }
                 if (funcionalidad == "Consultar listado estadistico")
                 {
-                    Listados.frmListado func = new Listados.frmListado(rol,usuario,bdd);
+                    Listados.frmListado func = new Listados.frmListado(rol,usuario);
                     this.Hide();
                     func.Show();
                 }
@@ -153,7 +151,6 @@ namespace ClinicaFrba.Login
             DialogResult dialog = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialog == DialogResult.Yes)
             {
-                Application.Exit();
             }
             else
             {

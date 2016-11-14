@@ -38,12 +38,13 @@
             // lblSelRol
             // 
             this.lblSelRol.AutoSize = true;
-            this.lblSelRol.Font = new System.Drawing.Font("Segoe Print", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSelRol.Location = new System.Drawing.Point(32, 23);
+            this.lblSelRol.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSelRol.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.lblSelRol.Location = new System.Drawing.Point(39, 36);
             this.lblSelRol.Name = "lblSelRol";
-            this.lblSelRol.Size = new System.Drawing.Size(502, 43);
+            this.lblSelRol.Size = new System.Drawing.Size(507, 33);
             this.lblSelRol.TabIndex = 0;
-            this.lblSelRol.Text = "Bienvenido, con qué Rol desea ingresar?";
+            this.lblSelRol.Text = "Bienvenido, ¿con qué Rol desea ingresar?";
             // 
             // btnAceptar
             // 
@@ -86,9 +87,9 @@
             this.warning.ForeColor = System.Drawing.Color.Red;
             this.warning.Location = new System.Drawing.Point(186, 141);
             this.warning.Name = "warning";
-            this.warning.Size = new System.Drawing.Size(165, 13);
+            this.warning.Size = new System.Drawing.Size(160, 13);
             this.warning.TabIndex = 4;
-            this.warning.Text = "Debes seleccionar alguna opcion";
+            this.warning.Text = "Debe seleccionar alguna opcion";
             // 
             // frmSeleccionarRol
             // 

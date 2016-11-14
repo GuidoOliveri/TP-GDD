@@ -16,14 +16,11 @@ namespace ClinicaFrba.Login
     public partial class frmLogin : Form
     {
         private string query = "";
-        private Clases.BaseDeDatosSQL bdd;
         
-        public frmLogin(Clases.BaseDeDatosSQL bdd)
+        public frmLogin()
         {
             InitializeComponent();
             warning.Visible = false;
-
-            this.bdd = bdd;
         }
    
         private SqlConnection conn = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
@@ -78,13 +75,13 @@ namespace ClinicaFrba.Login
                 while (dataReader.Read()) nombreRoles.Add(dataReader.GetString(0));
                 if (nombreRoles.Count > 1)
                 {
-                    frmSeleccionarRol seleccion = new frmSeleccionarRol(nombreRoles,bdd,uname);
+                    frmSeleccionarRol seleccion = new frmSeleccionarRol(nombreRoles,uname);
                     this.Hide();
                     seleccion.Show();
                 }
                 else
                 {
-                    frmMenuDeAbms elegiaccion = new frmMenuDeAbms(nombreRoles.ElementAt(0),uname,bdd);
+                    frmMenuDeAbms elegiaccion = new frmMenuDeAbms(nombreRoles.ElementAt(0),uname);
                     this.Hide();
                     elegiaccion.Show();
                     Usuario.id_rol = nombreRoles.ElementAt(0);
@@ -117,7 +114,7 @@ namespace ClinicaFrba.Login
 
         private void cmdVolverMenuPrincipal_Click(object sender, EventArgs e)
         {
-            frmVentanaPrincipal principal = new frmVentanaPrincipal(bdd);
+            frmVentanaPrincipal principal = new frmVentanaPrincipal();
             this.Hide();
             principal.Show();
         }
@@ -128,12 +125,16 @@ namespace ClinicaFrba.Login
             DialogResult dialog = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dialog == DialogResult.Yes)
             {
-                Application.Exit();
             }
             else
             {
                 e.Cancel = true;
             }
+        }
+
+        private void frmLogin_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

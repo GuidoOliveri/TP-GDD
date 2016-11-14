@@ -15,22 +15,20 @@ namespace ClinicaFrba.Abm_Afiliado
         private string comando = "";
         private string rol = "";
         private string usuario = "";
-        Clases.BaseDeDatosSQL bdd;
 
-        int idAfiliado;
+        int idAfiliado=0;
 
         private String direccion = "";
         private String telefono = "";
         private String mail = "";
         private string plan = "";
 
-        public frmModificarAfiliado(string rol, string usuario, Clases.BaseDeDatosSQL bdd, UInt64 nroAfil)
+        public frmModificarAfiliado(string rol, string usuario, UInt64 nroAfil)
         {
             InitializeComponent();
 
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
             plan = (string)cmbPlanMedico.SelectedItem;
             
             //this.idAfiliado = 27281; //hardcodeado, despues vemos 
@@ -52,7 +50,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
           //  */
             comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
-            cargar(bdd.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
             
             btnGuardar.Click += new EventHandler(btnGuardar_Click);
             
@@ -82,21 +80,21 @@ namespace ClinicaFrba.Abm_Afiliado
             if (txtDir.Text != direccion && txtDir.Text!=null )
             {
                 comando = "EXECUTE NEXTGDD.modificar_Afiliado_Domic @id='" + idAfiliado + "',@nuevo_dom='" + txtDir.Text;
-                bdd.ExecStoredProcedure2(comando);
+                Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
                 MessageBox.Show("Actualizacion exitosa!", "Actualizacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             if (txtTel.Text != telefono && txtTel.Text!=null)
             {
                 comando = "EXECUTE NEXTGDD.modificar_Afiliado_Telef @id='" + idAfiliado + "',@nuevo_nuevo_telef='" + txtTel.Text;
-                bdd.ExecStoredProcedure2(comando);
+                Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
                 MessageBox.Show("Actualizacion exitosa!", "Actualizacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             if (txtMail.Text != mail && txtMail.Text!=null)
             {
                 comando = "EXECUTE NEXTGDD.modificar_Afiliado_Mail @id='" + idAfiliado + "',@nuevo_mail='" + txtDir.Text;
-                bdd.ExecStoredProcedure2(comando);
+                Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
                 MessageBox.Show("Actualizacion exitosa!", "Actualizacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
@@ -105,7 +103,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            frmBuscarAfiliado buscar = new frmBuscarAfiliado(rol,usuario,bdd);
+            frmBuscarAfiliado buscar = new frmBuscarAfiliado(rol,usuario);
             this.Hide();
             buscar.Show();
         }

@@ -16,14 +16,12 @@ namespace ClinicaFrba.Abm_Afiliado
     {
         private string rol = "";
         private string usuario = "";
-        private Clases.BaseDeDatosSQL bdd;
 
-        public frmHistorialCambios(string rol, string usuario, Clases.BaseDeDatosSQL bdd)
+        public frmHistorialCambios(string rol, string usuario)
         {
             InitializeComponent();
             this.rol = rol;
             this.usuario = usuario;
-            this.bdd = bdd;
         }
 
         private void frmHistorialCambios_Load(object sender, EventArgs e)
@@ -37,7 +35,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnAceptarYVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario, bdd);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
             this.Hide();
             menuAbm.Show();
         }

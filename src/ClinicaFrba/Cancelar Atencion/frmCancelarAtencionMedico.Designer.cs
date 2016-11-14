@@ -184,6 +184,7 @@
             this.Name = "frmCancelarAtencionMedico";
             this.Text = "Cancelar Atencion";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCancelarAtencionMedico_FormClosing);
+            this.Load += new System.EventHandler(this.frmCancelarAtencionMedico_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
