@@ -56,6 +56,9 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Enfer
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Turno'))
     DROP TABLE NEXTGDD.Turno
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Cancelacion_Por_Fecha'))
+    DROP TABLE NEXTGDD.Cancelacion_Por_Fecha
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Agenda'))
     DROP TABLE NEXTGDD.Agenda
 
@@ -274,6 +277,15 @@ CREATE TABLE NEXTGDD.Agenda (
    matricula numeric (18,0) NOT NULL,
    cod_especialidad numeric (18,0) NOT NULL,
    FOREIGN KEY (matricula, cod_especialidad) REFERENCES NextGDD.Profesional_X_Especialidad(matricula, cod_especialidad)
+   )
+
+CREATE TABLE NEXTGDD.Cancelacion_Por_Fecha (
+
+    cod_canc_fecha numeric (18,0) PRIMARY KEY IDENTITY, 
+	fecha_desde datetime,
+	fecha_hasta datetime,
+	cod_cancelacion numeric (18,0) REFERENCES NEXTGDD.Cancelacion(cod_cancelacion),
+	cod_agenda numeric (18,0) REFERENCES NEXTGDD.Agenda(cod_agenda) 
    )
 
 CREATE TABLE NEXTGDD.Turno (
