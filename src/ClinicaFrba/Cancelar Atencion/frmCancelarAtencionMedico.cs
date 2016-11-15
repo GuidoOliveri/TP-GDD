@@ -27,7 +27,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             this.rol = rol;
             this.usuario = usuario;
 
-            matriculaProfesional = "1002";
+            matriculaProfesional = "1000";
             especialidad = "10000";
             comando = "select nombre from NEXTGDD.Tipo_cancelacion";
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"), cmbMotivoCancelacion);
@@ -83,11 +83,11 @@ namespace ClinicaFrba.Cancelar_Atencion
 
             faltanDatosWarning.Visible = true;
 
-            //if (elTurnoEsHoy(cmbSeleccionTurno.SelectedText))
-            //{
-            //    cancelarMismoDiaWarning.Visible = true;
-            //    return;
-            //}
+            if (!sePuedeCancelarElRango(pickerFecha.SelectionStart))
+            {
+                warningNoSePuedeCancelarMismoDia.Visible = true;
+                return;
+            }
 
             String codAgenda = Clases.BaseDeDatosSQL.buscarCampo("select cod_agenda from NEXTGDD.Agenda where '" + matriculaProfesional
                         +"' = Agenda.matricula and '"+ especialidad +"' = Agenda.cod_especialidad");
@@ -96,14 +96,25 @@ namespace ClinicaFrba.Cancelar_Atencion
                 cmbMotivoCancelacion.SelectedItem.ToString() + "'");
 
             // Por cada dia (for each DateTime)
-            
+            DateTime dt = pickerFecha.SelectionStart;
+            while (dt.Date <= pickerFecha.SelectionEnd.Date)
+            {
+                Console.Write("paso 1 dia");
+                dt = dt.Date.AddDays(1);
+            }
             // Otro for, esta vez dentro de un mismo dia, por cada uno de los posibles horarios
-            DateTime fecha = new DateTime();
-            String nroTurno = Clases.BaseDeDatosSQL.buscarCampo("select nro_turno from NEXTGDD.Turno where cod_agenda = '"+codAgenda
-                +"' and fecha = '"+fecha.ToString()+"'");
-            cancelarTurnos(nroTurno, fecha, tipoCancelacion);
+            //DateTime fecha = new DateTime();
+            //String nroTurno = Clases.BaseDeDatosSQL.buscarCampo("select nro_turno from NEXTGDD.Turno where cod_agenda = '"+codAgenda
+            //    +"' and fecha = '"+fecha.ToString()+"'");
+            //cancelarTurnos(nroTurno, fecha, tipoCancelacion);
 
 
+        }
+
+        private bool sePuedeCancelarElRango(DateTime diaACancelar)
+        {
+            DateTime fechaActual = DateTime.Parse("07/11/2016 00:00:00");
+            return diaACancelar.Date > fechaActual.Date;
         }
 
         private void cancelarTurnos(string nroTurno, DateTime fecha, String tipoCancelacion)

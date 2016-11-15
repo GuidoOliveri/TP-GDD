@@ -108,7 +108,7 @@ namespace ClinicaFrba.Compra_Bono
             // Crear Bonos por 
             for (int i = 0; i < cantBonosUpDown.Value; i++)
             {
-                comando = "EXECUTE NEXTGDD.comprarBono @fechaImpresion='" + convertirFecha("7/11/2016") + "', @compraFecha='" + convertirFecha("7/11/2016") + "', @codPlan='" + plan + "', @nroAfiliado=" + idAfiliado + "'";
+                comando = "EXECUTE NEXTGDD.comprarBono @fechaImpresion='" + convertirFecha("07/11/2016 00:00:00") + "', @compraFecha='" + convertirFecha("07/11/2016 00:00:00") + "', @codPlan='" + plan + "', @nroAfiliado='" + idAfiliado + "'";
                 Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
             }
 
@@ -129,7 +129,7 @@ namespace ClinicaFrba.Compra_Bono
             }
             else
             {
-                lblTotalAPagar.Text = (cantBonosUpDown.Value * int.Parse(lblPrecioBonos.Text)).ToString();
+                lblTotalAPagar.Text = (cantBonosUpDown.Value * int.Parse(txtPrecioBono.Text)).ToString();
                
             }
         }

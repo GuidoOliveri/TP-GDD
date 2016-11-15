@@ -58,7 +58,7 @@
             this.groupBox1.Controls.Add(this.pickerFecha);
             this.groupBox1.Location = new System.Drawing.Point(8, 8);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(255, 235);
+            this.groupBox1.Size = new System.Drawing.Size(272, 235);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Cancelar Atencion Medica";
@@ -153,7 +153,7 @@
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.cmbMotivoCancelacion);
-            this.groupBox3.Location = new System.Drawing.Point(280, 53);
+            this.groupBox3.Location = new System.Drawing.Point(291, 53);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(301, 153);
             this.groupBox3.TabIndex = 12;
@@ -174,7 +174,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(593, 315);
+            this.ClientSize = new System.Drawing.Size(606, 315);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.warningNoSePuedeCancelarMismoDia);
