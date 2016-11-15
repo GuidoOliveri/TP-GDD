@@ -33,6 +33,7 @@ namespace ClinicaFrba.Registro_Resultado
             this.usuario = usuario;
             comando = "select u.id_persona as id from NEXTGDD.Usuario u where u.username LIKE '"+usuario+"'";
             id_persona = Clases.BaseDeDatosSQL.buscarCampo(comando);
+            //id_persona="20407720";
 
             warning1.Visible = false;
             warning2.Visible = false;

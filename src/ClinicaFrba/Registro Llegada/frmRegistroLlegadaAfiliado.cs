@@ -168,12 +168,17 @@ namespace ClinicaFrba.Registro_Llegada
         private void btnIngresar_Click(object sender, EventArgs e)
         {
             warning2.Visible = false;
+            warning3.Visible = false;
+            warning4.Visible = false;
             bono = (string) cmbBono.SelectedItem;
             horaLLegada= txtHoraLlegada.Text;
             fechaLLegada = txtFechaLlegada.Text;
             verificarFecha(horaLLegada,':',warning3);
             verificarFecha(fechaLLegada, '/', warning4);
-            verificarLlegadaTarde();
+            if (warning3.Visible == false && warning4.Visible==false)
+            {
+                verificarLlegadaTarde();
+            }
             if (profesional != null && turno != null && bono != null && horaLLegada != "" && warning2.Visible != true && warning4.Visible != true && warning3.Visible != true && warning1.Visible != true)
             {
                 comando = "EXECUTE NEXTGDD.registrarConsulta @fechaLlegada='"+convertirFecha(fechaLLegada+' '+horaLLegada)+"',@nomProf='" + profesional + "', @fechaTurno='" +convertirFecha(turno) + "', @nroBono='" + bono+ "'";

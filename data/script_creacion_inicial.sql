@@ -879,7 +879,8 @@ AS
 			from NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Profesional p,NEXTGDD.Persona pe 
 			where t.cod_agenda=a.cod_agenda and a.matricula=p.matricula and p.id_persona=pe.id_persona 
 				  and (pe.nombre+' '+pe.apellido LIKE @profesional) 
-				  /*and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())*/
+				  and isnull(t.cod_cancelacion,0)=0 
+				  and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())
 			group by t.fecha 
 GO
 
@@ -910,8 +911,8 @@ AS
 				  --puede usar el de un familiar que pertenezca al mismo plan--
 				  and b.nro_afiliado=a2.nro_afiliado and a2.grupo_afiliado=a.grupo_afiliado and a.cod_plan=a2.cod_plan 
 				  --se verfica que no se haya usado, a menos que el turno figure cancelado--
-				  /* and (select isnull(count(*),0) from NEXTGDD.Consulta c,NEXTGDD.Turno t2 where c.nro_bono=b.nro_bono and
-				  t2.nro_turno=c.nro_turno and isnull(t2.cod_cancelacion,0)=0)=0*/
+				  and (select isnull(count(*),0) from NEXTGDD.Consulta c,NEXTGDD.Turno t2 where c.nro_bono=b.nro_bono and
+				  t2.nro_turno=c.nro_turno and isnull(t2.cod_cancelacion,0)=0)=0
 GO
 
 CREATE PROCEDURE NEXTGDD.registrarDiagnostico (@medico numeric(18,0),@fechaConsulta datetime,@fechaAtencion datetime,@enfermedad varchar(255),@sintoma varchar(255),@descripcion varchar(255))
@@ -937,10 +938,10 @@ AS
 	RETURN select (p.nombre+' '+p.apellido) as nombre 
 			from NEXTGDD.Afiliado a,NEXTGDD.Persona p,NEXTGDD.Profesional pr,NEXTGDD.Turno t,NEXTGDD.Agenda ag 
 			where p.id_persona=a.id_persona and t.nro_afiliado=a.nro_afiliado and t.cod_agenda=ag.cod_agenda 
-				  and pr.matricula=ag.matricula and pr.id_persona LIKE @idMedico
+				  and pr.matricula=ag.matricula and pr.id_persona LIKE @idMedico 
+				  and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())
 			group by p.nombre,p.apellido 
 GO
-
 
 CREATE FUNCTION NEXTGDD.buscarConsultasAtendidas(@idMedico varchar(255))
 RETURNS TABLE
@@ -952,7 +953,7 @@ AS
 				  --Se fija las consultas que no tienen diagnostico--
 				  and isnull(c.cod_diagnostico,0)=0
 				  --Filtra por fecha actual--
-				  /*and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())*/
+				  and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())
 GO
 
 CREATE PROCEDURE NEXTGDD.registrarCompra (@cant numeric(18,0),@idAfiliado varchar(255),@precioTotal numeric(18,0))
@@ -995,7 +996,7 @@ AS
 				  --Se fija las consultas que no tienen diagnostico--
 				  and isnull(c.cod_diagnostico,0)=0
 				  --Filtra por fecha actual--
-				  /*and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())*/
+				  and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())
 			group by t.fecha 
 GO
 

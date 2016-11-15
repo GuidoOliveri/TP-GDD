@@ -125,6 +125,10 @@ namespace ClinicaFrba.Pedir_Turno
             {
                 warning1.Visible = true;
             }
+            if (warning1.Visible == false)
+            {
+                verificarCancelaciones();
+            }
         }
 
         private DataTable buscarRangoAtencionClinica()
@@ -207,6 +211,20 @@ namespace ClinicaFrba.Pedir_Turno
             {
                 dtpFecha.MinDate = DateTimePicker.MinimumDateTime;
                 dtpFecha.MaxDate = DateTimePicker.MaximumDateTime;
+            }
+        }
+
+        private void verificarCancelaciones()
+        {
+            comando = "select NEXTGDD.verificarCancelacionesProfesional('" + fecha + "','" + profesional + "','" + especialidad + "')";
+            if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "Cancelo la fecha")
+            {
+                warning1.Text = "El profesional ha cancelado esa fecha. Seleccione otra.";
+                warning1.Visible = true;
+            }
+            else
+            {
+                warning1.Text = "El profesional no atiende en esa fecha. Seleccione otra.";
             }
         }
 
