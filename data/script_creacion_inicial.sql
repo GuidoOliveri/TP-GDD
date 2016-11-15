@@ -531,6 +531,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacie
     DROP VIEW NEXTGDD.Pacientes_Afil
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarCancelacionesProfesional'))
+    DROP FUNCTION NEXTGDD.verificarCancelacionesProfesional
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado1'))
     DROP FUNCTION NEXTGDD.listado1
 GO
@@ -808,6 +812,22 @@ BEGIN
 END;
 GO
 
+CREATE FUNCTION NEXTGDD.verificarCancelacionesProfesional(@fecha datetime,@profesional varchar(255),@especialidad varchar(255))
+RETURNS varchar(255)
+AS
+BEGIN
+	RETURN (select CASE WHEN (isnull(count(*),0)<>0)
+					THEN 'Cancelo la fecha'
+					ELSE 'No cancelo la fecha'
+					END 
+		   from NEXTGDD.Agenda a, NEXTGDD.Profesional p,NEXTGDD.Persona pers,NEXTGDD.Especialidad e,NEXTGDD.Cancelacion_Por_Fecha c
+  		   where (pers.nombre+' '+pers.apellido) LIKE @profesional and e.descripcion LIKE @especialidad
+				 and pers.id_persona=p.id_persona and a.matricula=p.matricula and a.cod_especialidad=e.cod_especialidad
+				 and c.cod_agenda=a.cod_agenda and CONVERT(date,@fecha)>=CONVERT(date,c.fecha_desde) 
+				 and CONVERT(date,@fecha)<=CONVERT(date,c.fecha_hasta) )
+END;
+GO
+
 CREATE FUNCTION NEXTGDD.restringirFechas(@especialidad varchar(255),@profesional varchar(255))
 RETURNS TABLE
 AS
@@ -879,6 +899,7 @@ AS
 			from NEXTGDD.Agenda a,NEXTGDD.Turno t,NEXTGDD.Profesional p,NEXTGDD.Persona pe 
 			where t.cod_agenda=a.cod_agenda and a.matricula=p.matricula and p.id_persona=pe.id_persona 
 				  and (pe.nombre+' '+pe.apellido LIKE @profesional) 
+				  --verifica que no haya sido cancelado--
 				  and isnull(t.cod_cancelacion,0)=0 
 				  and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())
 			group by t.fecha 
