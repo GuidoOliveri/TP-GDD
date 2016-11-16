@@ -253,7 +253,8 @@ CREATE TABLE NEXTGDD.Bono_Consulta (
     fecha_impresion datetime,
     compra_fecha datetime, 
     cod_plan numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan), 
-	nro_afiliado numeric (20,0) REFERENCES NextGDD.Afiliado(nro_afiliado) 
+	nro_afiliado numeric (20,0) REFERENCES NextGDD.Afiliado(nro_afiliado), 
+	id_compra int REFERENCES NextGDD.Compra_Bono(id_compra) 
     ) 
 	
 CREATE TABLE NEXTGDD.Tipo_cancelacion (
