@@ -19,13 +19,7 @@ namespace ClinicaFrba.Clases
     {
         private static string obtenerStringConexion()
         {
-            XmlDocument doc = new XmlDocument();
-            doc.Load("..\\..\\App.config");
-            XmlNode node = doc.DocumentElement.SelectSingleNode("/configuration/connectionStrings/add");
-            string stringConexion = node.Attributes["connectionString"].InnerText;
-            string usuario = ";User ID=" + node.Attributes["userID"].InnerText;
-            string password = ";Password=" + node.Attributes["password"].InnerText;
-            return stringConexion + usuario + password;
+            return System.Configuration.ConfigurationManager.ConnectionStrings["connectionKeys"].ConnectionString;
         }
 
         public static SqlConnection ObtenerConexion()
@@ -40,8 +34,6 @@ namespace ClinicaFrba.Clases
             return conexion;
               
         }
-        
-  
 
 
         /********************** METODOS PARA QUERYS *****************/
