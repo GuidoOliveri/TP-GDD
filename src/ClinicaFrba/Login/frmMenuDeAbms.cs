@@ -118,9 +118,18 @@ namespace ClinicaFrba.Login
                 }
                 if (funcionalidad == "Cancelar atencion medica")
                 {
-                    Cancelar_Atencion.frmCancelarAtencionMedico func = new Cancelar_Atencion.frmCancelarAtencionMedico(rol,usuario);
-                    this.Hide();
-                    func.Show();
+                    if (rol == "Afiliado")
+                    {
+                        Cancelar_Atencion.frmCancelarAtencionPaciente func = new Cancelar_Atencion.frmCancelarAtencionPaciente(rol, usuario);
+                        func.Show();
+                    }
+                    else if (rol == "profesional")
+                    {
+                        Cancelar_Atencion.frmCancelarAtencionMedico func = new Cancelar_Atencion.frmCancelarAtencionMedico(rol, usuario);
+                        func.Show();
+                    }
+                   this.Hide();
+                   
                 }
                 if (funcionalidad == "Consultar listado estadistico")
                 {
