@@ -81,6 +81,7 @@
             this.warningNoSePuedeCancelarMismoDia.Size = new System.Drawing.Size(205, 13);
             this.warningNoSePuedeCancelarMismoDia.TabIndex = 10;
             this.warningNoSePuedeCancelarMismoDia.Text = "No puede cancelar el mismo dia del turno.";
+            this.warningNoSePuedeCancelarMismoDia.Visible = false;
             // 
             // btnIngresar
             // 
@@ -101,6 +102,7 @@
             this.warningSinSeleccionarFechas.Size = new System.Drawing.Size(116, 13);
             this.warningSinSeleccionarFechas.TabIndex = 10;
             this.warningSinSeleccionarFechas.Text = "Seleccione Una Fecha";
+            this.warningSinSeleccionarFechas.Visible = false;
             // 
             // cmdVolver
             // 
@@ -169,6 +171,7 @@
             this.faltanDatosWarning.Size = new System.Drawing.Size(67, 13);
             this.faltanDatosWarning.TabIndex = 8;
             this.faltanDatosWarning.Text = "Faltan Datos";
+            this.faltanDatosWarning.Visible = false;
             // 
             // frmCancelarAtencionMedico
             // 
