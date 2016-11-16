@@ -83,11 +83,11 @@ namespace ClinicaFrba.Cancelar_Atencion
 
             faltanDatosWarning.Visible = true;
 
-            //if (!sePuedeCancelarElRango(pickerFecha.SelectionStart))
-            //{
-            //    warningNoSePuedeCancelarMismoDia.Visible = true;
-            //    return;
-            //}
+            if (!sePuedeCancelarElRango(pickerFecha.SelectionStart))
+            {
+                warningNoSePuedeCancelarMismoDia.Visible = true;
+                return;
+            }
 
             String codAgenda = Clases.BaseDeDatosSQL.buscarCampo("select cod_agenda from NEXTGDD.Agenda where '" + matriculaProfesional
                         +"' = Agenda.matricula and '"+ especialidad +"' = Agenda.cod_especialidad");

@@ -31,7 +31,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
             //SE CARGAN LOS TURNOS
 
-            comando = "select fecha from NEXTGDD.Turno where nro_afiliado = '" + idAfiliado + "'";
+            comando = "select fecha from NEXTGDD.Turno where nro_afiliado = '" + idAfiliado + "'and isnull(cod_cancelacion,0)=0"; 
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"fecha"), cmbSeleccionTurno);
 
             comando = "select nombre from NEXTGDD.Tipo_cancelacion";
@@ -60,11 +60,11 @@ namespace ClinicaFrba.Cancelar_Atencion
 
             faltanCamposWarning.Visible = false;
 
-            //if (elTurnoEsHoy(cmbSeleccionTurno.SelectedText))
-            //{
-            //    cancelarMismoDiaWarning.Visible = true;
-            //    return;
-            //}
+            if (elTurnoEsHoy(cmbSeleccionTurno.SelectedItem.ToString()))
+            {
+                cancelarMismoDiaWarning.Visible = true;
+                return;
+            }
 
             // Cancelar el bono
 
@@ -73,7 +73,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             string tipoCancelacion = Clases.BaseDeDatosSQL.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '"+
                 cmbMotivoCancelacion.SelectedItem.ToString()+"'");
 
-            comando = "EXECUTE NEXTGDD.cancelarTurno @nroTurno='" + nroTurno + "',@tipoCancelacion'" + tipoCancelacion + 
+            comando = "EXECUTE NEXTGDD.cancelarTurno @nroTurno='" + nroTurno + "',@tipoCancelacion ='" + tipoCancelacion + 
                 "', @motivo='" + txtBoxDetalleCancelacion.Text + "'";
             Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
@@ -103,7 +103,12 @@ namespace ClinicaFrba.Cancelar_Atencion
             }
         }
 
-        private string convertirFecha(string fecha)
+        private Boolean elTurnoEsHoy(String turnoHoy)
+        {
+            return convertirFechaSinHoras(turnoHoy).Equals("29/09/2015");
+        }
+
+        private string convertirFechaSinHoras(string fecha)
         {
             string fechaSinTiempo = fecha.Split(' ')[0];
             string dia = fechaSinTiempo.Split('/')[0];
@@ -117,7 +122,8 @@ namespace ClinicaFrba.Cancelar_Atencion
                 mes = '0' + mes;
             }
             string año = fechaSinTiempo.Split('/')[2];
-            return año + "/" + mes + "/" + dia + " " + fecha.Split(' ')[1];
+            return año + "/" + mes + "/" + dia + " ";
+            //+ fecha.Split(' ')[1] si quiero tmb horas minutos seg
         }
 
         private void frmCancelarAtencionPaciente_Load(object sender, EventArgs e)
