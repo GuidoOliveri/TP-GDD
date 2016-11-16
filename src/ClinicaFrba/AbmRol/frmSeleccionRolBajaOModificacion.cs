@@ -149,5 +149,10 @@ namespace ClinicaFrba.AbmRol
                 e.Cancel = true;
             }
         }
+
+        private void grillaRoles_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

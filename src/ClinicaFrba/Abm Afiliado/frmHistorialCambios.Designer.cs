@@ -39,12 +39,6 @@
             this.btnBuscar = new System.Windows.Forms.Button();
             this.btnAceptarYVolver = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.nrohistorialDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fechamodificacionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.motivomodificacionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nroafiliadoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.codplanviejoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.codplannuevoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.historialBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.historialDeCambios = new ClinicaFrba.HistorialDeCambios();
             this.historialTableAdapter = new ClinicaFrba.HistorialDeCambiosTableAdapters.HistorialTableAdapter();
@@ -61,21 +55,22 @@
             this.pnlFiltroParaBuscarHistorial.Controls.Add(this.lblNroAfiliado);
             this.pnlFiltroParaBuscarHistorial.Controls.Add(this.lblNroGrupo);
             this.pnlFiltroParaBuscarHistorial.Controls.Add(this.lblSeleccionarFiltro);
-            this.pnlFiltroParaBuscarHistorial.Location = new System.Drawing.Point(12, 12);
+            this.pnlFiltroParaBuscarHistorial.Location = new System.Drawing.Point(122, 12);
             this.pnlFiltroParaBuscarHistorial.Name = "pnlFiltroParaBuscarHistorial";
             this.pnlFiltroParaBuscarHistorial.Size = new System.Drawing.Size(424, 120);
             this.pnlFiltroParaBuscarHistorial.TabIndex = 0;
             // 
             // txtNroAfiliado
             // 
-            this.txtNroAfiliado.Location = new System.Drawing.Point(149, 69);
+            this.txtNroAfiliado.Location = new System.Drawing.Point(164, 77);
             this.txtNroAfiliado.Name = "txtNroAfiliado";
             this.txtNroAfiliado.Size = new System.Drawing.Size(183, 20);
             this.txtNroAfiliado.TabIndex = 4;
+            this.txtNroAfiliado.TextChanged += new System.EventHandler(this.txtNroAfiliado_TextChanged);
             // 
             // txtNroGrupo
             // 
-            this.txtNroGrupo.Location = new System.Drawing.Point(149, 29);
+            this.txtNroGrupo.Location = new System.Drawing.Point(164, 37);
             this.txtNroGrupo.Name = "txtNroGrupo";
             this.txtNroGrupo.Size = new System.Drawing.Size(183, 20);
             this.txtNroGrupo.TabIndex = 3;
@@ -83,7 +78,7 @@
             // lblNroAfiliado
             // 
             this.lblNroAfiliado.AutoSize = true;
-            this.lblNroAfiliado.Location = new System.Drawing.Point(34, 76);
+            this.lblNroAfiliado.Location = new System.Drawing.Point(49, 84);
             this.lblNroAfiliado.Name = "lblNroAfiliado";
             this.lblNroAfiliado.Size = new System.Drawing.Size(64, 13);
             this.lblNroAfiliado.TabIndex = 2;
@@ -92,7 +87,7 @@
             // lblNroGrupo
             // 
             this.lblNroGrupo.AutoSize = true;
-            this.lblNroGrupo.Location = new System.Drawing.Point(34, 29);
+            this.lblNroGrupo.Location = new System.Drawing.Point(49, 37);
             this.lblNroGrupo.Name = "lblNroGrupo";
             this.lblNroGrupo.Size = new System.Drawing.Size(59, 13);
             this.lblNroGrupo.TabIndex = 1;
@@ -101,7 +96,7 @@
             // lblSeleccionarFiltro
             // 
             this.lblSeleccionarFiltro.AutoSize = true;
-            this.lblSeleccionarFiltro.Location = new System.Drawing.Point(24, 0);
+            this.lblSeleccionarFiltro.Location = new System.Drawing.Point(39, 8);
             this.lblSeleccionarFiltro.Name = "lblSeleccionarFiltro";
             this.lblSeleccionarFiltro.Size = new System.Drawing.Size(167, 13);
             this.lblSeleccionarFiltro.TabIndex = 0;
@@ -109,25 +104,27 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(49, 142);
+            this.btnLimpiar.Location = new System.Drawing.Point(159, 142);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(96, 29);
             this.btnLimpiar.TabIndex = 1;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(309, 142);
+            this.btnBuscar.Location = new System.Drawing.Point(419, 142);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(96, 29);
             this.btnBuscar.TabIndex = 2;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // btnAceptarYVolver
             // 
-            this.btnAceptarYVolver.Location = new System.Drawing.Point(142, 319);
+            this.btnAceptarYVolver.Location = new System.Drawing.Point(252, 371);
             this.btnAceptarYVolver.Name = "btnAceptarYVolver";
             this.btnAceptarYVolver.Size = new System.Drawing.Size(151, 32);
             this.btnAceptarYVolver.TabIndex = 4;
@@ -137,56 +134,18 @@
             // 
             // dataGridView1
             // 
-            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToResizeColumns = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.nrohistorialDataGridViewTextBoxColumn,
-            this.fechamodificacionDataGridViewTextBoxColumn,
-            this.motivomodificacionDataGridViewTextBoxColumn,
-            this.nroafiliadoDataGridViewTextBoxColumn,
-            this.codplanviejoDataGridViewTextBoxColumn,
-            this.codplannuevoDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.historialBindingSource;
             this.dataGridView1.Location = new System.Drawing.Point(12, 177);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(424, 136);
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.Size = new System.Drawing.Size(640, 188);
             this.dataGridView1.TabIndex = 5;
-            // 
-            // nrohistorialDataGridViewTextBoxColumn
-            // 
-            this.nrohistorialDataGridViewTextBoxColumn.DataPropertyName = "nro_historial";
-            this.nrohistorialDataGridViewTextBoxColumn.HeaderText = "nro_historial";
-            this.nrohistorialDataGridViewTextBoxColumn.Name = "nrohistorialDataGridViewTextBoxColumn";
-            // 
-            // fechamodificacionDataGridViewTextBoxColumn
-            // 
-            this.fechamodificacionDataGridViewTextBoxColumn.DataPropertyName = "fecha_modificacion";
-            this.fechamodificacionDataGridViewTextBoxColumn.HeaderText = "fecha_modificacion";
-            this.fechamodificacionDataGridViewTextBoxColumn.Name = "fechamodificacionDataGridViewTextBoxColumn";
-            // 
-            // motivomodificacionDataGridViewTextBoxColumn
-            // 
-            this.motivomodificacionDataGridViewTextBoxColumn.DataPropertyName = "motivo_modificacion";
-            this.motivomodificacionDataGridViewTextBoxColumn.HeaderText = "motivo_modificacion";
-            this.motivomodificacionDataGridViewTextBoxColumn.Name = "motivomodificacionDataGridViewTextBoxColumn";
-            // 
-            // nroafiliadoDataGridViewTextBoxColumn
-            // 
-            this.nroafiliadoDataGridViewTextBoxColumn.DataPropertyName = "nro_afiliado";
-            this.nroafiliadoDataGridViewTextBoxColumn.HeaderText = "nro_afiliado";
-            this.nroafiliadoDataGridViewTextBoxColumn.Name = "nroafiliadoDataGridViewTextBoxColumn";
-            // 
-            // codplanviejoDataGridViewTextBoxColumn
-            // 
-            this.codplanviejoDataGridViewTextBoxColumn.DataPropertyName = "cod_plan_viejo";
-            this.codplanviejoDataGridViewTextBoxColumn.HeaderText = "cod_plan_viejo";
-            this.codplanviejoDataGridViewTextBoxColumn.Name = "codplanviejoDataGridViewTextBoxColumn";
-            // 
-            // codplannuevoDataGridViewTextBoxColumn
-            // 
-            this.codplannuevoDataGridViewTextBoxColumn.DataPropertyName = "cod_plan_nuevo";
-            this.codplannuevoDataGridViewTextBoxColumn.HeaderText = "cod_plan_nuevo";
-            this.codplannuevoDataGridViewTextBoxColumn.Name = "codplannuevoDataGridViewTextBoxColumn";
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // historialBindingSource
             // 
@@ -206,7 +165,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(465, 396);
+            this.ClientSize = new System.Drawing.Size(664, 414);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnAceptarYVolver);
             this.Controls.Add(this.btnBuscar);
@@ -217,6 +176,7 @@
             this.Text = "Historial de Cambios ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmHistorialCambios_FormClosing);
             this.Load += new System.EventHandler(this.frmHistorialCambios_Load);
+            this.TextChanged += new System.EventHandler(this.txtNroAfiliado_TextChanged);
             this.pnlFiltroParaBuscarHistorial.ResumeLayout(false);
             this.pnlFiltroParaBuscarHistorial.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -241,11 +201,5 @@
         private HistorialDeCambios historialDeCambios;
         private System.Windows.Forms.BindingSource historialBindingSource;
         private HistorialDeCambiosTableAdapters.HistorialTableAdapter historialTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nrohistorialDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fechamodificacionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn motivomodificacionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nroafiliadoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn codplanviejoDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn codplannuevoDataGridViewTextBoxColumn;
     }
 }

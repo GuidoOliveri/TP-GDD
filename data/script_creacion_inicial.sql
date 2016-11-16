@@ -330,7 +330,7 @@ CREATE TABLE NEXTGDD.Consulta (
 
 CREATE TABLE NEXTGDD.Historial (
 
-   nro_historial numeric (18,0) PRIMARY KEY,
+   nro_historial numeric (18,0) PRIMARY KEY IDENTITY (1000,1),
    fecha_modificacion datetime,
    motivo_modificacion varchar (255),
    nro_afiliado numeric (20,0) REFERENCES NextGDD.afiliado(nro_afiliado),
@@ -413,8 +413,9 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.mostr
     DROP PROCEDURE NEXTGDD.mostrarHistorial_ga
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.mostrarHistorialPlanes'))
-    DROP PROCEDURE NEXTGDD.mostrarHistorialPlanes
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.mostrarHistorialAfil_grupo'))
+    DROP PROCEDURE NEXTGDD.mostrarHistorialAfil_grupo
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.darDeBajaAfiliado'))
@@ -1354,22 +1355,17 @@ CREATE PROCEDURE NEXTGDD.mostrarHistorial(@nroafiliado numeric(20,0) )
 AS
 BEGIN
 
+--IF EXISTS (select * from NEXTGDD.Afiliado WHERE nro_afiliado= @nroafiliado)
+--BEGIN
 SELECT nro_historial,fecha_modificacion,motivo_modificacion, nro_afiliado, cod_plan_viejo, cod_plan_nuevo
 FROM NEXTGDD.Historial
 WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.grupo_afiliado= (SELECT d.grupo_afiliado FROM Afiliado d WHERE d.nro_afiliado= @nroafiliado ))
-
+--SET @ret=0
 END
+--ELSE
+  --SET @ret =-1
+--END
 GO
-
-CREATE PROCEDURE NEXTGDD.mostrarHistorialPlanes
-AS
-BEGIN
-
-SELECT nro_historial,fecha_modificacion,motivo_modificacion, nro_afiliado, cod_plan_viejo, cod_plan_nuevo
-FROM NEXTGDD.Historial
-END
-GO
-
 
 CREATE PROCEDURE NEXTGDD.mostrarHistorial_ga(@grupoafiliado numeric(20,0) )
 AS
@@ -1381,6 +1377,16 @@ WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.gru
 END
 GO
 
+CREATE PROCEDURE NEXTGDD.mostrarHistorialAfil_grupo(@nroafiliado numeric(20,0) ,@grupoafiliado numeric(18,0) )
+AS
+BEGIN
+
+SELECT nro_historial,fecha_modificacion,motivo_modificacion, nro_afiliado, cod_plan_viejo, cod_plan_nuevo
+FROM NEXTGDD.Historial
+WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.grupo_afiliado = @grupoafiliado) 
+and nro_afiliado =@nroafiliado
+END
+GO
 
 CREATE PROCEDURE NEXTGDD.darDeBajaAfiliado(@nro_afiliado numeric(20,0), @fecha_baja datetime, @ret smallint OUTPUT)
 AS BEGIN
@@ -1747,6 +1753,23 @@ EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codi
 GO
 
 
+/*
 
 
+select * from NEXTGDD.Persona where id_persona like '11239%'
 
+SELECT * FROM NEXTGDD.Afiliado 
+
+select * from NEXTGDD.Plan_Medico
+SELECT * FROM NEXTGDD.Historial
+
+insert INTO NEXTGDD.Historial (fecha_modificacion,motivo_modificacion,nro_afiliado, cod_plan_viejo, cod_plan_nuevo)
+VALUES ('21-11-2015','por mejorar mi plan',114039901,555555,555556), 
+ ('21-11-2015','por mejorar mi plan',112396001,555556,555557) ,
+  ('21-01-2016','por mejorar mi plan',113347201,555556,555557) ,
+   ('21-12-2016','por mejorar mi plan',112396001,555555,555556) ,
+    ('21-11-2014','por mejorar mi plan',112396001,555557,555558) ,
+	 ('21-11-2015','por mejorar mi plan',117542001,555555,555557) ,
+	  ('23-11-2015','por mejorar mi plan',119406501,555555,555557)
+
+*/

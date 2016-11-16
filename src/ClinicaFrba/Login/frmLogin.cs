@@ -22,8 +22,8 @@ namespace ClinicaFrba.Login
             InitializeComponent();
             warning.Visible = false;
         }
-   
-        private SqlConnection conn = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+
+        private SqlConnection conn; 
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
@@ -37,23 +37,37 @@ namespace ClinicaFrba.Login
                 warning.Visible = true;
                 return;
             }
+            conn = BaseDeDatosSQL.ObtenerConexion();
+            //conn.Open();
+            //List<String> campos = new List<string>();
+            //campos.Add("@user", uname);
+            //campos.Add(@pass", upass); 
+            //List<SqlParameter> misParametros = new List<SqlParameter>();
 
-            conn.Open();
+            //misParametros.Add(new SqlParameter("@user", uname));
+            //misParametros.Add(new SqlParameter("@Password", upass));
 
+     
+
+            //misParametros.Add(new SqlParameter("@ret", retorno));
+
+
+            //decimal resul= BaseDeDatosSQL.ExecStoredProcedure("NEXTGDD.login", misParametros);
+            
             SqlCommand command = new SqlCommand("NEXTGDD.login", conn);
             command.CommandType = CommandType.StoredProcedure;
 
             SqlParameter parUser = new SqlParameter("@user", uname);
             SqlParameter parContra = new SqlParameter("@pass", upass);
-
-            // numero para saber si esta habilitado o no 
-            SqlParameter parNumero = new SqlParameter("@ret",retorno);
+            SqlParameter parNumero = new SqlParameter("@ret", retorno);
             parNumero.Direction = ParameterDirection.Output;
-
+             //numero para saber si esta habilitado o no 
+          
             command.Parameters.Add(parNumero);
             command.Parameters.Add(parUser);
             command.Parameters.Add(parContra);
 
+            
             SqlDataReader dr = command.ExecuteReader();
             dr.Read();
             dr.Close();
@@ -66,22 +80,26 @@ namespace ClinicaFrba.Login
                 Usuario.Name = txtUsuario.Text;
                 // para que me de el nombre del rol, lo busco yo, no me lo devuelve en el stored procedure 
                 query = "SELECT  R.nombre as nom FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U WHERE R_U.id_rol = R.id_rol AND U.username = @user AND U.username = R_U.username ";
+               
                 SqlCommand comandito = new SqlCommand(query, conn);
+               
                 SqlParameter parametroUsuario = new SqlParameter("@user", uname);
+                
                 comandito.Parameters.Add(parametroUsuario);
+               
                 SqlDataReader dataReader = comandito.ExecuteReader();
 
                 List<String> nombreRoles = new List<string>();
                 while (dataReader.Read()) nombreRoles.Add(dataReader.GetString(0));
                 if (nombreRoles.Count > 1)
                 {
-                    frmSeleccionarRol seleccion = new frmSeleccionarRol(nombreRoles,uname);
+                    frmSeleccionarRol seleccion = new frmSeleccionarRol(nombreRoles, uname);
                     this.Hide();
                     seleccion.Show();
                 }
                 else
                 {
-                    frmMenuDeAbms elegiaccion = new frmMenuDeAbms(nombreRoles.ElementAt(0),uname);
+                    frmMenuDeAbms elegiaccion = new frmMenuDeAbms(nombreRoles.ElementAt(0), uname);
                     this.Hide();
                     elegiaccion.Show();
                     Usuario.id_rol = nombreRoles.ElementAt(0);
@@ -96,20 +114,10 @@ namespace ClinicaFrba.Login
             {
                 MessageBox.Show("Usuario o contrasenia incorrecta", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-     
-            conn.Close();
 
-           /*   
-            {
-                foreach (String nombre in nombreRoles)
-                {
-                    combo.Items.Add(nombre);
-                }
-            }
-            else
-            {
-                // mostrar la pantalla del menu directo
-            } */
+
+            conn.Close();
+         
         }
 
         private void cmdVolverMenuPrincipal_Click(object sender, EventArgs e)

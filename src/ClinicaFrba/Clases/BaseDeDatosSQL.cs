@@ -28,6 +28,22 @@ namespace ClinicaFrba.Clases
             return stringConexion + usuario + password;
         }
 
+        public static SqlConnection ObtenerConexion()
+        {
+            SqlConnection conexion = new SqlConnection(obtenerStringConexion() ) ;
+            
+            if (conexion.State == ConnectionState.Closed)
+               {
+                   conexion.Open();  
+              }
+        
+            return conexion;
+              
+        }
+        
+  
+
+
         /********************** METODOS PARA QUERYS *****************/
 
         public static SqlDataReader ObtenerDataReader(string commandtext, string commandtype, List<SqlParameter> ListaParametro)

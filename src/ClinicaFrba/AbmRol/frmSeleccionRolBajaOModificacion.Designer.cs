@@ -97,6 +97,7 @@
             this.grillaRoles.Name = "grillaRoles";
             this.grillaRoles.Size = new System.Drawing.Size(435, 152);
             this.grillaRoles.TabIndex = 4;
+            this.grillaRoles.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grillaRoles_CellContentClick);
             // 
             // btnVolver
             // 
