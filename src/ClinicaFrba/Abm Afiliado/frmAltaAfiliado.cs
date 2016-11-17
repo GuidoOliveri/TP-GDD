@@ -123,15 +123,19 @@ namespace ClinicaFrba.Abm_Afiliado
             }
             else{
              nroAfiliado = 0;
-
-             nombre = txtNombre.Text;
-             apellido = txtApellido.Text;
+            
+             //Se guarda de la forma NOMBRE Apellido, sin importar como ingrese el usuario
+             nombre = txtNombre.Text.ToUpper();
+             string primeraLetra = txtApellido.Text.Substring(0, 1).ToUpper();
+             string resto= txtApellido.Text.Substring(1,txtApellido.Text.Length-1).ToLower();
+             apellido = primeraLetra + resto;
           
              tipoDoc = (string)cmbTipoDoc.SelectedItem;
              nroDoc = Convert.ToInt64(txtNroDoc.Text);
 
-
-             calle = txtCalle.Text;
+             primeraLetra = txtCalle.Text.Substring(0, 1).ToUpper();
+             resto = txtCalle.Text.Substring(1, txtCalle.Text.Length - 1).ToLower();
+             calle = primeraLetra+resto;
              altura = Convert.ToInt32(txtAltura.Text);
              pisoSinConvertir = txtPiso.Text;
              deptoSinConvertir = txtDepto.Text;

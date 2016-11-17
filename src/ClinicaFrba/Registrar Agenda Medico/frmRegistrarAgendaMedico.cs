@@ -168,7 +168,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         private void dpFechaDesde_ValueChanged(object sender, EventArgs e)
         {
             dpFechaHasta.MinDate = dpFechaDesde.Value;
-            Console.Write(dpFechaHasta.Value);
         }
 
         private void btn_Click(object sender, EventArgs e)

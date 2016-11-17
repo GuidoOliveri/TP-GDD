@@ -62,15 +62,6 @@ namespace ClinicaFrba.Login
             menuAbm.Show();
         }
 
-        private void ingresoAdminComoProfecional_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dialogResult == DialogResult.No)
-            {
-                e.Cancel = true;
-            }
-        }
-
 
         private void ingresoAdminComoProfesional_Load(object sender, EventArgs e)
         {
@@ -80,6 +71,15 @@ namespace ClinicaFrba.Login
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void ingresoAdminComoProfesional_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

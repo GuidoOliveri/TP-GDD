@@ -30,9 +30,9 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.warning1 = new System.Windows.Forms.Label();
             this.cmbProfesionales = new System.Windows.Forms.ComboBox();
             this.btnIngresar = new System.Windows.Forms.Button();
-            this.warning1 = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -59,6 +59,16 @@
             this.groupBox1.Text = "Ingreso como Profesional";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
+            // warning1
+            // 
+            this.warning1.AutoSize = true;
+            this.warning1.ForeColor = System.Drawing.Color.Red;
+            this.warning1.Location = new System.Drawing.Point(6, 83);
+            this.warning1.Name = "warning1";
+            this.warning1.Size = new System.Drawing.Size(162, 13);
+            this.warning1.TabIndex = 2;
+            this.warning1.Text = "Debe seleccionar un profesional.";
+            // 
             // cmbProfesionales
             // 
             this.cmbProfesionales.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -76,16 +86,6 @@
             this.btnIngresar.TabIndex = 2;
             this.btnIngresar.Text = "Ingresar";
             this.btnIngresar.UseVisualStyleBackColor = true;
-            // 
-            // warning1
-            // 
-            this.warning1.AutoSize = true;
-            this.warning1.ForeColor = System.Drawing.Color.Red;
-            this.warning1.Location = new System.Drawing.Point(6, 83);
-            this.warning1.Name = "warning1";
-            this.warning1.Size = new System.Drawing.Size(162, 13);
-            this.warning1.TabIndex = 2;
-            this.warning1.Text = "Debe seleccionar un profesional.";
             // 
             // btnVolver
             // 
@@ -107,6 +107,7 @@
             this.Name = "ingresoAdminComoProfesional";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ingreso como profesional";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ingresoAdminComoProfesional_FormClosing);
             this.Load += new System.EventHandler(this.ingresoAdminComoProfesional_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
