@@ -243,15 +243,15 @@ CREATE TABLE NEXTGDD.Afiliado (
 CREATE TABLE NEXTGDD.Compra_Bono (
 	id_compra int PRIMARY KEY IDENTITY (1000,1), 
 	cant smallint,
-	id_afiliado numeric(20,0) REFERENCES NextGDD.Afiliado,
-	precio_total int 
+	compra_fecha datetime,
+	precio_total int,
+	id_afiliado numeric(20,0) REFERENCES NextGDD.Afiliado
 	)
 
 CREATE TABLE NEXTGDD.Bono_Consulta (
 
     nro_bono numeric (18,0) IDENTITY(1,1) PRIMARY KEY,
     fecha_impresion datetime,
-    compra_fecha datetime, 
     cod_plan numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan), 
 	nro_afiliado numeric (20,0) REFERENCES NextGDD.Afiliado(nro_afiliado), 
 	id_compra int REFERENCES NextGDD.Compra_Bono(id_compra) 
@@ -535,6 +535,10 @@ GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verificarCancelacionesProfesional'))
     DROP FUNCTION NEXTGDD.verificarCancelacionesProfesional
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.informacionCompraBonos'))
+    DROP VIEW NEXTGDD.informacionCompraBonos
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado1'))
@@ -991,9 +995,8 @@ CREATE PROCEDURE NEXTGDD.comprarBono (@fechaImpresion datetime,@compraFecha date
 			@codPlan numeric(18,0), @nroAfiliado numeric(18,0))
 AS
 BEGIN
-	INSERT NEXTGDD.Bono_Consulta(fecha_impresion, compra_fecha, cod_plan, nro_afiliado) values
-			(@fechaImpresion,@compraFecha,
-			@codPlan, @nroAfiliado)
+	INSERT NEXTGDD.Bono_Consulta(fecha_impresion, cod_plan, nro_afiliado) values
+			(@fechaImpresion,@codPlan, @nroAfiliado)
 END;
 GO
 
@@ -1501,9 +1504,9 @@ AS
 						   THEN 'No'
 						   ELSE 'Si'
 						   END) as 'Pertenece a Grupo Familiar'
-		from NEXTGDD.Afiliado a,NEXTGDD.Persona p,NEXTGDD.Bono_Consulta bc
-		where a.id_persona=p.id_persona and bc.nro_afiliado=a.nro_afiliado 
-			  and year(bc.compra_fecha)=@anio and month(bc.compra_fecha)>=@mesInicio and month(bc.compra_fecha)<=@mesFin
+		from NEXTGDD.Afiliado a,NEXTGDD.Persona p,NEXTGDD.Compra_Bono cb
+		where a.id_persona=p.id_persona and cb.id_afiliado=a.nro_afiliado 
+			  and year(cb.compra_fecha)=@anio and month(cb.compra_fecha)>=@mesInicio and month(cb.compra_fecha)<=@mesFin
 		group by p.nombre,p.apellido,a.nro_afiliado,a.grupo_afiliado
 		order by 2 DESC; 
 GO
@@ -1685,16 +1688,36 @@ GO
 
 SET IDENTITY_INSERT NEXTGDD.Profesional OFF
 
+GO
+
+CREATE VIEW NEXTGDD.informacionCompraBonos
+AS
+	select distinct Paciente_Dni as 'dni',Bono_Consulta_Numero as 'bono',
+			Bono_Consulta_Fecha_Impresion as 'fecha_impresion',Compra_Bono_Fecha as 'fecha_compra',
+			Plan_Med_Codigo 'plan_codigo', Plan_Med_Precio_Bono_Consulta as 'precio'
+	from gd_esquema.Maestra,NEXTGDD.Afiliado a,NEXTGDD.Persona p
+	where not(Compra_Bono_Fecha IS NULL) and p.nombre+' '+p.apellido=Paciente_Nombre+' '+Paciente_Apellido and
+		  p.id_persona=a.id_persona and not(Bono_Consulta_Fecha_Impresion IS NULL)
+GO
+
+INSERT NEXTGDD.Compra_Bono (cant,id_afiliado,precio_total,compra_fecha)
+		(select count(*),a.nro_afiliado,precio*count(*),fecha_compra
+		from NEXTGDD.informacionCompraBonos,NEXTGDD.Afiliado a
+		where a.id_persona=dni 
+		group by a.nro_afiliado,fecha_compra,precio)
+
+GO
+
 SET IDENTITY_INSERT NEXTGDD.Bono_Consulta ON
 
-INSERT NEXTGDD.Bono_Consulta (nro_bono,nro_afiliado,fecha_impresion,compra_fecha,cod_plan)
+INSERT NEXTGDD.Bono_Consulta (nro_bono,nro_afiliado,fecha_impresion,cod_plan,id_compra)
 		
-		(select Bono_Consulta_Numero,(select nro_afiliado from NEXTGDD.Afiliado WHERE id_persona= Paciente_Dni), Bono_Consulta_Fecha_Impresion, Compra_Bono_Fecha, Plan_Med_Codigo 
-		from gd_esquema.Maestra 
-		where Bono_Consulta_Fecha_Impresion is not null and Compra_Bono_Fecha is not null)
+		(select i.bono,a.nro_afiliado,
+				i.fecha_impresion,i.plan_codigo,c.id_compra
+		from NEXTGDD.informacionCompraBonos i,NEXTGDD.Compra_Bono c,NEXTGDD.Afiliado a
+		where i.fecha_compra=c.compra_fecha and i.dni=a.id_persona and c.id_afiliado=a.nro_afiliado)
 
 SET IDENTITY_INSERT NEXTGDD.Bono_Consulta OFF
-
 
 GO
 
@@ -1752,7 +1775,6 @@ GO
 
 EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 0, @id_persona = 3116603
 GO
-
 
 /*
 
