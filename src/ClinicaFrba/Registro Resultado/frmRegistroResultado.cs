@@ -29,8 +29,8 @@ namespace ClinicaFrba.Registro_Resultado
         public frmRegistroResultado(string rol, string usuario)
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
+            this.rol = Clases.Usuario.id_rol;
+            this.usuario = Clases.Usuario.Name;
             comando = "select u.id_persona as id from NEXTGDD.Usuario u where u.username LIKE '"+usuario+"'";
             id_persona = Clases.BaseDeDatosSQL.buscarCampo(comando);
             //id_persona="20407720";
