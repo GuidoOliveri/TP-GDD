@@ -1498,7 +1498,7 @@ CREATE FUNCTION NEXTGDD.listado4(@anio numeric(18,0),@mesInicio numeric(18,0),@m
 RETURNS TABLE
 AS
 	RETURN
-		select top 5 (p.nombre+' '+p.apellido) as 'Nombre Afiliado',count(*) as 'Bonos Comprados',
+		select top 5 (p.nombre+' '+p.apellido) as 'Nombre Afiliado',sum(cb.cant) as 'Bonos Comprados',
 					 (CASE WHEN(select isnull(count(*),0) from NEXTGDD.Afiliado a2
 								where a2.grupo_afiliado=a.grupo_afiliado and a2.nro_afiliado<>a.nro_afiliado)=0
 						   THEN 'No'
