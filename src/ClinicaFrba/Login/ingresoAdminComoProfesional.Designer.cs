@@ -33,6 +33,7 @@
             this.cmbProfesionales = new System.Windows.Forms.ComboBox();
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning1 = new System.Windows.Forms.Label();
+            this.btnVolver = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,6 +48,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.warning1);
             this.groupBox1.Controls.Add(this.cmbProfesionales);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
@@ -68,7 +70,7 @@
             // 
             // btnIngresar
             // 
-            this.btnIngresar.Location = new System.Drawing.Point(172, 115);
+            this.btnIngresar.Location = new System.Drawing.Point(214, 117);
             this.btnIngresar.Name = "btnIngresar";
             this.btnIngresar.Size = new System.Drawing.Size(75, 23);
             this.btnIngresar.TabIndex = 2;
@@ -79,18 +81,27 @@
             // 
             this.warning1.AutoSize = true;
             this.warning1.ForeColor = System.Drawing.Color.Red;
-            this.warning1.Location = new System.Drawing.Point(4, 120);
+            this.warning1.Location = new System.Drawing.Point(6, 83);
             this.warning1.Name = "warning1";
             this.warning1.Size = new System.Drawing.Size(162, 13);
             this.warning1.TabIndex = 2;
             this.warning1.Text = "Debe seleccionar un profesional.";
+            // 
+            // btnVolver
+            // 
+            this.btnVolver.Location = new System.Drawing.Point(123, 117);
+            this.btnVolver.Name = "btnVolver";
+            this.btnVolver.Size = new System.Drawing.Size(75, 23);
+            this.btnVolver.TabIndex = 3;
+            this.btnVolver.Text = "Volver";
+            this.btnVolver.UseVisualStyleBackColor = true;
             // 
             // ingresoAdminComoProfesional
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(420, 143);
-            this.Controls.Add(this.warning1);
+            this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
             this.Name = "ingresoAdminComoProfesional";
@@ -100,7 +111,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -111,5 +121,6 @@
         private System.Windows.Forms.ComboBox cmbProfesionales;
         private System.Windows.Forms.Button btnIngresar;
         private System.Windows.Forms.Label warning1;
+        private System.Windows.Forms.Button btnVolver;
     }
 }

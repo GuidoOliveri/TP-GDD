@@ -24,6 +24,7 @@ namespace ClinicaFrba.Login
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"), cmbProfesionales);
 
             btnIngresar.Click += new EventHandler(btnIngresar_OnClick);
+            btnVolver.Click += new EventHandler(btnVolver_Click);
 
         }
 
@@ -53,6 +54,23 @@ namespace ClinicaFrba.Login
                 warning1.Visible = true;
             }
         }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
+            this.Hide();
+            menuAbm.Show();
+        }
+
+        private void ingresoAdminComoProfecional_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
+
 
         private void ingresoAdminComoProfesional_Load(object sender, EventArgs e)
         {
