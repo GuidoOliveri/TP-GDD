@@ -233,7 +233,7 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void verificarLlegadaTarde()
         {
-            if (DateTime.Parse(fechaLLegada + ' ' + horaLLegada) >= DateTime.Parse(turno))
+            if (DateTime.Parse(fechaLLegada + ' ' + horaLLegada) > DateTime.Parse(turno))
             {
                 warning3.Text = "No se permiten llegadas tardes.";
                 warning3.Visible = true;

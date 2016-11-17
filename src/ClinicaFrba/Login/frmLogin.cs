@@ -99,10 +99,10 @@ namespace ClinicaFrba.Login
                 }
                 else
                 {
+                    Clases.Usuario.id_rol = nombreRoles.ElementAt(0);
                     frmMenuDeAbms elegiaccion = new frmMenuDeAbms(nombreRoles.ElementAt(0), uname);
                     this.Hide();
                     elegiaccion.Show();
-                    Usuario.id_rol = nombreRoles.ElementAt(0);
                 }
                 dataReader.Close();
             }

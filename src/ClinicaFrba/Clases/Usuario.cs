@@ -20,6 +20,8 @@ namespace ClinicaFrba.Clases
         public static bool Activo { get; set; }
         public static decimal CantFallidos { get; set; }
         public static string id_rol { get; set; }
+        public static int Nro_Afiliado { get; set; }
+        public static int Matricula { get; set; }
 
 
         //public Usuario(string userName)

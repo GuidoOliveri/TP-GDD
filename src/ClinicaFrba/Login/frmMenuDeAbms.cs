@@ -21,10 +21,10 @@ namespace ClinicaFrba.Login
         {
             InitializeComponent();
 
-            this.rol = rol;
-            this.usuario = usuario;
+            this.rol = Clases.Usuario.id_rol;
+            this.usuario = Clases.Usuario.Name;
 
-            comando = "select distinct f.nombre as funcionalidad from NEXTGDD.Funcionalidad f,NEXTGDD.Funcionalidad_X_Rol fr,NEXTGDD.Rol r where r.nombre LIKE '"+rol+"' and fr.id_rol=r.id_rol and fr.id_funcionalidad=f.id_funcionalidad";
+            comando = "select distinct f.nombre as funcionalidad from NEXTGDD.Funcionalidad f,NEXTGDD.Funcionalidad_X_Rol fr,NEXTGDD.Rol r where r.nombre LIKE '"+this.rol+"' and fr.id_rol=r.id_rol and fr.id_funcionalidad=f.id_funcionalidad";
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"funcionalidad"),cmbFuncionalidades);
 
             btnEjecutar.Click += new EventHandler(btnEjecutar_OnClick);
@@ -112,9 +112,18 @@ namespace ClinicaFrba.Login
                 }
                 if (funcionalidad == "Registro de resultado para atencion medica")
                 {
-                    Registro_Resultado.frmRegistroResultado func = new Registro_Resultado.frmRegistroResultado(rol,usuario);
-                    this.Hide();
-                    func.Show();
+                    if (Clases.Usuario.id_rol == "Administrativo")
+                    {
+                        Login.ingresoAdminComoProfesional ingreso = new Login.ingresoAdminComoProfesional();
+                        this.Hide();
+                        ingreso.Show();
+                    }
+                    else
+                    {
+                        Registro_Resultado.frmRegistroResultado func = new Registro_Resultado.frmRegistroResultado(rol, usuario);
+                        this.Hide();
+                        func.Show();
+                    }
                 }
                 if (funcionalidad == "Cancelar atencion medica")
                 {
