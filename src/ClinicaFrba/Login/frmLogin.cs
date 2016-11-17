@@ -93,14 +93,14 @@ namespace ClinicaFrba.Login
                 while (dataReader.Read()) nombreRoles.Add(dataReader.GetString(0));
                 if (nombreRoles.Count > 1)
                 {
-                    frmSeleccionarRol seleccion = new frmSeleccionarRol(nombreRoles, uname);
+                    frmSeleccionarRol seleccion = new frmSeleccionarRol(nombreRoles);
                     this.Hide();
                     seleccion.Show();
                 }
                 else
                 {
                     Clases.Usuario.id_rol = nombreRoles.ElementAt(0);
-                    frmMenuDeAbms elegiaccion = new frmMenuDeAbms(nombreRoles.ElementAt(0), uname);
+                    frmMenuDeAbms elegiaccion = new frmMenuDeAbms();
                     this.Hide();
                     elegiaccion.Show();
                 }

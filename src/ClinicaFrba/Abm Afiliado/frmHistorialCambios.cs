@@ -14,18 +14,14 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmHistorialCambios : Form
     {
-        private string rol = "";
-        private string usuario = "";
         DataTable tabla;
         DataTable tablaAfil;
         DataTable tablagrupo;
         DataTable tablaAfilgrupo;
 
-        public frmHistorialCambios(string rol, string usuario)
+        public frmHistorialCambios()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
         }
 
         private void frmHistorialCambios_Load(object sender, EventArgs e)
@@ -40,7 +36,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnAceptarYVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
             this.Hide();
             menuAbm.Show();
         }

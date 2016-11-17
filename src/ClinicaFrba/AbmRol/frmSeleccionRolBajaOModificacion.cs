@@ -12,14 +12,9 @@ namespace ClinicaFrba.AbmRol
 {
     public partial class frmSeleccionRolBajaOModificacion : Form
     {
-        private string rol = "";
-        private string usuario = "";
-
-        public frmSeleccionRolBajaOModificacion(string rol, string usuario)
+        public frmSeleccionRolBajaOModificacion()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
         }
 
         //lista de roles que voy a tener para mostrar
@@ -99,7 +94,7 @@ namespace ClinicaFrba.AbmRol
         
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            frmElegirAccionRol elegiUna = new frmElegirAccionRol(rol,usuario);
+            frmElegirAccionRol elegiUna = new frmElegirAccionRol();
             this.Hide();
             elegiUna.Show();
 
@@ -127,7 +122,7 @@ namespace ClinicaFrba.AbmRol
             {
 
                 //ABRO UN NUEVO FORM CON LAS FUNC DE ESE ROL
-                frmModificacionRol formFunc = new frmModificacionRol(usuario,rol);
+                frmModificacionRol formFunc = new frmModificacionRol();
                 formFunc.unRol = unRol;
                 this.Hide();
                 formFunc.Show();
@@ -140,11 +135,8 @@ namespace ClinicaFrba.AbmRol
 
         private void frmSeleccionRolBajaOModificacion_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-            else
+            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
             {
                 e.Cancel = true;
             }

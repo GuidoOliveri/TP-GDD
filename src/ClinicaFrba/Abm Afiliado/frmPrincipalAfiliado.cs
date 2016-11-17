@@ -13,19 +13,14 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmPrincipalAfiliado : Form
     {
-        private string rol = "";
-        private string usuario = "";
-        
-        public frmPrincipalAfiliado(string rol, string usuario)
+        public frmPrincipalAfiliado()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
         }
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
             this.Hide();
             menuAbm.Show();
         }
@@ -33,39 +28,36 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void cmdHistorialCambios_Click(object sender, EventArgs e)
         {
-            frmHistorialCambios historial = new frmHistorialCambios(rol,usuario);
+            frmHistorialCambios historial = new frmHistorialCambios();
             this.Hide();
             historial.Show();
         }
 
         private void cmdBuscarAfiliado_Click(object sender, EventArgs e)
         {
-            frmBuscarAfiliado buscar = new frmBuscarAfiliado(rol,usuario);
+            frmBuscarAfiliado buscar = new frmBuscarAfiliado();
             this.Hide();
             buscar.Show();           
         }
 
         private void cmdBajaAfiliado_Click(object sender, EventArgs e)
         {
-            frmBajaAfiliado baja = new frmBajaAfiliado(rol,usuario);
+            frmBajaAfiliado baja = new frmBajaAfiliado();
             this.Hide();
             baja.Show();
         }
 
         private void cmdAltaAfiliado_Click(object sender, EventArgs e)
         {
-            frmAltaAfiliado alta = new frmAltaAfiliado(rol,usuario);
+            frmAltaAfiliado alta = new frmAltaAfiliado();
             this.Hide();
             alta.Show();
         }
 
         private void frmPrincipalAfiliado_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-            else
+            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
             {
                 e.Cancel = true;
             }

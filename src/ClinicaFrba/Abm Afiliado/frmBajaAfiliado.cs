@@ -13,17 +13,13 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmBajaAfiliado : Form
     {
-        private string rol = "";
-        private string usuario = "";
         private UInt64 nroAfil;
         private DateTime fechaBaja;
         int resultado;
 
-        public frmBajaAfiliado(string rol, string usuario)
+        public frmBajaAfiliado()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
         }
 
         private void frmBajaAfiliado_Load(object sender, EventArgs e)
@@ -88,18 +84,15 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
             this.Hide();
             menuAbm.Show();
         }
 
         private void frmBajaAfiliado_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-            else
+            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
             {
                 e.Cancel = true;
             }

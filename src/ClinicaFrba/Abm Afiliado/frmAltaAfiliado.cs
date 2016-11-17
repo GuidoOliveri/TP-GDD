@@ -15,8 +15,6 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmAltaAfiliado : Form
     {
-        private string rol = "";
-        private string usuario = "";
         private string comando = "";
         private string plan = "";
         private string estadoCivil = "";
@@ -46,11 +44,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
        // DateTime fechaF;
 
-        public frmAltaAfiliado(string rol, string usuario)
+        public frmAltaAfiliado()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
+
             plan = (string)cmbPlanMedico.SelectedItem;
 
             comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
@@ -250,7 +247,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms abm = new Login.frmMenuDeAbms(rol,usuario);
+            Login.frmMenuDeAbms abm = new Login.frmMenuDeAbms();
             this.Hide();
             abm.Show();
         }
@@ -342,7 +339,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 else
                 {
                     MessageBox.Show("Datos ingresados correctamente", "Alta Afiliado", MessageBoxButtons.OK,MessageBoxIcon.Information);
-                    frmAsociarAfiliado asocio = new frmAsociarAfiliado(rol, usuario, nombre, apellido, tipoDoc, nroDoc, direccion, telefono, estadoCivil, mail, fechaNac, opcionSexo, cantFam);
+                    frmAsociarAfiliado asocio = new frmAsociarAfiliado(nombre, apellido, tipoDoc, nroDoc, direccion, telefono, estadoCivil, mail, fechaNac, opcionSexo, cantFam);
                     this.Hide();
                     asocio.Show();
                 }                  

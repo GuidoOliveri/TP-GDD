@@ -13,8 +13,6 @@ namespace ClinicaFrba.Abm_Afiliado
     public partial class frmModificarAfiliado : Form {
         
         private string comando = "";
-        private string rol = "";
-        private string usuario = "";
 
         int idAfiliado=0;
 
@@ -23,12 +21,10 @@ namespace ClinicaFrba.Abm_Afiliado
         private String mail = "";
         private string plan = "";
 
-        public frmModificarAfiliado(string rol, string usuario, UInt64 nroAfil)
+        public frmModificarAfiliado(UInt64 nroAfil)
         {
             InitializeComponent();
 
-            this.rol = rol;
-            this.usuario = usuario;
             plan = (string)cmbPlanMedico.SelectedItem;
             
             //this.idAfiliado = 27281; //hardcodeado, despues vemos 
@@ -103,7 +99,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            frmBuscarAfiliado buscar = new frmBuscarAfiliado(rol,usuario);
+            frmBuscarAfiliado buscar = new frmBuscarAfiliado();
             this.Hide();
             buscar.Show();
         }
@@ -114,11 +110,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmModificarAfiliado_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-            else
+            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
             {
                 e.Cancel = true;
             }

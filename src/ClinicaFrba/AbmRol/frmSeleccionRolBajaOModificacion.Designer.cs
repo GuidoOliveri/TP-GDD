@@ -133,7 +133,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(516, 381);
+            this.ClientSize = new System.Drawing.Size(462, 381);
             this.Controls.Add(this.cmdBaja);
             this.Controls.Add(this.cmdModificar);
             this.Controls.Add(this.btnVolver);

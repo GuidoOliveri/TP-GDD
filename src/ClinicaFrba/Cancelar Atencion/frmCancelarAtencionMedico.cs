@@ -21,11 +21,11 @@ namespace ClinicaFrba.Cancelar_Atencion
         private String matriculaProfesional;
         private String especialidad;
 
-        public frmCancelarAtencionMedico(string rol, string usuario)
+        public frmCancelarAtencionMedico()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
+            this.rol =Clases.Usuario.id_rol;
+            this.usuario = Clases.Usuario.Name;
 
             matriculaProfesional = "1000";
             especialidad = "10000";
@@ -48,7 +48,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
             this.Hide();
             menuAbm.Show();
         }

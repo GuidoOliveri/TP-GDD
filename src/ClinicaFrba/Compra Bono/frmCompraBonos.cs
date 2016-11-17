@@ -18,11 +18,11 @@ namespace ClinicaFrba.Compra_Bono
         private string idAfiliado = "";
 
 
-        public frmCompraBonos(string rol, string usuario)
+        public frmCompraBonos()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
+            this.rol = Clases.Usuario.id_rol;
+            this.usuario = Clases.Usuario.Name;
 
             if(rol.Equals("Administrativo")){
                 txtNumeroAfiliado.Visible = true;
@@ -55,7 +55,7 @@ namespace ClinicaFrba.Compra_Bono
      
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
             this.Hide();
             menuAbm.Show();
         }

@@ -12,33 +12,29 @@ namespace ClinicaFrba.AbmRol
 {
     public partial class frmElegirAccionRol : Form
     {
-        private string rol = "";
-        private string usuario = "";
 
-        public frmElegirAccionRol(string rol, string usuario)
+        public frmElegirAccionRol()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
         }
 
         private void btnAgregarRol_Click(object sender, EventArgs e)
         {
-            frmAgregarNuevoRol agrega = new frmAgregarNuevoRol(rol,usuario);
+            frmAgregarNuevoRol agrega = new frmAgregarNuevoRol();
             this.Hide();
             agrega.Show();
         }
 
         private void btnSeleccionRol_Click(object sender, EventArgs e)
         {
-            frmSeleccionRolBajaOModificacion seleccion = new frmSeleccionRolBajaOModificacion(rol,usuario);
+            frmSeleccionRolBajaOModificacion seleccion = new frmSeleccionRolBajaOModificacion();
             this.Hide();
             seleccion.Show();
         }
 
         private void btnVolverALoguearse_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menu = new Login.frmMenuDeAbms(rol,usuario);
+            Login.frmMenuDeAbms menu = new Login.frmMenuDeAbms();
             this.Hide();
             menu.Show();
 
@@ -56,11 +52,8 @@ namespace ClinicaFrba.AbmRol
 
         private void frmElegirAccionRol_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-            else
+            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
             {
                 e.Cancel = true;
             }

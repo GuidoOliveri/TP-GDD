@@ -12,14 +12,10 @@ namespace ClinicaFrba.AbmRol
 {
     public partial class frmModificacionRol : Form
     {
-        private string rol = "";
-        private string usuario = "";
 
-        public frmModificacionRol(string rol, string usuario)
+        public frmModificacionRol()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
         }
 
         //lista de roles que voy a tener para mostrar
@@ -89,7 +85,7 @@ namespace ClinicaFrba.AbmRol
 
             MessageBox.Show("Se ha modificado el rol con éxito", "Enhorabuena!", MessageBoxButtons.OK);
             this.Hide();
-            frmElegirAccionRol elegir = new frmElegirAccionRol(rol, usuario);
+            frmElegirAccionRol elegir = new frmElegirAccionRol();
             elegir.Show();
         }
 
@@ -109,11 +105,8 @@ namespace ClinicaFrba.AbmRol
 
         private void frmModificacionRol_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-            else
+            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
             {
                 e.Cancel = true;
             }

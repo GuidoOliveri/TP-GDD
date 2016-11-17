@@ -13,9 +13,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 {
     public partial class frmRegistrarAgendaMedico : Form
     {
-        private string rol = "";
-        private string usuario = "";
-
         private string comando = "";
         private string especialidad = "";
         private string profesional = "";
@@ -28,14 +25,12 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         private List<string> horarios = new List<string>();
         private List<string> dias = new List<string>();
 
-        public frmRegistrarAgendaMedico(string rol, string usuario)
+        public frmRegistrarAgendaMedico()
         {
             InitializeComponent();
             warning1.Visible=false;
             warning2.Visible = false;
             warning3.Visible = false;
-            this.rol = rol;
-            this.usuario = usuario;
 
             cargarDias();
 
@@ -57,11 +52,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             btnBorrar.Click += new EventHandler(btn_Click);
             btnIngresar.Click += new EventHandler(btn_Click);
 
-        }
-
-        public frmRegistrarAgendaMedico()
-        {
-            // TODO: Complete member initialization
         }
 
         private void cargarDias()
@@ -232,7 +222,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 
                     MessageBox.Show("La agenda se ha registrado correctamente." , "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico(rol,usuario);
+                    frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico();
                     NewForm.Show();
                     this.Dispose(false);
                 }
@@ -360,7 +350,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             DialogResult dialogResult = MessageBox.Show("¿Seguro que desea volver? Se perderán los datos.", "Volver al Menu", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
                 this.Hide();
                 menuAbm.Show();
             }

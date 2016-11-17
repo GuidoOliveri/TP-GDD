@@ -13,9 +13,6 @@ namespace ClinicaFrba.Pedir_Turno
 
     public partial class frmSeleccionDeTurno : Form
     {
-        private string rol = "";
-        private string usuario = "";
-
         private string comando = "";
         private string nroAfiliado = "";
         private string especialidad = "";
@@ -23,12 +20,9 @@ namespace ClinicaFrba.Pedir_Turno
         private string fecha = "";
         private List<String> horarios = new List<string>();
 
-        public frmSeleccionDeTurno(string rol, string usuario)
+        public frmSeleccionDeTurno()
         {
             InitializeComponent();
-
-            this.rol = rol;
-            this.usuario = usuario;
 
             warning1.Visible=false;
             warning2.Visible = false;
@@ -155,7 +149,7 @@ namespace ClinicaFrba.Pedir_Turno
                 comando="select top 1 str(nro_turno) from NEXTGDD.Turno order by nro_turno DESC";
                 MessageBox.Show("El turno se ha igresado correctamente \n Numero de turno:  "+ Clases.BaseDeDatosSQL.buscarCampo(comando), "Turno", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                frmSeleccionDeTurno NewForm=new frmSeleccionDeTurno(rol,usuario);
+                frmSeleccionDeTurno NewForm=new frmSeleccionDeTurno();
                 NewForm.Show();
                 this.Dispose(false);
 
@@ -296,7 +290,7 @@ namespace ClinicaFrba.Pedir_Turno
             DialogResult dialogResult = MessageBox.Show("¿Seguro que desea volver? Se perderán los datos.", "Volver al Menu", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
                 this.Hide();
                 menuAbm.Show();
             }

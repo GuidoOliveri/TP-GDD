@@ -19,11 +19,11 @@ namespace ClinicaFrba.Cancelar_Atencion
         //string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
 
 
-        public frmCancelarAtencionPaciente(string rol, string usuario)
+        public frmCancelarAtencionPaciente()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
+            this.rol = Clases.Usuario.id_rol;
+            this.usuario = Clases.Usuario.Name;
             cancelarMismoDiaWarning.Visible = false;
             faltanCamposWarning.Visible = false;
             cmbMotivoCancelacion.Enabled = false;
@@ -86,7 +86,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
             this.Hide();
             menuAbm.Show();
         }

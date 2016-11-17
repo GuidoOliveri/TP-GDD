@@ -44,7 +44,7 @@ namespace ClinicaFrba.Login
                 comando = "select pr.matricula from NEXTGDD.Profesional pr, NEXTGDD.Persona p where p.nombre+' '+p.apellido LIKE '" + profesional + "' and p.id_persona=pr.id_persona";
                 Clases.Usuario.Matricula = int.Parse(Clases.BaseDeDatosSQL.buscarCampo(comando));
 
-                Registro_Resultado.frmRegistroResultado diagnostico = new Registro_Resultado.frmRegistroResultado("","");
+                Registro_Resultado.frmRegistroResultado diagnostico = new Registro_Resultado.frmRegistroResultado();
                 this.Hide();
                 diagnostico.Show();
             }

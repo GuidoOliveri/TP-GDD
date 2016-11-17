@@ -12,9 +12,6 @@ namespace ClinicaFrba.Registro_Llegada
 {
     public partial class frmRegistroLlegadaAfiliado : Form
     {
-        private string rol = "";
-        private string usuario = "";
-
         private string comando = "";
         private string profesional = "";
         private string especialidad = "";
@@ -23,13 +20,9 @@ namespace ClinicaFrba.Registro_Llegada
         private string horaLLegada = "";
         private string fechaLLegada = "";
 
-        public frmRegistroLlegadaAfiliado(string rol, string usuario)
+        public frmRegistroLlegadaAfiliado()
         {
             InitializeComponent();
-
-            this.rol = rol;
-            this.usuario = usuario;
-       
 
             cmbEspecialidad.Enabled = false;
             warning1.Visible = false;
@@ -187,7 +180,7 @@ namespace ClinicaFrba.Registro_Llegada
                 comando = "select top 1 str(cod_consulta) from NEXTGDD.Consulta order by cod_consulta DESC";
                 MessageBox.Show("La consulta se ha registrado correctamente \n Numero de consulta:  " + Clases.BaseDeDatosSQL.buscarCampo(comando), "Consulta", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                frmRegistroLlegadaAfiliado NewForm = new frmRegistroLlegadaAfiliado(rol,usuario);
+                frmRegistroLlegadaAfiliado NewForm = new frmRegistroLlegadaAfiliado();
                 NewForm.Show();
                 this.Dispose(false);
 
@@ -277,7 +270,7 @@ namespace ClinicaFrba.Registro_Llegada
             DialogResult dialogResult = MessageBox.Show("¿Seguro que desea volver? Se perderán los datos.", "Volver al Menu", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
                 this.Hide();
                 menuAbm.Show();
             }

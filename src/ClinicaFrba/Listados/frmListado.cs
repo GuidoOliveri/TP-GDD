@@ -12,20 +12,15 @@ namespace ClinicaFrba.Listados
 {
     public partial class frmListado : Form
     {
-        private string rol = "";
-        private string usuario = "";
         private string comando = "";
         private string semestre = "";
         private string listado = "";
         private string filtro = "";
         private List<String> años = new List<string>();
 
-        public frmListado(string rol, string usuario)
+        public frmListado()
         {
             InitializeComponent();
-
-            this.rol = rol;
-            this.usuario = usuario;
 
             warning.Visible = false;
             cmbFiltro.Enabled = false;
@@ -207,7 +202,7 @@ namespace ClinicaFrba.Listados
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
             this.Hide();
             menuAbm.Show();
         }

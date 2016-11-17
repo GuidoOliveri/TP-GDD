@@ -17,12 +17,12 @@ namespace ClinicaFrba.AbmRol
         private string usuario = "";
         private string rol = "";
 
-        public frmSeleccionarRol(List<string> roles,string usuario)
+        public frmSeleccionarRol(List<string> roles)
         {
             InitializeComponent();
             warning.Visible = false;
 
-            this.usuario = usuario;
+            this.usuario = Clases.Usuario.Name;
             cargar(roles,cboRoles);
 
             cboRoles.SelectedIndexChanged += OnSelectedIndexChanged;
@@ -55,7 +55,7 @@ namespace ClinicaFrba.AbmRol
 
             if (cboRoles.SelectedItem != null)
             {
-                frmMenuDeAbms abms = new frmMenuDeAbms(rol,usuario);
+                frmMenuDeAbms abms = new frmMenuDeAbms();
                 this.Hide();
                 abms.Show();
             }

@@ -26,7 +26,7 @@ namespace ClinicaFrba.Registro_Resultado
         private string descripcion = "";
         private string id_persona = ""; 
 
-        public frmRegistroResultado(string rol, string usuario)
+        public frmRegistroResultado()
         {
             InitializeComponent();
 
@@ -129,7 +129,7 @@ namespace ClinicaFrba.Registro_Resultado
 
                 MessageBox.Show("El diagnóstico se ingreso correctamente.", "Diagnostico", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                frmRegistroResultado NewForm = new frmRegistroResultado(rol,usuario);
+                frmRegistroResultado NewForm = new frmRegistroResultado();
                 NewForm.Show();
                 this.Dispose(false);
 
@@ -202,7 +202,7 @@ namespace ClinicaFrba.Registro_Resultado
             DialogResult dialogResult = MessageBox.Show("¿Seguro que desea volver? Se perderán los datos.", "Volver al Menu", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+                Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
                 this.Hide();
                 menuAbm.Show();
             }

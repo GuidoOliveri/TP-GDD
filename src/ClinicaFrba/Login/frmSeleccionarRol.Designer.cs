@@ -59,12 +59,6 @@
             // cboRoles
             // 
             this.cboRoles.FormattingEnabled = true;
-            this.cboRoles.Items.AddRange(new object[] {
-            "1- Administrativo",
-            "2- Afiliado",
-            "3- Profesional",
-            "",
-            ""});
             this.cboRoles.Location = new System.Drawing.Point(123, 104);
             this.cboRoles.Name = "cboRoles";
             this.cboRoles.Size = new System.Drawing.Size(295, 21);

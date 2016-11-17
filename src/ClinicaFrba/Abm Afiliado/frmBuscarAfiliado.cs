@@ -14,14 +14,10 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmBuscarAfiliado : Form
     {
-        private string rol = "";
-        private string usuario = "";
 
-        public frmBuscarAfiliado(string rol, string usuario)
+        public frmBuscarAfiliado()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
         }
 
         private void lblFiltroBusqueda_Click(object sender, EventArgs e)
@@ -41,7 +37,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms(rol, usuario);
+            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
             this.Hide();
             menuAbm.Show();
         }
@@ -69,7 +65,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             UInt64 nroAfil = UInt64.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
 
-            frmModificarAfiliado este = new frmModificarAfiliado(rol, usuario, nroAfil);
+            frmModificarAfiliado este = new frmModificarAfiliado(nroAfil);
             this.Hide();
             este.Show();
         }
@@ -86,11 +82,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmBuscarAfiliado_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-            else
+            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
             {
                 e.Cancel = true;
             }

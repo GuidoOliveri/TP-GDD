@@ -12,14 +12,10 @@ namespace ClinicaFrba.AbmRol
 {
     public partial class frmAgregarNuevoRol : Form
     {
-        private string rol = "";
-        private string usuario = "";
 
-        public frmAgregarNuevoRol(string rol, string usuario)
+        public frmAgregarNuevoRol()
         {
             InitializeComponent();
-            this.rol = rol;
-            this.usuario = usuario;
         }
 
         private void frmRol_Load(object sender, EventArgs e)
@@ -81,18 +77,15 @@ namespace ClinicaFrba.AbmRol
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            frmElegirAccionRol elegi = new frmElegirAccionRol(rol,usuario);
+            frmElegirAccionRol elegi = new frmElegirAccionRol();
             this.Hide();
             elegi.Show();
         }
 
         private void frmAgregarNuevoRol_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
-            else
+            DialogResult dialogResult = MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.No)
             {
                 e.Cancel = true;
             }
