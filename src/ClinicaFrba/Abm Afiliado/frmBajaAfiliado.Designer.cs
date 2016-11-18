@@ -41,17 +41,18 @@
             // 
             // pnlIngreseFechaBaja
             // 
+            this.pnlIngreseFechaBaja.Controls.Add(this.lblIngresaFechas);
             this.pnlIngreseFechaBaja.Controls.Add(this.cmdVolver);
             this.pnlIngreseFechaBaja.Controls.Add(this.btnAceptar);
             this.pnlIngreseFechaBaja.Controls.Add(this.dtpFechaBaja);
             this.pnlIngreseFechaBaja.Controls.Add(this.txtMatricula);
             this.pnlIngreseFechaBaja.Controls.Add(this.lblFecha);
             this.pnlIngreseFechaBaja.Controls.Add(this.lblNroAfiliado);
-            this.pnlIngreseFechaBaja.Controls.Add(this.lblIngresaFechas);
             this.pnlIngreseFechaBaja.Location = new System.Drawing.Point(28, 21);
             this.pnlIngreseFechaBaja.Name = "pnlIngreseFechaBaja";
             this.pnlIngreseFechaBaja.Size = new System.Drawing.Size(372, 205);
             this.pnlIngreseFechaBaja.TabIndex = 0;
+            this.pnlIngreseFechaBaja.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlIngreseFechaBaja_Paint);
             // 
             // cmdVolver
             // 
@@ -59,7 +60,7 @@
             this.cmdVolver.Name = "cmdVolver";
             this.cmdVolver.Size = new System.Drawing.Size(110, 38);
             this.cmdVolver.TabIndex = 6;
-            this.cmdVolver.Text = "Volver";
+            this.cmdVolver.Text = "Cancelar";
             this.cmdVolver.UseVisualStyleBackColor = true;
             this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
             // 
@@ -80,9 +81,11 @@
             this.dtpFechaBaja.Name = "dtpFechaBaja";
             this.dtpFechaBaja.Size = new System.Drawing.Size(198, 20);
             this.dtpFechaBaja.TabIndex = 4;
+            this.dtpFechaBaja.ValueChanged += new System.EventHandler(this.dtpFechaBaja_ValueChanged);
             // 
             // txtMatricula
             // 
+            this.txtMatricula.Enabled = false;
             this.txtMatricula.Location = new System.Drawing.Point(124, 50);
             this.txtMatricula.Name = "txtMatricula";
             this.txtMatricula.Size = new System.Drawing.Size(200, 20);
@@ -110,11 +113,11 @@
             // lblIngresaFechas
             // 
             this.lblIngresaFechas.AutoSize = true;
-            this.lblIngresaFechas.Location = new System.Drawing.Point(20, 0);
+            this.lblIngresaFechas.Location = new System.Drawing.Point(127, 0);
             this.lblIngresaFechas.Name = "lblIngresaFechas";
-            this.lblIngresaFechas.Size = new System.Drawing.Size(140, 13);
+            this.lblIngresaFechas.Size = new System.Drawing.Size(107, 13);
             this.lblIngresaFechas.TabIndex = 0;
-            this.lblIngresaFechas.Text = "Ingrese Nro Afiliado y Fecha";
+            this.lblIngresaFechas.Text = "Confirmacion de Baja";
             this.lblIngresaFechas.Click += new System.EventHandler(this.lblIngresaFechas_Click);
             // 
             // frmBajaAfiliado

@@ -16,10 +16,13 @@ namespace ClinicaFrba.Abm_Afiliado
         private UInt64 nroAfil;
         private DateTime fechaBaja;
         int resultado;
+        private string operacionBaja = "Eliminar";
 
-        public frmBajaAfiliado()
+        public frmBajaAfiliado( UInt64 nroAfil )
         {
             InitializeComponent();
+            txtMatricula.Text= nroAfil.ToString() ;
+
         }
 
         private void frmBajaAfiliado_Load(object sender, EventArgs e)
@@ -61,12 +64,18 @@ namespace ClinicaFrba.Abm_Afiliado
                     
                     MessageBox.Show("Lo sentimos, no podemos procesar tu solicitud. Inténtalo de nuevo más tarde.", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     limpiar();
+                    frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionBaja);
+                    this.Hide();
+                    buscar.Show();
                 }
                 else if (resultado.Equals(-2))
                 {
                     
                     MessageBox.Show("El Nro de Afiliado: " + nroAfil+ " No existe!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     limpiar();
+                    frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionBaja);
+                    this.Hide();
+                    buscar.Show();
                 }
 
                 else
@@ -74,6 +83,9 @@ namespace ClinicaFrba.Abm_Afiliado
                     
                     MessageBox.Show("El Nro de Afiliado: " + nroAfil+ "\nFue dado de baja exitosamente!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     limpiar();
+                    frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionBaja);
+                    this.Hide();
+                    buscar.Show();
                 }
 
             }
@@ -84,9 +96,9 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
+            frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionBaja);
             this.Hide();
-            menuAbm.Show();
+            buscar.Show();
         }
 
         private void frmBajaAfiliado_FormClosing(object sender, FormClosingEventArgs e)
@@ -120,6 +132,16 @@ namespace ClinicaFrba.Abm_Afiliado
                 e.Handled = true;
                 MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void pnlIngreseFechaBaja_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void dtpFechaBaja_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

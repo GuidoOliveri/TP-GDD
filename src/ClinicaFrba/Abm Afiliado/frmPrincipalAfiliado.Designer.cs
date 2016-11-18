@@ -72,7 +72,7 @@
             this.cmdBuscarAfiliado.Name = "cmdBuscarAfiliado";
             this.cmdBuscarAfiliado.Size = new System.Drawing.Size(100, 44);
             this.cmdBuscarAfiliado.TabIndex = 3;
-            this.cmdBuscarAfiliado.Text = "Buscar Afiliado";
+            this.cmdBuscarAfiliado.Text = "Modificar Afiliado";
             this.cmdBuscarAfiliado.UseVisualStyleBackColor = true;
             this.cmdBuscarAfiliado.Click += new System.EventHandler(this.cmdBuscarAfiliado_Click);
             // 

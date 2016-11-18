@@ -30,15 +30,16 @@ namespace ClinicaFrba.Abm_Afiliado
             // this.historialTableAdapter.Fill(this.historialDeCambios.Historial);
             tabla = new DataTable();
             tabla = Afiliado.obtenerHistorial();
+            cargarGrilla();
             dataGridView1.DataSource = tabla;
-         
+            
         }
 
         private void btnAceptarYVolver_Click(object sender, EventArgs e)
         {
-            Login.frmMenuDeAbms menuAbm = new Login.frmMenuDeAbms();
+            frmPrincipalAfiliado pAfil = new frmPrincipalAfiliado();
             this.Hide();
-            menuAbm.Show();
+            pAfil.Show();
         }
 
         private void frmHistorialCambios_FormClosing(object sender, FormClosingEventArgs e)
@@ -56,6 +57,8 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             limpiar();
+            tabla = Afiliado.obtenerHistorial();
+            
             dataGridView1.DataSource = tabla;
         }
 
@@ -76,10 +79,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dataGridView1.DataSource == null)
-            {
+
+            if (e.RowIndex == -1) 
                 return;
-            }
+
             else
             {
 
@@ -128,7 +131,46 @@ namespace ClinicaFrba.Abm_Afiliado
            //dataGridView1.DataSource = tabla.DefaultView;
 
 
+        private void cargarGrilla()
+        {
 
+            DataGridViewTextBoxColumn ColNH = new DataGridViewTextBoxColumn();
+            ColNH.DataPropertyName = "nro_historial";
+            ColNH.HeaderText = "Nro Historial";
+            ColNH.Width = 100;
+            dataGridView1.Columns.Add(ColNH);
+
+            DataGridViewTextBoxColumn ColFM = new DataGridViewTextBoxColumn();
+            ColFM.DataPropertyName = "fecha_modificacion";
+            ColFM.HeaderText = "Fecha Modificacion";
+            ColFM.Width = 90;
+            dataGridView1.Columns.Add(ColFM);
+
+            DataGridViewTextBoxColumn ColPersona = new DataGridViewTextBoxColumn();
+            ColPersona.DataPropertyName = "nro_afiliado";
+            ColPersona.HeaderText = "Nro Afiliado";
+            ColPersona.Width = 100;
+            dataGridView1.Columns.Add(ColPersona);
+
+
+            DataGridViewTextBoxColumn ColMM = new DataGridViewTextBoxColumn();
+            ColMM.DataPropertyName = "motivo_modificacion";
+            ColMM.HeaderText = "Motivo Modificacion";
+            ColMM.Width = 100;
+            dataGridView1.Columns.Add(ColMM);
+
+            DataGridViewTextBoxColumn ColPlanA = new DataGridViewTextBoxColumn();
+            ColPlanA.DataPropertyName = "cod_plan_viejo";
+            ColPlanA.HeaderText = "Plan Medico Antiguo";
+            ColPlanA.Width = 100;
+            dataGridView1.Columns.Add(ColPlanA);
+
+            DataGridViewTextBoxColumn ColPlanN = new DataGridViewTextBoxColumn();
+            ColPlanN.DataPropertyName = "cod_plan_nuevo";
+            ColPlanN.HeaderText = "Plan Medico Nuevo";
+            ColPlanA.Width = 100;
+            dataGridView1.Columns.Add(ColPlanN);
+        }
 
 
         private void txtNroAfiliado_TextChanged(object sender, EventArgs e)

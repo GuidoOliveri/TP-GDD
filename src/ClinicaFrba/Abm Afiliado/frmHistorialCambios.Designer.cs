@@ -128,7 +128,7 @@
             this.btnAceptarYVolver.Name = "btnAceptarYVolver";
             this.btnAceptarYVolver.Size = new System.Drawing.Size(151, 32);
             this.btnAceptarYVolver.TabIndex = 4;
-            this.btnAceptarYVolver.Text = "Aceptar y Regresar";
+            this.btnAceptarYVolver.Text = "Volver";
             this.btnAceptarYVolver.UseVisualStyleBackColor = true;
             this.btnAceptarYVolver.Click += new System.EventHandler(this.btnAceptarYVolver_Click);
             // 

@@ -592,10 +592,12 @@ motivo que la originó, de manera de poder obtener un historial de dichos cambios
 Dicho historial debe poder ser consultado de alguna manera dentro del sistema.*/
 
 
-CREATE VIEW NEXTGDD.Pacientes_Afil (Nro_Afiliado, Nombre, Apellido,Tipo_Doc, Nro_Doc, Direccion, Telefono, Mail,Fecha_Nac,Estado_Civil,Cant_Hijos,Plan_Medico)
+CREATE VIEW NEXTGDD.Pacientes_Afil (Nro_Afiliado, Nombre, Apellido,Tipo_Doc, Nro_Doc, Direccion, Telefono, Mail,Plan_Medico,Fecha_Nac,Estado_Civil,Cant_Hijos)
 AS
-select nro_afiliado, nombre,apellido, tipo_doc, nro_documento, domicilio, telefono, mail,fecha_nac ,estado_civil , cant_familiares, cod_plan
-from NEXTGDD.Persona p Join NEXTGDD.Afiliado a ON(p.id_persona= a.id_persona)
+select nro_afiliado, p.nombre,apellido, tipo_doc, nro_documento, domicilio, telefono, mail, m.descripcion, fecha_nac ,e.nombre , cant_familiares
+from NEXTGDD.Persona p Join NEXTGDD.Afiliado a ON(p.id_persona= a.id_persona) 
+     Join NEXTGDD.Plan_Medico m ON (m.cod_plan= a.cod_plan)
+	 Join NEXTGDD.Estado_Civil e ON (e.id= p.estado_civil)
 GO
 
  CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Domic(@id numeric(20,0), @nuevo_dom varchar(255))

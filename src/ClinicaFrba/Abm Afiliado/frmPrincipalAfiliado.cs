@@ -13,6 +13,9 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmPrincipalAfiliado : Form
     {
+        private string operacionMod = "Modificar";
+        private string operacionBaja = "Eliminar";
+
         public frmPrincipalAfiliado()
         {
             InitializeComponent();
@@ -35,16 +38,17 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void cmdBuscarAfiliado_Click(object sender, EventArgs e)
         {
-            frmBuscarAfiliado buscar = new frmBuscarAfiliado();
+            
+            frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionMod);
             this.Hide();
             buscar.Show();           
         }
 
         private void cmdBajaAfiliado_Click(object sender, EventArgs e)
         {
-            frmBajaAfiliado baja = new frmBajaAfiliado();
+            frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionBaja);
             this.Hide();
-            baja.Show();
+            buscar.Show();
         }
 
         private void cmdAltaAfiliado_Click(object sender, EventArgs e)

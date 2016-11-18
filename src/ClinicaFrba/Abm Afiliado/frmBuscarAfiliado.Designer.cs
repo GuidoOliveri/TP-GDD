@@ -30,7 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.pnlFiltroBusqueda = new System.Windows.Forms.Panel();
-            this.dtpFecNacFilt = new System.Windows.Forms.DateTimePicker();
+            this.textNroAfiliado = new System.Windows.Forms.TextBox();
+            this.cmbPlanes = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.lblFecNacFiltrado = new System.Windows.Forms.Label();
             this.txtDniFiltrado = new System.Windows.Forms.TextBox();
             this.txtApeFiltrado = new System.Windows.Forms.TextBox();
@@ -57,7 +59,9 @@
             // 
             // pnlFiltroBusqueda
             // 
-            this.pnlFiltroBusqueda.Controls.Add(this.dtpFecNacFilt);
+            this.pnlFiltroBusqueda.Controls.Add(this.textNroAfiliado);
+            this.pnlFiltroBusqueda.Controls.Add(this.cmbPlanes);
+            this.pnlFiltroBusqueda.Controls.Add(this.label1);
             this.pnlFiltroBusqueda.Controls.Add(this.lblFecNacFiltrado);
             this.pnlFiltroBusqueda.Controls.Add(this.txtDniFiltrado);
             this.pnlFiltroBusqueda.Controls.Add(this.txtApeFiltrado);
@@ -66,44 +70,63 @@
             this.pnlFiltroBusqueda.Controls.Add(this.lblApellido);
             this.pnlFiltroBusqueda.Controls.Add(this.lblNombreFiltrado);
             this.pnlFiltroBusqueda.Controls.Add(this.lblFiltroBusqueda);
-            this.pnlFiltroBusqueda.Location = new System.Drawing.Point(74, 12);
+            this.pnlFiltroBusqueda.Location = new System.Drawing.Point(23, 13);
             this.pnlFiltroBusqueda.Name = "pnlFiltroBusqueda";
-            this.pnlFiltroBusqueda.Size = new System.Drawing.Size(535, 111);
+            this.pnlFiltroBusqueda.Size = new System.Drawing.Size(535, 131);
             this.pnlFiltroBusqueda.TabIndex = 0;
+            this.pnlFiltroBusqueda.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlFiltroBusqueda_Paint);
             // 
-            // dtpFecNacFilt
+            // textNroAfiliado
             // 
-            this.dtpFecNacFilt.Location = new System.Drawing.Point(300, 60);
-            this.dtpFecNacFilt.Name = "dtpFecNacFilt";
-            this.dtpFecNacFilt.Size = new System.Drawing.Size(201, 20);
-            this.dtpFecNacFilt.TabIndex = 8;
+            this.textNroAfiliado.Location = new System.Drawing.Point(113, 27);
+            this.textNroAfiliado.Name = "textNroAfiliado";
+            this.textNroAfiliado.Size = new System.Drawing.Size(149, 20);
+            this.textNroAfiliado.TabIndex = 10;
+            // 
+            // cmbPlanes
+            // 
+            this.cmbPlanes.FormattingEnabled = true;
+            this.cmbPlanes.Location = new System.Drawing.Point(113, 95);
+            this.cmbPlanes.Name = "cmbPlanes";
+            this.cmbPlanes.Size = new System.Drawing.Size(121, 21);
+            this.cmbPlanes.TabIndex = 9;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(27, 31);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(76, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Nro de Afiliado";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // lblFecNacFiltrado
             // 
             this.lblFecNacFiltrado.AutoSize = true;
-            this.lblFecNacFiltrado.Location = new System.Drawing.Point(198, 63);
+            this.lblFecNacFiltrado.Location = new System.Drawing.Point(27, 98);
             this.lblFecNacFiltrado.Name = "lblFecNacFiltrado";
-            this.lblFecNacFiltrado.Size = new System.Drawing.Size(96, 13);
+            this.lblFecNacFiltrado.Size = new System.Drawing.Size(39, 13);
             this.lblFecNacFiltrado.TabIndex = 7;
-            this.lblFecNacFiltrado.Text = "Fecha Nacimiento:";
+            this.lblFecNacFiltrado.Text = "Planes";
             // 
             // txtDniFiltrado
             // 
-            this.txtDniFiltrado.Location = new System.Drawing.Point(300, 24);
+            this.txtDniFiltrado.Location = new System.Drawing.Point(113, 63);
             this.txtDniFiltrado.Name = "txtDniFiltrado";
-            this.txtDniFiltrado.Size = new System.Drawing.Size(201, 20);
+            this.txtDniFiltrado.Size = new System.Drawing.Size(149, 20);
             this.txtDniFiltrado.TabIndex = 6;
             // 
             // txtApeFiltrado
             // 
-            this.txtApeFiltrado.Location = new System.Drawing.Point(60, 63);
+            this.txtApeFiltrado.Location = new System.Drawing.Point(391, 63);
             this.txtApeFiltrado.Name = "txtApeFiltrado";
             this.txtApeFiltrado.Size = new System.Drawing.Size(114, 20);
             this.txtApeFiltrado.TabIndex = 5;
             // 
             // txtNomFiltrado
             // 
-            this.txtNomFiltrado.Location = new System.Drawing.Point(60, 24);
+            this.txtNomFiltrado.Location = new System.Drawing.Point(391, 24);
             this.txtNomFiltrado.Name = "txtNomFiltrado";
             this.txtNomFiltrado.Size = new System.Drawing.Size(114, 20);
             this.txtNomFiltrado.TabIndex = 4;
@@ -111,16 +134,17 @@
             // lblDniFiltrado
             // 
             this.lblDniFiltrado.AutoSize = true;
-            this.lblDniFiltrado.Location = new System.Drawing.Point(237, 27);
+            this.lblDniFiltrado.Location = new System.Drawing.Point(27, 65);
             this.lblDniFiltrado.Name = "lblDniFiltrado";
             this.lblDniFiltrado.Size = new System.Drawing.Size(26, 13);
             this.lblDniFiltrado.TabIndex = 3;
             this.lblDniFiltrado.Text = "Dni:";
+            this.lblDniFiltrado.Click += new System.EventHandler(this.lblDniFiltrado_Click);
             // 
             // lblApellido
             // 
             this.lblApellido.AutoSize = true;
-            this.lblApellido.Location = new System.Drawing.Point(7, 63);
+            this.lblApellido.Location = new System.Drawing.Point(338, 63);
             this.lblApellido.Name = "lblApellido";
             this.lblApellido.Size = new System.Drawing.Size(47, 13);
             this.lblApellido.TabIndex = 2;
@@ -129,7 +153,7 @@
             // lblNombreFiltrado
             // 
             this.lblNombreFiltrado.AutoSize = true;
-            this.lblNombreFiltrado.Location = new System.Drawing.Point(7, 27);
+            this.lblNombreFiltrado.Location = new System.Drawing.Point(338, 27);
             this.lblNombreFiltrado.Name = "lblNombreFiltrado";
             this.lblNombreFiltrado.Size = new System.Drawing.Size(47, 13);
             this.lblNombreFiltrado.TabIndex = 1;
@@ -147,9 +171,9 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(159, 137);
+            this.btnLimpiar.Location = new System.Drawing.Point(132, 156);
             this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(118, 23);
+            this.btnLimpiar.Size = new System.Drawing.Size(122, 34);
             this.btnLimpiar.TabIndex = 1;
             this.btnLimpiar.Text = "Limpiar";
             this.btnLimpiar.UseVisualStyleBackColor = true;
@@ -157,9 +181,9 @@
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(374, 138);
+            this.btnBuscar.Location = new System.Drawing.Point(395, 156);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(118, 23);
+            this.btnBuscar.Size = new System.Drawing.Size(124, 34);
             this.btnBuscar.TabIndex = 2;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
@@ -167,17 +191,17 @@
             // 
             // btnModificarAfiliado
             // 
-            this.btnModificarAfiliado.Location = new System.Drawing.Point(108, 372);
+            this.btnModificarAfiliado.Location = new System.Drawing.Point(108, 420);
             this.btnModificarAfiliado.Name = "btnModificarAfiliado";
             this.btnModificarAfiliado.Size = new System.Drawing.Size(178, 32);
             this.btnModificarAfiliado.TabIndex = 4;
-            this.btnModificarAfiliado.Text = "ModificarAfiliado";
+            this.btnModificarAfiliado.Text = "Accion";
             this.btnModificarAfiliado.UseVisualStyleBackColor = true;
             this.btnModificarAfiliado.Click += new System.EventHandler(this.btnModificarAfiliado_Click);
             // 
             // btnVolver
             // 
-            this.btnVolver.Location = new System.Drawing.Point(374, 372);
+            this.btnVolver.Location = new System.Drawing.Point(374, 420);
             this.btnVolver.Name = "btnVolver";
             this.btnVolver.Size = new System.Drawing.Size(178, 32);
             this.btnVolver.TabIndex = 5;
@@ -203,11 +227,12 @@
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 178);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 196);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(642, 177);
+            this.dataGridView1.Size = new System.Drawing.Size(642, 206);
             this.dataGridView1.TabIndex = 6;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick_1);
             // 
             // afiliadoBindingSource
@@ -224,7 +249,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(666, 426);
+            this.ClientSize = new System.Drawing.Size(666, 468);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.btnModificarAfiliado);
@@ -250,7 +275,6 @@
 
         private System.Windows.Forms.Panel pnlFiltroBusqueda;
         private System.Windows.Forms.Label lblFiltroBusqueda;
-        private System.Windows.Forms.DateTimePicker dtpFecNacFilt;
         private System.Windows.Forms.Label lblFecNacFiltrado;
         private System.Windows.Forms.TextBox txtDniFiltrado;
         private System.Windows.Forms.TextBox txtApeFiltrado;
@@ -267,5 +291,8 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.BindingSource afiliadoBindingSource;
         private ListaDeAfiliadosTableAdapters.AfiliadoTableAdapter afiliadoTableAdapter;
+        private System.Windows.Forms.ComboBox cmbPlanes;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textNroAfiliado;
     }
 }

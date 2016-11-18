@@ -215,21 +215,21 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(35, 318);
+            this.btnGuardar.Location = new System.Drawing.Point(48, 318);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(112, 23);
+            this.btnGuardar.Size = new System.Drawing.Size(127, 35);
             this.btnGuardar.TabIndex = 4;
-            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.Text = "Modificar";
             this.btnGuardar.UseVisualStyleBackColor = true;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(360, 318);
+            this.btnCancelar.Location = new System.Drawing.Point(324, 318);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(112, 23);
+            this.btnCancelar.Size = new System.Drawing.Size(124, 35);
             this.btnCancelar.TabIndex = 5;
-            this.btnCancelar.Text = "Cancelar Y Volver";
+            this.btnCancelar.Text = "Volver";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
@@ -237,12 +237,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(553, 365);
+            this.ClientSize = new System.Drawing.Size(488, 365);
             this.Controls.Add(this.lblDatosAfiliado);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.pnlModDatosPersonales);
             this.Name = "frmModificarAfiliado";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modificar Afiliado";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmModificarAfiliado_FormClosing);
             this.Load += new System.EventHandler(this.frmModificarAfiliado_Load);

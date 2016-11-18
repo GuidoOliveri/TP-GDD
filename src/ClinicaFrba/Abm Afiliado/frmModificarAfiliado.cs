@@ -20,6 +20,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private String telefono = "";
         private String mail = "";
         private string plan = "";
+        private string operacion = "Modificar";
 
         public frmModificarAfiliado(UInt64 nroAfil)
         {
@@ -99,7 +100,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            frmBuscarAfiliado buscar = new frmBuscarAfiliado();
+            frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacion);
             this.Hide();
             buscar.Show();
         }
