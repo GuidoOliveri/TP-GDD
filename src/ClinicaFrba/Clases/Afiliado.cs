@@ -7,14 +7,32 @@ using System.Data ;
 using System.Data.SqlClient ;
 using ClinicaFrba.Clases  ;
 
+
 namespace ClinicaFrba.Clases
 {
     class Afiliado
     {
+    //    public decimal Codigo_Persona { get; set; }
+        public decimal Nro_afiliado { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public string Tipo_Doc { get; set; }
+
+        public decimal Nro_Doc { get; set; }
+        public string Direccion { get; set; }
+        //public bool Activo { get; set; }
+        public decimal Telefono { get; set; }
+        public string Mail { get; set; }
+        public string Plan_Medico { get; set; }
+        public DateTime Fecha_Nac { get; set; }       
+        public string Estado_Civil { get; set; }
+        public Byte Cant_Hijos { get; set; }      
+ 
         private static SqlConnection conexion;
         //private static DataTable tabla = new DataTable();
 
-        public static DataTable obtenerAfilidos() {
+        public static DataTable obtenerAfiliados() {
+
             DataTable tabla = new DataTable();
             conexion = BaseDeDatosSQL.ObtenerConexion();
            // conexion.Open();
@@ -144,6 +162,87 @@ namespace ClinicaFrba.Clases
             return tabla;
         }
 
+
+        public static List<Afiliado> ObtenerAfiliados2(String nombre, String apellido, String dni, String numeroAfiliado, String codigoPlan)
+        {
+            List<Afiliado> Lista = new List<Afiliado>();
+
+            List<SqlParameter> ListaParametros = new List<SqlParameter>();
+            if (nombre != "") ListaParametros.Add(new SqlParameter("@nombre", "%" + nombre + "%")); 
+            else ListaParametros.Add(new SqlParameter("@nombre", "%%"));
+            if (apellido != "") ListaParametros.Add(new SqlParameter("@apellido", "%" + apellido + "%"));
+            else ListaParametros.Add(new SqlParameter("@apellido", "%%"));
+            if (dni != "") ListaParametros.Add(new SqlParameter("@dni", "%" + dni + "%")); 
+            else ListaParametros.Add(new SqlParameter("@dni", "%%"));
+            if (numeroAfiliado != "") ListaParametros.Add(new SqlParameter("@numeroAfiliado", "%" + numeroAfiliado+ "%")); 
+            else ListaParametros.Add(new SqlParameter("@numeroAfiliado", "%%"));
+            if (codigoPlan != "") ListaParametros.Add(new SqlParameter("@codigoPlan", "%" + codigoPlan + "%")); 
+            else ListaParametros.Add(new SqlParameter("@codigoPlan", "%%"));
+
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT * FROM NEXTGDD.Pacientes_Afil WHERE Nombre LIKE @nombre AND Apellido LIKE @apellido AND  Nro_Doc LIKE @dni AND Nro_Afiliado LIKE @numeroAfiliado AND Plan_Medico LIKE @codigoPlan", "T", ListaParametros);
+
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    Afiliado unAfiliado = new Afiliado();
+                 
+                    unAfiliado.Nro_afiliado = (UInt64)(decimal)lector["Nro_Afiliado"];
+                    //unAfiliado.Codigo_Persona = unAfiliado.Id;
+                    unAfiliado.Nombre = (string)lector["Nombre"];
+                    unAfiliado.Apellido = (string)lector["Apellido"];
+                    unAfiliado.Tipo_Doc = (string)lector["Tipo_Doc"];
+                    unAfiliado.Nro_Doc = (decimal)lector["Nro_Doc"];
+                    unAfiliado.Direccion = (String)lector["Direccion"];
+                    unAfiliado.Telefono = (decimal)lector["Telefono"];
+                    unAfiliado.Mail = (String)lector["Mail"];
+                    unAfiliado.Plan_Medico = (string)lector["Plan_Medico"];
+                    unAfiliado.Fecha_Nac = (DateTime)lector["Fecha_Nac"];
+                    unAfiliado.Estado_Civil = (string)lector["Estado_Civil"];
+                    unAfiliado.Cant_Hijos = (Byte)lector["Cant_Hijos"];
+                   
+                    Lista.Add(unAfiliado);
+                }
+                lector.Close();
+            }
+            return Lista;
+
+        }
+
+
+        public static List<Afiliado> ObtenerTodos()
+        {
+            List<Afiliado> Lista = new List<Afiliado>();
+
+            List<SqlParameter> ListaParametros = new List<SqlParameter>();
+
+            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT * FROM NEXTGDD.Pacientes_Afil", "T", ListaParametros);
+
+            if (lector.HasRows)
+            {
+                while (lector.Read())
+                {
+                    Afiliado unAfiliado = new Afiliado();
+                    
+                    unAfiliado.Nro_afiliado = (UInt64)(decimal)lector["Nro_Afiliado"];
+                    unAfiliado.Nombre = (string)lector["Nombre"];
+                    unAfiliado.Apellido = (string)lector["Apellido"];
+                    unAfiliado.Tipo_Doc = (string)lector["Tipo_Doc"];
+                    unAfiliado.Nro_Doc = (decimal)lector["Nro_Doc"];
+                    unAfiliado.Direccion = (String)lector["Direccion"];
+                    unAfiliado.Telefono = (decimal)lector["Telefono"];
+                    unAfiliado.Mail = (String)lector["Mail"];
+                    unAfiliado.Plan_Medico = (string)lector["Plan_Medico"];
+                    unAfiliado.Fecha_Nac = (DateTime)lector["Fecha_Nac"];
+                    unAfiliado.Estado_Civil = (string)lector["Estado_Civil"];
+                    unAfiliado.Cant_Hijos = (Byte)lector["Cant_Hijos"];
+
+                    Lista.Add(unAfiliado);
+                }
+                lector.Close();
+            }
+            return Lista; ;
+        }
 
 
     }

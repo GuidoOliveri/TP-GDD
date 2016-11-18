@@ -18,10 +18,12 @@ namespace ClinicaFrba.Abm_Afiliado
         private string plan = "";
         private UInt64 nroAfil ;
         DataTable tabla;
-        DataTable tablaAfil;
-        DataTable tablagrupo;
-        DataTable tablaAfilgrupo;
+        //DataTable tablaAfil;
+        //DataTable tablagrupo;
+        //DataTable tablaAfilgrupo;
         private string mioperacion= "";
+
+       //private List<Afiliado> listaDeAfiliados;
 
         public frmBuscarAfiliado(string operacion)
         {
@@ -48,10 +50,15 @@ namespace ClinicaFrba.Abm_Afiliado
 
             cmbPlanes.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            this.cargarGrilla();
-            tabla = new DataTable();
-            tabla = Afiliado.obtenerAfilidos();
-            dataGridView1.DataSource = tabla;
+            cargarGrilla();
+            //tabla = new DataTable();
+            //tabla = Afiliado.obtenerAfilidos();
+            //dataGridView1.DataSource = tabla;
+
+            List<Afiliado> listaDeAfiliados = Afiliado.ObtenerTodos();
+
+            dataGridView1.DataSource = listaDeAfiliados;
+
 
         }
 
@@ -71,9 +78,9 @@ namespace ClinicaFrba.Abm_Afiliado
             principalAfil.Show();
         }
 
-        public string Operacion { get; set; }
+        //public string Operacion { get; set; }
 
-        public Clases.Profesional profesional { get; set; }
+        //public Clases.Profesional profesional { get; set; }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -120,85 +127,112 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
+        public void ActualizarGrilla()
+        {
+            plan = (string)cmbPlanes.SelectedItem;
+
+            if (txtNomFiltrado.Text != "" || txtApeFiltrado.Text != "" || txtDniFiltrado.Text != "" || textNroAfiliado.Text != "" || plan != "")
+            {
+                List<Afiliado> listaDeAfiliados = Afiliado.ObtenerAfiliados2(txtNomFiltrado.Text, txtApeFiltrado.Text, txtDniFiltrado.Text, textNroAfiliado.Text, plan);
+                
+                dataGridView1.DataSource = listaDeAfiliados;
+            }
+            else
+            {
+
+                MessageBox.Show("Por Favor ingrese campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //listaDeAfiliados = Afiliado.ObtenerTodos();
+            }
+
+            //meto el resultado en la grilla
+            //dataGridView1.DataSource = listaDeAfiliados;
+        }
+
         private void btnBuscar_Click(object sender, EventArgs e)
         {
 
 
-           if ((String.IsNullOrEmpty(txtApeFiltrado.Text)) && (String.IsNullOrEmpty(textNroAfiliado.Text) )&&(String.IsNullOrEmpty(txtDniFiltrado.Text)) &&( String.IsNullOrEmpty(txtNomFiltrado.Text) )&&  (cmbPlanes.SelectedIndex == -1)) 
+            try
             {
-                MessageBox.Show("Por Favor ingrese campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ActualizarGrilla();
             }
-           else if ((textNroAfiliado.Text != string.Empty) && (txtDniFiltrado.Text != string.Empty) && (txtNomFiltrado.Text != string.Empty))
-            {
-                MessageBox.Show("Gracias por no  ingresar plan.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //tablagrupo = new DataTable();
-                //tablagrupo = Afiliado.obtenerHistorialGrupo(UInt64.Parse(txtNroGrupo.Text));
-                //dataGridView1.DataSource = tablagrupo;
-            }
-           else if ((cmbPlanes.SelectedIndex >0) && (txtDniFiltrado.Text != string.Empty) && (txtNomFiltrado.Text != string.Empty))
-           {
-               MessageBox.Show("Gracias por no  ingresar nroafil.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-               //tablagrupo = new DataTable();
-               //tablagrupo = Afiliado.obtenerHistorialGrupo(UInt64.Parse(txtNroGrupo.Text));
-               //dataGridView1.DataSource = tablagrupo;
-           }
-           else if ((textNroAfiliado.Text != string.Empty) && (cmbPlanes.SelectedIndex > 0) && (txtNomFiltrado.Text != string.Empty))
-           {
-               MessageBox.Show("Gracias por no  ingresar nron doc.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-               //tablagrupo = new DataTable();
-               //tablagrupo = Afiliado.obtenerHistorialGrupo(UInt64.Parse(txtNroGrupo.Text));
-               //dataGridView1.DataSource = tablagrupo;
-           }
+            catch { MessageBox.Show("no actualiza grilla", "Error!", MessageBoxButtons.OK); }
 
-           else if ((textNroAfiliado.Text != string.Empty) && (cmbPlanes.SelectedIndex > 0) )
-           {
-               MessageBox.Show("Gracias por no  ingresar nron doc y nombre .", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-               //tablagrupo = new DataTable();
-               //tablagrupo = Afiliado.obtenerHistorialGrupo(UInt64.Parse(txtNroGrupo.Text));
-               //dataGridView1.DataSource = tablagrupo;
-           }
+           //if ((String.IsNullOrEmpty(txtApeFiltrado.Text)) && (String.IsNullOrEmpty(textNroAfiliado.Text) )&&(String.IsNullOrEmpty(txtDniFiltrado.Text)) &&( String.IsNullOrEmpty(txtNomFiltrado.Text) )&&  (cmbPlanes.SelectedIndex == -1)) 
+           // {
+           //     MessageBox.Show("Por Favor ingrese campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+           // }
+           //else if ((textNroAfiliado.Text != string.Empty) && (txtDniFiltrado.Text != string.Empty) && (txtNomFiltrado.Text != string.Empty))
+           // {
+           //     MessageBox.Show("Gracias por no  ingresar plan.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           //     //tablagrupo = new DataTable();
+           //     //tablagrupo = Afiliado.obtenerHistorialGrupo(UInt64.Parse(txtNroGrupo.Text));
+           //     //dataGridView1.DataSource = tablagrupo;
+           // }
+           //else if ((cmbPlanes.SelectedIndex >0) && (txtDniFiltrado.Text != string.Empty) && (txtNomFiltrado.Text != string.Empty))
+           //{
+           //    MessageBox.Show("Gracias por no  ingresar nroafil.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           //    //tablagrupo = new DataTable();
+           //    //tablagrupo = Afiliado.obtenerHistorialGrupo(UInt64.Parse(txtNroGrupo.Text));
+           //    //dataGridView1.DataSource = tablagrupo;
+           //}
+           //else if ((textNroAfiliado.Text != string.Empty) && (cmbPlanes.SelectedIndex > 0) && (txtNomFiltrado.Text != string.Empty))
+           //{
+           //    MessageBox.Show("Gracias por no  ingresar nron doc.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           //    //tablagrupo = new DataTable();
+           //    //tablagrupo = Afiliado.obtenerHistorialGrupo(UInt64.Parse(txtNroGrupo.Text));
+           //    //dataGridView1.DataSource = tablagrupo;
+           //}
 
-           else if ((textNroAfiliado.Text != string.Empty) && (txtNomFiltrado.Text != string.Empty))
-           {
-               MessageBox.Show("Gracias por no  ingresar nron doc y plan .", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-               //tablagrupo = new DataTable();
-               //tablagrupo = Afiliado.obtenerHistorialGrupo(UInt64.Parse(txtNroGrupo.Text));
-               //dataGridView1.DataSource = tablagrupo;
-           }
+           //else if ((textNroAfiliado.Text != string.Empty) && (cmbPlanes.SelectedIndex > 0) )
+           //{
+           //    MessageBox.Show("Gracias por no  ingresar nron doc y nombre .", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           //    //tablagrupo = new DataTable();
+           //    //tablagrupo = Afiliado.obtenerHistorialGrupo(UInt64.Parse(txtNroGrupo.Text));
+           //    //dataGridView1.DataSource = tablagrupo;
+           //}
 
-            else if ( (txtApeFiltrado.Text != string.Empty) && (textNroAfiliado.Text != string.Empty) && (txtDniFiltrado.Text != string.Empty) )
-            {
+           //else if ((textNroAfiliado.Text != string.Empty) && (txtNomFiltrado.Text != string.Empty))
+           //{
+           //    MessageBox.Show("Gracias por no  ingresar nron doc y plan .", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           //    //tablagrupo = new DataTable();
+           //    //tablagrupo = Afiliado.obtenerHistorialGrupo(UInt64.Parse(txtNroGrupo.Text));
+           //    //dataGridView1.DataSource = tablagrupo;
+           //}
 
-                 MessageBox.Show("Gracias por no ingresar nombre y plan.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           // else if ( (txtApeFiltrado.Text != string.Empty) && (textNroAfiliado.Text != string.Empty) && (txtDniFiltrado.Text != string.Empty) )
+           // {
+
+           //      MessageBox.Show("Gracias por no ingresar nombre y plan.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
-                //tablaAfil = new DataTable();
-                //tablaAfil = Afiliado.obtenerHistorial_Afil(UInt64.Parse(txtNroAfiliado.Text));
-                //dataGridView1.DataSource = tablaAfil;
+           //     //tablaAfil = new DataTable();
+           //     //tablaAfil = Afiliado.obtenerHistorial_Afil(UInt64.Parse(txtNroAfiliado.Text));
+           //     //dataGridView1.DataSource = tablaAfil;
 
 
-            }
-           else if ((txtApeFiltrado.Text != string.Empty) && (textNroAfiliado.Text != string.Empty))
+           // }
+           //else if ((txtApeFiltrado.Text != string.Empty) && (textNroAfiliado.Text != string.Empty))
            
-            {
+           // {
 
-                MessageBox.Show("Gracias por no ingresar nombre, plan y doc.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           //     MessageBox.Show("Gracias por no ingresar nombre, plan y doc.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
-                //tablaAfilgrupo = new DataTable();
-                //tablaAfilgrupo = Afiliado.mostrarHistorialAfil_grupo(UInt64.Parse(txtNroGrupo.Text), UInt64.Parse(txtNroAfiliado.Text));
-                //dataGridView1.DataSource = tablaAfilgrupo;
-                //// MessageBox.Show("Por favor, filtre por un campo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+           //     //tablaAfilgrupo = new DataTable();
+           //     //tablaAfilgrupo = Afiliado.mostrarHistorialAfil_grupo(UInt64.Parse(txtNroGrupo.Text), UInt64.Parse(txtNroAfiliado.Text));
+           //     //dataGridView1.DataSource = tablaAfilgrupo;
+           //     //// MessageBox.Show("Por favor, filtre por un campo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+           // }
 
-           else if ((txtApeFiltrado.Text != string.Empty))
-           {
+           //else if ((txtApeFiltrado.Text != string.Empty))
+           //{
 
-               MessageBox.Show("Gracias por no ingresar nombre, plan , doc y nro afiliado.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-           }
-           else
-           {
+           //    MessageBox.Show("Gracias por no ingresar nombre, plan , doc y nro afiliado.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           //}
+           //else
+           //{
 
-               MessageBox.Show("Gracias por no ingresar todos los campos.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-           }
+           //    MessageBox.Show("Gracias por no ingresar todos los campos.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           //}
 
 
         }
@@ -207,10 +241,13 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             limpiar();
 
-            limpiar();
-            tabla = Afiliado.obtenerAfilidos();
+            //tabla = Afiliado.obtenerAfiliados();
             
-            dataGridView1.DataSource = tabla;
+            //dataGridView1.DataSource = tabla;
+
+            List<Afiliado> listaDeAfiliados = Afiliado.ObtenerTodos();
+
+            dataGridView1.DataSource = listaDeAfiliados;
         }
 
         private void frmBuscarAfiliado_FormClosing(object sender, FormClosingEventArgs e)

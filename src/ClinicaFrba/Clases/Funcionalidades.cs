@@ -16,19 +16,19 @@ namespace ClinicaFrba.Clases
             List<Funcionalidad> Lista = new List<Funcionalidad>();
 
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT * from NEXTGDD.Funcionalidad", "T", ListaParametros);
-
-            if (lector.HasRows)
+            SqlDataReader lector101 = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id_funcionalidad, nombre FROM NEXTGDD.Funcionalidad", "T", ListaParametros);
+            //lector.Read();
+            if (lector101.HasRows)
             {
-                while (lector.Read())
+                while (lector101.Read())
                 {
                     Funcionalidad unaFuncionalidad = new Funcionalidad();
-                    unaFuncionalidad.Id = Int32.Parse(lector["id_funcionalidad"].ToString());
-                    unaFuncionalidad.Nombre = lector["nombre"].ToString();
+                    unaFuncionalidad.Id = Int32.Parse(lector101["id_funcionalidad"].ToString());
+                    unaFuncionalidad.Nombre = lector101["nombre"].ToString();
                     Lista.Add(unaFuncionalidad);
                 }
             }
-            lector.Close();
+            lector101.Close();
             return Lista;
         }
 

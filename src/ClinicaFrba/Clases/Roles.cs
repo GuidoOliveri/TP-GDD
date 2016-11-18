@@ -18,21 +18,21 @@ namespace ClinicaFrba.Clases
             List<SqlParameter> ListaParametros = new List<SqlParameter>();
             ListaParametros.Add(new SqlParameter("@txt", "%" + filtro + "%"));
 
-            SqlDataReader lector = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id_rol, nombre, habilitado FROM NEXTGDD.Rol WHERE nombre like @txt", "T", ListaParametros);
+            SqlDataReader lector100 = Clases.BaseDeDatosSQL.ObtenerDataReader("SELECT id_rol, nombre, habilitado FROM NEXTGDD.Rol WHERE nombre like @txt", "T", ListaParametros);
             
 
-            if (lector.HasRows)
+            if (lector100.HasRows)
             {
-                while (lector.Read())
+                while (lector100.Read())
                 {
                     Rol unRol = new Rol();
-                    unRol.Id = Int32.Parse(lector["id_rol"].ToString());
-                    unRol.Nombre = lector["nombre"].ToString();
-                    unRol.Habilitado = lector.GetBoolean(2);
+                    unRol.Id = Int32.Parse(lector100["id_rol"].ToString());
+                    unRol.Nombre = lector100["nombre"].ToString();
+                    unRol.Habilitado = lector100.GetBoolean(2);
                     listaDeRoles.Add(unRol);
                 }
             }
-            lector.Close();
+            lector100.Close();
             return listaDeRoles;
         }
 

@@ -40,45 +40,69 @@ namespace ClinicaFrba.Clases
 
         public static SqlDataReader ObtenerDataReader(string commandtext, string commandtype, List<SqlParameter> ListaParametro)
         {
-            using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
-            {
-                conexion.Open();
-                SqlCommand comando = new SqlCommand();
-                comando.Connection = conexion;
-                comando.CommandText = commandtext;
-                foreach (SqlParameter elemento in ListaParametro)
-                {
-                    comando.Parameters.Add(elemento);
-                }
-                // lean esto que es importante para saber que es cada cosa 
-                switch (commandtype)
-                {
-                    case "T":
-                        comando.CommandType = CommandType.Text;
-                        break;
-                    case "TD":
-                        comando.CommandType = CommandType.TableDirect;
-                        break;
-                    case "SP":
-                        comando.CommandType = CommandType.StoredProcedure;
-                        break;
-                }
-                SqlDataReader reader = comando.ExecuteReader();
-                /*if(reader.Hasrows)
-                    {
-                    While(reader.READ())
-                    {
-                        elemento.PropiedadString=reader.GetString(0);
-                        elemento.PropiedadInteger=reader.GetInt32(1);
-                        TuLista_DE_Objetos.ADD(elemento)
-                    }
-                }
-                reader.Close();*/
-                //comando.Connection.Close();
-                return reader;
-            }
-        }
-
+            //using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
+            //{
+            //    conexion.Open();
+            //    SqlCommand comando = new SqlCommand();
+            //    comando.Connection = conexion;
+            //    comando.CommandText = commandtext;
+            //    foreach (SqlParameter elemento in ListaParametro)
+            //    {
+            //        comando.Parameters.Add(elemento);
+            //    }
+            //    // lean esto que es importante para saber que es cada cosa 
+            //    switch (commandtype)
+            //    {
+            //        case "T":
+            //            comando.CommandType = CommandType.Text;
+            //            break;
+            //        case "TD":
+            //            comando.CommandType = CommandType.TableDirect;
+            //            break;
+            //        case "SP":
+            //            comando.CommandType = CommandType.StoredProcedure;
+            //            break;
+            //    }
+            //    SqlDataReader reader = comando.ExecuteReader();
+            //    /*if(reader.Hasrows)
+            //        {
+            //        While(reader.READ())
+            //        {
+            //            elemento.PropiedadString=reader.GetString(0);
+            //            elemento.PropiedadInteger=reader.GetInt32(1);
+            //            TuLista_DE_Objetos.ADD(elemento)
+            //        }
+            //    }*/
+            //    reader.Close();
+            //    comando.Connection.Close();
+            //    return reader;     
+             SqlCommand comando = new SqlCommand();
+             comando.Connection = ObtenerConexion();
+             comando.CommandText = commandtext;
+             foreach (SqlParameter elemento in ListaParametro)
+ 
+              {
+                 comando.Parameters.Add(elemento);
+             }
+             // lean esto que es importante para saber que es cada cosa 
+             switch (commandtype)
+             {
+                 case "T":
+                     comando.CommandType = CommandType.Text;
+                     break;
+                 case "TD":
+                     comando.CommandType = CommandType.TableDirect;
+                     break;
+                 case "SP":
+                     comando.CommandType = CommandType.StoredProcedure;
+                     break;
+             }
+             SqlDataReader reader = comando.ExecuteReader();
+            
+             return reader;
+          }
+            
+          
 
         public static bool EscribirEnBase(string commandtext, string commandtype, List<SqlParameter> ListaParametro)
         {
