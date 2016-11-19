@@ -266,5 +266,76 @@ namespace ClinicaFrba.Clases
             }
         }
 
+
+        public static int RegistrarModificacionCnPlan(UInt64 afil,String nuevoDom,UInt64 nuevoTel,
+                                                      String nuevoMail,String nuevo_est_civil,int nuevocant_famil,
+                                                     String nuevo_plan,String motivo, DateTime fecha)
+        {
+            int retorno = -2;
+            int ret=-2 ;
+
+            List<SqlParameter> ListaParametros = new List<SqlParameter>();
+
+            SqlParameter paramAfil = new SqlParameter("@id", afil);
+            paramAfil.Direction = System.Data.ParameterDirection.Input;
+            paramAfil.SqlDbType = SqlDbType.Decimal;
+
+            ListaParametros.Add(paramAfil);
+            ListaParametros.Add(new SqlParameter("@nuevo_dom", nuevoDom));
+            SqlParameter paramTel = new SqlParameter("@nuevo_telef", nuevoTel);
+            paramTel.Direction = System.Data.ParameterDirection.Input;
+            paramTel.SqlDbType = SqlDbType.Decimal;
+            ListaParametros.Add(paramTel);          
+            ListaParametros.Add(new SqlParameter("@nuevo_mail ", nuevoMail));
+            ListaParametros.Add(new SqlParameter("@nuevo_est_civil", nuevo_est_civil));          
+            ListaParametros.Add(new SqlParameter("@nuevocant_famil",nuevocant_famil )); 
+		    ListaParametros.Add(new SqlParameter("@nuevo_plan",nuevo_plan ));		
+            ListaParametros.Add(new SqlParameter("@motivo",motivo ));
+            ListaParametros.Add(new SqlParameter("@fecha", fecha));
+
+            SqlParameter paramRet = new SqlParameter("@ret",ret );
+            paramRet.Direction = System.Data.ParameterDirection.Output;
+            
+            ListaParametros.Add(paramRet);
+         
+            retorno = (int)Clases.BaseDeDatosSQL.ExecStoredProcedure("NEXTGDD.modificar_Afiliado_CnPlan", ListaParametros);
+
+            return retorno;
+        }
+
+        public static int RegistrarModificacionSnPlan(UInt64 afil, String nuevoDom, UInt64 nuevoTel,
+                                                     String nuevoMail, String nuevo_est_civil, int nuevocant_famil)
+                                                   
+        {
+            int retorno = -2;
+            int ret = -2;
+
+            List<SqlParameter> ListaParametros = new List<SqlParameter>();
+            
+            SqlParameter paramAfil = new SqlParameter("@id", afil);
+            paramAfil.Direction = System.Data.ParameterDirection.Input;
+            paramAfil.SqlDbType = SqlDbType.Decimal;
+
+            ListaParametros.Add(paramAfil);
+            ListaParametros.Add(new SqlParameter("@nuevo_dom", nuevoDom));
+          
+            SqlParameter paramTel = new SqlParameter("@nuevo_telef", nuevoTel);
+            paramTel.Direction = System.Data.ParameterDirection.Input;
+            paramTel.SqlDbType = SqlDbType.Decimal;
+            ListaParametros.Add(paramTel);
+            ListaParametros.Add(new SqlParameter("@nuevo_mail ", nuevoMail));
+            ListaParametros.Add(new SqlParameter("@nuevo_est_civil", nuevo_est_civil));
+            ListaParametros.Add(new SqlParameter("@nuevocant_famil", nuevocant_famil));
+          
+            SqlParameter paramRet = new SqlParameter("@ret", ret);
+            paramRet.Direction = System.Data.ParameterDirection.Output;
+           
+            ListaParametros.Add(paramRet);
+
+            retorno = (int)Clases.BaseDeDatosSQL.ExecStoredProcedure("NEXTGDD.modificar_Afiliado_SnPlan", ListaParametros);
+
+            return retorno;
+        }
+        //(DateTime)System.DateTime.Now.Date)
     }
 }

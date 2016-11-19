@@ -184,8 +184,8 @@ namespace ClinicaFrba.Clases
         {
             using (SqlConnection conexion = new SqlConnection(obtenerStringConexion()))
             {
-                try
-                {
+                //try
+                //{
                     conexion.Open();
                     SqlCommand comando = new SqlCommand();
                     comando.Connection = conexion;
@@ -198,12 +198,14 @@ namespace ClinicaFrba.Clases
                     }
 
                     comando.ExecuteNonQuery();
-                    return (decimal)comando.Parameters["@ret"].Value;
-                }
-                catch
-                {
-                    return 0;
-                }
+                    return decimal.Parse(comando.Parameters["@ret"].Value.ToString());
+                    //Int64 resu = Int64.Parse(command.Parameters["@ret"].Value.ToString());
+                    
+                //}
+                //catch
+                //{
+                //    return -4;
+                //}
             }
         }
 

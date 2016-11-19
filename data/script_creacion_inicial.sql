@@ -701,34 +701,167 @@ END
 GO
 
 
-CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Plan(@id numeric(20,0), @nuevo_plan numeric (18,0),@motivo varchar (255))
+CREATE PROCEDURE NEXTGDD.modificar_Afiliado_CnPlan(@id numeric(20,0),@nuevo_dom varchar(255), @nuevo_telef numeric(18,0) ,@nuevo_mail varchar(255),
+                                                 @nuevo_est_civil varchar(255),@nuevocant_famil smallint, @nuevo_plan varchar(255),
+												 @motivo varchar (255), @fecha datetime ,@ret smallint output)
  AS BEGIN
   
-DECLARE @plan_viejo numeric (18,0)
+  
+DECLARE @pers numeric (18,0)
+DECLARE @domicActual varchar (255)
+DECLARE @mailActual varchar (255)
+DECLARE @cant_famActual smallint 
+DECLARE @planActual  numeric (18,0)
+DECLARE @id_plan_N numeric (18,0)
+DECLARE @telefActual  numeric (18,0)
+DECLARE @estado_civilActual tinyint
+DECLARE @id_estcivilNuev tinyint 
 
  IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
     BEGIN TRY
 	  BEGIN TRANSACTION   
-	        SET @plan_viejo = (SELECT cod_plan FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id )
+         	
+		   SELECT @pers = id_persona,@cant_famActual= cant_familiares, @planActual = cod_plan FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id 
            
-		    UPDATE NEXTGDD.Afiliado
-            SET  cod_plan = @nuevo_plan
-            WHERE  nro_afiliado= @id
+		   SELECT  @domicActual= domicilio, @estado_civilActual = estado_civil, @telefActual= telefono,@mailActual= mail  FROM NEXTGDD.Persona
            
-		   INSERT INTO NEXTGDD.Historial (fecha_modificacion, motivo_modificacion, nro_afiliado, cod_plan_viejo,cod_plan_nuevo)
-		   VALUES (GETDATE(),@motivo,@id,@plan_viejo,@nuevo_plan)
+           SELECT @id_plan_N FROM NEXTGDD.Plan_Medico WHERE descripcion= @nuevo_plan 
+	       
+		   SELECT @id_estcivilNuev=id FROM NEXTGDD.Estado_Civil Where nombre = @nuevo_est_civil
+
+	   IF @domicActual <> @nuevo_dom
+	      BEGIN
+		    UPDATE NEXTGDD.Persona
+            SET  domicilio = @nuevo_dom
+            WHERE  id_persona= @pers
+          END   
+	   
+	   IF @telefActual<> @nuevo_telef
+	      BEGIN	   
+		    UPDATE NEXTGDD.Persona
+            SET  telefono = @nuevo_telef
+            WHERE  id_persona= @pers
+          END
+       
+	   IF @mailActual <> @nuevo_mail
+	      BEGIN
+		    UPDATE NEXTGDD.Persona
+            SET  mail = @nuevo_mail
+            WHERE  id_persona= @pers
+          END
+
+      IF  @estado_civilActual <>@id_estcivilNuev
+	       BEGIN  
+		  	UPDATE NEXTGDD.Persona
+            SET  estado_civil  =  @id_estcivilNuev
+            WHERE  id_persona= @pers
+		   END
+       
+	  IF  @cant_famActual  <> @nuevocant_famil
+	       BEGIN  
+		   UPDATE NEXTGDD.Afiliado
+            SET  cant_familiares  = @nuevocant_famil 
+            WHERE  id_persona= @pers
+		   END
+
+	       
+       UPDATE NEXTGDD.Afiliado
+       SET  cod_plan = @id_plan_N
+       WHERE  nro_afiliado= @id
+           
+	  INSERT INTO NEXTGDD.Historial (fecha_modificacion, motivo_modificacion, nro_afiliado, cod_plan_viejo,cod_plan_nuevo)
+		                        VALUES (@fecha,@motivo,@id,@planActual,@id_plan_N)
 
 	COMMIT TRANSACTION
-    RETURN 0
+    SET @ret = 0
+
   END TRY
   
   BEGIN CATCH
     ROLLBACK TRANSACTION 
-    RETURN -1
+    SET @ret = -1
+
    END CATCH
 
  ELSE
-    RETURN -2
+    SET @ret = -2
+	
+END
+GO
+
+
+
+CREATE PROCEDURE NEXTGDD.modificar_Afiliado_SnPlan(@id numeric(20,0),@nuevo_dom varchar(255), @nuevo_telef numeric(18,0) ,@nuevo_mail varchar(255),
+                                                   @nuevo_est_civil varchar(255),@nuevocant_famil smallint, @ret smallint output)
+ AS BEGIN
+  
+  
+DECLARE @pers numeric (18,0)
+DECLARE @domicActual varchar (255)
+DECLARE @mailActual varchar (255)
+DECLARE @cant_famActual smallint 
+DECLARE @telefActual  numeric (18,0)
+DECLARE @estado_civilActual tinyint
+DECLARE @id_estcivilNuev tinyint
+
+ IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
+    BEGIN TRY
+	  BEGIN TRANSACTION   
+         	
+		   SELECT @pers = id_persona,@cant_famActual= cant_familiares FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id 
+           
+		   SELECT  @domicActual= domicilio, @estado_civilActual = estado_civil, @telefActual= telefono,@mailActual= mail  FROM NEXTGDD.Persona
+           
+		   SELECT @id_estcivilNuev=id FROM NEXTGDD.Estado_Civil Where nombre = @nuevo_est_civil
+
+	   IF @domicActual <> @nuevo_dom
+	      BEGIN
+		    UPDATE NEXTGDD.Persona
+            SET  domicilio = @nuevo_dom
+            WHERE  id_persona= @pers
+          END   
+	   
+	   IF @telefActual<> @nuevo_telef
+	      BEGIN	   
+		    UPDATE NEXTGDD.Persona
+            SET  telefono = @nuevo_telef
+            WHERE  id_persona= @pers
+          END
+       
+	   IF @mailActual <> @nuevo_mail
+	      BEGIN
+		    UPDATE NEXTGDD.Persona
+            SET  mail = @nuevo_mail
+            WHERE  id_persona= @pers
+          END
+
+      IF  @estado_civilActual <> @id_estcivilNuev
+	       BEGIN  
+		  	UPDATE NEXTGDD.Persona
+            SET  estado_civil  =  @id_estcivilNuev
+            WHERE  id_persona= @pers
+		   END
+       
+	  IF  @cant_famActual  <> @nuevocant_famil
+	       BEGIN  
+		   UPDATE NEXTGDD.Afiliado
+            SET  cant_familiares  = @nuevocant_famil 
+            WHERE  nro_afiliado= @id
+		   END
+
+	COMMIT TRANSACTION
+    SET @ret = 0
+
+  END TRY
+  
+  BEGIN CATCH
+    ROLLBACK TRANSACTION 
+    SET @ret = -1
+
+   END CATCH
+
+ ELSE
+    SET @ret = -2
 	
 END
 GO

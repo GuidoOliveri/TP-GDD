@@ -14,15 +14,11 @@ namespace ClinicaFrba.Abm_Afiliado
     public partial class frmModificarAfiliado : Form {
         
         private string comando = "";
-
-        //int idAfiliado=0;
-
-        //private String direccion = "";
-        //private String telefono = "";
-        //private String mail = "";
         private string planAnt = "";
         private string planNuev = "";
         private string operacion = "Modificar";
+        private int resultado;
+        private UInt64 nroAfiliado;
 
         public frmModificarAfiliado(UInt64 nroAfil,string dir, string mail,string estcivil,string cantfamil,string telefono,string planmedico )
         {
@@ -41,7 +37,7 @@ namespace ClinicaFrba.Abm_Afiliado
             cmbPlanMedico.DropDownStyle = ComboBoxStyle.DropDownList;
 
            // btnGuardar.Click += new EventHandler(btnGuardar_Click);
-
+            nroAfiliado = nroAfil;
             txtDir.Text = dir;
             txtMail.Text = mail;
             txtTel.Text = telefono;
@@ -75,83 +71,67 @@ namespace ClinicaFrba.Abm_Afiliado
 
             planNuev = (string)cmbPlanMedico.SelectedItem;
 
-            if (String.IsNullOrEmpty(txtDir.Text) || String.IsNullOrEmpty(txtTel.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || Afiliado.email_bien_escrito(txtMail.Text) == false || String.IsNullOrEmpty(textCantH.Text) || Int32.Parse(textCantH.Text) < 0 || (cmdEstadoCivil.Items.Count <= 0) || (string)cmbPlanMedico.SelectedItem == "(ninguno)" || cmbPlanMedico.SelectedIndex == -1)
+            if (String.IsNullOrEmpty(txtDir.Text) || String.IsNullOrEmpty(txtMail.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || Afiliado.email_bien_escrito(txtMail.Text) == false || String.IsNullOrEmpty(textCantH.Text) || Int32.Parse(textCantH.Text) < 0 || (cmdEstadoCivil.Items.Count <= 0) || (string)cmbPlanMedico.SelectedItem == "(ninguno)" || cmbPlanMedico.SelectedIndex == -1)
             {
                 MessageBox.Show("Por favor, ingrese datos en todos los campos obligatorios y de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else if (planAnt != planNuev && String.IsNullOrEmpty(txtMotivo.Text))
-                {
+            {
 
-                    MessageBox.Show("Por favor, ingrese el motivo del cambio de plan", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, ingrese el motivo del cambio de plan", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                }
+            }
             else if (planAnt != planNuev)
             {
-                MessageBox.Show("Ingresaste correctamente los datos,  en breve realizaremos los cambios y la modificacion de: " + planAnt + "  al " + planNuev, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DateTime fechaMod = System.DateTime.Now.Date;
+
+                resultado = Afiliado.RegistrarModificacionCnPlan(nroAfiliado, txtDir.Text, UInt64.Parse(txtTel.Text), txtMail.Text, (String)cmdEstadoCivil.SelectedItem, int.Parse(textCantH.Text), (String)cmbPlanMedico.SelectedItem, txtMotivo.Text, fechaMod);
+
+                if (resultado.Equals(0))
+                {
+                    MessageBox.Show("Modificacion Exitosa! Plan Actual :" + planNuev, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (resultado.Equals(-1))
+                {
+                    MessageBox.Show("No pudimos procesar tu solicitud de modificacion, intente mas tarde", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("No Existe el Afiliado a Modificar ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacion);
+                this.Hide();
+                buscar.Show();
 
             }
-            else {
-                MessageBox.Show("Ingresaste correctamente los datos,  en breve realizaremos los cambios. No has modificado el plan medico, Plan actual: " + planNuev, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            
+            else
+            {
+                resultado = Afiliado.RegistrarModificacionSnPlan(nroAfiliado, txtDir.Text, UInt64.Parse(txtTel.Text), txtMail.Text, (String)cmdEstadoCivil.SelectedItem, int.Parse(textCantH.Text));
+
+                if (resultado.Equals(0))
+                {
+                    MessageBox.Show("Modificacion Exitosa", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else if (resultado.Equals(-1))
+                {
+                    MessageBox.Show("No pudimos procesar tu solicitud de modificacion, intente mas tarde", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (resultado.Equals(-2))
+                {
+                    MessageBox.Show("No Existe el Afiliado a Modificar " + nroAfiliado, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("No se que paso :(", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacion);
+                this.Hide();
+                buscar.Show();
             }
-
-
-
-
-            //{
-
-            //    MessageBox.Show("Ingresaste correctamente los datos, en breve realizaremos las modificaciones ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //}
-
-           
-
-
         }
-        //     nroAfiliado = 0;
-            
-        //     //Se guarda de la forma NOMBRE Apellido, sin importar como ingrese el usuario
-        //     nombre = txtNombre.Text.ToUpper();
-        //     string primeraLetra = txtApellido.Text.Substring(0, 1).ToUpper();
-        //     string resto= txtApellido.Text.Substring(1,txtApellido.Text.Length-1).ToLower();
-        //     apellido = primeraLetra + resto;
-          
-        //     tipoDoc = (string)cmbTipoDoc.SelectedItem;
-        //     nroDoc = Convert.ToInt64(txtNroDoc.Text);
-
-        //     primeraLetra = txtCalle.Text.Substring(0, 1).ToUpper();
-        //     resto = txtCalle.Text.Substring(1, txtCalle.Text.Length - 1).ToLower();
-        //     calle = primeraLetra+resto;
-        //     altura = Convert.ToInt32(txtAltura.Text);
-        //     pisoSinConvertir = txtPiso.Text;
-        //     deptoSinConvertir = txtDepto.Text;
-
-
-
-
-        //    if (txtDir.Text != direccion && txtDir.Text!=null )
-        //    {
-        //        comando = "EXECUTE NEXTGDD.modificar_Afiliado_Domic @id='" + idAfiliado + "',@nuevo_dom='" + txtDir.Text;
-        //        Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
-        //        MessageBox.Show("Actualizacion exitosa!", "Actualizacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        //    }
-        //    if (txtTel.Text != telefono && txtTel.Text!=null)
-        //    {
-        //        comando = "EXECUTE NEXTGDD.modificar_Afiliado_Telef @id='" + idAfiliado + "',@nuevo_nuevo_telef='" + txtTel.Text;
-        //        Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
-        //        MessageBox.Show("Actualizacion exitosa!", "Actualizacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        //    }
-        //    if (txtMail.Text != mail && txtMail.Text!=null)
-        //    {
-        //        comando = "EXECUTE NEXTGDD.modificar_Afiliado_Mail @id='" + idAfiliado + "',@nuevo_mail='" + txtDir.Text;
-        //        Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
-        //        MessageBox.Show("Actualizacion exitosa!", "Actualizacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        //    }
-
-        //}
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
