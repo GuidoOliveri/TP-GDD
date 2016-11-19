@@ -94,6 +94,7 @@
             this.txtRol.Name = "txtRol";
             this.txtRol.Size = new System.Drawing.Size(100, 20);
             this.txtRol.TabIndex = 9;
+            this.txtRol.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtRol_KeyPress);
             // 
             // label2
             // 

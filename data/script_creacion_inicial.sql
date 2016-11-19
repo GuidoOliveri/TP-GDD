@@ -1790,11 +1790,39 @@ SELECT * FROM NEXTGDD.Historial
 
 insert INTO NEXTGDD.Historial (fecha_modificacion,motivo_modificacion,nro_afiliado, cod_plan_viejo, cod_plan_nuevo)
 VALUES ('21-11-2015','por mejorar mi plan',114039901,555555,555556), 
- ('21-11-2015','por mejorar mi plan',112396001,555556,555557) ,
-  ('21-01-2016','por mejorar mi plan',113347201,555556,555557) ,
-   ('21-12-2016','por mejorar mi plan',112396001,555555,555556) ,
-    ('21-11-2014','por mejorar mi plan',112396001,555557,555558) ,
-	 ('21-11-2015','por mejorar mi plan',117542001,555555,555557) ,
-	  ('23-11-2015','por mejorar mi plan',119406501,555555,555557)
+ ('21-11-2015','mejorar la atencion medica',112396001,555556,555557) ,
+  ('21-01-2016','mejorar la atencion medica',113347201,555556,555557) ,
+   ('21-12-2016','mejorar la atencion medica',112396001,555555,555556) ,
+    ('21-11-2014','mejorar la atencion medica',112396001,555557,555558) ,
+	 ('21-11-2015','mejorar la atencion medica',117542001,555555,555557) ,
+	  ('23-11-2015','mejorar la atencion medica',119406501,555555,555557)
 
 */
+
+/*
+SELECT * from NEXTGDD.Funcionalidad
+
+select * from NEXTGDD.Pacientes_Afil
+
+
+SELECT id_rol, nombre, habilitado FROM NEXTGDD.Rol
+
+SELECT id_funcionalidad, nombre FROM NEXTGDD.Funcionalidad
+
+DECLARE @numeroAfiliado NUMERIC (20,0)= 113347201
+DECLARE @dni NUMERIC (18,0)= 1133472
+DECLARE @apellido VARCHAR(255)= 'Arce' 
+DECLARE @nombre VARCHAR(255)= 'DEL CIELO' 
+DECLARE @codigoPlan VARCHAR (255)= 'Plan Medico 140'
+ 
+
+
+SELECT * FROM NEXTGDD.Pacientes_Afil WHERE Nro_Afiliado LIKE '%'+ CONVERT(varchar,@numeroAfiliado) +'%'
+AND Apellido LIKE '%'+ @apellido+ '%' AND Nombre LIKE '%'+ @nombre+ '%' AND Nro_Doc LIKE '%'+CONVERT(varchar,@dni)+ '%' 
+AND Plan_Medico LIKE '%'+@codigoPlan+'%'
+
+
+select nombre from NEXTGDD.Estado_Civil
+
+
+SELECT * FROM NEXTGDD.Pacientes_Afil */

@@ -49,7 +49,7 @@ namespace ClinicaFrba.Abm_Afiliado
             InitializeComponent();
 
             plan = (string)cmbPlanMedico.SelectedItem;
-
+            cmbPlanMedico.Items.Add("(ninguno)") ;
             comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
 
@@ -114,10 +114,10 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
 
-            
 
-            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text)<0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text)<0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || txtDepto.TextLength > 1|| String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text)<0 || (cmbEstadoCivil.Items.Count <= 0) ||  (cmbTipoDoc.Items.Count <= 0) ||( cmbPlanMedico.Items.Count <= 0) || 
-                (( optMasculino.Checked == false) &&  (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
+
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text) < 0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || txtDepto.TextLength > 1 || String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text) < 0 || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || (string)cmbPlanMedico.SelectedItem == "(ninguno)" || cmbPlanMedico.SelectedIndex == -1 ||
+                ((optMasculino.Checked == false) && (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today || Afiliado.email_bien_escrito(txtMail.Text) == false)
             {
                 MessageBox.Show("Por favor, ingrese datos en todos los campos obligatorios y de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -156,6 +156,8 @@ namespace ClinicaFrba.Abm_Afiliado
              telefono = Convert.ToInt32(txtTel.Text);
              estadoCivil = (string)cmbEstadoCivil.SelectedItem;
              mail = txtMail.Text;
+
+
              cantFam = Convert.ToInt32(txtCantFam.Text);
              plan = (string)cmbPlanMedico.SelectedItem;
              retorno = 0;
@@ -286,7 +288,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private void cmdAsociarAfiliado_Click(object sender, EventArgs e)
         {
 
-            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text) < 0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || txtDepto.TextLength > 1 || String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text) < 0 || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || (cmbPlanMedico.Items.Count <= 0) || ((optMasculino.Checked == false) && (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text) < 0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || txtDepto.TextLength > 1 || String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text) < 0 || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || ((optMasculino.Checked == false) && (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
             {
                 MessageBox.Show("Por favor, ingrese datos en todos los campos obligatorios y de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -644,5 +646,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
 
         }
+
+
     }
 }

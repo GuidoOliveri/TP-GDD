@@ -82,7 +82,7 @@
             this.btnRegistrar.Name = "btnRegistrar";
             this.btnRegistrar.Size = new System.Drawing.Size(91, 41);
             this.btnRegistrar.TabIndex = 0;
-            this.btnRegistrar.Text = "Registrar datos";
+            this.btnRegistrar.Text = "Asociar a un Nuevo Grupo";
             this.btnRegistrar.UseVisualStyleBackColor = true;
             this.btnRegistrar.Click += new System.EventHandler(this.btnRegistrar_Click);
             // 
@@ -436,8 +436,6 @@
             // cmbPlanMedico
             // 
             this.cmbPlanMedico.FormattingEnabled = true;
-            this.cmbPlanMedico.Items.AddRange(new object[] {
-            "(ninguno)"});
             this.cmbPlanMedico.Location = new System.Drawing.Point(260, 22);
             this.cmbPlanMedico.Name = "cmbPlanMedico";
             this.cmbPlanMedico.Size = new System.Drawing.Size(167, 21);
@@ -492,9 +490,9 @@
             // 
             this.cmdAsociarAfiliado.Location = new System.Drawing.Point(258, 309);
             this.cmdAsociarAfiliado.Name = "cmdAsociarAfiliado";
-            this.cmdAsociarAfiliado.Size = new System.Drawing.Size(100, 42);
+            this.cmdAsociarAfiliado.Size = new System.Drawing.Size(104, 41);
             this.cmdAsociarAfiliado.TabIndex = 6;
-            this.cmdAsociarAfiliado.Text = "Asociar Afiliado a un Grupo";
+            this.cmdAsociarAfiliado.Text = "Asociar a un Grupo ya existente";
             this.cmdAsociarAfiliado.UseVisualStyleBackColor = true;
             this.cmdAsociarAfiliado.Click += new System.EventHandler(this.cmdAsociarAfiliado_Click);
             // 

@@ -34,7 +34,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtMotivo = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textCantH = new System.Windows.Forms.TextBox();
             this.lblCantHijos = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtMail = new System.Windows.Forms.TextBox();
@@ -58,7 +58,7 @@
             this.pnlModDatosPersonales.Controls.Add(this.label3);
             this.pnlModDatosPersonales.Controls.Add(this.label2);
             this.pnlModDatosPersonales.Controls.Add(this.txtMotivo);
-            this.pnlModDatosPersonales.Controls.Add(this.textBox1);
+            this.pnlModDatosPersonales.Controls.Add(this.textCantH);
             this.pnlModDatosPersonales.Controls.Add(this.lblCantHijos);
             this.pnlModDatosPersonales.Controls.Add(this.label1);
             this.pnlModDatosPersonales.Controls.Add(this.txtMail);
@@ -77,12 +77,6 @@
             // cmdEstadoCivil
             // 
             this.cmdEstadoCivil.FormattingEnabled = true;
-            this.cmdEstadoCivil.Items.AddRange(new object[] {
-            "Soltero/a",
-            "Casado/a",
-            "Viudo/a",
-            "Concubinato",
-            "Divorciado/a"});
             this.cmdEstadoCivil.Location = new System.Drawing.Point(131, 113);
             this.cmdEstadoCivil.Name = "cmdEstadoCivil";
             this.cmdEstadoCivil.Size = new System.Drawing.Size(216, 21);
@@ -121,12 +115,13 @@
             this.txtMotivo.Size = new System.Drawing.Size(304, 20);
             this.txtMotivo.TabIndex = 18;
             // 
-            // textBox1
+            // textCantH
             // 
-            this.textBox1.Location = new System.Drawing.Point(131, 144);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(217, 20);
-            this.textBox1.TabIndex = 16;
+            this.textCantH.Location = new System.Drawing.Point(131, 144);
+            this.textCantH.Name = "textCantH";
+            this.textCantH.Size = new System.Drawing.Size(217, 20);
+            this.textCantH.TabIndex = 16;
+            this.textCantH.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textCantH_KeyPress);
             // 
             // lblCantHijos
             // 
@@ -152,6 +147,7 @@
             this.txtMail.Name = "txtMail";
             this.txtMail.Size = new System.Drawing.Size(217, 20);
             this.txtMail.TabIndex = 12;
+            this.txtMail.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMail_KeyPress);
             // 
             // lblMail
             // 
@@ -168,6 +164,7 @@
             this.txtTel.Name = "txtTel";
             this.txtTel.Size = new System.Drawing.Size(217, 20);
             this.txtTel.TabIndex = 10;
+            this.txtTel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTel_KeyPress);
             // 
             // lblTel
             // 
@@ -185,6 +182,7 @@
             this.txtDir.Size = new System.Drawing.Size(217, 20);
             this.txtDir.TabIndex = 8;
             this.txtDir.TextChanged += new System.EventHandler(this.txtDir_TextChanged);
+            this.txtDir.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDir_KeyPress);
             // 
             // lblDireccionCompleta
             // 
@@ -271,7 +269,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtMotivo;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textCantH;
         private System.Windows.Forms.Label lblCantHijos;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmdEstadoCivil;

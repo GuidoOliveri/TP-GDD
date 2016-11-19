@@ -67,6 +67,7 @@
             this.txtNroAfiliado.Size = new System.Drawing.Size(183, 20);
             this.txtNroAfiliado.TabIndex = 4;
             this.txtNroAfiliado.TextChanged += new System.EventHandler(this.txtNroAfiliado_TextChanged);
+            this.txtNroAfiliado.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNroAfiliado_KeyPress);
             // 
             // txtNroGrupo
             // 
@@ -74,6 +75,7 @@
             this.txtNroGrupo.Name = "txtNroGrupo";
             this.txtNroGrupo.Size = new System.Drawing.Size(183, 20);
             this.txtNroGrupo.TabIndex = 3;
+            this.txtNroGrupo.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNroGrupo_KeyPress);
             // 
             // lblNroAfiliado
             // 

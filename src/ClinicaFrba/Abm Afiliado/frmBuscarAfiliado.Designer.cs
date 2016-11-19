@@ -82,6 +82,7 @@
             this.textNroAfiliado.Name = "textNroAfiliado";
             this.textNroAfiliado.Size = new System.Drawing.Size(149, 20);
             this.textNroAfiliado.TabIndex = 10;
+            this.textNroAfiliado.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textNroAfiliado_KeyPress);
             // 
             // cmbPlanes
             // 
@@ -116,6 +117,7 @@
             this.txtDniFiltrado.Name = "txtDniFiltrado";
             this.txtDniFiltrado.Size = new System.Drawing.Size(149, 20);
             this.txtDniFiltrado.TabIndex = 6;
+            this.txtDniFiltrado.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDniFiltrado_KeyPress);
             // 
             // txtApeFiltrado
             // 
@@ -123,6 +125,7 @@
             this.txtApeFiltrado.Name = "txtApeFiltrado";
             this.txtApeFiltrado.Size = new System.Drawing.Size(114, 20);
             this.txtApeFiltrado.TabIndex = 5;
+            this.txtApeFiltrado.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtApeFiltrado_KeyPress);
             // 
             // txtNomFiltrado
             // 
@@ -130,6 +133,7 @@
             this.txtNomFiltrado.Name = "txtNomFiltrado";
             this.txtNomFiltrado.Size = new System.Drawing.Size(114, 20);
             this.txtNomFiltrado.TabIndex = 4;
+            this.txtNomFiltrado.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNomFiltrado_KeyPress);
             // 
             // lblDniFiltrado
             // 

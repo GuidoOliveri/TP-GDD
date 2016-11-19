@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Data ;
 using System.Data.SqlClient ;
 using ClinicaFrba.Clases  ;
-
+using System.Text.RegularExpressions;
 
 namespace ClinicaFrba.Clases
 {
@@ -244,6 +244,27 @@ namespace ClinicaFrba.Clases
             return Lista; ;
         }
 
+
+        public static Boolean email_bien_escrito(String email)
+        {
+            String expresion;
+            expresion = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+            if (Regex.IsMatch(email, expresion))
+            {
+                if (Regex.Replace(email, expresion, String.Empty).Length == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
 
     }
 }

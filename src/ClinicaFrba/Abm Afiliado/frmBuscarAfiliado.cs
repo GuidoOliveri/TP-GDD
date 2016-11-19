@@ -17,12 +17,14 @@ namespace ClinicaFrba.Abm_Afiliado
         private string comando = "";
         private string plan = "";
         private UInt64 nroAfil ;
-        DataTable tabla;
-        //DataTable tablaAfil;
-        //DataTable tablagrupo;
-        //DataTable tablaAfilgrupo;
+        //DataTable tabla;
         private string mioperacion= "";
-
+        private string direccion;
+        private string mail;
+        private string ecivil;
+        private string planmedico;
+        private string telefono;
+        private string ch;
        //private List<Afiliado> listaDeAfiliados;
 
         public frmBuscarAfiliado(string operacion)
@@ -44,6 +46,7 @@ namespace ClinicaFrba.Abm_Afiliado
             //this.afiliadoTableAdapter.Fill(this.listaDeAfiliados.Afiliado);
             
             plan = (string)cmbPlanes.SelectedItem;
+            cmbPlanes.Items.Add("");
 
             comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "descripcion"), cmbPlanes);
@@ -78,9 +81,6 @@ namespace ClinicaFrba.Abm_Afiliado
             principalAfil.Show();
         }
 
-        //public string Operacion { get; set; }
-
-        //public Clases.Profesional profesional { get; set; }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -112,7 +112,14 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
                 else if (mioperacion == "Modificar")
                 {
-                    frmModificarAfiliado este = new frmModificarAfiliado(nroAfil);
+                     direccion = dataGridView1.CurrentRow.Cells[5].Value.ToString();       
+                     mail = dataGridView1.CurrentRow.Cells[7].Value.ToString();
+                     ecivil= dataGridView1.CurrentRow.Cells[10].Value.ToString();
+                     planmedico = dataGridView1.CurrentRow.Cells[8].Value.ToString();
+                     ch =  dataGridView1.CurrentRow.Cells[11].Value.ToString();
+                     telefono = dataGridView1.CurrentRow.Cells[6].Value.ToString();
+
+                     frmModificarAfiliado este = new frmModificarAfiliado(nroAfil, direccion, mail, ecivil, ch, telefono, planmedico);
                     this.Hide();
                     este.Show();
 
@@ -240,10 +247,6 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             limpiar();
-
-            //tabla = Afiliado.obtenerAfiliados();
-            
-            //dataGridView1.DataSource = tabla;
 
             List<Afiliado> listaDeAfiliados = Afiliado.ObtenerTodos();
 
@@ -385,6 +388,104 @@ namespace ClinicaFrba.Abm_Afiliado
                 txtApeFiltrado.Text = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 txtDniFiltrado.Text = dataGridView1.CurrentRow.Cells[4].Value.ToString();
                 cmbPlanes.SelectedItem = dataGridView1.CurrentRow.Cells[8].Value.ToString();
+            }
+        }
+
+        private void txtNomFiltrado_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsNumber(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txtApeFiltrado_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsNumber(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void textNroAfiliado_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsLetter(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txtDniFiltrado_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (char.IsSymbol(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsPunctuation(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsLetter(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
