@@ -383,23 +383,15 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agreg
     DROP PROCEDURE NEXTGDD.agregar_usuario
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Afiliado_Domic'))
-    DROP PROCEDURE NEXTGDD.modificar_Afiliado_Domic
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Afiliado_Telef'))
-    DROP PROCEDURE NEXTGDD.modificar_Afiliado_Telef
-GO
-
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.darDeBajaRol'))
     DROP PROCEDURE NEXTGDD.darDeBajaRol
 GO
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Afiliado_Mail'))
-    DROP PROCEDURE NEXTGDD.modificar_Afiliado_Mail
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Afiliado_SnPlan'))
+    DROP PROCEDURE NEXTGDD.modificar_Afiliado_SnPlan
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Afiliado_Plan'))
-    DROP PROCEDURE NEXTGDD.modificar_Afiliado_Plan
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.modificar_Afiliado_CnPlan'))
+    DROP PROCEDURE NEXTGDD.modificar_Afiliado_CnPlan
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.agregarAfiliadoPrincipal'))
@@ -600,106 +592,6 @@ from NEXTGDD.Persona p Join NEXTGDD.Afiliado a ON(p.id_persona= a.id_persona)
 	 Join NEXTGDD.Estado_Civil e ON (e.id= p.estado_civil)
 GO
 
- CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Domic(@id numeric(20,0), @nuevo_dom varchar(255))
-  AS BEGIN
-  
-DECLARE @pers numeric (18,0)
-
- IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
-    BEGIN TRY
-	  BEGIN TRANSACTION   
-         	SET @pers = (SELECT id_persona FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id )
-
-            UPDATE NEXTGDD.Persona
-            SET  domicilio = @nuevo_dom
-            WHERE  id_persona= @pers
-           
-
-	COMMIT TRANSACTION
-    RETURN 0
-  END TRY
-  
-  BEGIN CATCH
-    ROLLBACK TRANSACTION
-    
-    RETURN -1
-  END CATCH
-
-ELSE
-  RETURN -2
-
-END
-GO
-
-CREATE PROCEDURE NEXTGDD.obtenerAfiliados
-AS BEGIN
-select * from NEXTGDD.Afiliado
-END
-GO
-
- 
- CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Telef(@id numeric(20,0), @nuevo_telef numeric(18,0))
- AS BEGIN
-  
-DECLARE @pers numeric (18,0)
-
- IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
-    BEGIN TRY
-	  BEGIN TRANSACTION   
-         	SET @pers = (SELECT id_persona FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id )
-
-            UPDATE NEXTGDD.Persona
-            SET  telefono = @nuevo_telef
-            WHERE  id_persona= @pers
-           
-
-	COMMIT TRANSACTION
-    RETURN 0
-  END TRY
-  
-  BEGIN CATCH
-    ROLLBACK TRANSACTION
-    
-    RETURN -1
-  END CATCH
-
-ELSE
-  RETURN -2
-
-END
-GO
-
-
- CREATE PROCEDURE NEXTGDD.modificar_Afiliado_Mail(@id numeric(20,0), @nuevo_mail varchar(255))
- AS BEGIN
-  
-DECLARE @pers numeric (18,0)
-
- IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
-    BEGIN TRY
-	  BEGIN TRANSACTION   
-         	SET @pers = (SELECT id_persona FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id )
-
-            UPDATE NEXTGDD.Persona
-            SET  mail = @nuevo_mail
-            WHERE  id_persona= @pers
-           
-
-	COMMIT TRANSACTION
-    RETURN 0
-  END TRY
-  
-  BEGIN CATCH
-    ROLLBACK TRANSACTION 
-    RETURN -1
-   END CATCH
-
- ELSE
-    RETURN -2
-	
-END
-GO
-
 
 CREATE PROCEDURE NEXTGDD.modificar_Afiliado_CnPlan(@id numeric(20,0),@nuevo_dom varchar(255), @nuevo_telef numeric(18,0) ,@nuevo_mail varchar(255),
                                                  @nuevo_est_civil varchar(255),@nuevocant_famil smallint, @nuevo_plan varchar(255),
@@ -718,6 +610,7 @@ DECLARE @estado_civilActual tinyint
 DECLARE @id_estcivilNuev tinyint 
 
  IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
+   BEGIN
     BEGIN TRY
 	  BEGIN TRANSACTION   
          	
@@ -725,7 +618,7 @@ DECLARE @id_estcivilNuev tinyint
            
 		   SELECT  @domicActual= domicilio, @estado_civilActual = estado_civil, @telefActual= telefono,@mailActual= mail  FROM NEXTGDD.Persona
            
-           SELECT @id_plan_N FROM NEXTGDD.Plan_Medico WHERE descripcion= @nuevo_plan 
+           SELECT @id_plan_N= cod_plan FROM NEXTGDD.Plan_Medico WHERE descripcion= @nuevo_plan 
 	       
 		   SELECT @id_estcivilNuev=id FROM NEXTGDD.Estado_Civil Where nombre = @nuevo_est_civil
 
@@ -782,7 +675,7 @@ DECLARE @id_estcivilNuev tinyint
     SET @ret = -1
 
    END CATCH
-
+END
  ELSE
     SET @ret = -2
 	
@@ -805,7 +698,8 @@ DECLARE @estado_civilActual tinyint
 DECLARE @id_estcivilNuev tinyint
 
  IF EXISTS( SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id)
-    BEGIN TRY
+    BEGIN
+	BEGIN TRY
 	  BEGIN TRANSACTION   
          	
 		   SELECT @pers = id_persona,@cant_famActual= cant_familiares FROM NEXTGDD.Afiliado WHERE nro_afiliado = @id 
@@ -859,7 +753,7 @@ DECLARE @id_estcivilNuev tinyint
     SET @ret = -1
 
    END CATCH
-
+END
  ELSE
     SET @ret = -2
 	
@@ -1958,7 +1852,7 @@ select nombre from NEXTGDD.Estado_Civil
 SELECT * FROM NEXTGDD.Pacientes_Afil 
 select * from NEXTGDD.Afiliado Where grupo_afiliado = 1133472
 
-select * from NEXTGDD.Persona Where id_persona= 99988854
+select * from NEXTGDD.Persona Where id_persona= 1123960
 
 select * from NEXTGDD.rol
 */
@@ -1971,3 +1865,9 @@ insert into NEXTGDD.Usuario_X_Rol (username,id_rol)
 VALUES ('admin', 3)
 
 select * from NEXTGDD.Funcionalidad_X_Rol where id_rol=1*/
+/*
+declare @retor smallint =0
+exec NEXTGDD.modificar_Afiliado_SnPlan @id= 112396001,@nuevo_dom= 'Avenida Dr. Honorio Pueyrredón 381', @nuevo_telef= 46466545, @nuevo_mail= 'sdasdsa@sfdsfs.com', @nuevo_est_civil= 'X',@nuevocant_famil=3,@ret= @retor output 
+
+print @retor
+*/
