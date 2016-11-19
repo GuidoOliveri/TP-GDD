@@ -415,10 +415,6 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.darDe
     DROP PROCEDURE NEXTGDD.darDeBajaAfiliado
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.obtenerAfiliados'))
-    DROP PROCEDURE NEXTGDD.obtenerAfiliados
-GO
-
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.validarConRangoHorario'))
     DROP FUNCTION NEXTGDD.validarConRangoHorario
 GO
@@ -1805,69 +1801,3 @@ GO
 
 EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 0, @id_persona = 3116603
 GO
-
-/*
-
-
-select * from NEXTGDD.Persona where id_persona like '11239%'
-
-SELECT * FROM NEXTGDD.Afiliado 
-
-select * from NEXTGDD.Plan_Medico
-SELECT * FROM NEXTGDD.Historial
-
-insert INTO NEXTGDD.Historial (fecha_modificacion,motivo_modificacion,nro_afiliado, cod_plan_viejo, cod_plan_nuevo)
-VALUES ('21-11-2015','por mejorar mi plan',114039901,555555,555556), 
- ('21-11-2015','mejorar la atencion medica',112396001,555556,555557) ,
-  ('21-01-2016','mejorar la atencion medica',113347201,555556,555557) ,
-   ('21-12-2016','mejorar la atencion medica',112396001,555555,555556) ,
-    ('21-11-2014','mejorar la atencion medica',112396001,555557,555558) ,
-	 ('21-11-2015','mejorar la atencion medica',117542001,555555,555557) ,
-	  ('23-11-2015','mejorar la atencion medica',119406501,555555,555557)
-
-*/
-
-
-/*
-SELECT * from NEXTGDD.Funcionalidad
-
-select * from NEXTGDD.Pacientes_Afil
-
-
-SELECT id_rol, nombre, habilitado FROM NEXTGDD.Rol
-
-SELECT id_funcionalidad, nombre FROM NEXTGDD.Funcionalidad
-
-DECLARE @numeroAfiliado NUMERIC (20,0)= 113347201
-DECLARE @dni NUMERIC (18,0)= 1133472
-DECLARE @apellido VARCHAR(255)= 'Arce' 
-DECLARE @nombre VARCHAR(255)= 'DEL CIELO' 
-DECLARE @codigoPlan VARCHAR (255)= 'Plan Medico 140'
-
-SELECT * FROM NEXTGDD.Pacientes_Afil WHERE Nro_Afiliado LIKE '%'+ CONVERT(varchar,@numeroAfiliado) +'%'
-AND Apellido LIKE '%'+ @apellido+ '%' AND Nombre LIKE '%'+ @nombre+ '%' AND Nro_Doc LIKE '%'+CONVERT(varchar,@dni)+ '%' 
-AND Plan_Medico LIKE '%'+@codigoPlan+'%'
-
-select nombre from NEXTGDD.Estado_Civil
-SELECT * FROM NEXTGDD.Pacientes_Afil 
-select * from NEXTGDD.Afiliado Where grupo_afiliado = 1133472
-
-select * from NEXTGDD.Persona Where id_persona= 1123960
-
-select * from NEXTGDD.rol
-*/
-
-/*
-EXEC NEXTGDD.agregar_usuario @username = 'admin', @password = 'w23e',@codigo_rol= 1, @habilitado= 1, @id_persona = null
-
-insert into NEXTGDD.Usuario_X_Rol (username,id_rol)
-
-VALUES ('admin', 3)
-
-select * from NEXTGDD.Funcionalidad_X_Rol where id_rol=1*/
-/*
-declare @retor smallint =0
-exec NEXTGDD.modificar_Afiliado_SnPlan @id= 112396001,@nuevo_dom= 'Avenida Dr. Honorio Pueyrredón 381', @nuevo_telef= 46466545, @nuevo_mail= 'sdasdsa@sfdsfs.com', @nuevo_est_civil= 'X',@nuevocant_famil=3,@ret= @retor output 
-
-print @retor
-*/
