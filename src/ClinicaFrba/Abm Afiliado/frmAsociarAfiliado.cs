@@ -27,11 +27,12 @@ namespace ClinicaFrba.Abm_Afiliado
         private string email ;
         DateTime fechanac ; 
         private int cantfami ;
-        private Int64 nroafiliado ;
+        private Int64 nroGrupoFamiliar ;
         private Int64 retorno;
         private Int64 resu;
         private int nroafilint;
-        
+        private Int64 nroafiliado;
+
         public frmAsociarAfiliado(string nombre, string apellido, string tipoDoc, Int64 nroDoc, string direccion, Int64 telefono, string estadocivil, string mail,  DateTime fecha , char sexo, int cant_familiar)
         {
             InitializeComponent();
@@ -90,7 +91,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     nroafilint = 0;
                 }
                 retorno = 0;
-                nroafiliado = Convert.ToInt64(txtNroAfiliadoPrincipal.Text);
+                nroGrupoFamiliar = Convert.ToInt64(txtNroAfiliadoPrincipal.Text);
                 //aca tengo que enganchar el stored procedure de lo que hace el afiliado
                 conexion.Open();
                 SqlCommand command = new SqlCommand("NEXTGDD.agregarAfiliadoFamilia", conexion);
@@ -110,7 +111,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 SqlParameter parMail = new SqlParameter("@mail", email);
                 SqlParameter parCantFam = new SqlParameter("@cant_familiares", cantfami);
 
-                SqlParameter parNroAfiliadoPrinc = new SqlParameter("@nro_afiliado_princ", nroafiliado);
+                SqlParameter parNroGrupoFamiliar = new SqlParameter("@grupo_afiliado", nroGrupoFamiliar);
                 SqlParameter parIntegranteFam = new SqlParameter("@nro_afiliado_integrante", nroafilint);
                
              
@@ -131,15 +132,15 @@ namespace ClinicaFrba.Abm_Afiliado
                 command.Parameters.Add(parEstadoCivil);
                 command.Parameters.Add(parMail);
                 command.Parameters.Add(parCantFam);
-                command.Parameters.Add(parNroAfiliadoPrinc);
+                command.Parameters.Add(parNroGrupoFamiliar);
                 command.Parameters.Add(parIntegranteFam);
                 command.Parameters.Add(parRet);
 
                 command.ExecuteNonQuery();
-               
-                resu = Int64.Parse(command.Parameters["@ret"].Value.ToString());
+
+                nroafiliado = Int64.Parse(command.Parameters["@ret"].Value.ToString());
                 conexion.Close();
-                if (resu.Equals(-1))
+                if (nroafiliado.Equals(-1))
                 {
                     
                     MessageBox.Show( "Lo sentimos, no podemos procesar tu solicitud. Ingrese otro Nro de Afiliado Raiz o Inténtalo de nuevo más tarde.", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -147,7 +148,6 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
                 else
                 {
-                    nroafiliado = resu;
 
                     MessageBox.Show("Registrado exitosamente!\n Tu nro de afiliado es:  " + nroafiliado + "\nNombre de usuario:  " + nroafiliado +"@NEXTGDD" + "\nContraseña:  " + nroafiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     frmAltaAfiliado alta = new frmAltaAfiliado();

@@ -1236,8 +1236,8 @@ SET @nro_afiliado =  cast (@pers as varchar)+ '01'
 
 --utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
 
-     	INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos)
-		VALUES (@usr+'@NEXTGDD', HASHBYTES('SHA2_256', @pass), 1, 0)
+     	INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos,id_persona)
+		VALUES (@usr+'@NEXTGDD', HASHBYTES('SHA2_256', @pass), 1, 0, @pers)
 
 		INSERT INTO NEXTGDD.Usuario_X_Rol(id_rol, username)
 		VALUES (2, @usr+'@NEXTGDD')
@@ -1260,7 +1260,7 @@ GO
 
 CREATE PROCEDURE NEXTGDD.agregarAfiliadoFamilia(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
                                                @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil varchar(255),
-                                               @mail varchar(255), @cant_familiares numeric(18,0),@nro_afiliado_princ numeric(20,0), 
+                                               @mail varchar(255), @cant_familiares numeric(18,0),@grupo_afiliado numeric(18,0), 
 											   @nro_afiliado_integrante numeric(2,0),@ret numeric(20,0) output)
 AS BEGIN
 
@@ -1269,7 +1269,6 @@ DECLARE @pers numeric (18,0)
 DECLARE @cod_plan numeric (18,0)
 DECLARE @nro_afiliado numeric (20,0) 
 DECLARE @usr VARCHAR(255)
-DECLARE @grupo_afiliado numeric (18,0)
 DECLARE @pass varchar (100)
 DECLARE @TransactionName1 varchar (50)= 'Transaccion1'
 DECLARE @est_civ tinyint
@@ -1286,7 +1285,7 @@ DECLARE @est_civ tinyint
 
 SET @pers = SCOPE_IDENTITY()
 
-SELECT @grupo_afiliado = grupo_afiliado, @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado_princ
+SELECT  @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE grupo_afiliado=@grupo_afiliado and  integrante_grupo = 01
 
  --select * from NEXTGDD.Afiliado 
    IF @nro_afiliado_integrante = 1
@@ -1333,8 +1332,8 @@ SELECT @grupo_afiliado = grupo_afiliado, @cod_plan= cod_plan  FROM NEXTGDD.Afili
   SET @pass = @usr
 --utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
 
-  INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos)
-  VALUES (@usr+'@NEXTGDD', HASHBYTES('SHA2_256', @pass), 1, 0)
+  INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos,id_persona)
+  VALUES (@usr+'@NEXTGDD', HASHBYTES('SHA2_256', @pass), 1, 0, @pers)
 
 
   INSERT INTO NEXTGDD.Usuario_X_Rol(id_rol, username)
@@ -1662,6 +1661,8 @@ EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'ABM de esp
 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'ABM de planes';
 
+EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'ABM de usuarios';
+
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Registrar agenda profesional';
 
 EXEC NEXTGDD.agregar_funcionalidad 	@rol = 'Administrativo', @func = 'Compra de bonos';	
@@ -1799,6 +1800,7 @@ VALUES ('21-11-2015','por mejorar mi plan',114039901,555555,555556),
 
 */
 
+
 /*
 SELECT * from NEXTGDD.Funcionalidad
 
@@ -1814,15 +1816,25 @@ DECLARE @dni NUMERIC (18,0)= 1133472
 DECLARE @apellido VARCHAR(255)= 'Arce' 
 DECLARE @nombre VARCHAR(255)= 'DEL CIELO' 
 DECLARE @codigoPlan VARCHAR (255)= 'Plan Medico 140'
- 
-
 
 SELECT * FROM NEXTGDD.Pacientes_Afil WHERE Nro_Afiliado LIKE '%'+ CONVERT(varchar,@numeroAfiliado) +'%'
 AND Apellido LIKE '%'+ @apellido+ '%' AND Nombre LIKE '%'+ @nombre+ '%' AND Nro_Doc LIKE '%'+CONVERT(varchar,@dni)+ '%' 
 AND Plan_Medico LIKE '%'+@codigoPlan+'%'
 
-
 select nombre from NEXTGDD.Estado_Civil
+SELECT * FROM NEXTGDD.Pacientes_Afil 
+select * from NEXTGDD.Afiliado Where grupo_afiliado = 1133472
 
+select * from NEXTGDD.Persona Where id_persona= 99988854
 
-SELECT * FROM NEXTGDD.Pacientes_Afil */
+select * from NEXTGDD.rol
+*/
+
+/*
+EXEC NEXTGDD.agregar_usuario @username = 'admin', @password = 'w23e',@codigo_rol= 1, @habilitado= 1, @id_persona = null
+
+insert into NEXTGDD.Usuario_X_Rol (username,id_rol)
+
+VALUES ('admin', 3)
+
+select * from NEXTGDD.Funcionalidad_X_Rol where id_rol=1*/

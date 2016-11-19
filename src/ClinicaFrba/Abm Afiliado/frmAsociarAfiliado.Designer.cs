@@ -105,11 +105,11 @@
             // lblNroAfiliadoPrincipal
             // 
             this.lblNroAfiliadoPrincipal.AutoSize = true;
-            this.lblNroAfiliadoPrincipal.Location = new System.Drawing.Point(22, 29);
+            this.lblNroAfiliadoPrincipal.Location = new System.Drawing.Point(22, 32);
             this.lblNroAfiliadoPrincipal.Name = "lblNroAfiliadoPrincipal";
-            this.lblNroAfiliadoPrincipal.Size = new System.Drawing.Size(104, 13);
+            this.lblNroAfiliadoPrincipal.Size = new System.Drawing.Size(109, 13);
             this.lblNroAfiliadoPrincipal.TabIndex = 0;
-            this.lblNroAfiliadoPrincipal.Text = "Nro Afiliado Principal";
+            this.lblNroAfiliadoPrincipal.Text = "Nro de Grupo Familiar";
             // 
             // btnAsociar
             // 

@@ -50,7 +50,7 @@
             this.cmdAgregarNuevoRol.Name = "cmdAgregarNuevoRol";
             this.cmdAgregarNuevoRol.Size = new System.Drawing.Size(99, 46);
             this.cmdAgregarNuevoRol.TabIndex = 1;
-            this.cmdAgregarNuevoRol.Text = "Agregar Nuevo Rol";
+            this.cmdAgregarNuevoRol.Text = "Alta de Rol";
             this.cmdAgregarNuevoRol.UseVisualStyleBackColor = true;
             this.cmdAgregarNuevoRol.Click += new System.EventHandler(this.btnAgregarRol_Click);
             // 
@@ -60,7 +60,7 @@
             this.btnSeleccionRol.Name = "btnSeleccionRol";
             this.btnSeleccionRol.Size = new System.Drawing.Size(102, 46);
             this.btnSeleccionRol.TabIndex = 2;
-            this.btnSeleccionRol.Text = "Seleccionar Rol A Modificar";
+            this.btnSeleccionRol.Text = "Modificacion y Baja de Rol";
             this.btnSeleccionRol.UseVisualStyleBackColor = true;
             this.btnSeleccionRol.Click += new System.EventHandler(this.btnSeleccionRol_Click);
             // 
