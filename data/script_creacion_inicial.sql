@@ -30,9 +30,11 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Rol')
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Funcionalidad'))
     DROP TABLE NEXTGDD.Funcionalidad
 
-
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Rango_Atencion'))
     DROP TABLE NEXTGDD.Rango_Atencion
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Rango_Fechas'))
+    DROP TABLE NEXTGDD.Rango_Fechas
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Agenda_X_Turno'))
     DROP TABLE NEXTGDD.Agenda_X_Turno
@@ -273,8 +275,6 @@ CREATE TABLE NEXTGDD.Cancelacion (
 CREATE TABLE NEXTGDD.Agenda (
 
    cod_agenda numeric (18,0) IDENTITY PRIMARY KEY,
-   rango_fecha_desde datetime,
-   rango_fecha_hasta datetime,
    matricula numeric (18,0) NOT NULL,
    cod_especialidad numeric (18,0) NOT NULL,
    FOREIGN KEY (matricula, cod_especialidad) REFERENCES NextGDD.Profesional_X_Especialidad(matricula, cod_especialidad)
@@ -339,15 +339,27 @@ CREATE TABLE NEXTGDD.Historial (
     cod_plan_nuevo numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan)  
    )
 
+CREATE TABLE NEXTGDD.Rango_Fechas (
+
+   cod_agenda numeric (18,0) REFERENCES NEXTGDD.Agenda(cod_agenda),
+   cod_fecha numeric (18,0),
+   fecha_desde datetime,
+   fecha_hasta datetime,
+   PRIMARY KEY (cod_agenda, cod_fecha) 
+   )
+GO
+
 CREATE TABLE NEXTGDD.Rango_Atencion (
 
-   cod_agenda numeric (18,0) REFERENCES NextGDD.Agenda(cod_agenda),
+   cod_agenda numeric (18,0),
+   cod_fecha numeric (18,0),
    rango_atencion numeric (18,0) ,
    hora_inicial time,
    hora_final time,
    dia_semanal_inicial numeric(18,0), 
    dia_semanal_final numeric(18,0),
-   PRIMARY KEY (cod_agenda, rango_atencion) 
+   PRIMARY KEY (cod_agenda,cod_fecha,rango_atencion),
+   FOREIGN KEY (cod_agenda,cod_fecha) REFERENCES NEXTGDD.Rango_Fechas(cod_agenda,cod_fecha) 
    )
 GO
 
@@ -862,10 +874,11 @@ GO
 CREATE FUNCTION NEXTGDD.restringirFechas(@especialidad varchar(255),@profesional varchar(255))
 RETURNS TABLE
 AS
-	RETURN (select a.rango_fecha_desde as 'fechaD',a.rango_fecha_hasta as 'fechaH'
-		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a 
+	RETURN (select rf.fecha_desde as 'fechaD',rf.fecha_hasta as 'fechaH'
+		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a,NEXTGDD.Rango_Fechas rf 
 		   where (p.nombre+' '+p.apellido) LIKE @profesional and e.descripcion LIKE @especialidad
-				 and pr.id_persona=p.id_persona and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad)
+				 and pr.id_persona=p.id_persona and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad
+				 and rf.cod_agenda=a.cod_agenda)
 GO
 
 CREATE FUNCTION NEXTGDD.restringirHorarios(@especialidad varchar(255),@profesional varchar(255),@dia numeric(18,0))
@@ -904,7 +917,7 @@ BEGIN
 		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a,NEXTGDD.Rango_Atencion r
 	       where p.nombre+' '+p.apellido LIKE @profesional and e.descripcion LIKE @especialidad and pr.id_persona=p.id_persona
 			     and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad and r.cod_agenda=a.cod_agenda
-				 and @fecha>=a.rango_fecha_desde and @fecha<=a.rango_fecha_hasta 
+				 --and @fecha>=a.rango_fecha_desde and @fecha<=a.rango_fecha_hasta 
 			     and r.dia_semanal_inicial<=@dia and r.dia_semanal_final>=@dia and r.hora_inicial<=@hora and r.hora_final>=@hora)
 END;
 GO
@@ -1068,8 +1081,8 @@ BEGIN
 	DECLARE @codAgenda numeric(18,0)=(select NEXTGDD.buscarCodigoAgenda(@nomProfesional,@nomEspecialidad))
 	IF isnull(@codAgenda,0)=0
 	BEGIN
-		INSERT NEXTGDD.Agenda(rango_fecha_desde,rango_fecha_hasta,matricula,cod_especialidad) 
-			(select @fechaD,@fechaH,pr.matricula,e.cod_especialidad
+		INSERT NEXTGDD.Agenda(matricula,cod_especialidad) 
+			(select pr.matricula,e.cod_especialidad
 			 from NEXTGDD.Especialidad e,NEXTGDD.Profesional pr, NEXTGDD.Persona p 
 			 where e.descripcion LIKE @nomEspecialidad and p.nombre+' '+p.apellido LIKE @nomProfesional and p.id_persona=pr.id_persona)
 	END
@@ -1104,8 +1117,8 @@ BEGIN
 					END 
 		   from NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e 
 		   where p.nombre+' '+p.apellido LIKE @profesional and p.id_persona=pr.id_persona and a.matricula=pr.matricula 
-		         and a.cod_especialidad=e.cod_especialidad and e.descripcion LIKE @especialidad and
-				 not(a.rango_fecha_desde IS NULL) and not(a.rango_fecha_hasta IS NULL) )
+		         and a.cod_especialidad=e.cod_especialidad and e.descripcion LIKE @especialidad)
+				 -- and not(a.rango_fecha_desde IS NULL) and not(a.rango_fecha_hasta IS NULL) )
 END;
 GO
 
@@ -1754,7 +1767,6 @@ INSERT NEXTGDD.Agenda (matricula, cod_especialidad)
 		 from NEXTGDD.Profesional_X_Especialidad);
 GO
 
-
 SET IDENTITY_INSERT NEXTGDD.Turno ON
 
 INSERT NEXTGDD.Turno (nro_turno,fecha,nro_afiliado,cod_agenda) 
@@ -1769,22 +1781,22 @@ GO
 
 SET IDENTITY_INSERT NEXTGDD.Turno OFF
 
-UPDATE NEXTGDD.Agenda 
-SET rango_fecha_desde = (select top 1 t.fecha
-						from NEXTGDD.Turno t
-						where t.cod_agenda=NEXTGDD.Agenda.cod_agenda
-						order by t.fecha ASC)
-GO
-
-UPDATE NEXTGDD.Agenda 
-SET rango_fecha_hasta = (select top 1 t.fecha
-						from NEXTGDD.Turno t
-						where t.cod_agenda=NEXTGDD.Agenda.cod_agenda
-						order by t.fecha DESC)
-GO
-
-
-
+INSERT NEXTGDD.Rango_Fechas (cod_agenda,cod_fecha,fecha_desde,fecha_hasta)
+    ( select a.cod_agenda,1,
+			(select top 1 t.fecha
+			 from NEXTGDD.Turno t
+			 where t.cod_agenda=a.cod_agenda
+			 order by t.fecha ASC),
+			 (select top 1 t.fecha
+			 from NEXTGDD.Turno t
+			 where t.cod_agenda=a.cod_agenda
+			 order by t.fecha DESC)
+	  from NEXTGDD.Agenda a)
+/*
+INSERT NEXTGDD.Rango_Atencion (cod_agenda,cod_fecha,rango_atencion,dia_semanal_inicial,dia_semanal_final,hora_inicial,hora_final)
+		(select a.cod_agenda,1,
+		 from NEXTGDD.Agenda a) 
+*/
 SET IDENTITY_INSERT NEXTGDD.Diagnostico ON
 
 
