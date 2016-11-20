@@ -28,10 +28,9 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         public frmRegistrarAgendaMedico()
         {
             InitializeComponent();
-            warning1.Visible=false;
+            warning1.Visible = false;
             warning2.Visible = false;
             warning3.Visible = false;
-            gbRangoFechas.Visible = false;
 
             cargarDias();
 
@@ -40,7 +39,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             cargar(horarios, cmbHorarioDesde);
             cargar(horarios, cmbHorarioHasta);
             comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona order by (p.nombre+' '+p.apellido) ASC";
-            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"nombre"), cmbProfesional);
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"), cmbProfesional);
 
             cmbProfesional.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbEspecialidad.SelectedIndexChanged += OnSelectedIndexChanged;
@@ -49,6 +48,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             cmbHorarioDesde.SelectedIndexChanged += OnSelectedIndexChanged;
             cmbHorarioHasta.SelectedIndexChanged += OnSelectedIndexChanged;
             dpFechaDesde.ValueChanged += new EventHandler(dpFechaDesde_ValueChanged);
+            dpFechaHasta.ValueChanged += new EventHandler(dpFechaHasta_ValueChanged);
             btnAgregar.Click += new EventHandler(btn_Click);
             btnBorrar.Click += new EventHandler(btn_Click);
             btnIngresar.Click += new EventHandler(btn_Click);
@@ -76,18 +76,19 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 
         private void OnSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbProfesional.SelectedItem != null && (string)cmbProfesional.SelectedItem!=profesional)
+            warning1.Visible = false;
+            if (cmbProfesional.SelectedItem != null && (string)cmbProfesional.SelectedItem != profesional)
             {
                 warning3.Visible = false;
                 warning2.Visible = false;
                 dgRangoAtencion.Rows.Clear();
                 cmbEspecialidad.Items.Clear();
                 cmbEspecialidad.Text = "";
-                profesional = (string) cmbProfesional.SelectedItem;
-                comando = "select * from NEXTGDD.buscarEspecialidades('"+profesional+"') order by especialidad ASC";
+                profesional = (string)cmbProfesional.SelectedItem;
+                comando = "select * from NEXTGDD.buscarEspecialidades('" + profesional + "') order by especialidad ASC";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "especialidad"), cmbEspecialidad);
             }
-            if (cmbDiaDesde.SelectedItem != null && (string)cmbDiaDesde.SelectedItem!=diaDesde)
+            if (cmbDiaDesde.SelectedItem != null && (string)cmbDiaDesde.SelectedItem != diaDesde)
             {
                 warning2.Visible = false;
                 diaDesde = (string)cmbDiaDesde.SelectedItem;
@@ -112,30 +113,12 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 horaDesde = (string)cmbHorarioDesde.SelectedItem;
                 filtrarFechas(cmbHorarioDesde, cmbHorarioHasta, horarios);
             }
-            if (cmbEspecialidad.SelectedItem != null && (string)cmbEspecialidad.SelectedItem != especialidad)
-            {
-                dgRangoAtencion.Rows.Clear();
-                especialidad = (string)cmbEspecialidad.SelectedItem;
-                comando = "select NEXTGDD.validarAgendaUnica('"+especialidad+"','"+profesional+"')";
-                if (Clases.BaseDeDatosSQL.buscarCampo(comando)=="No existe una agenda")
-                {
-                    gbRangoFechas.Visible = true;
-                    warning3.Visible = false;
-                }
-                else
-                {
-                    gbRangoFechas.Visible = false;
-                    fechaDesde = "";
-                    fechaHasta = "";
-                    warning3.Visible = true;
-                }
-            }
 
         }
 
         private DataTable buscarRangoAtencionClinica()
         {
-            diaHasta =(string) cmbDiaHasta.SelectedItem;
+            diaHasta = (string)cmbDiaHasta.SelectedItem;
             int nroDiaHasta;
             for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
             comando = "select * from NEXTGDD.obtenerRangoClinica(" + nroDiaHasta + ")";
@@ -174,20 +157,53 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 
         private void dpFechaDesde_ValueChanged(object sender, EventArgs e)
         {
+            dgRangoAtencion.Rows.Clear();
             dpFechaHasta.MinDate = dpFechaDesde.Value;
+        }
+
+        private void dpFechaHasta_ValueChanged(object sender, EventArgs e)
+        {
+            if (cmbProfesional.SelectedItem != null && cmbEspecialidad != null)
+            {
+                dgRangoAtencion.Rows.Clear();
+                fechaDesde = (string) dpFechaDesde.Value.ToString();
+                fechaHasta = (string) dpFechaHasta.Value.ToString();
+                warning3.Text = "Ya existe una agenda para ese rango de fechas. Solo puede agregar rangos de atención.";
+                warning3.Visible = true;
+                especialidad = (string)cmbEspecialidad.SelectedItem;
+                comando = "select NEXTGDD.validarAgendaUnica('" + especialidad + "','" + profesional + "','" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
+                string respuesta = Clases.BaseDeDatosSQL.buscarCampo(comando);
+                if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "")
+                {
+                    warning3.Visible = false;
+                }
+                else
+                {
+                    dpFechaDesde.Value = DateTime.Parse(respuesta.Split('|')[0]);
+                    dpFechaHasta.Value = DateTime.Parse(respuesta.Split('|')[1]);
+                    fechaDesde = (string)dpFechaDesde.Value.ToString();
+                    fechaHasta = (string)dpFechaHasta.Value.ToString();
+                    warning3.Visible = true;
+                }
+            }
+            else
+            {
+                warning3.Text = "Debe seleccionar profesional y especialidad.";
+                warning3.Visible = true;
+            }
         }
 
         private void btn_Click(object sender, EventArgs e)
         {
             if (((Button)sender).Text.Equals(btnAgregar.Text))
             {
-                if (cmbProfesional.SelectedItem != null && cmbEspecialidad != null)
+                if (cmbProfesional.SelectedItem != null && cmbEspecialidad != null && dpFechaDesde.Value!=null && dpFechaHasta.Value!=null)
                 {
                     warning1.Text = "El rango horario no es válido. Seleccione otro.";
                     warning1.Visible = false;
                     diaHasta = (string)cmbDiaHasta.SelectedItem;
                     int nroDiaHasta;
-                    for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+                    for (nroDiaHasta = 1; nroDiaHasta <= 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
                     horaHasta = (string)cmbHorarioHasta.SelectedItem;
                     verificarRangoHospital();
                     verificarSuperposicionDeRangos();
@@ -198,7 +214,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                         verificarSuperposicionDeRangosEnBDD();
                         if (warning1.Visible == false)
                         {
-                            dgRangoAtencion.Rows.Add(cmbDiaDesde.SelectedIndex, nroDiaHasta, horaDesde, horaHasta);
+                            dgRangoAtencion.Rows.Add(cmbDiaDesde.SelectedIndex+1, nroDiaHasta+1, horaDesde, horaHasta);
                             cmbDiaDesde.Text = "";
                             cmbDiaHasta.Text = "";
                             cmbHorarioDesde.Text = "";
@@ -208,7 +224,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 }
                 else
                 {
-                    warning1.Text = "Debe seleccionar profesional y especialidad.";
+                    warning1.Text = "Debe seleccionar profesional y especialidad, y rangos de fecha.";
                     warning1.Visible = true;
                 }
             }
@@ -224,34 +240,37 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 especialidad = (string)cmbEspecialidad.SelectedItem;
                 diaHasta = (string)cmbDiaHasta.SelectedItem;
                 horaHasta = (string)cmbHorarioHasta.SelectedItem;
-                if (gbRangoFechas.Visible == true)
+                if (dpFechaDesde.Enabled == true && dpFechaHasta.Enabled == true)
                 {
                     fechaDesde = dpFechaDesde.Value.Date.ToString();
                     fechaHasta = dpFechaHasta.Value.Date.ToString();
                 }
-                if (especialidad != "" && profesional != "" && dgRangoAtencion.Rows.Count!=0 && fechaDesde!=null && fechaHasta!=null && warning2.Visible == false && warning1.Visible==false)
+                if (especialidad != "" && profesional != "" && dgRangoAtencion.Rows.Count != 0 && fechaDesde != null && fechaHasta != null && warning2.Visible == false && warning1.Visible == false )
                 {
                     string fechaD = "";
                     string fechaH = "";
-                    if (gbRangoFechas.Visible == true)
+                    if (dpFechaDesde.Enabled == true && dpFechaHasta.Enabled == true)
                     {
                         fechaD = convertirFecha(fechaDesde);
                         fechaH = convertirFecha(fechaHasta);
                     }
 
-                    comando = "EXECUTE NEXTGDD.registrarAgenda @nomProfesional='"+profesional+"', @nomEspecialidad='"+especialidad+"', @fechaD='"+fechaD+"', @fechaH='"+fechaH+"'";
+                    comando = "EXECUTE NEXTGDD.registrarAgenda @nomProfesional='" + profesional + "', @nomEspecialidad='" + especialidad + "', @fechaD='" + fechaD + "', @fechaH='" + fechaH + "'";
                     Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
                     comando = "select NEXTGDD.buscarCodigoAgenda('" + profesional + "','" + especialidad + "')";
-                    string cod_agenda=Clases.BaseDeDatosSQL.buscarCampo(comando);
+                    string cod_agenda = Clases.BaseDeDatosSQL.buscarCampo(comando);
 
-                    foreach(DataGridViewRow row in dgRangoAtencion.Rows)
+                    comando = "select NEXTGDD.buscarCodigoRangoFecha("+cod_agenda+",'" + fechaD + "','"+fechaH+"')";
+                    string cod_fecha = Clases.BaseDeDatosSQL.buscarCampo(comando);
+
+                    foreach (DataGridViewRow row in dgRangoAtencion.Rows)
                     {
-                        comando = "EXECUTE NEXTGDD.registrarRangoHorario @codAgenda='" + cod_agenda+ "',@diaD='" + row.Cells[0].Value.ToString() + "',@diaH='" + row.Cells[1].Value.ToString() + "',@horaD='" + row.Cells[2].Value.ToString() + ":00',@horaH='" + row.Cells[3].Value.ToString() + ":00'";
+                        comando = "EXECUTE NEXTGDD.registrarRangoHorario @codAgenda='" + cod_agenda + "',@codFecha= '"+cod_fecha+"' ,@diaD='" + row.Cells[0].Value.ToString() + "',@diaH='" + row.Cells[1].Value.ToString() + "',@horaD='" + row.Cells[2].Value.ToString() + ":00',@horaH='" + row.Cells[3].Value.ToString() + ":00'";
                         Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
                     }
 
-                    MessageBox.Show("La agenda se ha registrado correctamente." , "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("La agenda se ha registrado correctamente.", "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico();
                     NewForm.Show();
@@ -275,7 +294,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         }
 
 
-        //0:Lunes 1:Martes 2:Miercoles 3:Jueves 4:Viernes 5:Sabado 
+        //1:Lunes 2:Martes 3:Miercoles 4:Jueves 5:Viernes 6:Sabado 
         private void verificarRangoHospital()
         {
             DataTable dt = buscarRangoAtencionClinica();
@@ -295,9 +314,9 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 
         private void verificarSuperposicionDeRangosEnBDD()
         {
-            comando = "select NEXTGDD.buscarCodigoAgenda('"+profesional+"','"+especialidad+"')";
+            comando = "select NEXTGDD.buscarCodigoAgenda('" + profesional + "','" + especialidad + "')";
             string agenda = Clases.BaseDeDatosSQL.buscarCampo(comando);
-            comando = "select dia_semanal_inicial as 'DD',dia_semanal_final as 'DH',hora_inicial as 'HD',hora_final as 'HH' from NEXTGDD.Rango_Atencion where cod_agenda=" + agenda;
+            comando = "select * from NEXTGDD.obtenerRangosHorarios(" + agenda + ",'" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
             List<string> campos = new List<string>();
             campos.Add("DD");
             campos.Add("DH");
@@ -313,16 +332,17 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         private void verificarSuperposicionDeRangos()
         {
             warning1.Visible = false;
-            int nroDesde = cmbDiaDesde.SelectedIndex;
+            int nroDesde = cmbDiaDesde.SelectedIndex+1;
             int nroDiaHasta;
-            for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
-            List<int> rangoDias1 = buscarDiasIntermedios(nroDesde,nroDiaHasta);
+            for (nroDiaHasta = 1; nroDiaHasta <= 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+            nroDiaHasta++;
+            List<int> rangoDias1 = buscarDiasIntermedios(nroDesde, nroDiaHasta);
             List<string> rangoHoras1 = buscarHorasIntermedias(horaDesde, horaHasta);
 
             foreach (DataGridViewRow fila in dgRangoAtencion.Rows)
             {
                 List<int> rangoDias2 = buscarDiasIntermedios(int.Parse(fila.Cells[0].Value.ToString()), int.Parse(fila.Cells[1].Value.ToString()));
-                List<string> rangoHoras2 = buscarHorasIntermedias((string)fila.Cells[2].Value,(string)fila.Cells[3].Value);
+                List<string> rangoHoras2 = buscarHorasIntermedias((string)fila.Cells[2].Value, (string)fila.Cells[3].Value);
                 IEnumerable<int> intersecDias = rangoDias1.Intersect(rangoDias2);
                 IEnumerable<string> intersecHoras = rangoHoras1.Intersect(rangoHoras2);
                 if (intersecDias.Count() != 0 && intersecHoras.Count() != 0)
@@ -331,15 +351,16 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                     warning1.Visible = true;
                 }
             }
-           
+
         }
 
         private void haySuperposicion(DataTable dt)
         {
             warning1.Visible = false;
-            int nroDesde = cmbDiaDesde.SelectedIndex;
+            int nroDesde = cmbDiaDesde.SelectedIndex+1;
             int nroDiaHasta;
-            for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+            for (nroDiaHasta = 1; nroDiaHasta <= 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+            nroDiaHasta++;
             List<int> rangoDias1 = buscarDiasIntermedios(nroDesde, nroDiaHasta);
             List<string> rangoHoras1 = buscarHorasIntermedias(horaDesde, horaHasta);
 
@@ -357,7 +378,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             }
         }
 
-        private List<int> buscarDiasIntermedios(int nroDesde,int nroDiaHasta)
+        private List<int> buscarDiasIntermedios(int nroDesde, int nroDiaHasta)
         {
             List<int> rangoDias = new List<int>();
             while (nroDesde <= nroDiaHasta)
@@ -368,7 +389,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             return rangoDias;
         }
 
-        private List<string> buscarHorasIntermedias(string horaD,string horaH)
+        private List<string> buscarHorasIntermedias(string horaD, string horaH)
         {
             List<string> rangoHoras1 = new List<string>();
             DateTime dt = DateTime.Parse("3/11/2000 " + horaD);
@@ -415,6 +436,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         {
 
         }
+
 
         private void cmdVolver_Click(object sender, EventArgs e)
         {
