@@ -65,8 +65,24 @@ namespace ClinicaFrba.Clases
             try
             {
                 List<SqlParameter> ListaParametros = new List<SqlParameter>();
-                ListaParametros.Add(new SqlParameter("@id", id));
-                return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Rol set habilitado =0 where id_rol=@id", "T", ListaParametros);
+                //ListaParametros.Add(new SqlParameter("@id", id));
+                //return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Rol set habilitado =0 where id_rol=@id", "T", ListaParametros);
+             
+                int ret = 0;
+                int retorno = 0;
+                ListaParametros.Add(new SqlParameter("@id_rol", id));
+               
+                SqlParameter paramRet = new SqlParameter("@ret", ret);
+                paramRet.Direction = System.Data.ParameterDirection.Output;
+
+                ListaParametros.Add(paramRet);
+
+                retorno = (int)Clases.BaseDeDatosSQL.ExecStoredProcedure("NEXTGDD.darDeBajaRol", ListaParametros);
+
+                if (retorno == 0)
+                    return true;
+                else
+                    return false;          
             }
             catch { return false; }
         }
@@ -87,10 +103,32 @@ namespace ClinicaFrba.Clases
         {
             try
             {
+
                 List<SqlParameter> ListaParametros = new List<SqlParameter>();
-                ListaParametros.Add(new SqlParameter("@id", idRol));
-                ListaParametros.Add(new SqlParameter("@estado", estado));
-                return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Rol set habilitado=@estado where id_rol=@id", "T", ListaParametros);
+                if (estado == false)
+                {
+                    int ret = 0;
+                    int retorno = 0;
+                    ListaParametros.Add(new SqlParameter("@id_rol", idRol));
+                    SqlParameter paramRet = new SqlParameter("@ret", ret);
+                    paramRet.Direction = System.Data.ParameterDirection.Output;
+
+                    ListaParametros.Add(paramRet);
+
+                    retorno = (int)Clases.BaseDeDatosSQL.ExecStoredProcedure("NEXTGDD.darDeBajaRol", ListaParametros);
+
+                    if (retorno == 0)
+                        return true;
+                    else
+                        return false;
+                }
+                else
+                {
+                    ListaParametros.Add(new SqlParameter("@id", idRol));
+                    ListaParametros.Add(new SqlParameter("@estado", estado));
+                    return Clases.BaseDeDatosSQL.EscribirEnBase("update NEXTGDD.Rol set habilitado=@estado where id_rol=@id", "T", ListaParametros);
+
+                }
             }
             catch { return false; }
         }

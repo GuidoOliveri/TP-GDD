@@ -97,13 +97,20 @@ namespace ClinicaFrba.Login
                     this.Hide();
                     seleccion.Show();
                 }
-                else
+                else if (nombreRoles.Count == 1)
                 {
                     Clases.Usuario.id_rol = nombreRoles.ElementAt(0);
                     frmMenuDeAbms elegiaccion = new frmMenuDeAbms();
                     this.Hide();
                     elegiaccion.Show();
                 }
+                else
+                {
+                    MessageBox.Show("No tienes ningun Rol asignado", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+               
+
+
                 dataReader.Close();
             }
             else if (resu.Equals(-1))
