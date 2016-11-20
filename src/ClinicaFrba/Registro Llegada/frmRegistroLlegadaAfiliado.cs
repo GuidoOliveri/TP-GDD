@@ -31,7 +31,7 @@ namespace ClinicaFrba.Registro_Llegada
             warning4.Visible = false;
 
             //SE CARGAN LOS PROF
-            comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Persona p,NEXTGDD.Profesional pr where p.id_persona=pr.id_persona and pr.activo<>1 order by p.nombre ASC";
+            comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Persona p,NEXTGDD.Profesional pr where p.id_persona=pr.id_persona and pr.activo=1 order by p.nombre ASC";
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"),cmbProfesional);
 
             //SE CARGAN LAS ESPEC
@@ -151,7 +151,7 @@ namespace ClinicaFrba.Registro_Llegada
                 cmbEspecialidad.Text = "";
                 cmbTurno.Text = "";
                 //Carga de nuevo todos los profesionales
-                comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona and pr.activo<>1 order by p.nombre ASC";
+                comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona and pr.activo=1 order by p.nombre ASC";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"),cmbProfesional);
                 cmbEspecialidad.Enabled = false; 
             }

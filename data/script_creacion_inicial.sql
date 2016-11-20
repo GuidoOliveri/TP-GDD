@@ -844,7 +844,7 @@ AS
 	RETURN select distinct (p.nombre+' '+p.apellido) as nombre 
 			from NEXTGDD.Persona p,NEXTGDD.Profesional pr,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e 
 			where pr.id_persona=p.id_persona and pe.matricula=pr.matricula and pe.cod_especialidad=e.cod_especialidad 
-			and e.descripcion LIKE @especialidad and pr.activo<>1
+			and e.descripcion LIKE @especialidad and pr.activo=1
 GO
 
 CREATE FUNCTION NEXTGDD.obtenerRangoClinica(@diaSemana numeric(18,0)) 
@@ -1103,6 +1103,7 @@ GO
 CREATE PROCEDURE NEXTGDD.registrarAgenda (@nomProfesional varchar(255),@nomEspecialidad varchar(255),@fechaD datetime,@fechaH datetime)
 AS
 BEGIN
+	UPDATE NEXTGDD.Profesional SET activo=1 where id_persona=(select p.id_persona from NEXTGDD.Persona p where p.nombre+' '+p.apellido LIKE @nomProfesional)
 	DECLARE @codAgenda numeric(18,0)=(select NEXTGDD.buscarCodigoAgenda(@nomProfesional,@nomEspecialidad))
 	IF isnull(@codAgenda,0)=0
 	BEGIN
