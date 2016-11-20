@@ -844,7 +844,7 @@ AS
 	RETURN select distinct (p.nombre+' '+p.apellido) as nombre 
 			from NEXTGDD.Persona p,NEXTGDD.Profesional pr,NEXTGDD.Profesional_X_Especialidad pe,NEXTGDD.Especialidad e 
 			where pr.id_persona=p.id_persona and pe.matricula=pr.matricula and pe.cod_especialidad=e.cod_especialidad 
-			and e.descripcion LIKE @especialidad 
+			and e.descripcion LIKE @especialidad and pr.activo<>1
 GO
 
 CREATE FUNCTION NEXTGDD.obtenerRangoClinica(@diaSemana numeric(18,0)) 

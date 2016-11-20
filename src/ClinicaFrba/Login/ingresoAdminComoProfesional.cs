@@ -20,7 +20,7 @@ namespace ClinicaFrba.Login
 
             warning1.Visible = false;
 
-            comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona order by (p.nombre+' '+p.apellido) ASC";
+            comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona and pr.activo<>1 order by (p.nombre+' '+p.apellido) ASC";
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"), cmbProfesionales);
 
             btnIngresar.Click += new EventHandler(btnIngresar_OnClick);
@@ -42,7 +42,7 @@ namespace ClinicaFrba.Login
             if (cmbProfesionales.SelectedItem != null)
             {
                 string profesional=(string) cmbProfesionales.SelectedItem;
-                comando = "select pr.matricula from NEXTGDD.Profesional pr, NEXTGDD.Persona p where p.nombre+' '+p.apellido LIKE '" + profesional + "' and p.id_persona=pr.id_persona";
+                comando = "select pr.matricula from NEXTGDD.Profesional pr, NEXTGDD.Persona p where p.nombre+' '+p.apellido LIKE '" + profesional + "' and p.id_persona=pr.id_persona and pr.activo<>1";
                 Clases.Usuario.Matricula = int.Parse(Clases.BaseDeDatosSQL.buscarCampo(comando));
 
                 Registro_Resultado.frmRegistroResultado diagnostico = new Registro_Resultado.frmRegistroResultado();
