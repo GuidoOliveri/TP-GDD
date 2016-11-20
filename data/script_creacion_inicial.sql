@@ -353,7 +353,7 @@ CREATE TABLE NEXTGDD.Rango_Atencion (
 
    cod_agenda numeric (18,0),
    cod_fecha numeric (18,0),
-   rango_atencion numeric (18,0) ,
+   rango_atencion numeric (18,0),
    hora_inicial time,
    hora_final time,
    dia_semanal_inicial numeric(18,0), 
@@ -1792,11 +1792,32 @@ INSERT NEXTGDD.Rango_Fechas (cod_agenda,cod_fecha,fecha_desde,fecha_hasta)
 			 where t.cod_agenda=a.cod_agenda
 			 order by t.fecha DESC)
 	  from NEXTGDD.Agenda a)
-/*
+
 INSERT NEXTGDD.Rango_Atencion (cod_agenda,cod_fecha,rango_atencion,dia_semanal_inicial,dia_semanal_final,hora_inicial,hora_final)
 		(select a.cod_agenda,1,
-		 from NEXTGDD.Agenda a) 
-*/
+				(select isnull(count(distinct DATEPART(dw,t3.fecha)),0)
+				 from NEXTGDD.Turno t3
+				 where t3.cod_agenda=a.cod_agenda and 
+					DATEPART(dw,t3.fecha) in
+					(select DATEPART(dw,t2.fecha)
+					from NEXTGDD.Turno t2
+					where a.cod_agenda=t2.cod_agenda
+					group by t2.cod_agenda,DATEPART(dw,t2.fecha)
+					having DATEPART(dw,t.fecha)>=DATEPART(dw,t2.fecha))
+				 group by t3.cod_agenda),
+				DATEPART(dw,t.fecha)-1,DATEPART(dw,t.fecha)-1,
+				(select top 1 CONVERT(time,t2.fecha)
+				from NEXTGDD.Turno t2
+				where t2.cod_agenda=a.cod_agenda and DATEPART(dw,t2.fecha)=DATEPART(dw,t.fecha)
+				order by t2.fecha ASC),
+				(select top 1 CONVERT(time,t2.fecha)
+				from NEXTGDD.Turno t2
+				where t2.cod_agenda=a.cod_agenda and DATEPART(dw,t2.fecha)=DATEPART(dw,t.fecha)
+				order by t2.fecha DESC)
+		 from NEXTGDD.Agenda a,NEXTGDD.Turno t
+		 where a.cod_agenda=t.cod_agenda
+		 group by DATEPART(dw,t.fecha),a.cod_agenda)
+
 SET IDENTITY_INSERT NEXTGDD.Diagnostico ON
 
 
