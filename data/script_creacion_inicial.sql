@@ -1061,28 +1061,25 @@ BEGIN
 END;
 GO
 
---Si existe la agenda, solo carga la fecha desde y hasta, sino crea una nueva agenda
+--Si no existe crea una nueva agenda
 CREATE PROCEDURE NEXTGDD.registrarAgenda (@nomProfesional varchar(255),@nomEspecialidad varchar(255),@fechaD datetime,@fechaH datetime)
 AS
 BEGIN
 	DECLARE @codAgenda numeric(18,0)=(select NEXTGDD.buscarCodigoAgenda(@nomProfesional,@nomEspecialidad))
-	IF isnull(@codAgenda,0)<>0
+	IF isnull(@codAgenda,0)=0
 	BEGIN
-		UPDATE NEXTGDD.Agenda SET rango_fecha_desde=@fechaD where cod_agenda=@codAgenda
-		UPDATE NEXTGDD.Agenda SET rango_fecha_hasta=@fechaH where cod_agenda=@codAgenda
-		RETURN
-	END
-	INSERT NEXTGDD.Agenda(rango_fecha_desde,rango_fecha_hasta,matricula,cod_especialidad) 
+		INSERT NEXTGDD.Agenda(rango_fecha_desde,rango_fecha_hasta,matricula,cod_especialidad) 
 			(select @fechaD,@fechaH,pr.matricula,e.cod_especialidad
 			 from NEXTGDD.Especialidad e,NEXTGDD.Profesional pr, NEXTGDD.Persona p 
 			 where e.descripcion LIKE @nomEspecialidad and p.nombre+' '+p.apellido LIKE @nomProfesional and p.id_persona=pr.id_persona)
-	RETURN
+	END
 END;
 GO
 
-CREATE PROCEDURE NEXTGDD.registrarRangoHorario (@cod_rango numeric(18,0),@codAgenda numeric(18,0),@diaD numeric(18,0),@diaH numeric(18,0),@horaD time,@horaH time)
+CREATE PROCEDURE NEXTGDD.registrarRangoHorario (@codAgenda numeric(18,0),@diaD numeric(18,0),@diaH numeric(18,0),@horaD time,@horaH time)
 AS
 BEGIN
+	DECLARE @cod_Rango numeric(18,0)=(select isnull(count(*),0) from NEXTGDD.Rango_Atencion where cod_agenda=@codAgenda)+1
 	INSERT NEXTGDD.Rango_Atencion (rango_atencion,cod_agenda,hora_final,hora_inicial,dia_semanal_inicial,dia_semanal_final) values
 			(@cod_rango,@codAgenda,@horaH,@horaD,@diaD,@diaH)
 END;
@@ -1108,8 +1105,7 @@ BEGIN
 		   from NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e 
 		   where p.nombre+' '+p.apellido LIKE @profesional and p.id_persona=pr.id_persona and a.matricula=pr.matricula 
 		         and a.cod_especialidad=e.cod_especialidad and e.descripcion LIKE @especialidad and
-				 not(a.rango_fecha_desde IS NULL) and not(a.rango_fecha_hasta IS NULL) and
-				 (select isnull(count(*),0) from NEXTGDD.Rango_Atencion ra where ra.cod_agenda=a.cod_agenda)<>0)
+				 not(a.rango_fecha_desde IS NULL) and not(a.rango_fecha_hasta IS NULL) )
 END;
 GO
 
@@ -1772,6 +1768,20 @@ INSERT NEXTGDD.Turno (nro_turno,fecha,nro_afiliado,cod_agenda)
 GO
 
 SET IDENTITY_INSERT NEXTGDD.Turno OFF
+
+UPDATE NEXTGDD.Agenda 
+SET rango_fecha_desde = (select top 1 t.fecha
+						from NEXTGDD.Turno t
+						where t.cod_agenda=NEXTGDD.Agenda.cod_agenda
+						order by t.fecha ASC)
+GO
+
+UPDATE NEXTGDD.Agenda 
+SET rango_fecha_hasta = (select top 1 t.fecha
+						from NEXTGDD.Turno t
+						where t.cod_agenda=NEXTGDD.Agenda.cod_agenda
+						order by t.fecha DESC)
+GO
 
 
 
