@@ -117,7 +117,7 @@
             this.pnlDatosPersonales.Controls.Add(this.lblNombre);
             this.pnlDatosPersonales.Location = new System.Drawing.Point(23, 9);
             this.pnlDatosPersonales.Name = "pnlDatosPersonales";
-            this.pnlDatosPersonales.Size = new System.Drawing.Size(640, 220);
+            this.pnlDatosPersonales.Size = new System.Drawing.Size(650, 220);
             this.pnlDatosPersonales.TabIndex = 2;
             this.pnlDatosPersonales.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlDatosPersonales_Paint);
             // 
@@ -161,7 +161,7 @@
             // 
             this.txtCantFam.Location = new System.Drawing.Point(469, 154);
             this.txtCantFam.Name = "txtCantFam";
-            this.txtCantFam.Size = new System.Drawing.Size(149, 20);
+            this.txtCantFam.Size = new System.Drawing.Size(166, 20);
             this.txtCantFam.TabIndex = 21;
             this.txtCantFam.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCantFam_KeyPress);
             // 
@@ -185,7 +185,7 @@
             "Divorciado/a"});
             this.cmbEstadoCivil.Location = new System.Drawing.Point(439, 123);
             this.cmbEstadoCivil.Name = "cmbEstadoCivil";
-            this.cmbEstadoCivil.Size = new System.Drawing.Size(179, 21);
+            this.cmbEstadoCivil.Size = new System.Drawing.Size(196, 21);
             this.cmbEstadoCivil.TabIndex = 19;
             this.cmbEstadoCivil.SelectedIndexChanged += new System.EventHandler(this.cboEstadoCivil_SelectedIndexChanged);
             // 
@@ -239,12 +239,12 @@
             // dtpFecNac
             // 
             this.dtpFecNac.Cursor = System.Windows.Forms.Cursors.Default;
-            this.dtpFecNac.CustomFormat = "dd-MM-yyyy 0:00:00";
+            this.dtpFecNac.CustomFormat = "dd-MM-yyyy 00:00:00";
             this.dtpFecNac.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFecNac.Location = new System.Drawing.Point(485, 61);
+            this.dtpFecNac.Location = new System.Drawing.Point(483, 61);
             this.dtpFecNac.MaxDate = new System.DateTime(2016, 11, 26, 0, 0, 0, 0);
             this.dtpFecNac.Name = "dtpFecNac";
-            this.dtpFecNac.Size = new System.Drawing.Size(133, 20);
+            this.dtpFecNac.Size = new System.Drawing.Size(152, 20);
             this.dtpFecNac.TabIndex = 14;
             this.dtpFecNac.Value = new System.DateTime(2016, 11, 20, 0, 0, 0, 0);
             // 
@@ -261,7 +261,7 @@
             // 
             this.txtMail.Location = new System.Drawing.Point(417, 25);
             this.txtMail.Name = "txtMail";
-            this.txtMail.Size = new System.Drawing.Size(201, 20);
+            this.txtMail.Size = new System.Drawing.Size(218, 20);
             this.txtMail.TabIndex = 12;
             this.txtMail.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMail_KeyPress);
             this.txtMail.Leave += new System.EventHandler(this.txtMail_Leave);
@@ -368,7 +368,7 @@
             this.pnlDatosEspecificos.Controls.Add(this.lblDatosEspecificos);
             this.pnlDatosEspecificos.Location = new System.Drawing.Point(23, 235);
             this.pnlDatosEspecificos.Name = "pnlDatosEspecificos";
-            this.pnlDatosEspecificos.Size = new System.Drawing.Size(639, 67);
+            this.pnlDatosEspecificos.Size = new System.Drawing.Size(650, 67);
             this.pnlDatosEspecificos.TabIndex = 3;
             // 
             // cmbPlanMedico
