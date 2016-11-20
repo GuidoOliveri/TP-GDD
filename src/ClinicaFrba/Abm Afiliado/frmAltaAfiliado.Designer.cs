@@ -32,9 +32,9 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.pnlDatosPersonales = new System.Windows.Forms.Panel();
             this.pnlDireccion = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.txtCalle = new System.Windows.Forms.TextBox();
             this.lblCalle = new System.Windows.Forms.Label();
-            this.lblDir = new System.Windows.Forms.Label();
             this.txtCantFam = new System.Windows.Forms.TextBox();
             this.lblCantFam = new System.Windows.Forms.Label();
             this.cmbEstadoCivil = new System.Windows.Forms.ComboBox();
@@ -65,7 +65,6 @@
             this.lblAclaracion = new System.Windows.Forms.Label();
             this.btnVolver = new System.Windows.Forms.Button();
             this.cmdAsociarAfiliado = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.pnlDatosPersonales.SuspendLayout();
             this.pnlDireccion.SuspendLayout();
             this.pnlDatosEspecificos.SuspendLayout();
@@ -128,17 +127,25 @@
             this.pnlDireccion.Controls.Add(this.label1);
             this.pnlDireccion.Controls.Add(this.txtCalle);
             this.pnlDireccion.Controls.Add(this.lblCalle);
-            this.pnlDireccion.Controls.Add(this.lblDir);
             this.pnlDireccion.Location = new System.Drawing.Point(17, 115);
             this.pnlDireccion.Name = "pnlDireccion";
             this.pnlDireccion.Size = new System.Drawing.Size(317, 59);
             this.pnlDireccion.TabIndex = 22;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(72, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(178, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Ingrese calle, altura y/o piso y depto";
+            // 
             // txtCalle
             // 
-            this.txtCalle.Location = new System.Drawing.Point(61, 12);
+            this.txtCalle.Location = new System.Drawing.Point(78, 12);
             this.txtCalle.Name = "txtCalle";
-            this.txtCalle.Size = new System.Drawing.Size(251, 20);
+            this.txtCalle.Size = new System.Drawing.Size(234, 20);
             this.txtCalle.TabIndex = 5;
             // 
             // lblCalle
@@ -146,18 +153,9 @@
             this.lblCalle.AutoSize = true;
             this.lblCalle.Location = new System.Drawing.Point(13, 15);
             this.lblCalle.Name = "lblCalle";
-            this.lblCalle.Size = new System.Drawing.Size(37, 13);
+            this.lblCalle.Size = new System.Drawing.Size(59, 13);
             this.lblCalle.TabIndex = 1;
-            this.lblCalle.Text = "*Calle:";
-            // 
-            // lblDir
-            // 
-            this.lblDir.AutoSize = true;
-            this.lblDir.Location = new System.Drawing.Point(7, -1);
-            this.lblDir.Name = "lblDir";
-            this.lblDir.Size = new System.Drawing.Size(52, 13);
-            this.lblDir.TabIndex = 0;
-            this.lblDir.Text = "Direccion";
+            this.lblCalle.Text = "*Direccion:";
             // 
             // txtCantFam
             // 
@@ -244,9 +242,11 @@
             this.dtpFecNac.CustomFormat = "dd-MM-yyyy 0:00:00";
             this.dtpFecNac.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpFecNac.Location = new System.Drawing.Point(485, 61);
+            this.dtpFecNac.MaxDate = new System.DateTime(2016, 11, 26, 0, 0, 0, 0);
             this.dtpFecNac.Name = "dtpFecNac";
             this.dtpFecNac.Size = new System.Drawing.Size(133, 20);
             this.dtpFecNac.TabIndex = 14;
+            this.dtpFecNac.Value = new System.DateTime(2016, 11, 20, 0, 0, 0, 0);
             // 
             // lblFecNac
             // 
@@ -434,15 +434,6 @@
             this.cmdAsociarAfiliado.UseVisualStyleBackColor = true;
             this.cmdAsociarAfiliado.Click += new System.EventHandler(this.cmdAsociarAfiliado_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(72, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(178, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Ingrese calle, altura y/o piso y depto";
-            // 
             // frmAltaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -509,7 +500,6 @@
         private System.Windows.Forms.Panel pnlDireccion;
         private System.Windows.Forms.TextBox txtCalle;
         private System.Windows.Forms.Label lblCalle;
-        private System.Windows.Forms.Label lblDir;
         private System.Windows.Forms.Label label1;
     }
 }

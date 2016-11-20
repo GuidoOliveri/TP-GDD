@@ -493,7 +493,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmAltaAfiliado_Load(object sender, EventArgs e)
         {
-
+            dtpFecNac.MaxDate = DateTime.Today;
         }
 
         private void cmbTipoDoc_SelectedIndexChanged(object sender, EventArgs e)
