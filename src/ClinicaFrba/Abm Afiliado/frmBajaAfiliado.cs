@@ -29,8 +29,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmBajaAfiliado_Load(object sender, EventArgs e)
         {
-            /*string date = ConfigurationManager.AppSettings["date"];
-            fechaBaja = Convert.ToDateTime(date).Date;*/
+            string date = System.Configuration.ConfigurationManager.AppSettings["date"];
+            dtpFechaBaja.Value = DateTime.Parse(date + " 00:00:00");
         }
 
         private void lblIngresaFechas_Click(object sender, EventArgs e)
