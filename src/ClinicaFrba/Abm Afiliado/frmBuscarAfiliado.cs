@@ -25,6 +25,8 @@ namespace ClinicaFrba.Abm_Afiliado
         private string planmedico;
         private string telefono;
         private string ch;
+        private bool estado;
+
        //private List<Afiliado> listaDeAfiliados;
 
         public frmBuscarAfiliado(string operacion)
@@ -53,15 +55,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
             cmbPlanes.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            cargarGrilla();
-            //tabla = new DataTable();
-            //tabla = Afiliado.obtenerAfilidos();
-            //dataGridView1.DataSource = tabla;
-
             List<Afiliado> listaDeAfiliados = Afiliado.ObtenerTodos();
-
+            cargarGrilla();
             dataGridView1.DataSource = listaDeAfiliados;
-
+            
 
         }
 
@@ -102,27 +99,49 @@ namespace ClinicaFrba.Abm_Afiliado
             try
             {
                 nroAfil = UInt64.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
-
+                
+               estado  = bool.Parse(dataGridView1.CurrentRow.Cells[12].Value.ToString());
 
                 if (mioperacion == "Eliminar")
                 {
-                    frmBajaAfiliado baja = new frmBajaAfiliado(nroAfil);
-                    this.Hide();
-                    baja.Show();
+
+                    if (estado == false)
+                    {
+
+                        MessageBox.Show("El afiliado nro: " + nroAfil+ " ya esta dado de baja!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    }
+                    else
+                    {
+                        frmBajaAfiliado baja = new frmBajaAfiliado(nroAfil);
+                        this.Hide();
+                        baja.Show();
+                    }
                 }
                 else if (mioperacion == "Modificar")
                 {
-                     direccion = dataGridView1.CurrentRow.Cells[5].Value.ToString();       
-                     mail = dataGridView1.CurrentRow.Cells[7].Value.ToString();
-                     ecivil= dataGridView1.CurrentRow.Cells[10].Value.ToString();
-                     planmedico = dataGridView1.CurrentRow.Cells[8].Value.ToString();
-                     ch =  dataGridView1.CurrentRow.Cells[11].Value.ToString();
-                     telefono = dataGridView1.CurrentRow.Cells[6].Value.ToString();
 
-                     frmModificarAfiliado este = new frmModificarAfiliado(nroAfil, direccion, mail, ecivil, ch, telefono, planmedico);
-                    this.Hide();
-                    este.Show();
+                    if (estado == false)
+                    {
 
+                        MessageBox.Show("El afiliado nro: " + nroAfil + " esta dado de baja, no puedes modificarlo!", "Modificacion Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    }
+                    else
+                    {
+
+
+                        direccion = dataGridView1.CurrentRow.Cells[5].Value.ToString();
+                        mail = dataGridView1.CurrentRow.Cells[7].Value.ToString();
+                        ecivil = dataGridView1.CurrentRow.Cells[10].Value.ToString();
+                        planmedico = dataGridView1.CurrentRow.Cells[8].Value.ToString();
+                        ch = dataGridView1.CurrentRow.Cells[11].Value.ToString();
+                        telefono = dataGridView1.CurrentRow.Cells[6].Value.ToString();
+
+                        frmModificarAfiliado este = new frmModificarAfiliado(nroAfil, direccion, mail, ecivil, ch, telefono, planmedico);
+                        this.Hide();
+                        este.Show();
+                    }
                 }
             }
             catch
@@ -292,6 +311,13 @@ namespace ClinicaFrba.Abm_Afiliado
             ColCH.HeaderText = "Cantidad Familiares";
             ColCH.Width = 60;
             dataGridView1.Columns.Add(ColCH);
+
+            //DataGridViewCheckBoxColumn Colactivo = new DataGridViewCheckBoxColumn();
+            //Colactivo.HeaderText = "Activo";
+            ////Colactivo.FalseValue = "0";
+            ////Colactivo.TrueValue = "1";
+            //ColEC.Width = 60;
+            //dataGridView1.Columns.Add(Colactivo);
 
 
             btnModificarAfiliado.Text = mioperacion;//"Eliminar";

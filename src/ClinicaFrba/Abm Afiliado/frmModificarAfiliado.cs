@@ -43,7 +43,7 @@ namespace ClinicaFrba.Abm_Afiliado
             txtTel.Text = telefono;
             cmdEstadoCivil.SelectedItem = estcivil;
             textCantH.Text = cantfamil;
-            txtMotivo.Text = "Si cambia de Plan, Ingrese el motivo por favor";
+            //txtMotivo.Text = "";
             cmbPlanMedico.SelectedItem = planmedico;
             planAnt = planmedico;
         }

@@ -592,9 +592,9 @@ motivo que la originó, de manera de poder obtener un historial de dichos cambios
 Dicho historial debe poder ser consultado de alguna manera dentro del sistema.*/
 
 
-CREATE VIEW NEXTGDD.Pacientes_Afil (Nro_Afiliado, Nombre, Apellido,Tipo_Doc, Nro_Doc, Direccion, Telefono, Mail,Plan_Medico,Fecha_Nac,Estado_Civil,Cant_Hijos)
+CREATE VIEW NEXTGDD.Pacientes_Afil (Nro_Afiliado, Nombre, Apellido,Tipo_Doc, Nro_Doc, Direccion, Telefono, Mail,Plan_Medico,Fecha_Nac,Estado_Civil,Cant_Hijos, Activo)
 AS
-select nro_afiliado, p.nombre,apellido, tipo_doc, nro_documento, domicilio, telefono, mail, m.descripcion, fecha_nac ,e.nombre , cant_familiares
+select nro_afiliado, p.nombre,apellido, tipo_doc, nro_documento, domicilio, telefono, mail, m.descripcion, fecha_nac ,e.nombre , cant_familiares, activo
 from NEXTGDD.Persona p Join NEXTGDD.Afiliado a ON(p.id_persona= a.id_persona) 
      Join NEXTGDD.Plan_Medico m ON (m.cod_plan= a.cod_plan)
 	 Join NEXTGDD.Estado_Civil e ON (e.id= p.estado_civil)
@@ -1433,17 +1433,17 @@ IF EXISTS (SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado)
     BEGIN TRY
 	  BEGIN TRANSACTION   
          
-		IF 1 = (SELECT activo FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado)
+		IF (1 = (SELECT activo FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado))
 		  BEGIN
 		  UPDATE NEXTGDD.Afiliado 
 	      SET  activo = 0, fecha_baja_logica = @fecha_baja
 	      WHERE nro_afiliado = @nro_afiliado
             
-	      COMMIT TRANSACTION
           SET @ret= 0
 		  END
         ELSE
 		SET @ret = -3
+	   COMMIT TRANSACTION
     END TRY
   
    BEGIN CATCH
@@ -1850,3 +1850,8 @@ GO
 
 EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 0, @id_persona = 3116603
 GO
+
+
+
+
+select * from NEXTGDD.Afiliado

@@ -92,12 +92,11 @@
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 216);
+            this.label3.Location = new System.Drawing.Point(16, 219);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(102, 13);
+            this.label3.Size = new System.Drawing.Size(105, 50);
             this.label3.TabIndex = 20;
-            this.label3.Text = "Motivo cambio plan:";
+            this.label3.Text = "Ingrese el motivo del cambio de plan:";
             // 
             // label2
             // 

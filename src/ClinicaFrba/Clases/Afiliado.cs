@@ -26,8 +26,10 @@ namespace ClinicaFrba.Clases
         public string Plan_Medico { get; set; }
         public DateTime Fecha_Nac { get; set; }       
         public string Estado_Civil { get; set; }
-        public Byte Cant_Hijos { get; set; }      
- 
+        public Byte Cant_Hijos { get; set; }
+        public bool Activo { get; set; }   
+
+
         private static SqlConnection conexion;
         //private static DataTable tabla = new DataTable();
 
@@ -200,7 +202,8 @@ namespace ClinicaFrba.Clases
                     unAfiliado.Fecha_Nac = (DateTime)lector["Fecha_Nac"];
                     unAfiliado.Estado_Civil = (string)lector["Estado_Civil"];
                     unAfiliado.Cant_Hijos = (Byte)lector["Cant_Hijos"];
-                   
+                    unAfiliado.Activo = (bool)lector["Activo"];
+
                     Lista.Add(unAfiliado);
                 }
                 lector.Close();
@@ -236,6 +239,7 @@ namespace ClinicaFrba.Clases
                     unAfiliado.Fecha_Nac = (DateTime)lector["Fecha_Nac"];
                     unAfiliado.Estado_Civil = (string)lector["Estado_Civil"];
                     unAfiliado.Cant_Hijos = (Byte)lector["Cant_Hijos"];
+                    unAfiliado.Activo = (bool)lector["Activo"];
 
                     Lista.Add(unAfiliado);
                 }
