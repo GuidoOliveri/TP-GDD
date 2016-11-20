@@ -30,7 +30,6 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnBorrar = new System.Windows.Forms.Button();
-            this.warning3 = new System.Windows.Forms.Label();
             this.warning1 = new System.Windows.Forms.Label();
             this.btnAgregar = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -53,6 +52,7 @@
             this.cmbProfesional = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
+            this.warning3 = new System.Windows.Forms.Label();
             this.gbRangoFechas = new System.Windows.Forms.GroupBox();
             this.dpFechaDesde = new System.Windows.Forms.DateTimePicker();
             this.label9 = new System.Windows.Forms.Label();
@@ -71,7 +71,6 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.btnBorrar);
-            this.groupBox1.Controls.Add(this.warning3);
             this.groupBox1.Controls.Add(this.warning1);
             this.groupBox1.Controls.Add(this.btnAgregar);
             this.groupBox1.Controls.Add(this.groupBox2);
@@ -92,29 +91,18 @@
             // 
             // btnBorrar
             // 
-            this.btnBorrar.Location = new System.Drawing.Point(332, 196);
+            this.btnBorrar.Location = new System.Drawing.Point(332, 265);
             this.btnBorrar.Name = "btnBorrar";
             this.btnBorrar.Size = new System.Drawing.Size(75, 23);
             this.btnBorrar.TabIndex = 13;
             this.btnBorrar.Text = "Borrar";
             this.btnBorrar.UseVisualStyleBackColor = true;
             // 
-            // warning3
-            // 
-            this.warning3.AutoSize = true;
-            this.warning3.ForeColor = System.Drawing.Color.Red;
-            this.warning3.Location = new System.Drawing.Point(183, 70);
-            this.warning3.Name = "warning3";
-            this.warning3.Size = new System.Drawing.Size(306, 13);
-            this.warning3.TabIndex = 12;
-            this.warning3.Text = "Ya existe una agenda. Solo puede agregar rangos de atención.";
-            this.warning3.Click += new System.EventHandler(this.warning3_Click);
-            // 
             // warning1
             // 
             this.warning1.AutoSize = true;
             this.warning1.ForeColor = System.Drawing.Color.Red;
-            this.warning1.Location = new System.Drawing.Point(9, 199);
+            this.warning1.Location = new System.Drawing.Point(9, 265);
             this.warning1.Name = "warning1";
             this.warning1.Size = new System.Drawing.Size(224, 13);
             this.warning1.TabIndex = 11;
@@ -122,7 +110,7 @@
             // 
             // btnAgregar
             // 
-            this.btnAgregar.Location = new System.Drawing.Point(414, 196);
+            this.btnAgregar.Location = new System.Drawing.Point(414, 265);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(75, 23);
             this.btnAgregar.TabIndex = 10;
@@ -136,7 +124,7 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.cmbDiaDesde);
-            this.groupBox2.Location = new System.Drawing.Point(12, 107);
+            this.groupBox2.Location = new System.Drawing.Point(12, 176);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(480, 43);
             this.groupBox2.TabIndex = 0;
@@ -182,7 +170,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 80);
+            this.label7.Location = new System.Drawing.Point(6, 155);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(145, 13);
             this.label7.TabIndex = 9;
@@ -194,7 +182,7 @@
             this.groupBox3.Controls.Add(this.cmbHorarioDesde);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(12, 150);
+            this.groupBox3.Location = new System.Drawing.Point(12, 217);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(480, 43);
             this.groupBox3.TabIndex = 4;
@@ -252,7 +240,7 @@
             this.Column2,
             this.Column3,
             this.Column4});
-            this.dgRangoAtencion.Location = new System.Drawing.Point(9, 223);
+            this.dgRangoAtencion.Location = new System.Drawing.Point(9, 290);
             this.dgRangoAtencion.Name = "dgRangoAtencion";
             this.dgRangoAtencion.Size = new System.Drawing.Size(483, 73);
             this.dgRangoAtencion.TabIndex = 3;
@@ -314,15 +302,28 @@
             this.cmbEspecialidad.Size = new System.Drawing.Size(267, 21);
             this.cmbEspecialidad.TabIndex = 5;
             // 
+            // warning3
+            // 
+            this.warning3.AutoSize = true;
+            this.warning3.ForeColor = System.Drawing.Color.Red;
+            this.warning3.Location = new System.Drawing.Point(9, 62);
+            this.warning3.Name = "warning3";
+            this.warning3.Size = new System.Drawing.Size(430, 13);
+            this.warning3.TabIndex = 12;
+            this.warning3.Text = "Ya existe una agenda para ese rango de fechas. Solo puede agregar rangos de atenc" +
+    "ión.";
+            this.warning3.Click += new System.EventHandler(this.warning3_Click);
+            // 
             // gbRangoFechas
             // 
             this.gbRangoFechas.Controls.Add(this.dpFechaDesde);
+            this.gbRangoFechas.Controls.Add(this.warning3);
             this.gbRangoFechas.Controls.Add(this.label9);
             this.gbRangoFechas.Controls.Add(this.dpFechaHasta);
             this.gbRangoFechas.Controls.Add(this.label8);
-            this.gbRangoFechas.Location = new System.Drawing.Point(12, 312);
+            this.gbRangoFechas.Location = new System.Drawing.Point(12, 85);
             this.gbRangoFechas.Name = "gbRangoFechas";
-            this.gbRangoFechas.Size = new System.Drawing.Size(500, 68);
+            this.gbRangoFechas.Size = new System.Drawing.Size(501, 77);
             this.gbRangoFechas.TabIndex = 3;
             this.gbRangoFechas.TabStop = false;
             this.gbRangoFechas.Text = "Rango de fechas";
@@ -337,7 +338,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(28, 48);
+            this.label9.Location = new System.Drawing.Point(31, 46);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(38, 13);
             this.label9.TabIndex = 13;
@@ -345,7 +346,7 @@
             // 
             // dpFechaHasta
             // 
-            this.dpFechaHasta.Location = new System.Drawing.Point(222, 42);
+            this.dpFechaHasta.Location = new System.Drawing.Point(222, 40);
             this.dpFechaHasta.Name = "dpFechaHasta";
             this.dpFechaHasta.Size = new System.Drawing.Size(267, 20);
             this.dpFechaHasta.TabIndex = 11;
@@ -353,7 +354,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(28, 22);
+            this.label8.Location = new System.Drawing.Point(31, 22);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(41, 13);
             this.label8.TabIndex = 12;

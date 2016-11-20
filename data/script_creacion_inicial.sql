@@ -501,6 +501,18 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.regis
     DROP PROCEDURE NEXTGDD.registrarAgenda
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarCodigoRangoFecha'))
+    DROP FUNCTION NEXTGDD.buscarCodigoRangoFecha
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.verSuperposicionDeRangos'))
+    DROP FUNCTION NEXTGDD.verSuperposicionDeRangos
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.obtenerRangosHorarios'))
+    DROP FUNCTION NEXTGDD.obtenerRangosHorarios
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarRangoHorario'))
     DROP PROCEDURE NEXTGDD.registrarRangoHorario
 GO
@@ -1074,6 +1086,17 @@ BEGIN
 END;
 GO
 
+CREATE FUNCTION NEXTGDD.buscarCodigoRangoFecha(@codAgenda numeric (18,0),@fechaD datetime,@fechaH datetime)
+returns numeric(18,0)
+BEGIN
+	RETURN (select distinct rf.cod_fecha
+			from NEXTGDD.Rango_Fechas rf
+			where rf.cod_agenda=@codAgenda and
+				  CONVERT(date,rf.fecha_desde)=CONVERT(date,@fechaD) and
+				  CONVERT(date,rf.fecha_hasta)=CONVERT(date,@fechaH))
+END;
+GO
+
 --Si no existe crea una nueva agenda
 CREATE PROCEDURE NEXTGDD.registrarAgenda (@nomProfesional varchar(255),@nomEspecialidad varchar(255),@fechaD datetime,@fechaH datetime)
 AS
@@ -1085,16 +1108,29 @@ BEGIN
 			(select pr.matricula,e.cod_especialidad
 			 from NEXTGDD.Especialidad e,NEXTGDD.Profesional pr, NEXTGDD.Persona p 
 			 where e.descripcion LIKE @nomEspecialidad and p.nombre+' '+p.apellido LIKE @nomProfesional and p.id_persona=pr.id_persona)
+		INSERT NEXTGDD.Rango_Fechas (cod_agenda,cod_fecha,fecha_desde,fecha_hasta)
+				values ((select NEXTGDD.buscarCodigoAgenda(@nomProfesional,@nomEspecialidad)),1,@fechaD,@fechaH)
+	END
+	ELSE
+	BEGIN
+		IF (select isnull(count(*),0)
+			from NEXTGDD.Rango_Fechas rf
+			where rf.cod_agenda=@codAgenda and CONVERT(date,rf.fecha_desde)=CONVERT(date,@fechaD) 
+				and CONVERT(date,rf.fecha_hasta)=CONVERT(date,@fechaH))=0
+		BEGIN
+			INSERT NEXTGDD.Rango_Fechas (cod_agenda,cod_fecha,fecha_desde,fecha_hasta)
+					values (@codAgenda,(select isnull(count(*),0)+1 from NEXTGDD.Rango_Fechas r2 where r2.cod_agenda=@codAgenda),@fechaD,@fechaH)
+		END
 	END
 END;
 GO
 
-CREATE PROCEDURE NEXTGDD.registrarRangoHorario (@codAgenda numeric(18,0),@diaD numeric(18,0),@diaH numeric(18,0),@horaD time,@horaH time)
+CREATE PROCEDURE NEXTGDD.registrarRangoHorario (@codAgenda numeric(18,0),@codFecha numeric(18,0),@diaD numeric(18,0),@diaH numeric(18,0),@horaD time,@horaH time)
 AS
 BEGIN
 	DECLARE @cod_Rango numeric(18,0)=(select isnull(count(*),0) from NEXTGDD.Rango_Atencion where cod_agenda=@codAgenda)+1
-	INSERT NEXTGDD.Rango_Atencion (rango_atencion,cod_agenda,hora_final,hora_inicial,dia_semanal_inicial,dia_semanal_final) values
-			(@cod_rango,@codAgenda,@horaH,@horaD,@diaD,@diaH)
+	INSERT NEXTGDD.Rango_Atencion (rango_atencion,cod_fecha ,cod_agenda,hora_final,hora_inicial,dia_semanal_inicial,dia_semanal_final) values
+			(@cod_rango,@codFecha,@codAgenda,@horaH,@horaD,@diaD,@diaH)
 END;
 GO
 
@@ -1107,19 +1143,39 @@ AS
 			  and pe.matricula=p.matricula and e.cod_especialidad=pe.cod_especialidad)
 GO
 
-CREATE FUNCTION NEXTGDD.validarAgendaUnica(@especialidad varchar(255),@profesional varchar(255)) 
+CREATE FUNCTION NEXTGDD.verSuperposicionDeRangos(@fechaDesde1 datetime,@fechaHasta1 datetime,@fechaDesde2 datetime,@fechaHasta2 datetime)
+returns int
+BEGIN
+	RETURN (CASE WHEN (@fechaHasta2>@fechaDesde1 and @fechaHasta2<@fechaHasta1) 
+					  or (@fechaDesde2>@fechaDesde1 and @fechaDesde2<@fechaHasta1) 
+					  or (@fechaDesde2<=@fechaDesde1 and @fechaHasta2>=@fechaHasta1) THEN 0
+				 ELSE 1
+				 END)
+END;
+GO
+
+--Me dice si ya tiene una agenda para ese rango de fechas, y en ese caso devuelve las dos fechas de uno de los rangos con los que se superpone
+CREATE FUNCTION NEXTGDD.validarAgendaUnica(@especialidad varchar(255),@profesional varchar(255),@fechaDesde datetime,@fechaHasta datetime) 
 RETURNS varchar(255)
 AS
 BEGIN
-	RETURN (select CASE WHEN (isnull(count(*),0)=0)
-					THEN 'No existe una agenda'
-					ELSE 'Ya existe una agenda'
-					END 
-		   from NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e 
+	RETURN (select FORMAT((select top 1 rf.fecha_desde),'dd/MM/yyyy hh:mm:ss')+'|'+FORMAT((select top 1 rf.fecha_hasta),'dd/MM/yyyy hh:mm:ss')
+		   from NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Rango_Fechas rf 
 		   where p.nombre+' '+p.apellido LIKE @profesional and p.id_persona=pr.id_persona and a.matricula=pr.matricula 
-		         and a.cod_especialidad=e.cod_especialidad and e.descripcion LIKE @especialidad)
-				 -- and not(a.rango_fecha_desde IS NULL) and not(a.rango_fecha_hasta IS NULL) )
+		         and a.cod_especialidad=e.cod_especialidad and e.descripcion LIKE @especialidad and rf.cod_agenda=a.cod_agenda
+				 and (select NEXTGDD.verSuperposicionDeRangos(rf.fecha_desde,rf.fecha_hasta,@fechaDesde,@fechaHasta))=0
+		   group by rf.fecha_desde,rf.fecha_hasta)
 END;
+GO
+
+CREATE FUNCTION NEXTGDD.obtenerRangosHorarios(@cod_agenda numeric(18,0),@fechaDesde datetime,@fechaHasta datetime)
+RETURNS TABLE
+AS
+	RETURN select ra.dia_semanal_inicial as 'DD',ra.dia_semanal_final as 'DH',ra.hora_inicial as 'HD',ra.hora_final as 'HH' 
+			from NEXTGDD.Rango_Atencion ra,NEXTGDD.Rango_Fechas rf 
+			where ra.cod_agenda=@cod_agenda and str(ra.cod_fecha)+str(ra.cod_agenda)=str(rf.cod_fecha)+str(rf.cod_agenda) and 
+				  CONVERT(date, rf.fecha_desde) LIKE CONVERT(date,@fechaDesde) and 
+				  CONVERT(date,rf.fecha_hasta) LIKE CONVERT(date,@fechaHasta)
 GO
 
 CREATE PROCEDURE NEXTGDD.agregar_funcionalidad(@rol varchar(255), @func varchar(255)) AS
