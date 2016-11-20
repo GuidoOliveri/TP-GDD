@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Clases;
+using System.Configuration;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
@@ -22,12 +23,14 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
             txtMatricula.Text= nroAfil.ToString() ;
-
+           
+            
         }
 
         private void frmBajaAfiliado_Load(object sender, EventArgs e)
         {
-
+            /*string date = ConfigurationManager.AppSettings["date"];
+            fechaBaja = Convert.ToDateTime(date).Date;*/
         }
 
         private void lblIngresaFechas_Click(object sender, EventArgs e)
