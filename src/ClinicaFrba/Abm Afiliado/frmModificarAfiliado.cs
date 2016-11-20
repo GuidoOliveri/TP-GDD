@@ -58,7 +58,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmModificarAfiliado_Load(object sender, EventArgs e)
         {
-            
+            txtMotivo.AutoSize = false ;
+            txtMotivo.Size = new Size(280, 75) ;
         }
 
         private void pnlModDatosPersonales_Paint(object sender, PaintEventArgs e)

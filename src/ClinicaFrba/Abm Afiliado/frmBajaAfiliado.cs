@@ -77,7 +77,15 @@ namespace ClinicaFrba.Abm_Afiliado
                     this.Hide();
                     buscar.Show();
                 }
+                else if (resultado.Equals(-3))
+                {
 
+                    MessageBox.Show("El Nro de Afiliado: " + nroAfil + " Ya fue dado de baja anteriormente!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    limpiar();
+                    frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionBaja);
+                    this.Hide();
+                    buscar.Show();
+                }
                 else
                 {
                     

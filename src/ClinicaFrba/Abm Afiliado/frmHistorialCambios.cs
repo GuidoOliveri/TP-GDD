@@ -156,7 +156,7 @@ namespace ClinicaFrba.Abm_Afiliado
             DataGridViewTextBoxColumn ColMM = new DataGridViewTextBoxColumn();
             ColMM.DataPropertyName = "motivo_modificacion";
             ColMM.HeaderText = "Motivo Modificacion";
-            ColMM.Width = 100;
+            ColMM.Width = 250;
             dataGridView1.Columns.Add(ColMM);
 
             DataGridViewTextBoxColumn ColPlanA = new DataGridViewTextBoxColumn();

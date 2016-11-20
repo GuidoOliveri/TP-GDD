@@ -1423,12 +1423,18 @@ IF EXISTS (SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado)
   BEGIN
     BEGIN TRY
 	  BEGIN TRANSACTION   
-          UPDATE NEXTGDD.Afiliado 
+         
+		IF 1 = (SELECT activo FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado)
+		  BEGIN
+		  UPDATE NEXTGDD.Afiliado 
 	      SET  activo = 0, fecha_baja_logica = @fecha_baja
 	      WHERE nro_afiliado = @nro_afiliado
-              
-	  COMMIT TRANSACTION
-      SET @ret= 0
+            
+	      COMMIT TRANSACTION
+          SET @ret= 0
+		  END
+        ELSE
+		SET @ret = -3
     END TRY
   
    BEGIN CATCH
@@ -1801,3 +1807,4 @@ GO
 
 EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 0, @id_persona = 3116603
 GO
+select * from nextgdd.afiliado

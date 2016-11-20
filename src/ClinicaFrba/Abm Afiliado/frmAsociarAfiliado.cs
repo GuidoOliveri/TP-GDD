@@ -15,7 +15,7 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class frmAsociarAfiliado : Form
     {
-        private SqlConnection conexion = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+        private SqlConnection conexion;
         private string fname = "";
         private string lname = "";
         private string tipodocu = "";
@@ -29,7 +29,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private int cantfami ;
         private Int64 nroGrupoFamiliar ;
         private Int64 retorno;
-        private Int64 resu;
+        
         private int nroafilint;
         private Int64 nroafiliado;
 
@@ -93,7 +93,8 @@ namespace ClinicaFrba.Abm_Afiliado
                 retorno = 0;
                 nroGrupoFamiliar = Convert.ToInt64(txtNroAfiliadoPrincipal.Text);
                 //aca tengo que enganchar el stored procedure de lo que hace el afiliado
-                conexion.Open();
+                conexion = Clases.BaseDeDatosSQL.ObtenerConexion();
+
                 SqlCommand command = new SqlCommand("NEXTGDD.agregarAfiliadoFamilia", conexion);
                 command.CommandType = CommandType.StoredProcedure;
 

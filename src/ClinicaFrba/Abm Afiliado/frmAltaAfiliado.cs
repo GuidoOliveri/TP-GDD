@@ -19,7 +19,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private string plan = "";
         private string estadoCivil = "";
         private string tipoDoc = "";
-        private SqlConnection conn = new SqlConnection("Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+        private SqlConnection conn;
         Int64 nroDoc;
          
         Int64 nroAfiliado;
@@ -168,16 +168,11 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 opcionSexo = 'M';
             }
-            
-                    conn.Open();
+                     conn  = Clases.BaseDeDatosSQL.ObtenerConexion();
+                    //conn.Open();
                     SqlCommand command = new SqlCommand("NEXTGDD.agregarAfiliadoPrincipal", conn);
                     command.CommandType = CommandType.StoredProcedure;
-                    //int estadoCivil2 = 1;
-                    //int plan2 = 555555;
-                  //  DateTime fechaF = DateTime.Parse(dtpFecNac.Text.ToString());              //Convert.ToDateTime(SqlDbType.Date).Date;
-            //        DateTime fechaF = Convert.ToDateTime(dtpFecNac.Value).Date;   
-          //      DateTime.Parse(dtpFechaNacimiento.Text.ToString())
-                //Fecha.ToShortDateString();
+                   
                     SqlParameter parNombre = new SqlParameter("@nombre", nombre );                
                     SqlParameter parApellido = new SqlParameter("@apellido", apellido);
                     SqlParameter parFecNac = new SqlParameter("@fecha_nac", SqlDbType.Date);
@@ -296,9 +291,11 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 nroAfiliado = 0;
 
-                nombre = txtNombre.Text;
-                apellido = txtApellido.Text;
-
+                nombre = txtNombre.Text.ToUpper();
+                string primeraLetra = txtApellido.Text.Substring(0, 1).ToUpper();
+                string resto = txtApellido.Text.Substring(1, txtApellido.Text.Length - 1).ToLower();
+                apellido = primeraLetra + resto;
+                
                 tipoDoc = (string)cmbTipoDoc.SelectedItem;
                 nroDoc = Convert.ToInt64(txtNroDoc.Text);
 
