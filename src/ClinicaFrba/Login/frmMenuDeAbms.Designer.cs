@@ -37,11 +37,11 @@
             // lblDale
             // 
             this.lblDale.AutoSize = true;
-            this.lblDale.Font = new System.Drawing.Font("Century Schoolbook", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDale.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDale.ForeColor = System.Drawing.Color.Teal;
             this.lblDale.Location = new System.Drawing.Point(66, 40);
             this.lblDale.Name = "lblDale";
-            this.lblDale.Size = new System.Drawing.Size(493, 30);
+            this.lblDale.Size = new System.Drawing.Size(464, 29);
             this.lblDale.TabIndex = 0;
             this.lblDale.Text = "Seleccione la funcionalidad a ejecutar:";
             // 
@@ -92,6 +92,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu de ABMs";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMenuDeAbms_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmMenuDeAbms_FormClosed);
             this.Load += new System.EventHandler(this.frmMenuDeAbms_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

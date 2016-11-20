@@ -28,8 +28,8 @@ namespace ClinicaFrba
         private void cmdIngresar_Click(object sender, EventArgs e)
         {
             Login.frmLogin ingresa = new Login.frmLogin();
-            this.Hide();
             ingresa.Show();
+            this.Hide();
         }
 
         private void cmdSalir_Click(object sender, EventArgs e)
@@ -47,6 +47,7 @@ namespace ClinicaFrba
           
             if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                Application.ExitThread();
             }
             else
             {

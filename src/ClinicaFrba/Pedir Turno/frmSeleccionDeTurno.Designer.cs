@@ -236,6 +236,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Selección de Turno";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSeleccionDeTurno_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSeleccionDeTurno_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Turno.ResumeLayout(false);
             this.Turno.PerformLayout();

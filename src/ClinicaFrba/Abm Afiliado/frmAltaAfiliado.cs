@@ -28,12 +28,6 @@ namespace ClinicaFrba.Abm_Afiliado
         string apellido ;
         char opcionSexo;  
 
-        string calle ;
-        int altura;
-        string pisoSinConvertir;
-        int piso;
-        string deptoSinConvertir;
-        char depto;
         string direccion;
 
         int telefono ;
@@ -83,9 +77,6 @@ namespace ClinicaFrba.Abm_Afiliado
             txtNroDoc.Clear();
             txtTel.Clear();
             txtCalle.Clear();
-            txtAltura.Clear();
-            txtPiso.Clear();
-            txtDepto.Clear();
 
             // limpio combo box
             cmbEstadoCivil.SelectedIndex = -1;
@@ -116,7 +107,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
 
 
-            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text) < 0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || txtDepto.TextLength > 1 || String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text) < 0 || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || (string)cmbPlanMedico.SelectedItem == "(ninguno)" || cmbPlanMedico.SelectedIndex == -1 ||
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text) < 0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text) < 0 || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || (string)cmbPlanMedico.SelectedItem == "(ninguno)" || cmbPlanMedico.SelectedIndex == -1 ||
                 ((optMasculino.Checked == false) && (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today || Afiliado.email_bien_escrito(txtMail.Text) == false)
             {
                 MessageBox.Show("Por favor, ingrese datos en todos los campos obligatorios y de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -135,28 +126,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
              primeraLetra = txtCalle.Text.Substring(0, 1).ToUpper();
              resto = txtCalle.Text.Substring(1, txtCalle.Text.Length - 1).ToLower();
-             calle = primeraLetra+resto;
-             altura = Convert.ToInt32(txtAltura.Text);
-             pisoSinConvertir = txtPiso.Text;
-             deptoSinConvertir = txtDepto.Text;
-
-             if (!String.IsNullOrEmpty(pisoSinConvertir))
-             {
-                 piso = Convert.ToInt32(pisoSinConvertir);
-             }
+             direccion = primeraLetra+resto;
              
-             if (!String.IsNullOrEmpty(deptoSinConvertir))
-             {
-                 depto = Convert.ToChar(deptoSinConvertir);
-             }
-             
-          
-             direccion = calle + " " + altura + " " + piso + " " + depto; 
-
              telefono = Convert.ToInt32(txtTel.Text);
              estadoCivil = (string)cmbEstadoCivil.SelectedItem;
              mail = txtMail.Text;
-
 
              cantFam = Convert.ToInt32(txtCantFam.Text);
              plan = (string)cmbPlanMedico.SelectedItem;
@@ -272,7 +246,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                Application.Exit();
+                Application.ExitThread();
             }
             else
             {
@@ -283,7 +257,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private void cmdAsociarAfiliado_Click(object sender, EventArgs e)
         {
 
-            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text) < 0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtAltura.Text) || txtDepto.TextLength > 1 || String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text) < 0 || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || ((optMasculino.Checked == false) && (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
+            if (String.IsNullOrEmpty(txtNombre.Text) || String.IsNullOrEmpty(txtApellido.Text) || String.IsNullOrEmpty(txtTel.Text) || Int32.Parse(txtTel.Text) < 0 || String.IsNullOrEmpty(txtNroDoc.Text) || Int64.Parse(txtNroDoc.Text) < 0 || String.IsNullOrEmpty(txtCalle.Text) || String.IsNullOrEmpty(txtCantFam.Text) || Int32.Parse(txtCantFam.Text) < 0 || (cmbEstadoCivil.Items.Count <= 0) || (cmbTipoDoc.Items.Count <= 0) || ((optMasculino.Checked == false) && (optFemenino.Checked == false)) || dtpFecNac.Value >= DateTime.Today)
             {
                 MessageBox.Show("Por favor, ingrese datos en todos los campos obligatorios y de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -299,23 +273,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 tipoDoc = (string)cmbTipoDoc.SelectedItem;
                 nroDoc = Convert.ToInt64(txtNroDoc.Text);
 
-                calle = txtCalle.Text;
-                altura = Convert.ToInt32(txtAltura.Text);
-
-                pisoSinConvertir = txtPiso.Text;
-                deptoSinConvertir = txtDepto.Text;
-
-                if (!String.IsNullOrEmpty(pisoSinConvertir))
-                {
-                    piso = Convert.ToInt32(pisoSinConvertir);
-                }
-
-                if (!String.IsNullOrEmpty(deptoSinConvertir))
-                {
-                    depto = Convert.ToChar(deptoSinConvertir);
-                }
-
-                direccion = calle + " " + altura + " " + piso + " " + depto;
+                direccion = txtCalle.Text;
 
                 telefono = Convert.ToInt32(txtTel.Text);
                 estadoCivil = (string)cmbEstadoCivil.SelectedItem;
@@ -536,107 +494,6 @@ namespace ClinicaFrba.Abm_Afiliado
         private void frmAltaAfiliado_Load(object sender, EventArgs e)
         {
 
-        }
-
-        private void txtCalle_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsNumber(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsSymbol(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsPunctuation(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void txtAltura_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsSymbol(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsPunctuation(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsLetter(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsWhiteSpace(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void txtPiso_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsSymbol(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsPunctuation(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsLetter(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsWhiteSpace(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void txtDepto_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsNumber(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsSymbol(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsPunctuation(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo letras", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else if (char.IsWhiteSpace(e.KeyChar))
-            {
-                e.Handled = true;
-                MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void cmbTipoDoc_SelectedIndexChanged(object sender, EventArgs e)

@@ -142,6 +142,7 @@
             this.Name = "frmAsociarAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Asociar Afiliado";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAsociarAfiliado_FormClosing);
             this.Load += new System.EventHandler(this.frmAsociarAfiliado_Load);
             this.pnlAsociar.ResumeLayout(false);
             this.pnlAsociar.PerformLayout();

@@ -191,6 +191,18 @@ namespace ClinicaFrba.Abm_Afiliado
                 MessageBox.Show("Solo numeros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void frmAsociarAfiliado_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Application.ExitThread();
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
         
 
     }

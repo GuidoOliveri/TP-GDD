@@ -72,9 +72,10 @@ namespace ClinicaFrba.AbmRol
 
         private void frmSeleccionarRol_FormClosing(object sender, FormClosingEventArgs e)
         {
-            
+
             if (MessageBox.Show("Realmente desea salir del programa?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                Application.ExitThread();
             }
             else
             {
