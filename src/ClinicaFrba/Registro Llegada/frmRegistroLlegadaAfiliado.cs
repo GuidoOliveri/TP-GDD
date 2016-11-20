@@ -60,7 +60,7 @@ namespace ClinicaFrba.Registro_Llegada
                 cmbTurno.Items.Clear();
                 cmbTurno.Text = "";
                 /* FILTRA POR FECHA ACTUAL*/
-                comando = "select * from NEXTGDD.buscarTurnosDelDia('"+profesional+"') order by fecha ASC";
+                comando = "select * from NEXTGDD.buscarTurnosDelDia('"+profesional+"','"+convertirFecha(Clases.FechaSistema.fechaSistema)+"') order by fecha ASC";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"fecha"), cmbTurno);
             }
             if (cmbEspecialidad.SelectedItem != null && (string) cmbEspecialidad.SelectedItem!=especialidad)

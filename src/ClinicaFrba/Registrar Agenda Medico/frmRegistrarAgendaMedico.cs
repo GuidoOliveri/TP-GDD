@@ -203,7 +203,8 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                     warning1.Visible = false;
                     diaHasta = (string)cmbDiaHasta.SelectedItem;
                     int nroDiaHasta;
-                    for (nroDiaHasta = 1; nroDiaHasta <= 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+                    for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+                    nroDiaHasta++;
                     horaHasta = (string)cmbHorarioHasta.SelectedItem;
                     verificarRangoHospital();
                     verificarSuperposicionDeRangos();
@@ -214,7 +215,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                         verificarSuperposicionDeRangosEnBDD();
                         if (warning1.Visible == false)
                         {
-                            dgRangoAtencion.Rows.Add(cmbDiaDesde.SelectedIndex+1, nroDiaHasta+1, horaDesde, horaHasta);
+                            dgRangoAtencion.Rows.Add(cmbDiaDesde.SelectedIndex+1, nroDiaHasta, horaDesde, horaHasta);
                             cmbDiaDesde.Text = "";
                             cmbDiaHasta.Text = "";
                             cmbHorarioDesde.Text = "";
@@ -334,7 +335,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             warning1.Visible = false;
             int nroDesde = cmbDiaDesde.SelectedIndex+1;
             int nroDiaHasta;
-            for (nroDiaHasta = 1; nroDiaHasta <= 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+            for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
             nroDiaHasta++;
             List<int> rangoDias1 = buscarDiasIntermedios(nroDesde, nroDiaHasta);
             List<string> rangoHoras1 = buscarHorasIntermedias(horaDesde, horaHasta);
@@ -359,7 +360,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             warning1.Visible = false;
             int nroDesde = cmbDiaDesde.SelectedIndex+1;
             int nroDiaHasta;
-            for (nroDiaHasta = 1; nroDiaHasta <= 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+            for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
             nroDiaHasta++;
             List<int> rangoDias1 = buscarDiasIntermedios(nroDesde, nroDiaHasta);
             List<string> rangoHoras1 = buscarHorasIntermedias(horaDesde, horaHasta);

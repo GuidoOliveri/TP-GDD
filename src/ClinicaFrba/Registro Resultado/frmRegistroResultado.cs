@@ -48,7 +48,7 @@ namespace ClinicaFrba.Registro_Resultado
             cmbAfiliado.Enabled = false;
 
             //Habria que filtrar por fecha actual
-            comando = "select * from NEXTGDD.buscarConsultasAtendidas('"+id_persona+"') order by consulta ASC";
+            comando = "select * from NEXTGDD.buscarConsultasAtendidas('"+id_persona+"','"+convertirFecha(Clases.FechaSistema.fechaSistema)+"') order by consulta ASC";
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"consulta"),cmbConsulta);
 
             comando = "select sintoma from NEXTGDD.Sintoma ";
@@ -77,14 +77,14 @@ namespace ClinicaFrba.Registro_Resultado
             if (cmbAfiliado.Enabled == false)
             {
                 cmbAfiliado.Enabled = true;
-                comando = "select * from NEXTGDD.buscarAfiliadosAtendidos('" + id_persona + "') order by nombre ASC";
+                comando = "select * from NEXTGDD.buscarAfiliadosAtendidos('" + id_persona + "','"+convertirFecha(Clases.FechaSistema.fechaSistema)+"') order by nombre ASC";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"), cmbAfiliado);
             }
             else
             {
                 cmbConsulta.Items.Clear();
                 cmbConsulta.Text = "";
-                comando = "select * from NEXTGDD.buscarConsultasAtendidas('" + id_persona + "') order by consulta ASC";
+                comando = "select * from NEXTGDD.buscarConsultasAtendidas('" + id_persona + "','"+convertirFecha(Clases.FechaSistema.fechaSistema)+"') order by consulta ASC";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "consulta"), cmbConsulta);
                 cmbAfiliado.Text = "";
                 cmbAfiliado.Items.Clear();
@@ -101,7 +101,7 @@ namespace ClinicaFrba.Registro_Resultado
                 cmbConsulta.Items.Clear();
                 cmbConsulta.Text = "";
                 //Filtra las consultas
-                comando = "select * from NEXTGDD.filtrarConsultasPorAfiliado('"+id_persona+"','"+afiliado+"') order by consulta ASC";
+                comando = "select * from NEXTGDD.filtrarConsultasPorAfiliado('"+id_persona+"','"+afiliado+"','"+convertirFecha(Clases.FechaSistema.fechaSistema)+"') order by consulta ASC";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "consulta"), cmbConsulta);
             }
             if (cmbConsulta.SelectedItem != null && (string)cmbConsulta.SelectedItem != consulta)
@@ -140,6 +140,8 @@ namespace ClinicaFrba.Registro_Resultado
             }
 
         }
+
+
 
         private void verificarFecha(string str,char c,Label l)
         {

@@ -950,7 +950,7 @@ BEGIN
 END;
 GO
 
-CREATE FUNCTION NEXTGDD.buscarTurnosDelDia(@profesional varchar(255))
+CREATE FUNCTION NEXTGDD.buscarTurnosDelDia(@profesional varchar(255),@fechaSistema datetime)
 RETURNS TABLE
 AS
 	RETURN select t.fecha as fecha 
@@ -959,7 +959,7 @@ AS
 				  and (pe.nombre+' '+pe.apellido LIKE @profesional) 
 				  --verifica que no haya sido cancelado--
 				  and isnull(t.cod_cancelacion,0)=0 
-				  and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())
+				  and CONVERT(date,t.fecha)=CONVERT(date,@fechaSistema)
 			group by t.fecha 
 GO
 
@@ -1011,18 +1011,18 @@ BEGIN
 END;
 GO
 
-CREATE FUNCTION NEXTGDD.buscarAfiliadosAtendidos(@idMedico varchar(255))
+CREATE FUNCTION NEXTGDD.buscarAfiliadosAtendidos(@idMedico varchar(255),@fechaSistema datetime)
 RETURNS TABLE
 AS
 	RETURN select (p.nombre+' '+p.apellido) as nombre 
 			from NEXTGDD.Afiliado a,NEXTGDD.Persona p,NEXTGDD.Profesional pr,NEXTGDD.Turno t,NEXTGDD.Agenda ag 
 			where p.id_persona=a.id_persona and t.nro_afiliado=a.nro_afiliado and t.cod_agenda=ag.cod_agenda 
 				  and pr.matricula=ag.matricula and pr.id_persona LIKE @idMedico 
-				  and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())
+				  and CONVERT(date,t.fecha)=CONVERT(date,@fechaSistema)
 			group by p.nombre,p.apellido 
 GO
 
-CREATE FUNCTION NEXTGDD.buscarConsultasAtendidas(@idMedico varchar(255))
+CREATE FUNCTION NEXTGDD.buscarConsultasAtendidas(@idMedico varchar(255),@fechaSistema datetime)
 RETURNS TABLE
 AS
 	RETURN select t.fecha as consulta 
@@ -1032,7 +1032,7 @@ AS
 				  --Se fija las consultas que no tienen diagnostico--
 				  and isnull(c.cod_diagnostico,0)=0
 				  --Filtra por fecha actual--
-				  and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())
+				  and CONVERT(date,t.fecha)=CONVERT(date,@fechaSistema)
 GO
 
 CREATE PROCEDURE NEXTGDD.registrarCompra (@cant numeric(18,0),@idAfiliado varchar(255),@precioTotal numeric(18,0))
@@ -1063,7 +1063,7 @@ IF EXISTS (SELECT * FROM NEXTGDD.Turno WHERE nro_turno = @nroTurno)
 END
 GO
 
-CREATE FUNCTION NEXTGDD.filtrarConsultasPorAfiliado(@idMedico varchar(255),@afiliado varchar(255))
+CREATE FUNCTION NEXTGDD.filtrarConsultasPorAfiliado(@idMedico varchar(255),@afiliado varchar(255),@fechaSistema datetime)
 RETURNS TABLE
 AS
 	RETURN select t.fecha as consulta 
@@ -1074,7 +1074,7 @@ AS
 				  --Se fija las consultas que no tienen diagnostico--
 				  and isnull(c.cod_diagnostico,0)=0
 				  --Filtra por fecha actual--
-				  and CONVERT(date,t.fecha)=CONVERT(date,GETDATE())
+				  and CONVERT(date,t.fecha)=CONVERT(date,@fechaSistema)
 			group by t.fecha 
 GO
 

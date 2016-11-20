@@ -19,8 +19,8 @@ namespace ClinicaFrba
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Console.Write("la fecha es:");
-            //Console.Write(System.Configuration.ConfigurationManager.AppSettings["date"]);
+            Clases.FechaSistema.fechaSistema=(string)System.Configuration.ConfigurationManager.AppSettings["date"]+" 00:00:00";
+            Console.Write(Clases.FechaSistema.fechaSistema);
             Application.Run(new frmVentanaPrincipal());
         }
     }
