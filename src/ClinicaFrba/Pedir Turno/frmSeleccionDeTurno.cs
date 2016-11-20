@@ -88,16 +88,17 @@ namespace ClinicaFrba.Pedir_Turno
                 especialidad = (string) cmbEspecialidad.SelectedItem;
                 cmbProfesional.Text = "";
                 cmbProfesional.Items.Clear();
+                cmbHorario.Items.Clear();
 
                 //Carga los profesionales según la especialidad
                 comando = "select * from NEXTGDD.buscarProfesionales('"+especialidad+"')";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"nombre"), cmbProfesional);
             }
-            if (cmbProfesional.SelectedItem != null)
+            if (cmbProfesional.SelectedItem != null && (string)cmbProfesional.SelectedItem!=profesional)
             {
                 warning3.Visible = false;
                 profesional = (string) cmbProfesional.SelectedItem;
-                restringirRangoFechas();
+                cmbHorario.Items.Clear();
             }
             if (cmbHorario.SelectedItem != null)
             {
@@ -111,6 +112,7 @@ namespace ClinicaFrba.Pedir_Turno
         {
             //CARGA LOS HORARIOS A PARTIR DE LA FECHA SELECCIONADA
             warning1.Visible = false;
+            warning2.Visible = false;
             cmbHorario.Items.Clear();
             cmbHorario.Text = "";
             restringirRangoHorario();
@@ -187,7 +189,7 @@ namespace ClinicaFrba.Pedir_Turno
                 }
             }
         }
-
+        /*
         private void restringirRangoFechas()
         {
             comando = "select NEXTGDD.tieneRangosHorarios('" + especialidad + "','" + profesional + "')";
@@ -207,6 +209,7 @@ namespace ClinicaFrba.Pedir_Turno
                 dtpFecha.MaxDate = DateTimePicker.MaximumDateTime;
             }
         }
+         */ 
 
         private void verificarCancelaciones()
         {
@@ -218,27 +221,31 @@ namespace ClinicaFrba.Pedir_Turno
             }
             else
             {
-                warning1.Text = "El profesional no atiende en esa fecha. Seleccione otra.";
+                warning1.Text = "La fecha esta fuera del rango de atención. Seleccione otra.";
             }
         }
 
         private void restringirRangoHorario()
         {
-            int diaSemana = (int)dtpFecha.Value.DayOfWeek - 1;
+            //int diaSemana = (int)dtpFecha.Value.DayOfWeek - 1;
             List<String> campos = new List<string>();
             campos.Add("horaD");
             campos.Add("horaH");
-            comando = "select NEXTGDD.tieneRangosHorarios('" + especialidad + "','" + profesional + "')";
-            if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "true")
+            //comando = "select NEXTGDD.tieneRangosHorarios('" + especialidad + "','" + profesional + "')";
+            /*
+             if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "true")
             {
-                comando = "select * from NEXTGDD.restringirHorarios('" + especialidad + "','" + profesional + "',"+diaSemana+")";
-                cargarHorarios(Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos));
-            }
+             */
+            comando = "select * from NEXTGDD.restringirHorarios('" + especialidad + "','" + profesional + "','" + convertirFecha((string) dtpFecha.Value.ToString()) + "')";
+            cargarHorarios(Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos));
+
+            /*}
             else
             {
                 comando = "select * from NEXTGDD.obtenerRangoClinica(" + diaSemana + ")";
                 cargarHorarios(Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos));
             }
+             */
         }
 
         private void cargarHorarios(DataTable rangos)
@@ -254,6 +261,15 @@ namespace ClinicaFrba.Pedir_Turno
                     dt = dt.AddMinutes(30);
                 }
             }
+        }
+
+        private string convertirFecha(string fecha)
+        {
+            string fechaSinTiempo = fecha.Split(' ')[0];
+            string dia = fechaSinTiempo.Split('/')[0];
+            string mes = fechaSinTiempo.Split('/')[1];
+            string año = fechaSinTiempo.Split('/')[2];
+            return año + "/" + mes + "/" + dia + " " + fecha.Split(' ')[1];
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)

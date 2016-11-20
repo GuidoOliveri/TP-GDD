@@ -168,7 +168,7 @@
             // 
             this.warning2.AutoSize = true;
             this.warning2.ForeColor = System.Drawing.Color.Red;
-            this.warning2.Location = new System.Drawing.Point(148, 195);
+            this.warning2.Location = new System.Drawing.Point(143, 194);
             this.warning2.Name = "warning2";
             this.warning2.Size = new System.Drawing.Size(260, 13);
             this.warning2.TabIndex = 13;
@@ -179,11 +179,11 @@
             // 
             this.warning1.AutoSize = true;
             this.warning1.ForeColor = System.Drawing.Color.Red;
-            this.warning1.Location = new System.Drawing.Point(132, 154);
+            this.warning1.Location = new System.Drawing.Point(116, 154);
             this.warning1.Name = "warning1";
-            this.warning1.Size = new System.Drawing.Size(271, 13);
+            this.warning1.Size = new System.Drawing.Size(288, 13);
             this.warning1.TabIndex = 12;
-            this.warning1.Text = "El profesional no atiende en esa fecha. Seleccione otra.";
+            this.warning1.Text = "La fecha esta fuera del rango de atención. Seleccione otra.";
             // 
             // cmbHorario
             // 

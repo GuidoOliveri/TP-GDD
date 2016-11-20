@@ -893,14 +893,16 @@ AS
 				 and rf.cod_agenda=a.cod_agenda)
 GO
 
-CREATE FUNCTION NEXTGDD.restringirHorarios(@especialidad varchar(255),@profesional varchar(255),@dia numeric(18,0))
+CREATE FUNCTION NEXTGDD.restringirHorarios(@especialidad varchar(255),@profesional varchar(255),@fecha datetime)
 RETURNS TABLE
 AS
 	RETURN (select r.hora_inicial as 'horaD',r.hora_final as 'horaH'
-		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a, NEXTGDD.Rango_Atencion r 
+		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a, NEXTGDD.Rango_Atencion r,NEXTGDD.Rango_Fechas rf 
 		   where (p.nombre+' '+p.apellido) LIKE @profesional and e.descripcion LIKE @especialidad
 				 and pr.id_persona=p.id_persona and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad 
-				 and r.cod_agenda=a.cod_agenda and @dia<=r.dia_semanal_final and @dia>=r.dia_semanal_inicial)
+				 and rf.cod_agenda=a.cod_agenda and CONVERT(date,@fecha)>=CONVERT(date,rf.fecha_desde) 
+				 and CONVERT(date,@fecha)<=CONVERT(date,rf.fecha_hasta) and str(rf.cod_agenda)+str(rf.cod_fecha)=str(r.cod_agenda)+str(r.cod_fecha)
+				 and DATEPART(dw,@fecha)-1<=r.dia_semanal_final and DATEPART(dw,@fecha)-1>=r.dia_semanal_inicial)
 GO
 
 CREATE FUNCTION NEXTGDD.tieneRangosHorarios(@especialidad varchar(255),@profesional varchar(255))
