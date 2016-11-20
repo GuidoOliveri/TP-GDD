@@ -108,7 +108,7 @@ namespace ClinicaFrba.Registro_Resultado
             {
                 consulta = (string)cmbConsulta.SelectedItem;
                 string[] fecha = consulta.Split(' ');
-                txtFecha.Text = fecha[0];
+                txtFecha.Text = agregarCerosFecha(fecha[0]);
                 txtHora.Text = fecha[1];
             }
         }
@@ -220,6 +220,22 @@ namespace ClinicaFrba.Registro_Resultado
             {
                 e.Cancel = true;
             }
+        }
+
+        private string agregarCerosFecha(string fecha)
+        {
+            string dia = fecha.Split('/')[0];
+            string mes = fecha.Split('/')[1];
+            string año = fecha.Split('/')[2];
+            if (dia.Length == 1)
+            {
+                dia = "0" + dia;
+            }
+            if (mes.Length == 1)
+            {
+                mes = "0" + mes;
+            }
+            return dia +'/'+ mes +'/'+ año;
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)

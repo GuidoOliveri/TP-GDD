@@ -98,7 +98,7 @@ namespace ClinicaFrba.Registro_Llegada
                     comando = "select * from NEXTGDD.buscarBonosDisponibles('"+profesional+"','"+convertirFecha(turno)+"') order by bono ASC";
                     cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "bono"), cmbBono);
                     
-                    txtFechaLlegada.Text = turno.Split(' ')[0];
+                    txtFechaLlegada.Text = agregarCerosFecha(turno.Split(' ')[0]);
                     txtHoraLlegada.Text = turno.Split(' ')[1];
                 }
                 else
@@ -190,6 +190,22 @@ namespace ClinicaFrba.Registro_Llegada
                 warning2.Visible = true;
             }
 
+        }
+
+        private string agregarCerosFecha(string fecha)
+        {
+            string dia = fecha.Split('/')[0];
+            string mes = fecha.Split('/')[1];
+            string año = fecha.Split('/')[2];
+            if (dia.Length == 1)
+            {
+                dia = "0"+dia;
+            }
+            if (mes.Length == 1)
+            {
+                mes = "0" + mes;
+            }
+            return dia + '/'+mes +'/' +año ;
         }
 
         private void cargar(List<string> lista,ComboBox cmb)

@@ -117,6 +117,7 @@
     <Compile Include="AbmRol\frmElegirAccionRol.Designer.cs">
       <DependentUpon>frmElegirAccionRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="Clases\FechaSistema.cs" />
     <Compile Include="Login\frmMenuDeAbms.cs">
       <SubType>Form</SubType>
     </Compile>
