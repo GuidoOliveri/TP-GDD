@@ -53,7 +53,7 @@
             this.cmbProfesional = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.cmbEspecialidad = new System.Windows.Forms.ComboBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.gbRangoFechas = new System.Windows.Forms.GroupBox();
             this.dpFechaDesde = new System.Windows.Forms.DateTimePicker();
             this.label9 = new System.Windows.Forms.Label();
             this.dpFechaHasta = new System.Windows.Forms.DateTimePicker();
@@ -65,7 +65,7 @@
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgRangoAtencion)).BeginInit();
-            this.groupBox4.SuspendLayout();
+            this.gbRangoFechas.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -103,11 +103,11 @@
             // 
             this.warning3.AutoSize = true;
             this.warning3.ForeColor = System.Drawing.Color.Red;
-            this.warning3.Location = new System.Drawing.Point(199, 70);
+            this.warning3.Location = new System.Drawing.Point(183, 70);
             this.warning3.Name = "warning3";
-            this.warning3.Size = new System.Drawing.Size(290, 13);
+            this.warning3.Size = new System.Drawing.Size(306, 13);
             this.warning3.TabIndex = 12;
-            this.warning3.Text = "Ya existe una agenda con rangos de atención establecidos.";
+            this.warning3.Text = "Ya existe una agenda. Solo puede agregar rangos de atención.";
             this.warning3.Click += new System.EventHandler(this.warning3_Click);
             // 
             // warning1
@@ -314,18 +314,18 @@
             this.cmbEspecialidad.Size = new System.Drawing.Size(267, 21);
             this.cmbEspecialidad.TabIndex = 5;
             // 
-            // groupBox4
+            // gbRangoFechas
             // 
-            this.groupBox4.Controls.Add(this.dpFechaDesde);
-            this.groupBox4.Controls.Add(this.label9);
-            this.groupBox4.Controls.Add(this.dpFechaHasta);
-            this.groupBox4.Controls.Add(this.label8);
-            this.groupBox4.Location = new System.Drawing.Point(12, 312);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(500, 68);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Rango de fechas";
+            this.gbRangoFechas.Controls.Add(this.dpFechaDesde);
+            this.gbRangoFechas.Controls.Add(this.label9);
+            this.gbRangoFechas.Controls.Add(this.dpFechaHasta);
+            this.gbRangoFechas.Controls.Add(this.label8);
+            this.gbRangoFechas.Location = new System.Drawing.Point(12, 312);
+            this.gbRangoFechas.Name = "gbRangoFechas";
+            this.gbRangoFechas.Size = new System.Drawing.Size(500, 68);
+            this.gbRangoFechas.TabIndex = 3;
+            this.gbRangoFechas.TabStop = false;
+            this.gbRangoFechas.Text = "Rango de fechas";
             // 
             // dpFechaDesde
             // 
@@ -396,7 +396,7 @@
             this.ClientSize = new System.Drawing.Size(524, 413);
             this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.warning2);
-            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.gbRangoFechas);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmRegistrarAgendaMedico";
@@ -411,8 +411,8 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgRangoAtencion)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.gbRangoFechas.ResumeLayout(false);
+            this.gbRangoFechas.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -438,7 +438,7 @@
         private System.Windows.Forms.ComboBox cmbProfesional;
         private System.Windows.Forms.Label warning2;
         private System.Windows.Forms.DataGridView dgRangoAtencion;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox gbRangoFechas;
         private System.Windows.Forms.DateTimePicker dpFechaDesde;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.DateTimePicker dpFechaHasta;

@@ -31,6 +31,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             warning1.Visible=false;
             warning2.Visible = false;
             warning3.Visible = false;
+            gbRangoFechas.Visible = false;
 
             cargarDias();
 
@@ -79,6 +80,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             {
                 warning3.Visible = false;
                 warning2.Visible = false;
+                dgRangoAtencion.Rows.Clear();
                 cmbEspecialidad.Items.Clear();
                 cmbEspecialidad.Text = "";
                 profesional = (string) cmbProfesional.SelectedItem;
@@ -112,14 +114,19 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             }
             if (cmbEspecialidad.SelectedItem != null && (string)cmbEspecialidad.SelectedItem != especialidad)
             {
+                dgRangoAtencion.Rows.Clear();
                 especialidad = (string)cmbEspecialidad.SelectedItem;
                 comando = "select NEXTGDD.validarAgendaUnica('"+especialidad+"','"+profesional+"')";
                 if (Clases.BaseDeDatosSQL.buscarCampo(comando)=="No existe una agenda")
                 {
+                    gbRangoFechas.Visible = true;
                     warning3.Visible = false;
                 }
                 else
                 {
+                    gbRangoFechas.Visible = false;
+                    fechaDesde = "";
+                    fechaHasta = "";
                     warning3.Visible = true;
                 }
             }
@@ -174,19 +181,35 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         {
             if (((Button)sender).Text.Equals(btnAgregar.Text))
             {
-                diaHasta = (string)cmbDiaHasta.SelectedItem;
-                int nroDiaHasta;
-                for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta);nroDiaHasta++){}
-                horaHasta = (string)cmbHorarioHasta.SelectedItem;
-                verificarRangoHospital();
-                verificarSuperposicionDeRangos();
-                if(warning1.Visible==false)
+                if (cmbProfesional.SelectedItem != null && cmbEspecialidad != null)
                 {
-                    dgRangoAtencion.Rows.Add(cmbDiaDesde.SelectedIndex, nroDiaHasta, horaDesde, horaHasta);
-                    cmbDiaDesde.Text = "";
-                    cmbDiaHasta.Text = "";
-                    cmbHorarioDesde.Text = "";
-                    cmbHorarioHasta.Text = "";
+                    warning1.Text = "El rango horario no es válido. Seleccione otro.";
+                    warning1.Visible = false;
+                    diaHasta = (string)cmbDiaHasta.SelectedItem;
+                    int nroDiaHasta;
+                    for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+                    horaHasta = (string)cmbHorarioHasta.SelectedItem;
+                    verificarRangoHospital();
+                    verificarSuperposicionDeRangos();
+                    profesional = (string)cmbProfesional.SelectedItem;
+                    especialidad = (string)cmbEspecialidad.SelectedItem;
+                    if (warning1.Visible == false)
+                    {
+                        verificarSuperposicionDeRangosEnBDD();
+                        if (warning1.Visible == false)
+                        {
+                            dgRangoAtencion.Rows.Add(cmbDiaDesde.SelectedIndex, nroDiaHasta, horaDesde, horaHasta);
+                            cmbDiaDesde.Text = "";
+                            cmbDiaHasta.Text = "";
+                            cmbHorarioDesde.Text = "";
+                            cmbHorarioHasta.Text = "";
+                        }
+                    }
+                }
+                else
+                {
+                    warning1.Text = "Debe seleccionar profesional y especialidad.";
+                    warning1.Visible = true;
                 }
             }
             if (((Button)sender).Text.Equals(btnBorrar.Text))
@@ -201,22 +224,31 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 especialidad = (string)cmbEspecialidad.SelectedItem;
                 diaHasta = (string)cmbDiaHasta.SelectedItem;
                 horaHasta = (string)cmbHorarioHasta.SelectedItem;
-                fechaDesde =dpFechaDesde.Value.Date.ToString();
-                fechaHasta = dpFechaHasta.Value.Date.ToString();
-                if (especialidad != "" && profesional != "" && dgRangoAtencion.Rows.Count!=0 && fechaDesde!="" && fechaHasta!="" && warning1.Visible == false && warning2.Visible == false &&warning3.Visible==false)
+                if (gbRangoFechas.Visible == true)
                 {
-                    comando = "EXECUTE NEXTGDD.registrarAgenda @nomProfesional='"+profesional+"', @nomEspecialidad='"+especialidad+"', @fechaD='"+convertirFecha(fechaDesde)+"', @fechaH='"+convertirFecha(fechaHasta)+"'";
+                    fechaDesde = dpFechaDesde.Value.Date.ToString();
+                    fechaHasta = dpFechaHasta.Value.Date.ToString();
+                }
+                if (especialidad != "" && profesional != "" && dgRangoAtencion.Rows.Count!=0 && fechaDesde!=null && fechaHasta!=null && warning2.Visible == false && warning1.Visible==false)
+                {
+                    string fechaD = "";
+                    string fechaH = "";
+                    if (gbRangoFechas.Visible == true)
+                    {
+                        fechaD = convertirFecha(fechaDesde);
+                        fechaH = convertirFecha(fechaHasta);
+                    }
+
+                    comando = "EXECUTE NEXTGDD.registrarAgenda @nomProfesional='"+profesional+"', @nomEspecialidad='"+especialidad+"', @fechaD='"+fechaD+"', @fechaH='"+fechaH+"'";
                     Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
                     comando = "select NEXTGDD.buscarCodigoAgenda('" + profesional + "','" + especialidad + "')";
                     string cod_agenda=Clases.BaseDeDatosSQL.buscarCampo(comando);
 
-                    int nroRango = 0;
                     foreach(DataGridViewRow row in dgRangoAtencion.Rows)
                     {
-                        comando = "EXECUTE NEXTGDD.registrarRangoHorario @cod_rango='"+nroRango+"', @codAgenda='" + cod_agenda+ "',@diaD='" + row.Cells[0].Value.ToString() + "',@diaH='" + row.Cells[1].Value.ToString() + "',@horaD='" + row.Cells[2].Value.ToString() + ":00',@horaH='" + row.Cells[3].Value.ToString() + ":00'";
+                        comando = "EXECUTE NEXTGDD.registrarRangoHorario @codAgenda='" + cod_agenda+ "',@diaD='" + row.Cells[0].Value.ToString() + "',@diaH='" + row.Cells[1].Value.ToString() + "',@horaD='" + row.Cells[2].Value.ToString() + ":00',@horaH='" + row.Cells[3].Value.ToString() + ":00'";
                         Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
-                        nroRango++;
                     }
 
                     MessageBox.Show("La agenda se ha registrado correctamente." , "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -261,6 +293,23 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             }
         }
 
+        private void verificarSuperposicionDeRangosEnBDD()
+        {
+            comando = "select NEXTGDD.buscarCodigoAgenda('"+profesional+"','"+especialidad+"')";
+            string agenda = Clases.BaseDeDatosSQL.buscarCampo(comando);
+            comando = "select dia_semanal_inicial as 'DD',dia_semanal_final as 'DH',hora_inicial as 'HD',hora_final as 'HH' from NEXTGDD.Rango_Atencion where cod_agenda=" + agenda;
+            List<string> campos = new List<string>();
+            campos.Add("DD");
+            campos.Add("DH");
+            campos.Add("HD");
+            campos.Add("HH");
+            DataTable rangosBDD = Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos);
+            if (rangosBDD.Rows.Count != 0)
+            {
+                haySuperposicion(rangosBDD);
+            }
+        }
+
         private void verificarSuperposicionDeRangos()
         {
             warning1.Visible = false;
@@ -283,6 +332,29 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 }
             }
            
+        }
+
+        private void haySuperposicion(DataTable dt)
+        {
+            warning1.Visible = false;
+            int nroDesde = cmbDiaDesde.SelectedIndex;
+            int nroDiaHasta;
+            for (nroDiaHasta = 0; nroDiaHasta < 6 && diaHasta != dias.ElementAt(nroDiaHasta); nroDiaHasta++) { }
+            List<int> rangoDias1 = buscarDiasIntermedios(nroDesde, nroDiaHasta);
+            List<string> rangoHoras1 = buscarHorasIntermedias(horaDesde, horaHasta);
+
+            foreach (DataRow fila in dt.Rows)
+            {
+                List<int> rangoDias2 = buscarDiasIntermedios(int.Parse(fila[0].ToString()), int.Parse(fila[1].ToString()));
+                List<string> rangoHoras2 = buscarHorasIntermedias((string)fila[2], (string)fila[3]);
+                IEnumerable<int> intersecDias = rangoDias1.Intersect(rangoDias2);
+                IEnumerable<string> intersecHoras = rangoHoras1.Intersect(rangoHoras2);
+                if (intersecDias.Count() != 0 && intersecHoras.Count() != 0)
+                {
+                    warning1.Text = "El rango horario no es válido, se superoponen rangos de atención.";
+                    warning1.Visible = true;
+                }
+            }
         }
 
         private List<int> buscarDiasIntermedios(int nroDesde,int nroDiaHasta)
