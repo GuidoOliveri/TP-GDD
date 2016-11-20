@@ -1906,8 +1906,3 @@ GO
 
 EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 0, @id_persona = 3116603
 GO
-
-
-
-
-select * from NEXTGDD.Afiliado
