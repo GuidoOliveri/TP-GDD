@@ -136,7 +136,7 @@ namespace ClinicaFrba.Login
                     }
                     else
                     {
-                        MessageBox.Show("Solo un especialista o afiliado puede cancelar atencion medica", "Cancelar Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Solo un especialista o afiliado puede cancelar un turno", "Cancelar Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
                    
