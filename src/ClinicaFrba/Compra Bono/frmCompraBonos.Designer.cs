@@ -41,6 +41,7 @@
             this.lblTotalAPagar = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.cantBonosUpDown = new System.Windows.Forms.NumericUpDown();
+            this.warningCompraNula = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.cantBonosUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -128,6 +129,7 @@
             this.btnCargarAfiliado.TabIndex = 10;
             this.btnCargarAfiliado.Text = "Cargar";
             this.btnCargarAfiliado.UseVisualStyleBackColor = true;
+            this.btnCargarAfiliado.Visible = false;
             this.btnCargarAfiliado.Click += new System.EventHandler(this.btnCargarAfiliado_Click);
             // 
             // label1
@@ -170,11 +172,23 @@
             this.cantBonosUpDown.TabIndex = 14;
             this.cantBonosUpDown.ValueChanged += new System.EventHandler(this.cantBonos_ValueChanged);
             // 
+            // warningCompraNula
+            // 
+            this.warningCompraNula.AutoSize = true;
+            this.warningCompraNula.ForeColor = System.Drawing.Color.Red;
+            this.warningCompraNula.Location = new System.Drawing.Point(206, 112);
+            this.warningCompraNula.Name = "warningCompraNula";
+            this.warningCompraNula.Size = new System.Drawing.Size(161, 13);
+            this.warningCompraNula.TabIndex = 15;
+            this.warningCompraNula.Text = "Ingrese Una Cantidad Mayor A 0";
+            this.warningCompraNula.Visible = false;
+            // 
             // frmCompraBonos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(430, 187);
+            this.Controls.Add(this.warningCompraNula);
             this.Controls.Add(this.cantBonosUpDown);
             this.Controls.Add(this.lblTotalAPagar);
             this.Controls.Add(this.label3);
@@ -214,5 +228,6 @@
         private System.Windows.Forms.Label lblTotalAPagar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown cantBonosUpDown;
+        private System.Windows.Forms.Label warningCompraNula;
     }
 }
