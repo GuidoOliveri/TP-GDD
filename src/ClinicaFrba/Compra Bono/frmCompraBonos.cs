@@ -106,7 +106,7 @@ namespace ClinicaFrba.Compra_Bono
             warningCompraNula.Visible = false;
 
             String comando;
-            String fechaDeHoy = convertirFecha(Clases.FechaSistema.fechaSistema);
+            String fechaDeHoy = Clases.FechaSistema.fechaActualConvertida();
 
 
             // Adquiero el codigo del plan
@@ -143,23 +143,6 @@ namespace ClinicaFrba.Compra_Bono
                 lblTotalAPagar.Text = (cantBonosUpDown.Value * int.Parse(txtPrecioBono.Text)).ToString();
                
             }
-        }
-
-        private string convertirFecha(string fecha)
-        {
-            string fechaSinTiempo = fecha.Split(' ')[0];
-            string dia = fechaSinTiempo.Split('/')[0];
-            if (dia.Length == 1)
-            {
-                dia = '0' + dia;
-            }
-            string mes = fechaSinTiempo.Split('/')[1];
-            if (mes.Length == 1)
-            {
-                mes = '0' + mes;
-            }
-            string año = fechaSinTiempo.Split('/')[2];
-            return año + "/" + mes + "/" + dia + " " + fecha.Split(' ')[1];
         }
     }
 }

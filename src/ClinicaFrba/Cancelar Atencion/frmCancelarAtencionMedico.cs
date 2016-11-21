@@ -14,8 +14,7 @@ namespace ClinicaFrba.Cancelar_Atencion
     {
         private string rol = "";
         private string usuario = "";
-        //string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
-
+      
         String comando;
 
         private String matriculaProfesional;
@@ -114,7 +113,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private bool sePuedeCancelarElRango(DateTime diaACancelar)
         {
-            DateTime fechaActual = DateTime.Parse("07/11/2016 00:00:00");
+            DateTime fechaActual = DateTime.Parse(Clases.FechaSistema.fechaSistema);
             return diaACancelar.Date > fechaActual.Date;
         }
 
