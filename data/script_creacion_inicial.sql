@@ -509,6 +509,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.cance
     DROP PROCEDURE NEXTGDD.cancelarTurno
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.registrarCancelacionDePeriodo'))
+    DROP PROCEDURE NEXTGDD.registrarCancelacionDePeriodo
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Pacientes'))
     DROP VIEW NEXTGDD.Pacientes
 GO
@@ -1013,11 +1017,11 @@ END;
 GO
 
 CREATE PROCEDURE NEXTGDD.comprarBono (@fechaImpresion datetime,@compraFecha dateTime,
-			@codPlan numeric(18,0), @nroAfiliado numeric(18,0))
+			@codPlan numeric(18,0), @nroAfiliado numeric(18,0), @idCompra numeric (18,0))
 AS
 BEGIN
-	INSERT NEXTGDD.Bono_Consulta(fecha_impresion, cod_plan, nro_afiliado) values
-			(@fechaImpresion,@codPlan, @nroAfiliado)
+	INSERT NEXTGDD.Bono_Consulta(fecha_impresion, cod_plan, nro_afiliado, id_compra) values
+			(@fechaImpresion,@codPlan, @nroAfiliado, @idCompra)
 END;
 GO
 
@@ -1030,6 +1034,15 @@ IF EXISTS (SELECT * FROM NEXTGDD.Turno WHERE nro_turno = @nroTurno)
 	SET cod_cancelacion = SCOPE_IDENTITY()
 	WHERE Turno.nro_turno = @nroTurno
 END
+GO
+
+CREATE PROCEDURE NEXTGDD.registrarCancelacionDePeriodo(@fechaDesde datetime, @fechaHasta datetime,
+	 @codCancelacion numeric(18,0), @codAgenda numeric (18,0))
+	  
+AS BEGIN
+	INSERT NEXTGDD.Cancelacion_Por_Fecha(fecha_desde, fecha_hasta, cod_canc_fecha, cod_agenda) values
+			(@fechaDesde,@fechaHasta,@codCancelacion, @codAgenda)
+	END
 GO
 
 CREATE FUNCTION NEXTGDD.filtrarConsultasPorAfiliado(@idMedico varchar(255),@afiliado varchar(255),@fechaSistema datetime)
