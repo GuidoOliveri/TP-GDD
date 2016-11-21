@@ -73,8 +73,8 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
                 else if (resultado.Equals(-2))
                 {
-                    
-                    MessageBox.Show("El Nro de Afiliado: " + nroAfil+ " No existe!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    MessageBox.Show("El Afiliado Nro:  " + nroAfil + " No existe!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     limpiar();
                     frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionBaja);
                     this.Hide();
@@ -83,7 +83,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 else if (resultado.Equals(-3))
                 {
 
-                    MessageBox.Show("El Nro de Afiliado: " + nroAfil + " Ya fue dado de baja anteriormente!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("El Afiliado Nro: " + nroAfil + " Ya fue dado de baja anteriormente!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     limpiar();
                     frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionBaja);
                     this.Hide();
@@ -92,7 +92,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 else
                 {
 
-                    MessageBox.Show("El Nro de Afiliado: " + nroAfil + "\nFecha de Baja: " + fechaBaja + "\nFue dado de baja exitosamente!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("El Afiliado Nro: " +nroAfil + "\nFue dado de baja exitosamente!\nTodos sus turnos apartir de la fecha : " + fechaBaja.AddDays(1) + " fueron cancelados", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     limpiar();
                     frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionBaja);
                     this.Hide();
