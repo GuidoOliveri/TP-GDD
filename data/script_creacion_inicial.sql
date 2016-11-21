@@ -266,7 +266,6 @@ CREATE TABLE NEXTGDD.Cancelacion_Por_Fecha (
     cod_canc_fecha numeric (18,0) PRIMARY KEY IDENTITY, 
 	fecha_desde datetime,
 	fecha_hasta datetime,
-	cod_cancelacion numeric (18,0) REFERENCES NEXTGDD.Cancelacion(cod_cancelacion),
 	cod_agenda numeric (18,0) REFERENCES NEXTGDD.Agenda(cod_agenda) 
    )
 
@@ -1031,17 +1030,17 @@ IF EXISTS (SELECT * FROM NEXTGDD.Turno WHERE nro_turno = @nroTurno)
 	INSERT NEXTGDD.Cancelacion(tipo_cancelacion, motivo) values
 			(@tipoCancelacion,@motivo)
 	UPDATE  NEXTGDD.Turno 
-	SET cod_cancelacion = SCOPE_IDENTITY()
+	SET cod_cancelacion = (select top 1 cod_cancelacion from NEXTGDD.Cancelacion order by 1 desc)
 	WHERE Turno.nro_turno = @nroTurno
 END
 GO
 
 CREATE PROCEDURE NEXTGDD.registrarCancelacionDePeriodo(@fechaDesde datetime, @fechaHasta datetime,
-	 @codCancelacion numeric(18,0), @codAgenda numeric (18,0))
+	 @codAgenda numeric (18,0))
 	  
 AS BEGIN
-	INSERT NEXTGDD.Cancelacion_Por_Fecha(fecha_desde, fecha_hasta, cod_canc_fecha, cod_agenda) values
-			(@fechaDesde,@fechaHasta,@codCancelacion, @codAgenda)
+	INSERT NEXTGDD.Cancelacion_Por_Fecha(fecha_desde, fecha_hasta, cod_agenda) values
+			(@fechaDesde,@fechaHasta,@codAgenda)
 	END
 GO
 
@@ -1862,5 +1861,5 @@ GO
 EXEC NEXTGDD.agregar_usuario @username = 'afiliado', @password = 'w23e',@codigo_rol= 2, @habilitado= 1, @id_persona = 1123960
 GO
 
-EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 0, @id_persona = 3116603
+EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 1, @id_persona = 3116603
 GO
