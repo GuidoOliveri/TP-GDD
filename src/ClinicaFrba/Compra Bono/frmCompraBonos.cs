@@ -89,6 +89,7 @@ namespace ClinicaFrba.Compra_Bono
             catch 
             {
                 MessageBox.Show("No Se Encontro al afiliado", "Buscar Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtNumeroAfiliado.Text = "";
                         
             }
             
@@ -129,7 +130,10 @@ namespace ClinicaFrba.Compra_Bono
             }
 
             MessageBox.Show("Compra completada con exito!", "Compra", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+
+            Compra_Bono.frmCompraBonos nuevo = new Compra_Bono.frmCompraBonos();
+            this.Hide();
+            nuevo.Show();
         }
 
         private void cantBonos_ValueChanged(object sender, EventArgs e)
@@ -140,7 +144,16 @@ namespace ClinicaFrba.Compra_Bono
             }
             else
             {
-                lblTotalAPagar.Text = (cantBonosUpDown.Value * int.Parse(txtPrecioBono.Text)).ToString();
+                if (txtNumeroAfiliado.Text != "")
+                {
+                    lblTotalAPagar.Text = (cantBonosUpDown.Value * int.Parse(txtPrecioBono.Text)).ToString();
+                }
+                else
+                {
+                    MessageBox.Show("Debe ingresar un afiliado", "Cantidad de Bonos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    cantBonosUpDown.Value = 0;
+                    txtPrecioBono.Text = "0.00";
+                }
                
             }
         }
