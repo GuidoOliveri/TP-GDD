@@ -90,9 +90,6 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Tipo_
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Profesional'))
     DROP TABLE NEXTGDD.Profesional
-	
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Administrativo'))
-    DROP TABLE NEXTGDD.Administrativo
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Plan_Medico'))
     DROP TABLE NEXTGDD.Plan_Medico
@@ -195,12 +192,6 @@ CREATE TABLE NEXTGDD.Plan_Medico (
    precio_bono_consulta numeric (18,0),
    precio_bono_farmacia numeric (18,0),
    )
-
-CREATE TABLE NEXTGDD.Administrativo (
-    
-	id_administrativo int PRIMARY KEY IDENTITY,
-	id_persona numeric (18,0) REFERENCES NEXTGDD.Persona(id_persona)
-	)
 
 CREATE TABLE NEXTGDD.Profesional (
 --SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION    
@@ -1601,7 +1592,7 @@ AS
 								where a2.grupo_afiliado=a.grupo_afiliado and a2.nro_afiliado<>a.nro_afiliado)=0
 						   THEN 'No'
 						   ELSE 'Si'
-						   END) as 'Pertenece a Grupo Familiar'
+						   END) as 'Tiene familiares'
 		from NEXTGDD.Afiliado a,NEXTGDD.Persona p,NEXTGDD.Compra_Bono cb
 		where a.id_persona=p.id_persona and cb.id_afiliado=a.nro_afiliado 
 			  and year(cb.compra_fecha)=@anio and month(cb.compra_fecha)>=@mesInicio and month(cb.compra_fecha)<=@mesFin
