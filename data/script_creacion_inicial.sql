@@ -99,7 +99,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Perso
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.Estado_Civil'))
     DROP TABLE NEXTGDD.Estado_Civil
-
+	
 GO
 
 /**** CREACION DE TABLAS ****/
@@ -131,14 +131,6 @@ CREATE TABLE NEXTGDD.Persona (
 	estado_civil tinyint not null default 6 REFERENCES NEXTGDD.Estado_Civil(id),
 	nro_documento numeric(18,0) NOT NULL,
 	tipo_doc varchar (50) NOT NULL DEFAULT 'D.N.I.',
-
-	/*me tira error por fk, tendriamos que agregar la constraint despues de crear las tablas,
-	por ahora lo anulo, despues lo agrego.
-
-	nro_afiliado numeric(18,0) default null REFERENCES NEXTGDD.Afiliado(nro_afiliado),
-	nro_matricula numeric(18,0) default null REFERENCES NEXTGDD.Profesional(matricula),
-	id_administrador numeric(18,0) default null REFERENCES NEXTGDD.Profesional(matricula),
-	*/
 
 	CONSTRAINT check_s2 check (sexo IN ('H', 'M','X')),
 	CONSTRAINT tipodoc_2 check (tipo_doc IN ('L.E.', 'Pasaporte','D.N.I.','L.C','C.I.')),
@@ -194,7 +186,6 @@ CREATE TABLE NEXTGDD.Plan_Medico (
    )
 
 CREATE TABLE NEXTGDD.Profesional (
---SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION    
 	matricula numeric (18,0) IDENTITY(1000,1) PRIMARY KEY,
 	id_persona numeric (18,0) REFERENCES NEXTGDD.Persona(id_persona),
     activo bit DEFAULT 0
@@ -221,7 +212,6 @@ CREATE TABLE NEXTGDD.Profesional_X_Especialidad (
    )
    
 CREATE TABLE NEXTGDD.Afiliado (
---SACAR EL IDENTITY SOLO CUANDO SE TERMINE LA MIGRACION
 	nro_afiliado numeric (20,0) PRIMARY KEY , 
 	cant_familiares tinyint,
 	cod_plan numeric(18,0) REFERENCES NextGDD.Plan_Medico(cod_plan),
@@ -229,8 +219,8 @@ CREATE TABLE NEXTGDD.Afiliado (
 	activo bit DEFAULT 1,
 	fecha_baja_logica datetime DEFAULT NULL,
 	id_persona numeric (18,0) REFERENCES NEXTGDD.Persona(id_persona),
-	grupo_afiliado numeric (18,0) ,        --numero raiz de afiliado 
-	integrante_grupo numeric (2,0)         --01:principal, 02: conyuge, 03:hijo
+	grupo_afiliado numeric (18,0) ,       
+	integrante_grupo numeric (2,0)        
 	)
 	 
 CREATE TABLE NEXTGDD.Compra_Bono (
@@ -355,7 +345,6 @@ CREATE TABLE NEXTGDD.Rango_Atencion (
 GO
 
 /***************Validacion de Procedure, Function,Triggers*********************/
-/****las validaciones nos permite ejecutar todo el script,una vez ya ejecutado por primera vez****/
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.login'))
     DROP PROCEDURE NEXTGDD.login
@@ -586,14 +575,6 @@ CREATE VIEW NEXTGDD.Medicos AS
 	FROM gd_esquema.Maestra
 	WHERE Medico_Dni IS NOT NULL
 GO
- 
- /*Es de suponer que un afiliado a lo largo de su historia puede sufrir modificaciones
-en alguno de sus datos, como ser su dirección, teléfono, mail, plan médico, etc (no así
-su nombre, apellido, dni y fecha de nacimiento). Si fuese necesario modificar el plan del
-afiliado, es necesario que se registre cuando se ha producido dicha modificación y el
-motivo que la originó, de manera de poder obtener un historial de dichos cambios.
-Dicho historial debe poder ser consultado de alguna manera dentro del sistema.*/
-
 
 CREATE VIEW NEXTGDD.Pacientes_Afil (Nro_Afiliado, Nombre, Apellido,Tipo_Doc, Nro_Doc, Direccion, Telefono, Mail,Plan_Medico,Fecha_Nac,Estado_Civil,Cant_Hijos, Activo)
 AS
@@ -791,13 +772,11 @@ CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smal
            
 		  ELSE
 		   BEGIN 
-		  --PRINT 'CONTRASENA INCORRECTA'	   
-			--Agrego un login fallido
+
             UPDATE NEXTGDD.Usuario
             SET logins_fallidos = logins_fallidos + 1
             WHERE username = @user
     
-	        --si ya tiene 3 logins fallidos dar de baja al usuario
     
 	       UPDATE NEXTGDD.Usuario
            SET habilitado = 0
@@ -810,7 +789,6 @@ CREATE PROCEDURE NEXTGDD.login(@user VARCHAR(100), @pass varchar(100), @ret smal
         END
 
    ELSE
-	    --PRINT 'NO EXISTE EL USUARIO o EL USUARIO ESTA INHABILITADO'
 		SET @ret= -1
 END
 GO
@@ -1259,8 +1237,7 @@ GO
 
 CREATE PROCEDURE NEXTGDD.agregar_usuario (@username VARCHAR(50), @password VARCHAR(255), @codigo_rol TINYINT, @habilitado BIT,  @id_persona INT) 
 AS BEGIN
-  /* Intenta crear un usuario con los datos especificados Para eso debe crear una entrada en la tabla Usuario y una en la table Usuario_X_Rol
-     Si alguna de las dos inserciones falla, todo se vuelve para atras Devuelve el codigo del nuevo usuario o -1 en caso de error */
+
   BEGIN TRY
 	BEGIN TRANSACTION
 			
@@ -1316,7 +1293,6 @@ SET @nro_afiliado =  cast (@pers as varchar)+ '01'
 	 DECLARE @pass varchar (100)
 	 SET @pass = @usr
 
---utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
 
      	INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos,id_persona)
 		VALUES (@usr+'@NEXTGDD', HASHBYTES('SHA2_256', @pass), 1, 0, @pers)
@@ -1331,7 +1307,7 @@ SET @nro_afiliado =  cast (@pers as varchar)+ '01'
  END TRY
  
       BEGIN CATCH
-         -- No hago nada si hubo un error ( duplicado)
+
       SET @ret= -1
      		 
       ROLLBACK TRANSACTION @TransactionName
@@ -1369,7 +1345,6 @@ SET @pers = SCOPE_IDENTITY()
 
 SELECT  @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE grupo_afiliado=@grupo_afiliado and  integrante_grupo = 01
 
- --select * from NEXTGDD.Afiliado 
    IF @nro_afiliado_integrante = 1
          BEGIN
 		   SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ '02'
@@ -1412,8 +1387,7 @@ SELECT  @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE grupo_afiliado=@grupo_a
 		   END	
   SET @usr = CONVERT(VARCHAR(255),@nro_afiliado)
   SET @pass = @usr
---utilizamos el numero de documento como el username y el nro de afiliado como la contrasena 
-
+   
   INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos,id_persona)
   VALUES (@usr+'@NEXTGDD', HASHBYTES('SHA2_256', @pass), 1, 0, @pers)
 
@@ -1428,7 +1402,7 @@ SELECT  @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE grupo_afiliado=@grupo_a
  END TRY
   
       BEGIN CATCH
-         -- No hago nada si hubo un error ( duplicado)
+
       SET @ret= -1
      		 
       ROLLBACK TRANSACTION @TransactionName1
@@ -1436,22 +1410,15 @@ SELECT  @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE grupo_afiliado=@grupo_a
 END
 GO
 
---en base a un numero de afiliado muestra todo el historial del grupo familiar 
---ver la pantalla
 CREATE PROCEDURE NEXTGDD.mostrarHistorial(@nroafiliado numeric(20,0) )
 AS
 BEGIN
 
---IF EXISTS (select * from NEXTGDD.Afiliado WHERE nro_afiliado= @nroafiliado)
---BEGIN
 SELECT nro_historial,fecha_modificacion,motivo_modificacion, nro_afiliado, cod_plan_viejo, cod_plan_nuevo
 FROM NEXTGDD.Historial
 WHERE nro_afiliado IN (SELECT c.nro_afiliado FROM NEXTGDD.Afiliado c WHERE c.grupo_afiliado= (SELECT d.grupo_afiliado FROM Afiliado d WHERE d.nro_afiliado= @nroafiliado ))
---SET @ret=0
+
 END
---ELSE
-  --SET @ret =-1
---END
 GO
 
 CREATE PROCEDURE NEXTGDD.mostrarHistorial_ga(@grupoafiliado numeric(20,0) )
@@ -1476,19 +1443,25 @@ END
 GO
 
 CREATE PROCEDURE NEXTGDD.darDeBajaAfiliado(@nro_afiliado numeric(20,0), @fecha_baja datetime, @ret smallint OUTPUT)
-AS BEGIN
+AS BEGIN           
 
 IF EXISTS (SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado)
-  BEGIN
+   BEGIN
     BEGIN TRY
 	  BEGIN TRANSACTION   
-         
+        
+        DECLARE @fechaTurnos DATETIME 
 		IF (1 = (SELECT activo FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado))
 		  BEGIN
 		  UPDATE NEXTGDD.Afiliado 
 	      SET  activo = 0, fecha_baja_logica = @fecha_baja
 	      WHERE nro_afiliado = @nro_afiliado
-            
+
+		   SET @fechaTurnos = DATEADD(day, 1, @fecha_baja)
+		 
+		   DELETE FROM NEXTGDD.Turno
+		    WHERE nro_afiliado = @nro_afiliado AND fecha >=  @fechaTurnos
+	
           SET @ret= 0
 		  END
         ELSE
@@ -1536,13 +1509,6 @@ AS
 		order by count(*) DESC
 GO
 
-/*
-DROP FUNCTION NEXTGDD.listado1
-GO
-
-DROP FUNCTION NEXTGDD.listado1Ambos
-GO
-*/
 
 CREATE FUNCTION NEXTGDD.listado2(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0),@plan varchar(255))
 RETURNS TABLE
@@ -1559,10 +1525,6 @@ AS
 		order by count(*) DESC
 GO
 
-/*
-DROP FUNCTION NEXTGDD.listado2
-GO
-*/
 
 CREATE FUNCTION NEXTGDD.listado3(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0),@espec varchar(255))
 RETURNS TABLE
@@ -1578,10 +1540,6 @@ AS
 GO
 
 /*evalua segun la cantidad de consultas, no el rango horario*/
-/*
-DROP FUNCTION NEXTGDD.listado3
-GO
-*/
 
 CREATE FUNCTION NEXTGDD.listado4(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
 RETURNS TABLE
@@ -1600,10 +1558,6 @@ AS
 		order by 2 DESC; 
 GO
 
-/*
-DROP FUNCTION NEXTGDD.listado4
-GO
-*/
 
 CREATE FUNCTION NEXTGDD.listado5(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
 RETURNS TABLE
@@ -1617,11 +1571,8 @@ AS
 		order by count(e.cod_especialidad) DESC
 GO
 
-/*
-DROP FUNCTION NEXTGDD.listado5
-GO
-*/
 
+/************************************/
 /************ Migracion *************/
 
 

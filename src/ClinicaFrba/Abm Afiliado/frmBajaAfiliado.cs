@@ -91,8 +91,8 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
                 else
                 {
-                    
-                    MessageBox.Show("El Nro de Afiliado: " + nroAfil+ "\nFue dado de baja exitosamente!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    MessageBox.Show("El Nro de Afiliado: " + nroAfil + "\nFecha de Baja: " + fechaBaja + "\nFue dado de baja exitosamente!", "Baja Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     limpiar();
                     frmBuscarAfiliado buscar = new frmBuscarAfiliado(operacionBaja);
                     this.Hide();

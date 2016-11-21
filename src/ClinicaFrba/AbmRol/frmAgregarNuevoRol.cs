@@ -55,7 +55,9 @@ namespace ClinicaFrba.AbmRol
                     //DOY DE ALTA EL ROL
                     Roles.Agregar(txtNombre.Text, listaDeFunc);
                     MessageBox.Show("El rol fue agregado con éxito", "Enhorabuena!", MessageBoxButtons.OK);
-                    this.Close();
+                    //this.Close();
+                    deschequearElCheckBox();
+                    txtNombre.Text = "";
                 }
                 else
                 {
