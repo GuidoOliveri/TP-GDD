@@ -158,11 +158,11 @@
             // 
             this.warning4.AutoSize = true;
             this.warning4.ForeColor = System.Drawing.Color.Red;
-            this.warning4.Location = new System.Drawing.Point(254, 41);
+            this.warning4.Location = new System.Drawing.Point(157, 41);
             this.warning4.Name = "warning4";
-            this.warning4.Size = new System.Drawing.Size(154, 13);
+            this.warning4.Size = new System.Drawing.Size(246, 13);
             this.warning4.TabIndex = 14;
-            this.warning4.Text = "No existe el numero de afiliado.";
+            this.warning4.Text = "No existe el numero de afiliado o fue dado de baja.";
             // 
             // warning2
             // 
