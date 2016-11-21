@@ -241,6 +241,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 especialidad = (string)cmbEspecialidad.SelectedItem;
                 diaHasta = (string)cmbDiaHasta.SelectedItem;
                 horaHasta = (string)cmbHorarioHasta.SelectedItem;
+                verificarSumaHoras();
                 if (dpFechaDesde.Enabled == true && dpFechaHasta.Enabled == true)
                 {
                     fechaDesde = dpFechaDesde.Value.Date.ToString();
@@ -400,6 +401,54 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 dt = dt.AddMinutes(30);
             }
             return rangoHoras1;
+        }
+
+        private void verificarSumaHoras()
+        {
+            double horas=0;
+            foreach(DataGridViewRow fila in dgRangoAtencion.Rows)
+            {
+                string horaD ="2/2/2000 "+(string) fila.Cells[2].Value;
+                string horaH ="2/2/2000 "+ (string)fila.Cells[3].Value;
+                TimeSpan diferencia = (DateTime.Parse(horaH)).Subtract(DateTime.Parse(horaD));
+                int cantDias = (int)fila.Cells[1].Value - (int)fila.Cells[0].Value+1;
+                horas = horas + diferencia.TotalHours*cantDias;
+            }
+            if (horas > 48)
+            {
+                warning2.Text = "No puede tener acumuladas más de 48hs laborales.";
+                warning2.Visible = true;
+            }
+            else
+            {
+                comando = "select NEXTGDD.buscarCodigoAgenda('" + profesional + "','" + especialidad + "')";
+                string agenda = Clases.BaseDeDatosSQL.buscarCampo(comando);
+                comando = "select * from NEXTGDD.obtenerRangosHorarios(" + agenda + ",'" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
+                List<string> campos = new List<string>();
+                campos.Add("DD");
+                campos.Add("DH");
+                campos.Add("HD");
+                campos.Add("HH");
+                DataTable rangosBDD = Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos);
+                foreach (DataRow fila in rangosBDD.Rows)
+                {
+                    string horaD = "2/2/2000 "+(string)fila[2];
+                    string horaH = "2/2/2000 " + (string)fila[3];
+                    TimeSpan diferencia = (DateTime.Parse(horaH)).Subtract(DateTime.Parse(horaD));
+                    int cantDias = int.Parse(fila[1].ToString()) - int.Parse(fila[0].ToString()) + 1;
+                    horas = horas + diferencia.TotalHours*cantDias;
+                }
+                if (horas > 48)
+                {
+                    warning2.Text = "No puede tener acumuladas más de 48hs laborales.";
+                    warning2.Visible = true;
+                }
+                else
+                {
+                    warning2.Text = "Faltan seleccionar campos";
+                    warning2.Visible = false;
+                }
+            }
         }
 
         private void frmRegistrarAgendaMedico_Load(object sender, EventArgs e)

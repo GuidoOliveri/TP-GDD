@@ -220,6 +220,7 @@
             // 
             // txtFecha
             // 
+            this.txtFecha.Enabled = false;
             this.txtFecha.Location = new System.Drawing.Point(405, 37);
             this.txtFecha.Name = "txtFecha";
             this.txtFecha.Size = new System.Drawing.Size(162, 20);

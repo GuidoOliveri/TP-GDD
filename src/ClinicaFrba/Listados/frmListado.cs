@@ -119,7 +119,7 @@ namespace ClinicaFrba.Listados
                     comando = "select * from NEXTGDD.listado4(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
                     campos.Add("Nombre Afiliado");
                     campos.Add("Bonos Comprados");
-                    campos.Add("Pertenece a Grupo Familiar");
+                    campos.Add("Tiene Familiares");
                 }
                 if (cmbListado.SelectedIndex == 4)
                 {
