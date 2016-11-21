@@ -127,7 +127,7 @@ namespace ClinicaFrba.Login
                         Cancelar_Atencion.frmCancelarAtencionPaciente func = new Cancelar_Atencion.frmCancelarAtencionPaciente();
                         func.Show();
                     }
-                    else if (rol == "profesional")
+                    else if (rol == "Profesional")
                     {
                         Cancelar_Atencion.frmCancelarAtencionMedico func = new Cancelar_Atencion.frmCancelarAtencionMedico();
                         func.Show();
