@@ -126,13 +126,19 @@ namespace ClinicaFrba.Login
                     {
                         Cancelar_Atencion.frmCancelarAtencionPaciente func = new Cancelar_Atencion.frmCancelarAtencionPaciente();
                         func.Show();
+                        this.Hide();
                     }
                     else if (rol == "Profesional")
                     {
                         Cancelar_Atencion.frmCancelarAtencionMedico func = new Cancelar_Atencion.frmCancelarAtencionMedico();
                         func.Show();
+                        this.Hide();
                     }
-                   this.Hide();
+                    else
+                    {
+                        MessageBox.Show("Solo un especialista o afiliado puede cancelar atencion medica", "Cancelar Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+
                    
                 }
                 if (funcionalidad == "Consultar listado estadistico")
