@@ -105,7 +105,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private Boolean elTurnoEsHoy(String turnoHoy)
         {
-            return convertirFechaSinHoras(turnoHoy).Equals("29/09/2015");
+            return convertirFechaSinHoras(turnoHoy).Equals(convertirFechaSinHoras(Clases.FechaSistema.fechaSistema));
         }
 
         private string convertirFechaSinHoras(string fecha)
