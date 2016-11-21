@@ -210,6 +210,7 @@
             // 
             // txtFechaLlegada
             // 
+            this.txtFechaLlegada.Enabled = false;
             this.txtFechaLlegada.Location = new System.Drawing.Point(163, 203);
             this.txtFechaLlegada.Name = "txtFechaLlegada";
             this.txtFechaLlegada.Size = new System.Drawing.Size(189, 20);
