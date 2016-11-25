@@ -95,6 +95,7 @@
             this.Controls.Add(this.cboRoles);
             this.Controls.Add(this.btnAceptar);
             this.Controls.Add(this.lblSelRol);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmSeleccionarRol";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Selección de Rol";

@@ -400,6 +400,7 @@
             this.Controls.Add(this.gbRangoFechas);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmRegistrarAgendaMedico";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro de la agenda del médico";

@@ -88,6 +88,7 @@
             this.Controls.Add(this.cmdLogueo);
             this.Controls.Add(this.lblDale);
             this.ForeColor = System.Drawing.Color.Black;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmMenuDeAbms";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu de ABMs";

@@ -245,6 +245,7 @@
             this.Controls.Add(this.pnlFiltroBusqueda);
             this.Controls.Add(this.btnBorrar);
             this.Controls.Add(this.btnLimpiar);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmListado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Listado";

@@ -104,6 +104,7 @@
             this.Controls.Add(this.btnVolver);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "ingresoAdminComoProfesional";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ingreso como profesional";

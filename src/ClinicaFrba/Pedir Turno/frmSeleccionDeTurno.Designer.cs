@@ -232,6 +232,7 @@
             this.Controls.Add(this.warning3);
             this.Controls.Add(this.Turno);
             this.Controls.Add(this.btnIngresarTurno);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmSeleccionDeTurno";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Selección de Turno";

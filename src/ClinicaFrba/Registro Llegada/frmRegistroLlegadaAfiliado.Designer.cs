@@ -266,6 +266,7 @@
             this.Controls.Add(this.warning2);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmRegistroLlegadaAfiliado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro llegada de afiliado";

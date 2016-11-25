@@ -274,6 +274,7 @@
             this.Controls.Add(this.warning3);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmRegistroResultado";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registro resultado atención médica";
