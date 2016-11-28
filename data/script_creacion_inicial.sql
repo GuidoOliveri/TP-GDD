@@ -1253,8 +1253,8 @@ AS BEGIN
   BEGIN TRY
 	BEGIN TRANSACTION
 			
-		INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos)
-		VALUES (@username, HASHBYTES('SHA2_256', @password), @habilitado, 0)
+		INSERT INTO NEXTGDD.Usuario (username, password, habilitado, logins_fallidos,id_persona)
+		VALUES (@username, HASHBYTES('SHA2_256', @password), @habilitado, 0,@id_persona)
 
 
 		INSERT INTO NEXTGDD.Usuario_X_Rol(id_rol, username)
@@ -1272,7 +1272,6 @@ AS BEGIN
 
 END
 GO
-
 
 CREATE PROCEDURE NEXTGDD.agregarAfiliadoPrincipal(@nombre varchar(255), @apellido varchar(255), @fecha_nac datetime, @sexo char(1), @tipo_doc varchar(50),
                                                @nrodocumento numeric(18,0), @domicilio varchar(255), @telefono numeric(18,0), @estado_civil varchar(255),

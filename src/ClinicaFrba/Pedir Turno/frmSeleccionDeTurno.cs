@@ -29,6 +29,13 @@ namespace ClinicaFrba.Pedir_Turno
             warning3.Visible = false;
             warning4.Visible = false;
 
+            if (Clases.Usuario.id_rol == "Afiliado")
+            {
+                comando = "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE 'afiliado' and u.id_persona=a.id_persona";
+                txtNroAfiliado.Text = Clases.BaseDeDatosSQL.buscarCampo(comando);
+                txtNroAfiliado.Enabled = false;
+            }
+
             dtpFecha.MinDate = DateTime.Parse(Clases.FechaSistema.fechaSistema);
 
             //Carga especialidades
@@ -62,22 +69,25 @@ namespace ClinicaFrba.Pedir_Turno
 
         private void verificarTextbox()
         {
-            nroAfiliado = txtNroAfiliado.Text;
-            if (nroAfiliado!="")
+            if (Clases.Usuario.id_rol == "Administrativo")
             {
-                comando = "select isnull(count(*),0) from NEXTGDD.Afiliado where activo=1 and nro_afiliado LIKE " + nroAfiliado;
-                if (Clases.BaseDeDatosSQL.validarCampo(comando))
+                nroAfiliado = txtNroAfiliado.Text;
+                if (nroAfiliado != "")
                 {
-                    warning4.Visible = false;
+                    comando = "select isnull(count(*),0) from NEXTGDD.Afiliado where activo=1 and nro_afiliado LIKE " + nroAfiliado;
+                    if (Clases.BaseDeDatosSQL.validarCampo(comando))
+                    {
+                        warning4.Visible = false;
+                    }
+                    else
+                    {
+                        warning4.Visible = true;
+                    }
                 }
                 else
                 {
                     warning4.Visible = true;
                 }
-            }
-            else
-            {
-                warning4.Visible = true;
             }
         }
 
