@@ -1857,7 +1857,7 @@ select cast(nro_afiliado as varchar)+ '@NEXTGDD', HASHBYTES('SHA2_256', CAST (nr
 INSERT INTO NEXTGDD.Usuario_X_Rol (username,id_rol)
 SELECT username, 2 FROM NEXTGDD.Usuario u JOIN NEXTGDD.Afiliado a ON (a.id_persona=u.id_persona) 
 
-
+GO
 /*********CREO USUARIOS PARA PROFESIONALES************************/
 
 INSERT INTO NEXTGDD.Usuario (username,password, habilitado, logins_fallidos, id_persona )
@@ -1866,16 +1866,10 @@ select cast(matricula as varchar)+ '@NEXTGDD', HASHBYTES('SHA2_256', CAST (matri
 INSERT INTO NEXTGDD.Usuario_X_Rol (username,id_rol)
 SELECT username, 3 FROM NEXTGDD.Usuario u JOIN NEXTGDD.Profesional p ON (p.id_persona=u.id_persona) 
 
+GO
 /************************************/
 
 /****** Inserto el usuario admin *****/
 
 EXEC NEXTGDD.agregar_usuario @username = 'admin', @password = 'w23e',@codigo_rol= 1, @habilitado= 1, @id_persona = null
 GO
-
-EXEC NEXTGDD.agregar_usuario @username = 'afiliado', @password = 'w23e',@codigo_rol= 2, @habilitado= 1, @id_persona = 1123960
-GO
-
-EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 1, @id_persona = 3116603
-GO
-
