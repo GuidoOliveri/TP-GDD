@@ -109,7 +109,6 @@
             this.txtNumeroAfiliado.Name = "txtNumeroAfiliado";
             this.txtNumeroAfiliado.Size = new System.Drawing.Size(197, 20);
             this.txtNumeroAfiliado.TabIndex = 9;
-            this.txtNumeroAfiliado.Visible = false;
             // 
             // lblNumeroAfiliado
             // 
@@ -119,7 +118,6 @@
             this.lblNumeroAfiliado.Size = new System.Drawing.Size(96, 13);
             this.lblNumeroAfiliado.TabIndex = 8;
             this.lblNumeroAfiliado.Text = "Numero de Afiliado";
-            this.lblNumeroAfiliado.Visible = false;
             // 
             // btnCargarAfiliado
             // 
@@ -129,7 +127,6 @@
             this.btnCargarAfiliado.TabIndex = 10;
             this.btnCargarAfiliado.Text = "Cargar";
             this.btnCargarAfiliado.UseVisualStyleBackColor = true;
-            this.btnCargarAfiliado.Visible = false;
             this.btnCargarAfiliado.Click += new System.EventHandler(this.btnCargarAfiliado_Click);
             // 
             // label1

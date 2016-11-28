@@ -20,16 +20,13 @@ namespace ClinicaFrba.Compra_Bono
         {
             InitializeComponent();
 
-    if(Clases.Usuario.id_rol.Equals("Administrativo")){
-                txtNumeroAfiliado.Visible = true;
-                lblNumeroAfiliado.Visible = true;
-                btnCargarAfiliado.Visible = true;
-            }
-            else if (Clases.Usuario.id_rol.Equals("Afiliado"))
+            if (Clases.Usuario.id_rol.Equals("Afiliado"))
             {
-                
-                Clases.Usuario.Nro_Afiliado = 124453901;
-                idAfiliado = Clases.Usuario.Nro_Afiliado.ToString(); // Debe ser cargado del afiliado si 
+                string comando = "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE '"+Clases.Usuario.Name+"' and u.id_persona=a.id_persona";
+                idAfiliado = Clases.BaseDeDatosSQL.buscarCampo(comando);
+                txtNumeroAfiliado.Text = idAfiliado;
+                txtNumeroAfiliado.Enabled=false;
+                btnCargarAfiliado.Visible=false;
                 txtPrecioBono.Text = obtenerPrecioBono(idAfiliado);
 
             }
@@ -144,7 +141,7 @@ namespace ClinicaFrba.Compra_Bono
             }
             else
             {
-                if (txtNumeroAfiliado.Text != "")
+                if (txtNumeroAfiliado.Text != "" && txtNumeroAfiliado.Text== idAfiliado)
                 {
                     lblTotalAPagar.Text = (cantBonosUpDown.Value * int.Parse(txtPrecioBono.Text)).ToString();
                 }

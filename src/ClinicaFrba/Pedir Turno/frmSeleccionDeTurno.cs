@@ -31,7 +31,7 @@ namespace ClinicaFrba.Pedir_Turno
 
             if (Clases.Usuario.id_rol == "Afiliado")
             {
-                comando = "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE 'afiliado' and u.id_persona=a.id_persona";
+                comando = "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE '"+Clases.Usuario.Name+"' and u.id_persona=a.id_persona";
                 txtNroAfiliado.Text = Clases.BaseDeDatosSQL.buscarCampo(comando);
                 txtNroAfiliado.Enabled = false;
             }
