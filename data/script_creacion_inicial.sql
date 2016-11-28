@@ -1849,6 +1849,22 @@ INSERT NEXTGDD.Consulta (cod_diagnostico, fecha_consulta, nro_bono ,nro_turno)
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
 GO
 
+/*********CREO USUARIOS PARA AFILIADOS************************/
+
+INSERT INTO NEXTGDD.Usuario (username,password, habilitado, logins_fallidos, id_persona )
+select cast(nro_afiliado as varchar)+ '@NEXTGDD', HASHBYTES('SHA2_256', CAST (nro_afiliado AS VARCHAR)), 1, 0,id_persona  from NEXTGDD.Afiliado
+
+INSERT INTO NEXTGDD.Usuario_X_Rol (username,id_rol)
+SELECT username, 2 FROM NEXTGDD.Usuario u JOIN NEXTGDD.Afiliado a ON (a.id_persona=u.id_persona) 
+
+
+/*********CREO USUARIOS PARA PROFESIONALES************************/
+
+INSERT INTO NEXTGDD.Usuario (username,password, habilitado, logins_fallidos, id_persona )
+select cast(matricula as varchar)+ '@NEXTGDD', HASHBYTES('SHA2_256', CAST (matricula AS VARCHAR)),1 ,0,id_persona  from NEXTGDD.Profesional
+
+INSERT INTO NEXTGDD.Usuario_X_Rol (username,id_rol)
+SELECT username, 3 FROM NEXTGDD.Usuario u JOIN NEXTGDD.Profesional p ON (p.id_persona=u.id_persona) 
 
 /************************************/
 
@@ -1862,3 +1878,4 @@ GO
 
 EXEC NEXTGDD.agregar_usuario @username = 'profesional', @password = 'w23e',@codigo_rol= 3, @habilitado= 1, @id_persona = 3116603
 GO
+
