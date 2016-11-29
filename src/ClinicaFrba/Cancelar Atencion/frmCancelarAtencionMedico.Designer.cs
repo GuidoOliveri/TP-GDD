@@ -142,6 +142,7 @@
             // 
             // cmbMotivoCancelacion
             // 
+            this.cmbMotivoCancelacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbMotivoCancelacion.FormattingEnabled = true;
             this.cmbMotivoCancelacion.Location = new System.Drawing.Point(10, 41);
             this.cmbMotivoCancelacion.Name = "cmbMotivoCancelacion";
@@ -185,6 +186,7 @@
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmCancelarAtencionMedico";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cancelar Atencion";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmCancelarAtencionMedico_FormClosing);
             this.Load += new System.EventHandler(this.frmCancelarAtencionMedico_Load);

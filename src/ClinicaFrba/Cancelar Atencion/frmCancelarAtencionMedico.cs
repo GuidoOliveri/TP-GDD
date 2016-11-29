@@ -26,6 +26,9 @@ namespace ClinicaFrba.Cancelar_Atencion
             this.rol =Clases.Usuario.id_rol;
             this.usuario = Clases.Usuario.Name;
 
+            DateTime fecha = DateTime.Parse(Clases.FechaSistema.fechaSistema).AddDays(1);
+            pickerFecha.MinDate = fecha;
+
             matriculaProfesional = "1000";
             especialidad = "10000";
             comando = "select nombre from NEXTGDD.Tipo_cancelacion";

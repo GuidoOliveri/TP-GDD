@@ -128,6 +128,7 @@
             // 
             // cmbMotivoCancelacion
             // 
+            this.cmbMotivoCancelacion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbMotivoCancelacion.FormattingEnabled = true;
             this.cmbMotivoCancelacion.Location = new System.Drawing.Point(10, 41);
             this.cmbMotivoCancelacion.Name = "cmbMotivoCancelacion";
@@ -145,6 +146,7 @@
             // 
             // cmbSeleccionTurno
             // 
+            this.cmbSeleccionTurno.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSeleccionTurno.FormattingEnabled = true;
             this.cmbSeleccionTurno.Location = new System.Drawing.Point(8, 38);
             this.cmbSeleccionTurno.Name = "cmbSeleccionTurno";
