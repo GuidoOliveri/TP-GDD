@@ -14,7 +14,7 @@ namespace ClinicaFrba.Cancelar_Atencion
     {
         private string rol = "";
         private string usuario = "";
-        private string idAfiliado = "124453901";
+        private string idAfiliado = "";
         string comando = "";
         //string conexion = "Data Source=localhost\\SQLSERVER2012;Initial Catalog=GD2C2016;Persist Security Info=True;User ID=gd;Password=gd2016";
 
@@ -28,6 +28,9 @@ namespace ClinicaFrba.Cancelar_Atencion
             faltanCamposWarning.Visible = false;
             cmbMotivoCancelacion.Enabled = false;
             cmbSeleccionTurno.Enabled = false;
+
+            comando = "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE '" + Clases.Usuario.Name + "' and u.id_persona=a.id_persona";
+            idAfiliado = Clases.BaseDeDatosSQL.buscarCampo(comando);
 
             //SE CARGAN LOS TURNOS
 
