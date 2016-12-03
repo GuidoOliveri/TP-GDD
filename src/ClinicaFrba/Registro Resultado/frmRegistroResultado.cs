@@ -13,9 +13,6 @@ namespace ClinicaFrba.Registro_Resultado
 
     public partial class frmRegistroResultado : Form
     {
-        private string rol = "";
-        private string usuario = "";
-        
         private string comando = "";
         private string consulta = "";
         private string afiliado = ""; //para filtrar
@@ -30,17 +27,7 @@ namespace ClinicaFrba.Registro_Resultado
         {
             InitializeComponent();
 
-            if (Clases.Usuario.id_rol == "Administrativo")
-            {
-                comando = "select id_persona from NEXTGDD.Profesional where matricula LIKE '"+Clases.Usuario.Matricula+"'";
-            }
-            else
-            {
-                this.rol = Clases.Usuario.id_rol;
-                this.usuario = Clases.Usuario.Name;
-                comando = "select u.id_persona as id from NEXTGDD.Usuario u where u.username LIKE '" + usuario + "'";
-            }
-            id_persona = Clases.BaseDeDatosSQL.buscarCampo(comando);
+            id_persona = Clases.Usuario.obtenerIdPersona();
 
             warning1.Visible = false;
             warning2.Visible = false;

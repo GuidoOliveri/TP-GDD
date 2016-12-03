@@ -900,14 +900,15 @@ BEGIN
 					THEN 'fuera del rango horario'
 					ELSE 'dentro de rango horario'
 					END 
-		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a,NEXTGDD.Rango_Atencion r
+		   from NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Agenda a,NEXTGDD.Rango_Atencion r, NEXTGDD.Rango_Fechas rf
 	       where p.nombre+' '+p.apellido LIKE @profesional and e.descripcion LIKE @especialidad and pr.id_persona=p.id_persona
-			     and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad and r.cod_agenda=a.cod_agenda
-				 --and @fecha>=a.rango_fecha_desde and @fecha<=a.rango_fecha_hasta 
+			     and a.matricula=pr.matricula and e.cod_especialidad=a.cod_especialidad 
+				 and CONVERT(DATE,@fecha)>=CONVERT(DATE,rf.fecha_desde) and CONVERT(DATE,@fecha)<=CONVERT(DATE,rf.fecha_hasta)
+				 and rf.cod_agenda=a.cod_agenda and str(rf.cod_agenda)+str(rf.cod_fecha)=str(r.cod_agenda)+str(r.cod_fecha)
 			     and r.dia_semanal_inicial<=@dia and r.dia_semanal_final>=@dia and r.hora_inicial<=@hora and r.hora_final>=@hora)
 END;
 GO
-
+select NEXTGDD.validarConRangoHorario('2016-11-07 00:00:00','LARA Giménez','Alergología',1,'07:00:00')
 CREATE PROCEDURE NEXTGDD.registrarConsulta (@fechaLlegada datetime,@nomProf varchar(255),@fechaTurno datetime,@nroBono numeric(18,0))
 AS
 BEGIN

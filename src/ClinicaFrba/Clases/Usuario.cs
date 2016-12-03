@@ -24,6 +24,26 @@ namespace ClinicaFrba.Clases
         public static int Matricula { get; set; }
 
 
+        public static string obtenerNumeroAfiliado()
+        {
+            string comando= "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE '" + Name + "' and u.id_persona=a.id_persona";
+            return BaseDeDatosSQL.buscarCampo(comando);
+        }
+
+        public static string obtenerIdPersona()
+        {
+            string comando = "";
+            if (id_rol == "Administrativo")
+            {
+                comando = "select id_persona from NEXTGDD.Profesional where matricula LIKE '" + Matricula + "'";
+            }
+            else
+            {
+                comando = "select u.id_persona as id from NEXTGDD.Usuario u where u.username LIKE '" + Name + "'";
+            }
+            return BaseDeDatosSQL.buscarCampo(comando);
+        }
+
         //public Usuario(string userName)
         //{
         //    List<SqlParameter> ListaParametros = new List<SqlParameter>();

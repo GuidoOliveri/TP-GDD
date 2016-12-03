@@ -31,8 +31,7 @@ namespace ClinicaFrba.Pedir_Turno
 
             if (Clases.Usuario.id_rol == "Afiliado")
             {
-                comando = "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE '"+Clases.Usuario.Name+"' and u.id_persona=a.id_persona";
-                txtNroAfiliado.Text = Clases.BaseDeDatosSQL.buscarCampo(comando);
+                txtNroAfiliado.Text = Clases.Usuario.obtenerNumeroAfiliado();
                 txtNroAfiliado.Enabled = false;
             }
 
@@ -191,15 +190,17 @@ namespace ClinicaFrba.Pedir_Turno
 
         private void verificarRangoHorario()
         {
+            /*
             comando = "select NEXTGDD.tieneRangosHorarios('"+especialidad+"','"+profesional+"')";
             if (Clases.BaseDeDatosSQL.buscarCampo(comando)=="true")
             {
-                comando = "select NEXTGDD.validarConRangoHorario('" + fecha + "','" + profesional + "','" + especialidad + "'," + ((int)dtpFecha.Value.DayOfWeek - 1) + ",'" + fecha.Split(' ')[1] + "')";
-                if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "fuera del rango horario")
+             */
+                comando = "select NEXTGDD.validarConRangoHorario('" + fecha + "','" + profesional + "','" + especialidad + "'," + ((int)dtpFecha.Value.DayOfWeek) + ",'" + fecha.Split(' ')[1] + "')";
+                if (Clases.BaseDeDatosSQL.buscarCampo(comando)=="fuera del rango horario")
                 {
                     warning1.Visible = true;
                 }
-            }
+            //}
         }
         /*
         private void restringirRangoFechas()
@@ -248,7 +249,7 @@ namespace ClinicaFrba.Pedir_Turno
              if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "true")
             {
              */
-            comando = "select * from NEXTGDD.restringirHorarios('" + especialidad + "','" + profesional + "','" + convertirFecha((string) dtpFecha.Value.ToString()) + "')";
+            comando = "select * from NEXTGDD.restringirHorarios('" + especialidad + "','" + profesional + "','" + convertirFecha((string) dtpFecha.Value.ToString()) + "') order by 'horaD'";
             cargarHorarios(Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos));
 
             /*}

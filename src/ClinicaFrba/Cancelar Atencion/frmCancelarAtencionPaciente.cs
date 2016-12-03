@@ -35,8 +35,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                 lblNumeroAfiliado.Visible = false;
                 txtNumeroAfiliado.Visible = false;
                 btnCargarAfiliado.Visible = false;
-                comando = "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE '" + Clases.Usuario.Name + "' and u.id_persona=a.id_persona";
-                cargarDatosAfiliado(Clases.BaseDeDatosSQL.buscarCampo(comando));
+                cargarDatosAfiliado(Clases.Usuario.obtenerNumeroAfiliado());
             }           
         }
 

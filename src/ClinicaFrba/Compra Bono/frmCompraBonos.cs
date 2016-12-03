@@ -22,8 +22,7 @@ namespace ClinicaFrba.Compra_Bono
 
             if (Clases.Usuario.id_rol.Equals("Afiliado"))
             {
-                string comando = "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE '"+Clases.Usuario.Name+"' and u.id_persona=a.id_persona";
-                idAfiliado = Clases.BaseDeDatosSQL.buscarCampo(comando);
+                idAfiliado = Clases.Usuario.obtenerNumeroAfiliado();
                 txtNumeroAfiliado.Text = idAfiliado;
                 txtNumeroAfiliado.Enabled=false;
                 btnCargarAfiliado.Visible=false;
