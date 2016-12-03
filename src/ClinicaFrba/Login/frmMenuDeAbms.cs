@@ -122,7 +122,14 @@ namespace ClinicaFrba.Login
                 }
                 if (funcionalidad == "Cancelar atencion medica")
                 {
-                    if (rol == "Afiliado")
+                    if (rol == "Administrativo")
+                    {
+                        Cancelar_Atencion.frmCancelarAtencionAdmin func = new Cancelar_Atencion.frmCancelarAtencionAdmin();
+                        func.Show();
+                        this.Hide();
+                    }
+
+                    else if (rol == "Afiliado")
                     {
                         Cancelar_Atencion.frmCancelarAtencionPaciente func = new Cancelar_Atencion.frmCancelarAtencionPaciente();
                         func.Show();

@@ -156,7 +156,7 @@
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.cmbMotivoCancelacion);
-            this.groupBox3.Location = new System.Drawing.Point(291, 53);
+            this.groupBox3.Location = new System.Drawing.Point(291, 59);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(301, 153);
             this.groupBox3.TabIndex = 12;

@@ -40,6 +40,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cmbSeleccionTurno = new System.Windows.Forms.ComboBox();
             this.cmdVolver = new System.Windows.Forms.Button();
+            this.btnCargarAfiliado = new System.Windows.Forms.Button();
+            this.txtNumeroAfiliado = new System.Windows.Forms.TextBox();
+            this.lblNumeroAfiliado = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +51,7 @@
             // 
             this.faltanCamposWarning.AutoSize = true;
             this.faltanCamposWarning.ForeColor = System.Drawing.Color.Red;
-            this.faltanCamposWarning.Location = new System.Drawing.Point(67, 75);
+            this.faltanCamposWarning.Location = new System.Drawing.Point(67, 106);
             this.faltanCamposWarning.Name = "faltanCamposWarning";
             this.faltanCamposWarning.Size = new System.Drawing.Size(121, 13);
             this.faltanCamposWarning.TabIndex = 5;
@@ -56,7 +59,7 @@
             // 
             // btnIngresar
             // 
-            this.btnIngresar.Location = new System.Drawing.Point(45, 234);
+            this.btnIngresar.Location = new System.Drawing.Point(45, 265);
             this.btnIngresar.Name = "btnIngresar";
             this.btnIngresar.Size = new System.Drawing.Size(75, 23);
             this.btnIngresar.TabIndex = 4;
@@ -69,7 +72,7 @@
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cmbSeleccionTurno);
-            this.groupBox1.Location = new System.Drawing.Point(8, 6);
+            this.groupBox1.Location = new System.Drawing.Point(8, 37);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(301, 222);
             this.groupBox1.TabIndex = 3;
@@ -155,7 +158,7 @@
             // 
             // cmdVolver
             // 
-            this.cmdVolver.Location = new System.Drawing.Point(177, 234);
+            this.cmdVolver.Location = new System.Drawing.Point(177, 265);
             this.cmdVolver.Name = "cmdVolver";
             this.cmdVolver.Size = new System.Drawing.Size(75, 23);
             this.cmdVolver.TabIndex = 6;
@@ -163,11 +166,41 @@
             this.cmdVolver.UseVisualStyleBackColor = true;
             this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
             // 
+            // btnCargarAfiliado
+            // 
+            this.btnCargarAfiliado.Location = new System.Drawing.Point(239, 9);
+            this.btnCargarAfiliado.Name = "btnCargarAfiliado";
+            this.btnCargarAfiliado.Size = new System.Drawing.Size(75, 23);
+            this.btnCargarAfiliado.TabIndex = 13;
+            this.btnCargarAfiliado.Text = "Cargar";
+            this.btnCargarAfiliado.UseVisualStyleBackColor = true;
+            this.btnCargarAfiliado.Click += new System.EventHandler(this.btnCargarAfiliado_Click);
+            // 
+            // txtNumeroAfiliado
+            // 
+            this.txtNumeroAfiliado.Location = new System.Drawing.Point(109, 11);
+            this.txtNumeroAfiliado.Name = "txtNumeroAfiliado";
+            this.txtNumeroAfiliado.Size = new System.Drawing.Size(122, 20);
+            this.txtNumeroAfiliado.TabIndex = 12;
+            // 
+            // lblNumeroAfiliado
+            // 
+            this.lblNumeroAfiliado.AutoSize = true;
+            this.lblNumeroAfiliado.Enabled = false;
+            this.lblNumeroAfiliado.Location = new System.Drawing.Point(6, 14);
+            this.lblNumeroAfiliado.Name = "lblNumeroAfiliado";
+            this.lblNumeroAfiliado.Size = new System.Drawing.Size(96, 13);
+            this.lblNumeroAfiliado.TabIndex = 11;
+            this.lblNumeroAfiliado.Text = "Numero de Afiliado";
+            // 
             // frmCancelarAtencionPaciente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(321, 262);
+            this.ClientSize = new System.Drawing.Size(321, 314);
+            this.Controls.Add(this.btnCargarAfiliado);
+            this.Controls.Add(this.txtNumeroAfiliado);
+            this.Controls.Add(this.lblNumeroAfiliado);
             this.Controls.Add(this.cmdVolver);
             this.Controls.Add(this.faltanCamposWarning);
             this.Controls.Add(this.btnIngresar);
@@ -200,5 +233,8 @@
         private System.Windows.Forms.ComboBox cmbSeleccionTurno;
         private System.Windows.Forms.TextBox txtBoxDetalleCancelacion;
         private System.Windows.Forms.Button cmdVolver;
+        private System.Windows.Forms.Button btnCargarAfiliado;
+        private System.Windows.Forms.TextBox txtNumeroAfiliado;
+        private System.Windows.Forms.Label lblNumeroAfiliado;
     }
 }

@@ -24,22 +24,31 @@ namespace ClinicaFrba.Cancelar_Atencion
             InitializeComponent();
             this.rol = Clases.Usuario.id_rol;
             this.usuario = Clases.Usuario.Name;
+
             cancelarMismoDiaWarning.Visible = false;
             faltanCamposWarning.Visible = false;
             cmbMotivoCancelacion.Enabled = false;
             cmbSeleccionTurno.Enabled = false;
 
-            comando = "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE '" + Clases.Usuario.Name + "' and u.id_persona=a.id_persona";
-            idAfiliado = Clases.BaseDeDatosSQL.buscarCampo(comando);
+            if (rol.Equals("Afiliado"))
+            {
+                lblNumeroAfiliado.Visible = false;
+                txtNumeroAfiliado.Visible = false;
+                btnCargarAfiliado.Visible = false;
+                comando = "select a.nro_afiliado from NEXTGDD.Afiliado a,NEXTGDD.Usuario u where u.username LIKE '" + Clases.Usuario.Name + "' and u.id_persona=a.id_persona";
+                cargarDatosAfiliado(Clases.BaseDeDatosSQL.buscarCampo(comando));
+            }           
+        }
 
+        private void cargarDatosAfiliado(string idAfiliado)
+        {
             //SE CARGAN LOS TURNOS
 
-            comando = "select fecha from NEXTGDD.Turno where nro_afiliado = '" + idAfiliado + "'and isnull(cod_cancelacion,0)=0"; 
-            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"fecha"), cmbSeleccionTurno);
+            comando = "select fecha from NEXTGDD.Turno where nro_afiliado = '" + idAfiliado + "'and isnull(cod_cancelacion,0)=0";
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "fecha"), cmbSeleccionTurno);
 
             comando = "select nombre from NEXTGDD.Tipo_cancelacion";
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"), cmbMotivoCancelacion);
-
         }
 
         private void cargar(List<string> lista, ComboBox cmb)
@@ -132,6 +141,25 @@ namespace ClinicaFrba.Cancelar_Atencion
         private void frmCancelarAtencionPaciente_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnCargarAfiliado_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Consulta generica para comprobar si existe el afiliado
+                idAfiliado = txtNumeroAfiliado.Text;
+                String queryString = "SELECT precio_bono_consulta FROM NEXTGDD.Afiliado RIGHT JOIN NEXTGDD.Plan_Medico ON Afiliado.cod_plan = Plan_Medico.cod_plan WHERE Afiliado.nro_afiliado ='" + idAfiliado + "'";
+                Clases.BaseDeDatosSQL.buscarCampo(queryString);
+                cargarDatosAfiliado(idAfiliado);
+                MessageBox.Show("Usuario Cargado con Exito", "Buscar Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch
+            {
+                MessageBox.Show("No Se Encontro al afiliado", "Buscar Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtNumeroAfiliado.Text = "";
+
+            }
         }
     }
 }
