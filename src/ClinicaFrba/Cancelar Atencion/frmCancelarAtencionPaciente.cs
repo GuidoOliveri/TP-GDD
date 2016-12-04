@@ -80,7 +80,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             // Cancelar el bono
 
             string nroTurno = Clases.BaseDeDatosSQL.buscarCampo("select nro_turno from NEXTGDD.Turno where fecha = '"+ 
-                cmbSeleccionTurno.SelectedItem.ToString() + "' and nro_afiliado = '" + idAfiliado + "'");
+                DateTime.Parse(cmbSeleccionTurno.SelectedItem.ToString()).ToString("yyyy-MM-dd HH:mm:ss") + "' and nro_afiliado = '" + idAfiliado + "'");
             string tipoCancelacion = Clases.BaseDeDatosSQL.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '"+
                 cmbMotivoCancelacion.SelectedItem.ToString()+"'");
 
@@ -89,6 +89,8 @@ namespace ClinicaFrba.Cancelar_Atencion
             Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
             MessageBox.Show("Turno Cancelado Exitosamente", "Cancelar Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            frmCancelarAtencionPaciente NewForm = new frmCancelarAtencionPaciente();
+            NewForm.Show();
             this.Dispose(false);
 
 
