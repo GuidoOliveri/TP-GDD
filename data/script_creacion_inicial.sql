@@ -249,7 +249,7 @@ CREATE TABLE NEXTGDD.Tipo_cancelacion (
 CREATE TABLE NEXTGDD.Cancelacion (
 
     cod_cancelacion numeric (18,0) PRIMARY KEY IDENTITY, 
-	persona_cancelacion varchar(255),
+	persona_cancelacion varchar(255) DEFAULT 'Profesional',
 	motivo varchar (255),
 	tipo_cancelacion tinyint REFERENCES NEXTGDD.Tipo_cancelacion(tipo_cancelacion),
 
@@ -539,8 +539,12 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.infor
     DROP VIEW NEXTGDD.informacionCompraBonos
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado1'))
-    DROP FUNCTION NEXTGDD.listado1
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado1Afiliado'))
+    DROP FUNCTION NEXTGDD.listado1Afiliado
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado1Profesional'))
+    DROP FUNCTION NEXTGDD.listado1Profesional
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.listado1Ambos'))
@@ -1028,11 +1032,11 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE NEXTGDD.cancelarTurno(@nroTurno numeric(18,0), @tipoCancelacion tinyInt, @motivo varchar(255)) 
+CREATE PROCEDURE NEXTGDD.cancelarTurno(@nroTurno numeric(18,0), @tipoCancelacion tinyInt, @motivo varchar(255),@persona varchar(255)) 
 AS BEGIN
 IF EXISTS (SELECT * FROM NEXTGDD.Turno WHERE nro_turno = @nroTurno)
-	INSERT NEXTGDD.Cancelacion(tipo_cancelacion, motivo) values
-			(@tipoCancelacion,@motivo)
+	INSERT NEXTGDD.Cancelacion(tipo_cancelacion, motivo,persona_cancelacion) values
+			(@tipoCancelacion,@motivo,@persona)
 	UPDATE  NEXTGDD.Turno 
 	SET cod_cancelacion = (select top 1 cod_cancelacion from NEXTGDD.Cancelacion order by 1 desc)
 	WHERE Turno.nro_turno = @nroTurno
@@ -1497,7 +1501,7 @@ GO
 
 /***************LISTADOS******************/
 
-CREATE FUNCTION NEXTGDD.listado1(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0),@tipoCanc varchar(255))
+CREATE FUNCTION NEXTGDD.listado1Afiliado(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0),@tipoCanc varchar(255))
 RETURNS TABLE
 AS
 	RETURN
@@ -1509,19 +1513,26 @@ AS
 		group by e.descripcion
 		order by count(*) DESC
 GO
---DROP FUNCTION NEXTGDD.listado1
-/*tipoCanc: Afiliado/Profesional */
+
+CREATE FUNCTION NEXTGDD.listado1Profesional(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
+RETURNS TABLE
+AS
+	RETURN
+		select top 5 e.descripcion as 'Especialidad', count(*) 'Cantidad cancelaciones'
+		from NEXTGDD.Especialidad e,NEXTGDD.Agenda a,NEXTGDD.Cancelacion_Por_Fecha cf
+		where a.cod_especialidad=e.cod_especialidad and cf.cod_agenda=a.cod_agenda
+			  and (select NEXTGDD.verSuperposicionDeRangos(str(@anio)+'-'+str(@mesInicio)+'-01 00:00:00',str(@anio)+'-'+str(@mesFin)+'-01 00:00:00',cf.fecha_desde,cf.fecha_hasta))=0
+		group by e.descripcion
+		order by count(*) DESC
+GO
 
 CREATE FUNCTION NEXTGDD.listado1Ambos(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
 RETURNS TABLE
 AS
 	RETURN
-		select top 5 e.descripcion as 'Especialidad', count(*) 'Cantidad cancelaciones'
-		from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Agenda a
-		where isnull(t.cod_cancelacion,0)<>0 and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
-			  and year(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
-		group by e.descripcion
-		order by count(*) DESC
+		select tabla.Especialidad as 'Especialidad',sum(tabla.[Cantidad cancelaciones]) as 'Cantidad cancelaciones'
+		from (select * from NEXTGDD.listado1Profesional(2016,6,12) UNION All select * from NEXTGDD.listado1Afiliado(2016,6,12,'Afiliado')) as tabla
+		group by tabla.Especialidad
 GO
 
 

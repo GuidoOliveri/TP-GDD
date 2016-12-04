@@ -144,9 +144,13 @@ namespace ClinicaFrba.Listados
             {
                 return "select * from NEXTGDD.listado1Ambos(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
             }
+            if (filtro == "Afiliado")
+            {
+                return "select * from NEXTGDD.listado1Afiliado(" + parametros[2] + "," + parsearSemestre(parametros) + ",'" + filtro + "')";
+            }
             else
             {
-                return "select * from NEXTGDD.listado1(" + parametros[2] + "," + parsearSemestre(parametros) + ",'" + filtro + "')";
+                return "select * from NEXTGDD.listado1Profesional(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
             }
         }
 

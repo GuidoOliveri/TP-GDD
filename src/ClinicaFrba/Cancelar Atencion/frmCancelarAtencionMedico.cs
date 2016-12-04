@@ -82,46 +82,54 @@ namespace ClinicaFrba.Cancelar_Atencion
                 faltanDatosWarning.Visible = true;
                 return;
             }
-
-            faltanDatosWarning.Visible = true;
-
             if (!sePuedeCancelarElRango(pickerFecha.SelectionStart))
             {
                 warningNoSePuedeCancelarMismoDia.Visible = true;
                 return;
             }
-
-            List<string> codAgendas = Clases.BaseDeDatosSQL.ObtenerLista("select cod_agenda from NEXTGDD.Agenda where '" + matriculaProfesional
-                        +"' = Agenda.matricula","cod_agenda");
-
-            String tipoCancelacion = Clases.BaseDeDatosSQL.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '" +
-                cmbMotivoCancelacion.SelectedItem.ToString() + "'");
-
-            // Por cada dia (for each DateTime)
-            DateTime dt = pickerFecha.SelectionStart;
-            List<String> listaDeTurnos = null;
-            while (dt.Date <= pickerFecha.SelectionEnd.Date)
+            faltanDatosWarning.Visible = false;
+            if (cmbMotivoCancelacion.SelectedItem == null || pickerFecha.SelectionStart == null)
             {
+                faltanDatosWarning.Visible = true;
+            }
+            else
+            {
+                List<string> codAgendas = Clases.BaseDeDatosSQL.ObtenerLista("select cod_agenda from NEXTGDD.Agenda where '" + matriculaProfesional
+                            + "' = Agenda.matricula", "cod_agenda");
+
+                String tipoCancelacion = Clases.BaseDeDatosSQL.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '" +
+                    cmbMotivoCancelacion.SelectedItem.ToString() + "'");
+
+                // Por cada dia (for each DateTime)
+                DateTime dt = pickerFecha.SelectionStart;
+                List<String> listaDeTurnos = null;
+                while (dt.Date <= pickerFecha.SelectionEnd.Date)
+                {
+                    foreach (string codAgenda in codAgendas)
+                    {
+                        listaDeTurnos = Clases.BaseDeDatosSQL.ObtenerLista(("select t.nro_turno from NEXTGDD.Turno t where t.cod_agenda = '" + codAgenda + "' and CONVERT(date,t.fecha)= '" + dt.ToString("yyyy-MM-dd") + "' and isnull(t.cod_cancelacion,0) =0  group by t.nro_turno"), "nro_turno");
+                        foreach (String turno in listaDeTurnos)
+                        {
+                            // Otro for, esta vez dentro de un mismo dia, por cada uno de los posibles turnos
+                            cancelarTurnos(turno, tipoCancelacion);
+                        }
+                    }
+                    dt = dt.Date.AddDays(1);
+                }
+
+                // Registrar la cancelacion de un periodo.
                 foreach (string codAgenda in codAgendas)
                 {
-                    listaDeTurnos = Clases.BaseDeDatosSQL.ObtenerLista(("select t.nro_turno from NEXTGDD.Turno t where t.cod_agenda = '" + codAgenda + "' and CONVERT(date,t.fecha)= '" + dt.ToString("yyyy-MM-dd") + "' and isnull(t.cod_cancelacion,0) =0  group by t.nro_turno"), "nro_turno");
-                    foreach (String turno in listaDeTurnos)
-                    {
-                        // Otro for, esta vez dentro de un mismo dia, por cada uno de los posibles turnos
-                        cancelarTurnos(turno, tipoCancelacion);
-                    }
+                    comando = "EXECUTE NEXTGDD.registrarCancelacionDePeriodo @fechaDesde='" + pickerFecha.SelectionStart.ToString("yyyy-MM-dd HH:mm:ss") + "', @fechaHasta ='" + pickerFecha.SelectionEnd.ToString("yyyy-MM-dd HH:mm:ss") +
+                        "',@codAgenda='" + codAgenda + "'";
+                    Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
                 }
-                dt = dt.Date.AddDays(1);
-            }
+                MessageBox.Show("Cancelacion completada con exito!", "Cancelacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // Registrar la cancelacion de un periodo.
-            foreach (string codAgenda in codAgendas)
-            {
-                comando = "EXECUTE NEXTGDD.registrarCancelacionDePeriodo @fechaDesde='" + pickerFecha.SelectionStart.ToString("yyyy-MM-dd HH:mm:ss") + "', @fechaHasta ='" + pickerFecha.SelectionEnd.ToString("yyyy-MM-dd HH:mm:ss") +
-                    "',@codAgenda='" + codAgenda + "'";
-                Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
+                frmCancelarAtencionMedico nuevo = new frmCancelarAtencionMedico();
+                this.Hide();
+                nuevo.Show();
             }
-            MessageBox.Show("Cancelacion completada con exito!", "Cancelacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private bool sePuedeCancelarElRango(DateTime diaACancelar)
@@ -133,7 +141,7 @@ namespace ClinicaFrba.Cancelar_Atencion
         private void cancelarTurnos(string nroTurno, String tipoCancelacion)
         {
             comando = "EXECUTE NEXTGDD.cancelarTurno @nroTurno='" + nroTurno + "', @tipoCancelacion ='" + tipoCancelacion +
-                "', @motivo='" + txtBoxDetalleCancelacion.Text + "'";
+                "', @motivo='" + txtBoxDetalleCancelacion.Text + "', @persona='Profesional'";
             Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
         }
 

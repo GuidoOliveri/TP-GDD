@@ -43,7 +43,7 @@ namespace ClinicaFrba.Cancelar_Atencion
         {
             //SE CARGAN LOS TURNOS
 
-            comando = "select fecha from NEXTGDD.Turno where nro_afiliado = '" + idAfiliado + "'and isnull(cod_cancelacion,0)=0";
+            comando = "select fecha from NEXTGDD.Turno where nro_afiliado = '" + idAfiliado + "'and isnull(cod_cancelacion,0)=0 and CONVERT(DATE,fecha)>'"+DateTime.Parse(Clases.FechaSistema.fechaSistema).ToString("yyyy-MM-dd")+"'";
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "fecha"), cmbSeleccionTurno);
 
             comando = "select nombre from NEXTGDD.Tipo_cancelacion";
@@ -85,7 +85,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                 cmbMotivoCancelacion.SelectedItem.ToString()+"'");
 
             comando = "EXECUTE NEXTGDD.cancelarTurno @nroTurno='" + nroTurno + "',@tipoCancelacion ='" + tipoCancelacion + 
-                "', @motivo='" + txtBoxDetalleCancelacion.Text + "'";
+                "', @motivo='" + txtBoxDetalleCancelacion.Text + "', @persona='Afiliado'";
             Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
             MessageBox.Show("Turno Cancelado Exitosamente", "Cancelar Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
