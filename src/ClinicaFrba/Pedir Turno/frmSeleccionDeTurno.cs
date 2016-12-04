@@ -124,17 +124,17 @@ namespace ClinicaFrba.Pedir_Turno
             //CARGA LOS HORARIOS A PARTIR DE LA FECHA SELECCIONADA
             warning1.Visible = false;
             warning2.Visible = false;
+            verificarCancelaciones();
             cmbHorario.Items.Clear();
             cmbHorario.Text = "";
-            restringirRangoHorario();
-            cargar(horarios, cmbHorario);
-            if (horarios.Count() == 0)
-            {
-                warning1.Visible = true;
-            }
             if (warning1.Visible == false)
             {
-                verificarCancelaciones();
+                restringirRangoHorario();
+                cargar(horarios, cmbHorario);
+                if (horarios.Count() == 0)
+                {
+                    warning1.Visible = true;
+                }
             }
         }
 
@@ -202,30 +202,10 @@ namespace ClinicaFrba.Pedir_Turno
                 }
             //}
         }
-        /*
-        private void restringirRangoFechas()
-        {
-            comando = "select NEXTGDD.tieneRangosHorarios('" + especialidad + "','" + profesional + "')";
-            if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "true")
-            {
-                comando = "select * from NEXTGDD.restringirFechas('" + especialidad + "','" + profesional + "')";
-                List<String> campos = new List<string>();
-                campos.Add("fechaD");
-                campos.Add("fechaH");
-                DataTable dt = Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos);
-                dtpFecha.MinDate = DateTime.Parse((string)dt.Rows[0][0]);
-                dtpFecha.MaxDate = DateTime.Parse((string)dt.Rows[0][1]);
-            }
-            else
-            {
-                dtpFecha.MinDate = DateTimePicker.MinimumDateTime;
-                dtpFecha.MaxDate = DateTimePicker.MaximumDateTime;
-            }
-        }
-         */ 
 
         private void verificarCancelaciones()
         {
+            fecha = (string)dtpFecha.Value.ToString("yyyy-MM-dd HH:mm:ss");
             comando = "select NEXTGDD.verificarCancelacionesProfesional('" + fecha + "','" + profesional + "','" + especialidad + "')";
             if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "Cancelo la fecha")
             {

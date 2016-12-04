@@ -109,7 +109,7 @@ namespace ClinicaFrba.Login
                 {
                     if (Clases.Usuario.id_rol == "Administrativo")
                     {
-                        Login.ingresoAdminComoProfesional ingreso = new Login.ingresoAdminComoProfesional();
+                        Login.ingresoAdminComoProfesional ingreso = new Login.ingresoAdminComoProfesional(1);
                         this.Hide();
                         ingreso.Show();
                     }

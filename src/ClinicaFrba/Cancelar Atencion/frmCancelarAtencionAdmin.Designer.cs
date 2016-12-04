@@ -60,7 +60,9 @@
             this.Controls.Add(this.cancelarMedicoBtn);
             this.Controls.Add(this.cancelarPacienteBtn);
             this.Name = "frmCancelarAtencionAdmin";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CancelarAtencionAdmin";
+            this.Load += new System.EventHandler(this.frmCancelarAtencionAdmin_Load);
             this.ResumeLayout(false);
 
         }

@@ -44,6 +44,12 @@ namespace ClinicaFrba.Clases
             return BaseDeDatosSQL.buscarCampo(comando);
         }
 
+        public static string obtenerMatricula()
+        {
+            string comando = "select p.matricula from NEXTGDD.Profesional p,NEXTGDD.Usuario u where username LIKE '"+Name+"' and u.id_persona=p.id_persona";
+            return BaseDeDatosSQL.buscarCampo(comando);
+        }
+
         //public Usuario(string userName)
         //{
         //    List<SqlParameter> ListaParametros = new List<SqlParameter>();

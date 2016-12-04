@@ -36,9 +36,14 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void cancelarMedico_Click(object sender, EventArgs e)
         {
-            Cancelar_Atencion.frmCancelarAtencionMedico func = new Cancelar_Atencion.frmCancelarAtencionMedico();
+            Login.ingresoAdminComoProfesional func = new Login.ingresoAdminComoProfesional(2);
             func.Show();
             this.Hide();
+        }
+
+        private void frmCancelarAtencionAdmin_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

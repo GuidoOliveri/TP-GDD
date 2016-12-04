@@ -13,12 +13,14 @@ namespace ClinicaFrba.Login
     public partial class ingresoAdminComoProfesional : Form
     {
         string comando = "";
+        int nroForm = 0;
 
-        public ingresoAdminComoProfesional()
+        public ingresoAdminComoProfesional(int nroForm)
         {
             InitializeComponent();
 
             warning1.Visible = false;
+            this.nroForm = nroForm;
 
             comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona and pr.activo=1 order by (p.nombre+' '+p.apellido) ASC";
             cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"), cmbProfesionales);
@@ -45,9 +47,18 @@ namespace ClinicaFrba.Login
                 comando = "select pr.matricula from NEXTGDD.Profesional pr, NEXTGDD.Persona p where p.nombre+' '+p.apellido LIKE '" + profesional + "' and p.id_persona=pr.id_persona and pr.activo=1";
                 Clases.Usuario.Matricula = int.Parse(Clases.BaseDeDatosSQL.buscarCampo(comando));
 
-                Registro_Resultado.frmRegistroResultado diagnostico = new Registro_Resultado.frmRegistroResultado();
-                this.Hide();
-                diagnostico.Show();
+                if (nroForm==1)
+                {
+                    Registro_Resultado.frmRegistroResultado diagnostico = new Registro_Resultado.frmRegistroResultado();
+                    this.Hide();
+                    diagnostico.Show();
+                }
+                if (nroForm == 2)
+                {
+                    Cancelar_Atencion.frmCancelarAtencionMedico cancelacion = new Cancelar_Atencion.frmCancelarAtencionMedico();
+                    this.Hide();
+                    cancelacion.Show();
+                }
             }
             else
             {
