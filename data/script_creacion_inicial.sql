@@ -251,7 +251,9 @@ CREATE TABLE NEXTGDD.Cancelacion (
     cod_cancelacion numeric (18,0) PRIMARY KEY IDENTITY, 
 	persona_cancelacion varchar(255),
 	motivo varchar (255),
-	tipo_cancelacion tinyint REFERENCES NEXTGDD.Tipo_cancelacion(tipo_cancelacion)
+	tipo_cancelacion tinyint REFERENCES NEXTGDD.Tipo_cancelacion(tipo_cancelacion),
+
+	CONSTRAINT check_personaCanc check (persona_cancelacion IN ('Afiliado', 'Profesional'))
    )
 
 CREATE TABLE NEXTGDD.Agenda (
