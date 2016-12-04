@@ -249,8 +249,9 @@ CREATE TABLE NEXTGDD.Tipo_cancelacion (
 CREATE TABLE NEXTGDD.Cancelacion (
 
     cod_cancelacion numeric (18,0) PRIMARY KEY IDENTITY, 
-	tipo_cancelacion tinyint REFERENCES NEXTGDD.Tipo_cancelacion(tipo_cancelacion) ,
-	motivo varchar (255)
+	persona_cancelacion varchar(255),
+	motivo varchar (255),
+	tipo_cancelacion tinyint REFERENCES NEXTGDD.Tipo_cancelacion(tipo_cancelacion)
    )
 
 CREATE TABLE NEXTGDD.Agenda (
@@ -908,7 +909,7 @@ BEGIN
 			     and r.dia_semanal_inicial<=@dia and r.dia_semanal_final>=@dia and r.hora_inicial<=@hora and r.hora_final>=@hora)
 END;
 GO
-select NEXTGDD.validarConRangoHorario('2016-11-07 00:00:00','LARA Giménez','Alergología',1,'07:00:00')
+
 CREATE PROCEDURE NEXTGDD.registrarConsulta (@fechaLlegada datetime,@nomProf varchar(255),@fechaTurno datetime,@nroBono numeric(18,0))
 AS
 BEGIN
@@ -1499,14 +1500,14 @@ RETURNS TABLE
 AS
 	RETURN
 		select top 5 e.descripcion as 'Especialidad', count(*) 'Cantidad cancelaciones'
-		from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Cancelacion c,NEXTGDD.Agenda a,NEXTGDD.Tipo_cancelacion tc
-		where c.cod_cancelacion=t.cod_cancelacion and tc.nombre=@tipoCanc and tc.tipo_cancelacion=c.tipo_cancelacion
+		from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Agenda a,NEXTGDD.Cancelacion c
+		where c.persona_cancelacion LIKE @tipoCanc and t.cod_cancelacion=c.cod_cancelacion 
 			  and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
 			  and year(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
 		group by e.descripcion
 		order by count(*) DESC
 GO
-
+--DROP FUNCTION NEXTGDD.listado1
 /*tipoCanc: Afiliado/Profesional */
 
 CREATE FUNCTION NEXTGDD.listado1Ambos(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
@@ -1514,8 +1515,8 @@ RETURNS TABLE
 AS
 	RETURN
 		select top 5 e.descripcion as 'Especialidad', count(*) 'Cantidad cancelaciones'
-		from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Cancelacion c,NEXTGDD.Agenda a
-		where c.cod_cancelacion=t.cod_cancelacion and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
+		from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Agenda a
+		where isnull(t.cod_cancelacion,0)<>0 and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
 			  and year(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
 		group by e.descripcion
 		order by count(*) DESC
