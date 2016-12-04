@@ -241,6 +241,7 @@
             this.dtpFecNac.Cursor = System.Windows.Forms.Cursors.Default;
             this.dtpFecNac.CustomFormat = "dd-MM-yyyy 00:00:00";
             this.dtpFecNac.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpFecNac.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.dtpFecNac.Location = new System.Drawing.Point(483, 61);
             this.dtpFecNac.MaxDate = new System.DateTime(2016, 11, 26, 0, 0, 0, 0);
             this.dtpFecNac.Name = "dtpFecNac";

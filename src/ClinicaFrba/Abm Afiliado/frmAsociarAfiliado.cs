@@ -49,6 +49,25 @@ namespace ClinicaFrba.Abm_Afiliado
             cantfami = cant_familiar ;
         }
 
+        public frmAsociarAfiliado(Int64 nroGrupo ,string nombre, string apellido, string tipoDoc, Int64 nroDoc, string direccion, Int64 telefono, string estadocivil, string mail, DateTime fecha, char sexo, int cant_familiar)
+        {
+            InitializeComponent();
+            fname = nombre;
+            lname = apellido;
+            tipodocu = tipoDoc;
+            nrodocu = nroDoc;
+            this.sexo = sexo;
+            direc = direccion;
+            telef = telefono;
+            estciv = estadocivil;
+            email = mail;
+            fechanac = fecha;
+            cantfami = cant_familiar;
+            txtNroAfiliadoPrincipal.Text = nroGrupo.ToString();
+            txtNroAfiliadoPrincipal.Enabled = false;
+        }
+
+
         private void btnVolver_Click(object sender, EventArgs e)
         {
             frmAltaAfiliado alta = new frmAltaAfiliado();
@@ -145,15 +164,33 @@ namespace ClinicaFrba.Abm_Afiliado
                 {
                     
                     MessageBox.Show( "Lo sentimos, no podemos procesar tu solicitud. Ingrese otro Nro de Afiliado Raiz o Inténtalo de nuevo más tarde.", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    limpiar();
+
+                    if (txtNroAfiliadoPrincipal.Enabled == true)
+                    {
+                        limpiar();
+                    }
                 }
                 else
                 {
 
                     MessageBox.Show("Registrado exitosamente!\n Tu nro de afiliado es:  " + nroafiliado + "\nNombre de usuario:  " + nroafiliado +"@NEXTGDD" + "\nContraseña:  " + nroafiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    frmAltaAfiliado alta = new frmAltaAfiliado();
-                    this.Hide();
-                    alta.Show();
+
+                    if (MessageBox.Show("Deseas agregar a un familiar mas a este grupo?", "Asociar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        frmAltaAfiliado alta = new frmAltaAfiliado(nroGrupoFamiliar);
+                        this.Hide();
+                        alta.Show();
+
+                    }
+                    else
+                    {
+                        frmAltaAfiliado alta = new frmAltaAfiliado();
+                        this.Hide();
+                        alta.Show();
+
+                    }
+                    
+                    
                 }
 
 

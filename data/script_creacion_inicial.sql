@@ -1351,6 +1351,8 @@ DECLARE @TransactionName1 varchar (50)= 'Transaccion1'
 DECLARE @est_civ tinyint
 
 
+IF EXISTS (SELECT * FROM NEXTGDD.Afiliado WHERE grupo_afiliado = @grupo_afiliado)
+BEGIN
  BEGIN TRY
 	BEGIN TRANSACTION @TransactionName1
 			
@@ -1426,6 +1428,10 @@ SELECT  @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE grupo_afiliado=@grupo_a
      		 
       ROLLBACK TRANSACTION @TransactionName1
       END CATCH
+END
+ELSE BEGIN
+SET @ret= -1
+END
 END
 GO
 

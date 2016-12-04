@@ -36,7 +36,10 @@ namespace ClinicaFrba.Abm_Afiliado
         int cantFam ;
         Int64 retorno ;
 
+        bool operacion;
+        Int64 nroGrupo;
        // DateTime fechaF;
+        string date;
 
         public frmAltaAfiliado()
         {
@@ -53,6 +56,25 @@ namespace ClinicaFrba.Abm_Afiliado
 
            // btnRegistrar.Click += new EventHandler(btnRegistrar_Click);
         }
+
+        public frmAltaAfiliado(Int64 numGrupo)
+        {
+            InitializeComponent();
+
+            plan = (string)cmbPlanMedico.SelectedItem;
+            cmbPlanMedico.Items.Add("(ninguno)");
+            comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
+
+            cmbEstadoCivil.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPlanMedico.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTipoDoc.DropDownStyle = ComboBoxStyle.DropDownList;
+            nroGrupo = numGrupo;
+            btnRegistrar.Enabled = false;
+            operacion = true;
+            // btnRegistrar.Click += new EventHandler(btnRegistrar_Click);
+        }
+
 
         private void cargar(List<string> lista, ComboBox cmb)
         {
@@ -87,7 +109,7 @@ namespace ClinicaFrba.Abm_Afiliado
             optMasculino.Checked = false;
             optFemenino.Checked = false;
 
-            dtpFecNac.ResetText();
+            dtpFecNac.Value  = DateTime.Parse(date);//  MaxDate = DateTime.Parse(date);
 
         }
 
@@ -112,99 +134,116 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 MessageBox.Show("Por favor, ingrese datos en todos los campos obligatorios y de manera correcta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            else{
-             nroAfiliado = 0;
-            
-             //Se guarda de la forma NOMBRE Apellido, sin importar como ingrese el usuario
-             nombre = txtNombre.Text.ToUpper();
-             string primeraLetra = txtApellido.Text.Substring(0, 1).ToUpper();
-             string resto= txtApellido.Text.Substring(1,txtApellido.Text.Length-1).ToLower();
-             apellido = primeraLetra + resto;
-          
-             tipoDoc = (string)cmbTipoDoc.SelectedItem;
-             nroDoc = Convert.ToInt64(txtNroDoc.Text);
-
-             primeraLetra = txtCalle.Text.Substring(0, 1).ToUpper();
-             resto = txtCalle.Text.Substring(1, txtCalle.Text.Length - 1).ToLower();
-             direccion = primeraLetra+resto;
-             
-             telefono = Convert.ToInt32(txtTel.Text);
-             estadoCivil = (string)cmbEstadoCivil.SelectedItem;
-             mail = txtMail.Text;
-
-             cantFam = Convert.ToInt32(txtCantFam.Text);
-             plan = (string)cmbPlanMedico.SelectedItem;
-             retorno = 0;
-
-            if(optMasculino.Checked == true){
-                opcionSexo = 'H';
-            } else
+            else
             {
-                opcionSexo = 'M';
+                nroAfiliado = 0;
+
+                //Se guarda de la forma NOMBRE Apellido, sin importar como ingrese el usuario
+                nombre = txtNombre.Text.ToUpper();
+                string primeraLetra = txtApellido.Text.Substring(0, 1).ToUpper();
+                string resto = txtApellido.Text.Substring(1, txtApellido.Text.Length - 1).ToLower();
+                apellido = primeraLetra + resto;
+
+                tipoDoc = (string)cmbTipoDoc.SelectedItem;
+                nroDoc = Convert.ToInt64(txtNroDoc.Text);
+
+                primeraLetra = txtCalle.Text.Substring(0, 1).ToUpper();
+                resto = txtCalle.Text.Substring(1, txtCalle.Text.Length - 1).ToLower();
+                direccion = primeraLetra + resto;
+
+                telefono = Convert.ToInt32(txtTel.Text);
+                estadoCivil = (string)cmbEstadoCivil.SelectedItem;
+                mail = txtMail.Text;
+
+                cantFam = Convert.ToInt32(txtCantFam.Text);
+                plan = (string)cmbPlanMedico.SelectedItem;
+                retorno = 0;
+
+                if (optMasculino.Checked == true)
+                {
+                    opcionSexo = 'H';
+                }
+                else
+                {
+                    opcionSexo = 'M';
+                }
+                conn = Clases.BaseDeDatosSQL.ObtenerConexion();
+                //conn.Open();
+                SqlCommand command = new SqlCommand("NEXTGDD.agregarAfiliadoPrincipal", conn);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter parNombre = new SqlParameter("@nombre", nombre);
+                SqlParameter parApellido = new SqlParameter("@apellido", apellido);
+                SqlParameter parFecNac = new SqlParameter("@fecha_nac", SqlDbType.Date);
+                SqlParameter parSexo = new SqlParameter("@sexo", opcionSexo);
+                SqlParameter parTipoDoc = new SqlParameter("@tipo_doc", tipoDoc);
+                SqlParameter parNroDoc = new SqlParameter("@nrodocumento", nroDoc);
+                parNroDoc.Direction = ParameterDirection.Input;
+                parNroDoc.SqlDbType = SqlDbType.Decimal;
+                SqlParameter parDomicilio = new SqlParameter("@domicilio", direccion);
+                SqlParameter parTel = new SqlParameter("@telefono", telefono);
+                SqlParameter parEstadoCivil = new SqlParameter("@estado_civil", estadoCivil);
+                SqlParameter parMail = new SqlParameter("@mail", mail);
+                SqlParameter parCantFam = new SqlParameter("@cant_familiares", cantFam);
+                SqlParameter parCodMedico = new SqlParameter("@cod_medico", plan);
+                SqlParameter parRet = new SqlParameter("@ret", retorno);
+
+                parRet.Direction = ParameterDirection.Output;
+                parRet.SqlDbType = SqlDbType.Decimal;
+                parFecNac.Value = dtpFecNac.Value;
+
+                command.Parameters.Add(parNombre);
+                command.Parameters.Add(parApellido);
+                command.Parameters.Add(parFecNac);
+                command.Parameters.Add(parSexo);
+                command.Parameters.Add(parTipoDoc);
+                command.Parameters.Add(parNroDoc);
+                command.Parameters.Add(parDomicilio);
+                command.Parameters.Add(parTel);
+                command.Parameters.Add(parEstadoCivil);
+                command.Parameters.Add(parMail);
+                command.Parameters.Add(parCantFam);
+                command.Parameters.Add(parCodMedico);
+                command.Parameters.Add(parRet);
+
+                command.ExecuteNonQuery();
+                // SqlDataReader dr = command.ExecuteReader();
+                //dr.Read();
+                //dr.Close();
+
+                Int64 resu = Int64.Parse(command.Parameters["@ret"].Value.ToString());
+                conn.Close();
+                if (resu.Equals(-1))
+                {
+                    MessageBox.Show("Lo sentimos, no podemos procesar tu solicitud. Inténtalo de nuevo más tarde.", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    cargarTodoLimpio();
+                }
+                else
+                {
+                    nroAfiliado = resu;
+
+                    MessageBox.Show("Registrado exitosamente!\nTu nro de afiliado es:  " + nroAfiliado + "\nNombre de usuario:  " + nroAfiliado + "@NEXTGDD" + "\nContraseña:  " + nroAfiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    if (estadoCivil == "Casado/a" || (cantFam > 0) || estadoCivil== "Concubinato")
+                    {
+
+                        if (MessageBox.Show("Deseas agregar a un familiar?", "Asociar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            cargarTodoLimpio();
+                            btnRegistrar.Enabled = false;
+                             operacion = true;
+                             nroGrupo = Int64.Parse(nroAfiliado.ToString().Substring(0,nroAfiliado.ToString().Length -2));
+                            
+                        }
+                        else
+                        {
+                          cargarTodoLimpio();
+                    
+                        }
+                    }
+                }
             }
-                     conn  = Clases.BaseDeDatosSQL.ObtenerConexion();
-                    //conn.Open();
-                    SqlCommand command = new SqlCommand("NEXTGDD.agregarAfiliadoPrincipal", conn);
-                    command.CommandType = CommandType.StoredProcedure;
-                   
-                    SqlParameter parNombre = new SqlParameter("@nombre", nombre );                
-                    SqlParameter parApellido = new SqlParameter("@apellido", apellido);
-                    SqlParameter parFecNac = new SqlParameter("@fecha_nac", SqlDbType.Date);
-                    SqlParameter parSexo = new SqlParameter("@sexo", opcionSexo );
-                    SqlParameter parTipoDoc = new SqlParameter("@tipo_doc", tipoDoc);
-                    SqlParameter parNroDoc = new SqlParameter("@nrodocumento", nroDoc);
-                    parNroDoc.Direction = ParameterDirection.Input;
-                    parNroDoc.SqlDbType = SqlDbType.Decimal;
-                    SqlParameter parDomicilio = new SqlParameter("@domicilio", direccion);
-                    SqlParameter parTel = new SqlParameter("@telefono", telefono);
-                    SqlParameter parEstadoCivil = new SqlParameter("@estado_civil", estadoCivil);
-                    SqlParameter parMail = new SqlParameter("@mail", mail);
-                    SqlParameter parCantFam = new SqlParameter("@cant_familiares",cantFam);
-                    SqlParameter parCodMedico = new SqlParameter("@cod_medico",plan);
-                    SqlParameter parRet = new SqlParameter("@ret", retorno);
-
-                    parRet.Direction = ParameterDirection.Output;
-                    parRet.SqlDbType = SqlDbType.Decimal;
-                    parFecNac.Value = dtpFecNac.Value;
-
-                    command.Parameters.Add(parNombre);
-                    command.Parameters.Add(parApellido);
-                    command.Parameters.Add(parFecNac);
-                    command.Parameters.Add(parSexo);
-                    command.Parameters.Add(parTipoDoc);
-                    command.Parameters.Add(parNroDoc);
-                    command.Parameters.Add(parDomicilio);
-                    command.Parameters.Add(parTel);
-                    command.Parameters.Add(parEstadoCivil);
-                    command.Parameters.Add(parMail);
-                    command.Parameters.Add(parCantFam);
-                    command.Parameters.Add(parCodMedico);
-                    command.Parameters.Add(parRet);
-
-                    command.ExecuteNonQuery();
-                   // SqlDataReader dr = command.ExecuteReader();
-                    //dr.Read();
-                    //dr.Close();
-
-                    Int64 resu = Int64.Parse(command.Parameters["@ret"].Value.ToString());
-                    conn.Close();
-                    if (resu.Equals(-1))
-                    {
-                        MessageBox.Show("Lo sentimos, no podemos procesar tu solicitud. Inténtalo de nuevo más tarde.", "Alta Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        cargarTodoLimpio();
-                    }
-                    else 
-                    {
-                        nroAfiliado = resu;
-
-                        MessageBox.Show( "Registrado exitosamente!\nTu nro de afiliado es:  " + nroAfiliado+"\nNombre de usuario:  " + nroAfiliado +"@NEXTGDD"+  "\nContraseña:  " + nroAfiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        cargarTodoLimpio();
-                    }
-                  
-          }
-
         }
-
         private void pnlDatosPersonales_Paint(object sender, PaintEventArgs e)
         {
             
@@ -301,9 +340,21 @@ namespace ClinicaFrba.Abm_Afiliado
                 else
                 {
                     MessageBox.Show("Datos ingresados correctamente", "Alta Afiliado", MessageBoxButtons.OK,MessageBoxIcon.Information);
-                    frmAsociarAfiliado asocio = new frmAsociarAfiliado(nombre, apellido, tipoDoc, nroDoc, direccion, telefono, estadoCivil, mail, fechaNac, opcionSexo, cantFam);
-                    this.Hide();
-                    asocio.Show();
+
+                    if (operacion == false)
+                    {
+
+                        frmAsociarAfiliado asocio = new frmAsociarAfiliado(nombre, apellido, tipoDoc, nroDoc, direccion, telefono, estadoCivil, mail, fechaNac, opcionSexo, cantFam);
+                        this.Hide();
+                        asocio.Show();
+
+                    }
+                    else
+                    {
+                        frmAsociarAfiliado asocio = new frmAsociarAfiliado(nroGrupo,nombre, apellido, tipoDoc, nroDoc, direccion, telefono, estadoCivil, mail, fechaNac, opcionSexo, cantFam);
+                        this.Hide();
+                        asocio.Show();
+                    }
                 }                  
          
             }
@@ -493,7 +544,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmAltaAfiliado_Load(object sender, EventArgs e)
         {
-            string date = System.Configuration.ConfigurationManager.AppSettings["date"];
+            date = System.Configuration.ConfigurationManager.AppSettings["date"];
             dtpFecNac.MaxDate = DateTime.Parse(date);
 
         }
