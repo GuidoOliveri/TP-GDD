@@ -439,6 +439,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.valid
     DROP FUNCTION NEXTGDD.validarUsoDelTurno
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarAfiliadoTurno'))
+    DROP FUNCTION NEXTGDD.buscarAfiliadoTurno
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'NEXTGDD.buscarBonosDisponibles'))
     DROP FUNCTION NEXTGDD.buscarBonosDisponibles
 GO
@@ -958,15 +962,23 @@ BEGIN
 END;
 GO
 
-CREATE FUNCTION NEXTGDD.buscarBonosDisponibles(@profesional varchar(255),@fecha datetime)
+CREATE FUNCTION NEXTGDD.buscarAfiliadoTurno(@fecha datetime,@profesional varchar(255))
+returns numeric(18)
+AS
+BEGIN
+RETURN	(select t.nro_afiliado 
+		from NEXTGDD.Turno t,NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p
+		where t.fecha=@fecha and t.cod_agenda=a.cod_agenda and pr.matricula=a.matricula
+			  and p.id_persona=pr.id_persona and p.nombre+' '+p.apellido LIKE @profesional);
+END
+GO
+
+CREATE FUNCTION NEXTGDD.buscarBonosDisponibles(@nroAfiliado numeric(18))
 RETURNS TABLE
 AS
 	RETURN select b.nro_bono as bono 
-			from NEXTGDD.Turno t,NEXTGDD.Afiliado a,NEXTGDD.Afiliado a2,NEXTGDD.Bono_Consulta b,NEXTGDD.Agenda ag,
-				 NEXTGDD.Profesional pr,NEXTGDD.Persona p 
-			where (p.nombre+' '+p.apellido) LIKE @profesional and pr.id_persona=p.id_persona 
-				  and pr.matricula=ag.matricula and t.cod_agenda=ag.cod_agenda 
-				  and t.fecha LIKE @fecha and t.nro_afiliado=a.nro_afiliado 
+			from NEXTGDD.Afiliado a,NEXTGDD.Afiliado a2,NEXTGDD.Bono_Consulta b
+			where a.nro_afiliado=@nroAfiliado
 				  --puede usar el de un familiar que pertenezca al mismo plan--
 				  and b.nro_afiliado=a2.nro_afiliado and a2.grupo_afiliado=a.grupo_afiliado and a.cod_plan=a2.cod_plan 
 				  --se verfica que no se haya usado, a menos que el turno figure cancelado--

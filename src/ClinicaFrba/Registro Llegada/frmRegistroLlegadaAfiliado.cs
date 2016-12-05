@@ -93,9 +93,9 @@ namespace ClinicaFrba.Registro_Llegada
                         cmbBono.Items.Clear();
                         cmbBono.Text = "";
                     }
-                    //Descomentar-> todos los bonos fueron usados,ver de usar los de consultas canceladas 
-                    //puede usar los de familiares
-                    comando = "select * from NEXTGDD.buscarBonosDisponibles('"+profesional+"','"+convertirFecha(turno)+"') order by bono ASC";
+                    comando = "select NEXTGDD.buscarAfiliadoTurno('"+convertirFecha(turno)+"','"+profesional+"')";
+                    txtNroAfiliado.Text = Clases.BaseDeDatosSQL.buscarCampo(comando);
+                    comando = "select * from NEXTGDD.buscarBonosDisponibles("+txtNroAfiliado.Text+") order by bono ASC";
                     cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "bono"), cmbBono);
                     
                     txtFechaLlegada.Text = agregarCerosFecha(turno.Split(' ')[0]);
