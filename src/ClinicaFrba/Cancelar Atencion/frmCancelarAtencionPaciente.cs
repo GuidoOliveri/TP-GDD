@@ -153,7 +153,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                 String queryString = "SELECT precio_bono_consulta FROM NEXTGDD.Afiliado RIGHT JOIN NEXTGDD.Plan_Medico ON Afiliado.cod_plan = Plan_Medico.cod_plan WHERE Afiliado.nro_afiliado ='" + idAfiliado + "'";
                 Clases.BaseDeDatosSQL.buscarCampo(queryString);
                 cargarDatosAfiliado(idAfiliado);
-                MessageBox.Show("Usuario Cargado con Exito", "Buscar Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Usuario Cargado con Exito", "Buscar Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch
             {
