@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ClinicaFrba.Clases ;
+using System.Data.SqlClient;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
@@ -19,6 +20,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private string operacion = "Modificar";
         private int resultado;
         private UInt64 nroAfiliado;
+        private DateTime fechaMod;
 
         public frmModificarAfiliado(UInt64 nroAfil,string dir, string mail,string estcivil,string cantfamil,string telefono,string planmedico )
         {
@@ -84,7 +86,7 @@ namespace ClinicaFrba.Abm_Afiliado
             }
             else if (planAnt != planNuev)
             {
-                DateTime fechaMod = System.DateTime.Now.Date;
+                fechaMod = DateTime.Parse(System.Configuration.ConfigurationManager.AppSettings["date"]);
 
                 resultado = Afiliado.RegistrarModificacionCnPlan(nroAfiliado, txtDir.Text, UInt64.Parse(txtTel.Text), txtMail.Text, (String)cmdEstadoCivil.SelectedItem, int.Parse(textCantH.Text), (String)cmbPlanMedico.SelectedItem, txtMotivo.Text, fechaMod);
 
