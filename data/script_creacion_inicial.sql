@@ -1563,9 +1563,10 @@ CREATE FUNCTION NEXTGDD.listado1Ambos(@anio numeric(18,0),@mesInicio numeric(18,
 RETURNS TABLE
 AS
 	RETURN
-		select tabla.Especialidad as 'Especialidad',sum(tabla.[Cantidad cancelaciones]) as 'Cantidad cancelaciones'
+		select top 5 tabla.Especialidad as 'Especialidad',sum(tabla.[Cantidad cancelaciones]) as 'Cantidad cancelaciones'
 		from (select * from NEXTGDD.listado1Profesional(2016,6,12) UNION All select * from NEXTGDD.listado1Afiliado(2016,6,12,'Afiliado')) as tabla
 		group by tabla.Especialidad
+		order by sum(tabla.[Cantidad cancelaciones]) DESC
 GO
 
 
