@@ -316,9 +316,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
 
         private void verificarSuperposicionDeRangosEnBDD()
         {
-            comando = "select NEXTGDD.buscarCodigoAgenda('" + profesional + "','" + especialidad + "')";
-            string agenda = Clases.BaseDeDatosSQL.buscarCampo(comando);
-            comando = "select * from NEXTGDD.obtenerRangosHorarios(" + agenda + ",'" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
+            comando = "select * from NEXTGDD.obtenerRangosHorarios('"+profesional  +"','" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
             List<string> campos = new List<string>();
             campos.Add("DD");
             campos.Add("DH");
@@ -421,9 +419,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             }
             else
             {
-                comando = "select NEXTGDD.buscarCodigoAgenda('" + profesional + "','" + especialidad + "')";
-                string agenda = Clases.BaseDeDatosSQL.buscarCampo(comando);
-                comando = "select * from NEXTGDD.obtenerRangosHorarios(" + agenda + ",'" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
+                comando = "select * from NEXTGDD.obtenerRangosHorarios('" + profesional + "','" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
                 List<string> campos = new List<string>();
                 campos.Add("DD");
                 campos.Add("DH");

@@ -1172,14 +1172,15 @@ BEGIN
 END;
 GO
 
-CREATE FUNCTION NEXTGDD.obtenerRangosHorarios(@cod_agenda numeric(18,0),@fechaDesde datetime,@fechaHasta datetime)
+CREATE FUNCTION NEXTGDD.obtenerRangosHorarios(@profesional varchar(255),@fechaDesde datetime,@fechaHasta datetime)
 RETURNS TABLE
 AS
 	RETURN select ra.dia_semanal_inicial as 'DD',ra.dia_semanal_final as 'DH',ra.hora_inicial as 'HD',ra.hora_final as 'HH' 
-			from NEXTGDD.Rango_Atencion ra,NEXTGDD.Rango_Fechas rf 
-			where ra.cod_agenda=@cod_agenda and str(ra.cod_fecha)+str(ra.cod_agenda)=str(rf.cod_fecha)+str(rf.cod_agenda) and 
-				  CONVERT(date, rf.fecha_desde) LIKE CONVERT(date,@fechaDesde) and 
-				  CONVERT(date,rf.fecha_hasta) LIKE CONVERT(date,@fechaHasta)
+			from NEXTGDD.Rango_Atencion ra,NEXTGDD.Rango_Fechas rf,NEXTGDD.Profesional pr, NEXTGDD.Persona p,NEXTGDD.Agenda a 
+			where p.nombre+' '+p.apellido LIKE @profesional and p.id_persona=pr.id_persona and pr.matricula=a.matricula
+				  --Se buscan los rangos horarios de los rangos de fechas que se superponen con la fecha seleccionada--
+				  and a.cod_agenda=rf.cod_agenda and NEXTGDD.verSuperposicionDeRangos(@fechaDesde,@fechaHasta,rf.fecha_desde,rf.fecha_hasta)=0
+				  and str(ra.cod_fecha)+str(ra.cod_agenda)=str(rf.cod_fecha)+str(rf.cod_agenda) 
 GO
 
 CREATE PROCEDURE NEXTGDD.agregar_funcionalidad(@rol varchar(255), @func varchar(255)) AS
