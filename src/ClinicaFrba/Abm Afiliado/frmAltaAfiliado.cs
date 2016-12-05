@@ -72,6 +72,7 @@ namespace ClinicaFrba.Abm_Afiliado
             nroGrupo = numGrupo;
             btnRegistrar.Enabled = false;
             operacion = true;
+            btnVolver.Text = "Cancelar";
             // btnRegistrar.Click += new EventHandler(btnRegistrar_Click);
         }
 
@@ -233,7 +234,8 @@ namespace ClinicaFrba.Abm_Afiliado
                             btnRegistrar.Enabled = false;
                              operacion = true;
                              nroGrupo = Int64.Parse(nroAfiliado.ToString().Substring(0,nroAfiliado.ToString().Length -2));
-                            
+
+                             btnVolver.Text = "Cancelar";
                         }
                         else
                         {
@@ -261,10 +263,20 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
+            if (operacion == false)
+            {
+                frmPrincipalAfiliado pa = new frmPrincipalAfiliado();
+                this.Hide();
+                pa.Show();
+            }
+            else {
 
-            frmPrincipalAfiliado pa = new frmPrincipalAfiliado();
-            this.Hide();
-            pa.Show();
+                frmAltaAfiliado alta = new frmAltaAfiliado();
+                this.Hide();
+                alta.Show();
+            
+            }
+
         }
 
         private void btnHijo_Click(object sender, EventArgs e)

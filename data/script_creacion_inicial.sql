@@ -1349,9 +1349,10 @@ DECLARE @usr VARCHAR(255)
 DECLARE @pass varchar (100)
 DECLARE @TransactionName1 varchar (50)= 'Transaccion1'
 DECLARE @est_civ tinyint
+DECLARE @cant_fam_afilp int
+DECLARE @cantidad int
 
-
-IF EXISTS (SELECT * FROM NEXTGDD.Afiliado WHERE grupo_afiliado = @grupo_afiliado)
+IF EXISTS (SELECT * FROM NEXTGDD.Afiliado WHERE grupo_afiliado = @grupo_afiliado AND integrante_grupo= 01 AND activo= 1)
 BEGIN
  BEGIN TRY
 	BEGIN TRANSACTION @TransactionName1
@@ -1364,7 +1365,7 @@ BEGIN
 
 SET @pers = SCOPE_IDENTITY()
 
-SELECT  @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE grupo_afiliado=@grupo_afiliado and  integrante_grupo = 01
+SELECT  @cod_plan= cod_plan,@cant_fam_afilp= cant_familiares  FROM NEXTGDD.Afiliado WHERE grupo_afiliado=@grupo_afiliado and  integrante_grupo = 01
 
    IF @nro_afiliado_integrante = 1
          BEGIN
@@ -1417,7 +1418,15 @@ SELECT  @cod_plan= cod_plan  FROM NEXTGDD.Afiliado WHERE grupo_afiliado=@grupo_a
   VALUES (2, @usr+'@NEXTGDD')
 
   SET @ret= @nro_afiliado
-     
+  SET @cantidad = (SELECT COUNT (*) FROM NEXTGDD.Afiliado WHERE grupo_afiliado=@grupo_afiliado ) -1
+  
+  IF (@cant_fam_afilp < @cantidad )
+  BEGIN
+  UPDATE NEXTGDD.Afiliado
+  SET cant_familiares = @cantidad
+  WHERE grupo_afiliado= @grupo_afiliado AND integrante_grupo= 01
+  END
+
   COMMIT TRANSACTION @TransactionName1
                 	    
  END TRY
@@ -1470,12 +1479,12 @@ GO
 CREATE PROCEDURE NEXTGDD.darDeBajaAfiliado(@nro_afiliado numeric(20,0), @fecha_baja datetime, @ret smallint OUTPUT)
 AS BEGIN           
 
-IF EXISTS (SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado)
+IF EXISTS (SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado )
    BEGIN
     BEGIN TRY
 	  BEGIN TRANSACTION   
         
-        DECLARE @fechaTurnos DATETIME 
+        DECLARE @fechaTurnos DATETIME , @id_persona numeric (18,0), @user varchar(100)
 		IF (1 = (SELECT activo FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado))
 		  BEGIN
 		  UPDATE NEXTGDD.Afiliado 
@@ -1487,6 +1496,11 @@ IF EXISTS (SELECT * FROM NEXTGDD.Afiliado WHERE nro_afiliado= @nro_afiliado)
 		   DELETE FROM NEXTGDD.Turno
 		    WHERE nro_afiliado = @nro_afiliado AND fecha >=  @fechaTurnos
 	
+		   SELECT @id_persona= a.id_persona, @user=username  FROM NEXTGDD.Afiliado a JOIN NEXTGDD.Usuario u ON (a.id_persona= u.id_persona) WHERE nro_afiliado= @nro_afiliado
+		   
+		   DELETE NEXTGDD.Usuario_X_Rol
+		   WHERE username = @user AND id_rol=2       
+
           SET @ret= 0
 		  END
         ELSE

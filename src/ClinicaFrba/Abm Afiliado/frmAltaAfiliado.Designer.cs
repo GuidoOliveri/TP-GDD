@@ -170,9 +170,9 @@
             this.lblCantFam.AutoSize = true;
             this.lblCantFam.Location = new System.Drawing.Point(364, 157);
             this.lblCantFam.Name = "lblCantFam";
-            this.lblCantFam.Size = new System.Drawing.Size(80, 13);
+            this.lblCantFam.Size = new System.Drawing.Size(105, 13);
             this.lblCantFam.TabIndex = 20;
-            this.lblCantFam.Text = "*Cantidad hijos:";
+            this.lblCantFam.Text = "*Cantidad Familiares:";
             // 
             // cmbEstadoCivil
             // 
