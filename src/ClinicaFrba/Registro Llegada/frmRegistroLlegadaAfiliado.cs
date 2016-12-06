@@ -57,8 +57,7 @@ namespace ClinicaFrba.Registro_Llegada
             {
                 warning2.Visible = false;
                 profesional = (string)cmbProfesional.SelectedItem;
-                cmbTurno.Items.Clear();
-                cmbTurno.Text = "";
+                borrarTurno();
                 /* FILTRA POR FECHA ACTUAL*/
                 comando = "select * from NEXTGDD.buscarTurnosDelDia('"+profesional+"','"+convertirFecha(Clases.FechaSistema.fechaSistema)+"') order by fecha ASC";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando,"fecha"), cmbTurno);
@@ -67,12 +66,9 @@ namespace ClinicaFrba.Registro_Llegada
             {
                 warning2.Visible = false;
                 especialidad = (string) cmbEspecialidad.SelectedItem;
-                cmbTurno.Items.Clear();
-                cmbTurno.Text = "";
-                cmbBono.Items.Clear();
-                cmbBono.Text = "";
                 cmbProfesional.Items.Clear();
                 cmbProfesional.Text = "";
+                borrarTurno();
 
                 //Carga los profesionales según la especialidad
                 comando = "select * from NEXTGDD.buscarProfesionales('" + especialidad + "') order by nombre ASC";
@@ -82,17 +78,12 @@ namespace ClinicaFrba.Registro_Llegada
             {
                 warning2.Visible = false;
                 turno = (string) cmbTurno.SelectedItem;
-                txtFechaLlegada.Text = "";
-                txtHoraLlegada.Text = "";
+                borrarFecha();
                 comando = "select NEXTGDD.validarUsoDelTurno('" + convertirFecha(turno) + "','" + profesional + "')";
                 if (Clases.BaseDeDatosSQL.buscarCampo(comando)=="El turno no fue utilizado")
                 {
                     warning1.Visible = false;
-                    if ((string)cmbTurno.SelectedItem != turno)
-                    {
-                        cmbBono.Items.Clear();
-                        cmbBono.Text = "";
-                    }
+                    borrarAfiliado();
                     comando = "select NEXTGDD.buscarAfiliadoTurno('"+convertirFecha(turno)+"','"+profesional+"')";
                     txtNroAfiliado.Text = Clases.BaseDeDatosSQL.buscarCampo(comando);
                     comando = "select * from NEXTGDD.buscarBonosDisponibles("+txtNroAfiliado.Text+") order by bono ASC";
@@ -104,8 +95,7 @@ namespace ClinicaFrba.Registro_Llegada
                 else
                 {
                     warning1.Visible = true;
-                    cmbBono.Items.Clear();
-                    cmbBono.Text = "";
+                    borrarAfiliado();
                 }
                 
             }
@@ -130,15 +120,14 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void rbBusqueda_Click(object sender, EventArgs e)
         {
+            borrarTurno();
+            cmbEspecialidad.Text = null;
             if (cmbEspecialidad.Enabled == false)
             {
                 rbBusqueda.Checked = true;
                 cmbEspecialidad.Enabled = true;
                 cmbProfesional.Items.Clear();
                 cmbProfesional.Text = "";
-                cmbTurno.Items.Clear();
-                cmbTurno.Text = "";
-                cmbBono.Text = "";
                 profesional = "";
                 turno = "";
                 bono = "";
@@ -148,8 +137,6 @@ namespace ClinicaFrba.Registro_Llegada
                 rbBusqueda.Checked = false;
                 cmbProfesional.Items.Clear();
                 cmbProfesional.Text = "";
-                cmbEspecialidad.Text = "";
-                cmbTurno.Text = "";
                 //Carga de nuevo todos los profesionales
                 comando = "select (p.nombre+' '+p.apellido) as nombre from NEXTGDD.Profesional pr,NEXTGDD.Persona p where p.id_persona=pr.id_persona and pr.activo=1 order by p.nombre ASC";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "nombre"),cmbProfesional);
@@ -172,7 +159,7 @@ namespace ClinicaFrba.Registro_Llegada
             {
                 verificarLlegadaTarde();
             }
-            if (profesional != null && turno != null && bono != null && horaLLegada != "" && warning2.Visible != true && warning4.Visible != true && warning3.Visible != true && warning1.Visible != true)
+            if (cmbProfesional.SelectedItem != null && cmbTurno.SelectedItem != null && cmbBono.SelectedItem != null && horaLLegada != "" && warning2.Visible != true && warning4.Visible != true && warning3.Visible != true && warning1.Visible != true)
             {
                 comando = "EXECUTE NEXTGDD.registrarConsulta @fechaLlegada='"+convertirFecha(fechaLLegada+' '+horaLLegada)+"',@nomProf='" + profesional + "', @fechaTurno='" +convertirFecha(turno) + "', @nroBono='" + bono+ "'";
                 Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
@@ -252,6 +239,27 @@ namespace ClinicaFrba.Registro_Llegada
                 warning3.Visible = false;
                 warning3.Text = "Formato de fecha incorrecto.";
             }
+        }
+
+        private void borrarTurno()
+        {
+            cmbTurno.Items.Clear();
+            cmbTurno.Text = "";
+            borrarAfiliado();
+            borrarFecha();
+        }
+
+        private void borrarAfiliado()
+        {
+            txtNroAfiliado.Text = "";
+            cmbBono.Items.Clear();
+            cmbBono.Text = "";
+        }
+
+        private void borrarFecha()
+        {
+            txtFechaLlegada.Text = "";
+            txtHoraLlegada.Text = "";
         }
 
         private void frmRegistroLlegadaAfiliado_Load(object sender, EventArgs e)
