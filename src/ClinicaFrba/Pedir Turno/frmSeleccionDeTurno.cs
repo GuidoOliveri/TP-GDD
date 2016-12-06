@@ -28,6 +28,7 @@ namespace ClinicaFrba.Pedir_Turno
             warning2.Visible = false;
             warning3.Visible = false;
             warning4.Visible = false;
+            dtpFecha.Value = DateTime.Parse(Clases.FechaSistema.fechaSistema);
 
             if (Clases.Usuario.id_rol == "Afiliado")
             {
@@ -92,9 +93,10 @@ namespace ClinicaFrba.Pedir_Turno
 
         private void OnSelectedIndexChanged(object sender, EventArgs e)
         {
+            warning1.Visible = false;
+            warning3.Visible = false;
             if (cmbEspecialidad.SelectedItem!=null && (string) cmbEspecialidad.SelectedItem!=especialidad)
             {
-                warning3.Visible = false;
                 verificarTextbox();   
                 especialidad = (string) cmbEspecialidad.SelectedItem;
                 cmbProfesional.Text = "";
@@ -107,13 +109,26 @@ namespace ClinicaFrba.Pedir_Turno
             }
             if (cmbProfesional.SelectedItem != null && (string)cmbProfesional.SelectedItem!=profesional)
             {
-                warning3.Visible = false;
                 profesional = (string) cmbProfesional.SelectedItem;
                 cmbHorario.Items.Clear();
+
+                //Verifica la fecha actual
+                warning1.Text = "La fecha esta fuera del rango de atención. Seleccione otra.";
+                verificarCancelaciones();
+                cmbHorario.Items.Clear();
+                cmbHorario.Text = "";
+                if (warning1.Visible == false)
+                {
+                    restringirRangoHorario();
+                    cargar(horarios, cmbHorario);
+                    if (horarios.Count() == 0)
+                    {
+                        warning1.Visible = true;
+                    }
+                }
             }
             if (cmbHorario.SelectedItem != null)
             {
-                warning3.Visible = false;
                 verificarTurnoDisponible();
             }
 
@@ -123,18 +138,27 @@ namespace ClinicaFrba.Pedir_Turno
         {
             //CARGA LOS HORARIOS A PARTIR DE LA FECHA SELECCIONADA
             warning1.Visible = false;
+            warning1.Text="La fecha esta fuera del rango de atención. Seleccione otra.";
             warning2.Visible = false;
-            verificarCancelaciones();
-            cmbHorario.Items.Clear();
-            cmbHorario.Text = "";
-            if (warning1.Visible == false)
+            if (cmbProfesional.SelectedItem != null && cmbEspecialidad != null)
             {
-                restringirRangoHorario();
-                cargar(horarios, cmbHorario);
-                if (horarios.Count() == 0)
+                verificarCancelaciones();
+                cmbHorario.Items.Clear();
+                cmbHorario.Text = "";
+                if (warning1.Visible == false)
                 {
-                    warning1.Visible = true;
+                    restringirRangoHorario();
+                    cargar(horarios, cmbHorario);
+                    if (horarios.Count() == 0)
+                    {
+                        warning1.Visible = true;
+                    }
                 }
+            }
+            else
+            {
+                warning1.Text = "Debe seleccionar un profesional y una especialidad.";
+                warning1.Visible = true;
             }
         }
 
@@ -151,21 +175,29 @@ namespace ClinicaFrba.Pedir_Turno
         private void btnIngresarTurno_Click(object sender, EventArgs e)
         {
             nroAfiliado=(string) txtNroAfiliado.Text;
-            this.verificarTextbox();
-            verificarTurnoDisponible();
-            verificarRangoHorario();
-            if (nroAfiliado != "" && warning4.Visible==false && especialidad != "" && profesional != "" && fecha != "" && warning1.Visible==false && warning2.Visible==false)
+            if (nroAfiliado != "" && cmbEspecialidad.SelectedItem != null && cmbProfesional.SelectedItem != null && fecha != "" && cmbHorario.SelectedItem!=null)
             {
-                comando = "EXECUTE NEXTGDD.crearTurno @nroAf='"+nroAfiliado+"', @nombreEsp='"+especialidad+"', @nomProf='"+profesional+"', @fecha='"+fecha+"'";
-                Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
+                this.verificarTextbox();
+                verificarTurnoDisponible();
+                verificarRangoHorario();
 
-                comando="select top 1 str(nro_turno) from NEXTGDD.Turno order by nro_turno DESC";
-                MessageBox.Show("El turno se ha igresado correctamente \n Numero de turno:  "+ Clases.BaseDeDatosSQL.buscarCampo(comando), "Turno", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (warning4.Visible == false && warning1.Visible == false && warning2.Visible == false)
+                {
 
-                frmSeleccionDeTurno NewForm=new frmSeleccionDeTurno();
-                NewForm.Show();
-                this.Dispose(false);
+                    comando = "EXECUTE NEXTGDD.crearTurno @nroAf='" + nroAfiliado + "', @nombreEsp='" + especialidad + "', @nomProf='" + profesional + "', @fecha='" + fecha + "'";
+                    Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
 
+                    comando = "select top 1 str(nro_turno) from NEXTGDD.Turno order by nro_turno DESC";
+                    MessageBox.Show("El turno se ha igresado correctamente \n Numero de turno:  " + Clases.BaseDeDatosSQL.buscarCampo(comando), "Turno", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    frmSeleccionDeTurno NewForm = new frmSeleccionDeTurno();
+                    NewForm.Show();
+                    this.Dispose(false);
+                }
+                else
+                {
+                    warning3.Visible = true;
+                }
             }
             else
             {

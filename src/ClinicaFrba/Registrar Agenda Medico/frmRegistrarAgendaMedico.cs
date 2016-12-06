@@ -31,6 +31,8 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             warning1.Visible = false;
             warning2.Visible = false;
             warning3.Visible = false;
+            dpFechaDesde.Value = DateTime.Parse(Clases.FechaSistema.fechaSistema);
+            dpFechaHasta.Value = DateTime.Parse(Clases.FechaSistema.fechaSistema);
 
             cargarDias();
 
@@ -77,10 +79,10 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         private void OnSelectedIndexChanged(object sender, EventArgs e)
         {
             warning1.Visible = false;
+            warning2.Visible = false;
             if (cmbProfesional.SelectedItem != null && (string)cmbProfesional.SelectedItem != profesional)
             {
                 warning3.Visible = false;
-                warning2.Visible = false;
                 dgRangoAtencion.Rows.Clear();
                 cmbEspecialidad.Items.Clear();
                 cmbEspecialidad.Text = "";
@@ -88,15 +90,34 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 comando = "select * from NEXTGDD.buscarEspecialidades('" + profesional + "') order by especialidad ASC";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "especialidad"), cmbEspecialidad);
             }
+            if (cmbEspecialidad.SelectedItem != null && (string)cmbEspecialidad.SelectedItem != especialidad)
+            {
+                especialidad = (string)cmbEspecialidad.SelectedItem;
+                //Se busca si tiene una agenda que coincida con la fecha actual y se settea
+                fechaDesde = (string)dpFechaDesde.Value.ToString();
+                fechaHasta = (string)dpFechaHasta.Value.ToString();
+                comando = "select NEXTGDD.validarAgendaUnica('" + especialidad + "','" + profesional + "','" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
+                string respuesta = Clases.BaseDeDatosSQL.buscarCampo(comando);
+                if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "")
+                {
+                    warning3.Visible = false;
+                }
+                else
+                {
+                    dpFechaDesde.Value = DateTime.Parse(respuesta.Split('|')[0]);
+                    dpFechaHasta.Value = DateTime.Parse(respuesta.Split('|')[1]);
+                    fechaDesde = (string)dpFechaDesde.Value.ToString();
+                    fechaHasta = (string)dpFechaHasta.Value.ToString();
+                    warning3.Visible = true;
+                }
+            }
             if (cmbDiaDesde.SelectedItem != null && (string)cmbDiaDesde.SelectedItem != diaDesde)
             {
-                warning2.Visible = false;
                 diaDesde = (string)cmbDiaDesde.SelectedItem;
                 filtrarFechas(cmbDiaDesde, cmbDiaHasta, dias);
             }
             if (cmbDiaHasta.SelectedItem != null && (string)cmbDiaHasta.SelectedItem != diaHasta)
             {
-                warning2.Visible = false;
                 diaHasta = (string)cmbDiaHasta.SelectedItem;
                 cmbHorarioDesde.Text = "";
                 cmbHorarioHasta.Text = "";
@@ -109,7 +130,6 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             }
             if (cmbHorarioDesde.SelectedItem != null && (string)cmbHorarioDesde.SelectedItem != horaDesde)
             {
-                warning2.Visible = false;
                 horaDesde = (string)cmbHorarioDesde.SelectedItem;
                 filtrarFechas(cmbHorarioDesde, cmbHorarioHasta, horarios);
             }
@@ -197,7 +217,7 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         {
             if (((Button)sender).Text.Equals(btnAgregar.Text))
             {
-                if (cmbProfesional.SelectedItem != null && cmbEspecialidad != null && dpFechaDesde.Value!=null && dpFechaHasta.Value!=null)
+                if (cmbProfesional.SelectedItem != null && cmbEspecialidad != null && dpFechaDesde.Value.ToString() != "" && dpFechaHasta.Value.ToString() != "")
                 {
                     warning1.Text = "El rango horario no es válido. Seleccione otro.";
                     warning1.Visible = false;
@@ -241,49 +261,53 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
                 especialidad = (string)cmbEspecialidad.SelectedItem;
                 diaHasta = (string)cmbDiaHasta.SelectedItem;
                 horaHasta = (string)cmbHorarioHasta.SelectedItem;
-                verificarSumaHoras();
-                if (dpFechaDesde.Enabled == true && dpFechaHasta.Enabled == true)
+                fechaDesde = dpFechaDesde.Value.Date.ToString();
+                fechaHasta = dpFechaHasta.Value.Date.ToString();
+                warning1.Text = "Faltan seleccionar campos";
+                if (cmbEspecialidad.SelectedItem != null && cmbProfesional.SelectedItem != null && dgRangoAtencion.Rows.Count != 0 && fechaDesde != null && fechaHasta != null )
                 {
-                    fechaDesde = dpFechaDesde.Value.Date.ToString();
-                    fechaHasta = dpFechaHasta.Value.Date.ToString();
-                }
-                if (especialidad != "" && profesional != "" && dgRangoAtencion.Rows.Count != 0 && fechaDesde != null && fechaHasta != null && warning2.Visible == false && warning1.Visible == false )
-                {
-                    string fechaD = "";
-                    string fechaH = "";
-                    if (dpFechaDesde.Enabled == true && dpFechaHasta.Enabled == true)
+                    verificarSumaHoras();
+                    if (warning2.Visible == false && warning1.Visible == false)
                     {
-                        fechaD = convertirFecha(fechaDesde);
-                        fechaH = convertirFecha(fechaHasta);
-                    }
+                        string fechaD = "";
+                        string fechaH = "";
+                        if (dpFechaDesde.Enabled == true && dpFechaHasta.Enabled == true)
+                        {
+                            fechaD = convertirFecha(fechaDesde);
+                            fechaH = convertirFecha(fechaHasta);
+                        }
 
-                    comando = "EXECUTE NEXTGDD.registrarAgenda @nomProfesional='" + profesional + "', @nomEspecialidad='" + especialidad + "', @fechaD='" + fechaD + "', @fechaH='" + fechaH + "'";
-                    Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
-
-                    comando = "select NEXTGDD.buscarCodigoAgenda('" + profesional + "','" + especialidad + "')";
-                    string cod_agenda = Clases.BaseDeDatosSQL.buscarCampo(comando);
-
-                    comando = "select NEXTGDD.buscarCodigoRangoFecha("+cod_agenda+",'" + fechaD + "','"+fechaH+"')";
-                    string cod_fecha = Clases.BaseDeDatosSQL.buscarCampo(comando);
-
-                    foreach (DataGridViewRow row in dgRangoAtencion.Rows)
-                    {
-                        comando = "EXECUTE NEXTGDD.registrarRangoHorario @codAgenda='" + cod_agenda + "',@codFecha= '"+cod_fecha+"' ,@diaD='" + row.Cells[0].Value.ToString() + "',@diaH='" + row.Cells[1].Value.ToString() + "',@horaD='" + row.Cells[2].Value.ToString() + ":00',@horaH='" + row.Cells[3].Value.ToString() + ":00'";
+                        comando = "EXECUTE NEXTGDD.registrarAgenda @nomProfesional='" + profesional + "', @nomEspecialidad='" + especialidad + "', @fechaD='" + fechaD + "', @fechaH='" + fechaH + "'";
                         Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
+
+                        comando = "select NEXTGDD.buscarCodigoAgenda('" + profesional + "','" + especialidad + "')";
+                        string cod_agenda = Clases.BaseDeDatosSQL.buscarCampo(comando);
+
+                        comando = "select NEXTGDD.buscarCodigoRangoFecha(" + cod_agenda + ",'" + fechaD + "','" + fechaH + "')";
+                        string cod_fecha = Clases.BaseDeDatosSQL.buscarCampo(comando);
+
+                        foreach (DataGridViewRow row in dgRangoAtencion.Rows)
+                        {
+                            comando = "EXECUTE NEXTGDD.registrarRangoHorario @codAgenda='" + cod_agenda + "',@codFecha= '" + cod_fecha + "' ,@diaD='" + row.Cells[0].Value.ToString() + "',@diaH='" + row.Cells[1].Value.ToString() + "',@horaD='" + row.Cells[2].Value.ToString() + ":00',@horaH='" + row.Cells[3].Value.ToString() + ":00'";
+                            Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
+                        }
+
+                        MessageBox.Show("La agenda se ha registrado correctamente.", "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico();
+                        NewForm.Show();
+                        this.Dispose(false);
                     }
-
-                    MessageBox.Show("La agenda se ha registrado correctamente.", "Agenda", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    frmRegistrarAgendaMedico NewForm = new frmRegistrarAgendaMedico();
-                    NewForm.Show();
-                    this.Dispose(false);
+                    else
+                    {
+                        warning2.Visible = true;
+                    }
                 }
                 else
                 {
                     warning2.Visible = true;
                 }
             }
-
         }
 
         private string convertirFecha(string fecha)
