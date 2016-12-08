@@ -31,8 +31,11 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             warning1.Visible = false;
             warning2.Visible = false;
             warning3.Visible = false;
+
             dpFechaDesde.Value = DateTime.Parse(Clases.FechaSistema.fechaSistema);
+            dpFechaDesde.MinDate = DateTime.Parse(Clases.FechaSistema.fechaSistema);
             dpFechaHasta.Value = DateTime.Parse(Clases.FechaSistema.fechaSistema);
+            dpFechaHasta.MinDate = DateTime.Parse(Clases.FechaSistema.fechaSistema);
 
             cargarDias();
 
@@ -92,24 +95,8 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
             }
             if (cmbEspecialidad.SelectedItem != null && (string)cmbEspecialidad.SelectedItem != especialidad)
             {
-                especialidad = (string)cmbEspecialidad.SelectedItem;
                 //Se busca si tiene una agenda que coincida con la fecha actual y se settea
-                fechaDesde = (string)dpFechaDesde.Value.ToString();
-                fechaHasta = (string)dpFechaHasta.Value.ToString();
-                comando = "select NEXTGDD.validarAgendaUnica('" + especialidad + "','" + profesional + "','" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
-                string respuesta = Clases.BaseDeDatosSQL.buscarCampo(comando);
-                if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "")
-                {
-                    warning3.Visible = false;
-                }
-                else
-                {
-                    dpFechaDesde.Value = DateTime.Parse(respuesta.Split('|')[0]);
-                    dpFechaHasta.Value = DateTime.Parse(respuesta.Split('|')[1]);
-                    fechaDesde = (string)dpFechaDesde.Value.ToString();
-                    fechaHasta = (string)dpFechaHasta.Value.ToString();
-                    warning3.Visible = true;
-                }
+                validarSiExisteAgenda();
             }
             if (cmbDiaDesde.SelectedItem != null && (string)cmbDiaDesde.SelectedItem != diaDesde)
             {
@@ -179,36 +166,50 @@ namespace ClinicaFrba.Registrar_Agenda_Medico
         {
             dgRangoAtencion.Rows.Clear();
             dpFechaHasta.MinDate = dpFechaDesde.Value;
-        }
-
-        private void dpFechaHasta_ValueChanged(object sender, EventArgs e)
-        {
-            if (cmbProfesional.SelectedItem != null && cmbEspecialidad != null)
+            dpFechaHasta.Value = dpFechaDesde.Value;
+            if (cmbProfesional.SelectedItem != null && cmbEspecialidad.SelectedItem != null)
             {
-                dgRangoAtencion.Rows.Clear();
-                fechaDesde = (string) dpFechaDesde.Value.ToString();
-                fechaHasta = (string) dpFechaHasta.Value.ToString();
-                warning3.Text = "Ya existe una agenda para ese rango de fechas. Solo puede agregar rangos de atención.";
-                warning3.Visible = true;
-                especialidad = (string)cmbEspecialidad.SelectedItem;
-                comando = "select NEXTGDD.validarAgendaUnica('" + especialidad + "','" + profesional + "','" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
-                string respuesta = Clases.BaseDeDatosSQL.buscarCampo(comando);
-                if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "")
-                {
-                    warning3.Visible = false;
-                }
-                else
-                {
-                    dpFechaDesde.Value = DateTime.Parse(respuesta.Split('|')[0]);
-                    dpFechaHasta.Value = DateTime.Parse(respuesta.Split('|')[1]);
-                    fechaDesde = (string)dpFechaDesde.Value.ToString();
-                    fechaHasta = (string)dpFechaHasta.Value.ToString();
-                    warning3.Visible = true;
-                }
+                validarSiExisteAgenda();
             }
             else
             {
                 warning3.Text = "Debe seleccionar profesional y especialidad.";
+                warning3.Visible = true;
+            }
+        }
+
+        private void dpFechaHasta_ValueChanged(object sender, EventArgs e)
+        {
+            if (cmbProfesional.SelectedItem != null && cmbEspecialidad.SelectedItem != null)
+            {
+                validarSiExisteAgenda();
+            }
+            else
+            {
+                warning3.Text = "Debe seleccionar profesional y especialidad.";
+                warning3.Visible = true;
+            }
+        }
+
+        private void validarSiExisteAgenda()
+        {
+            dgRangoAtencion.Rows.Clear();
+            fechaDesde = (string)dpFechaDesde.Value.ToString();
+            fechaHasta = (string)dpFechaHasta.Value.ToString();
+            warning3.Text = "Ya existe una agenda para ese rango de fechas. Solo puede agregar rangos de atención.";
+            especialidad = (string)cmbEspecialidad.SelectedItem;
+            comando = "select NEXTGDD.validarAgendaUnica('" + especialidad + "','" + profesional + "','" + convertirFecha(fechaDesde) + "','" + convertirFecha(fechaHasta) + "')";
+            string respuesta = Clases.BaseDeDatosSQL.buscarCampo(comando);
+            if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "")
+            {
+                warning3.Visible = false;
+            }
+            else
+            {
+                dpFechaDesde.Value = DateTime.Parse(respuesta.Split('|')[0]);
+                dpFechaHasta.Value = DateTime.Parse(respuesta.Split('|')[1]);
+                fechaDesde = (string)dpFechaDesde.Value.ToString();
+                fechaHasta = (string)dpFechaHasta.Value.ToString();
                 warning3.Visible = true;
             }
         }

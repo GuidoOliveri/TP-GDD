@@ -937,7 +937,7 @@ BEGIN
 			(@fechaLlegada,@nroBono,@nro_turno)
 	
 	UPDATE NEXTGDD.Bono_Consulta
-	SET nro_consulta=(select isnull(count(*),0)+1
+	SET nro_consulta=(select isnull(count(*),0)
 					  from NEXTGDD.Consulta c,NEXTGDD.Turno t 
 					  where t.nro_afiliado=@nro_afiliado and t.nro_turno=c.nro_turno)
 	WHERE nro_bono=@nroBono
@@ -1160,9 +1160,10 @@ GO
 CREATE FUNCTION NEXTGDD.verSuperposicionDeRangos(@fechaDesde1 datetime,@fechaHasta1 datetime,@fechaDesde2 datetime,@fechaHasta2 datetime)
 returns int
 BEGIN
-	RETURN (CASE WHEN (@fechaHasta2>@fechaDesde1 and @fechaHasta2<@fechaHasta1) 
-					  or (@fechaDesde2>@fechaDesde1 and @fechaDesde2<@fechaHasta1) 
-					  or (@fechaDesde2<=@fechaDesde1 and @fechaHasta2>=@fechaHasta1) THEN 0
+	RETURN (CASE WHEN ( CONVERT(date,@fechaHasta2)>CONVERT(date,@fechaDesde1) and CONVERT(date,@fechaHasta2)<CONVERT(date,@fechaHasta1) ) 
+					  or ( CONVERT(date,@fechaDesde2)>CONVERT(date,@fechaDesde1) and CONVERT(date,@fechaDesde2)<CONVERT(date,@fechaHasta1) ) 
+					  or ( CONVERT(date,@fechaDesde2)<=CONVERT(date,@fechaDesde1) and CONVERT(date,@fechaHasta2)>=CONVERT(date,@fechaHasta1) ) 
+					  THEN 0
 				 ELSE 1
 				 END)
 END;
@@ -1173,11 +1174,11 @@ CREATE FUNCTION NEXTGDD.validarAgendaUnica(@especialidad varchar(255),@profesion
 RETURNS varchar(255)
 AS
 BEGIN
-	RETURN (select FORMAT((select top 1 rf.fecha_desde),'dd/MM/yyyy hh:mm:ss')+'|'+FORMAT((select top 1 rf.fecha_hasta),'dd/MM/yyyy hh:mm:ss')
+	RETURN (select top 1 FORMAT((rf.fecha_desde),'dd/MM/yyyy hh:mm:ss')+'|'+FORMAT((rf.fecha_hasta),'dd/MM/yyyy hh:mm:ss')
 		   from NEXTGDD.Agenda a,NEXTGDD.Profesional pr,NEXTGDD.Persona p,NEXTGDD.Especialidad e,NEXTGDD.Rango_Fechas rf 
 		   where p.nombre+' '+p.apellido LIKE @profesional and p.id_persona=pr.id_persona and a.matricula=pr.matricula 
 		         and a.cod_especialidad=e.cod_especialidad and e.descripcion LIKE @especialidad and rf.cod_agenda=a.cod_agenda
-				 and (select NEXTGDD.verSuperposicionDeRangos(rf.fecha_desde,rf.fecha_hasta,@fechaDesde,@fechaHasta))=0
+				 and (select NEXTGDD.verSuperposicionDeRangos(@fechaDesde,@fechaHasta,rf.fecha_desde,rf.fecha_hasta))=0
 		   group by rf.fecha_desde,rf.fecha_hasta)
 END;
 GO

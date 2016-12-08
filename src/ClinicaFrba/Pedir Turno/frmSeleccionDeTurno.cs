@@ -99,7 +99,9 @@ namespace ClinicaFrba.Pedir_Turno
             {
                 verificarTextbox();   
                 especialidad = (string) cmbEspecialidad.SelectedItem;
-                cmbProfesional.Text = "";
+                dtpFecha.Value = DateTime.Parse(Clases.FechaSistema.fechaSistema);
+                profesional = "";
+                cmbProfesional.SelectedItem = null;
                 cmbProfesional.Items.Clear();
                 cmbHorario.Items.Clear();
 
@@ -110,22 +112,14 @@ namespace ClinicaFrba.Pedir_Turno
             if (cmbProfesional.SelectedItem != null && (string)cmbProfesional.SelectedItem!=profesional)
             {
                 profesional = (string) cmbProfesional.SelectedItem;
+                especialidad = (string)cmbEspecialidad.SelectedItem;
                 cmbHorario.Items.Clear();
 
                 //Verifica la fecha actual
+                warning1.Visible = false;
                 warning1.Text = "La fecha esta fuera del rango de atención. Seleccione otra.";
-                verificarCancelaciones();
-                cmbHorario.Items.Clear();
-                cmbHorario.Text = "";
-                if (warning1.Visible == false)
-                {
-                    restringirRangoHorario();
-                    cargar(horarios, cmbHorario);
-                    if (horarios.Count() == 0)
-                    {
-                        warning1.Visible = true;
-                    }
-                }
+                warning2.Visible = false;
+                buscarHorariosDeLaFecha();
             }
             if (cmbHorario.SelectedItem != null)
             {
@@ -140,25 +134,30 @@ namespace ClinicaFrba.Pedir_Turno
             warning1.Visible = false;
             warning1.Text="La fecha esta fuera del rango de atención. Seleccione otra.";
             warning2.Visible = false;
-            if (cmbProfesional.SelectedItem != null && cmbEspecialidad != null)
+            if (cmbProfesional.SelectedItem != null && cmbEspecialidad.SelectedItem != null)
             {
-                verificarCancelaciones();
-                cmbHorario.Items.Clear();
-                cmbHorario.Text = "";
-                if (warning1.Visible == false)
-                {
-                    restringirRangoHorario();
-                    cargar(horarios, cmbHorario);
-                    if (horarios.Count() == 0)
-                    {
-                        warning1.Visible = true;
-                    }
-                }
+                buscarHorariosDeLaFecha();
             }
             else
             {
                 warning1.Text = "Debe seleccionar un profesional y una especialidad.";
                 warning1.Visible = true;
+            }
+        }
+
+        private void buscarHorariosDeLaFecha()
+        {
+            verificarCancelaciones();
+            cmbHorario.Items.Clear();
+            cmbHorario.Text = "";
+            if (warning1.Visible == false)
+            {
+                restringirRangoHorario();
+                cargar(horarios, cmbHorario);
+                if (horarios.Count() == 0)
+                {
+                    warning1.Visible = true;
+                }
             }
         }
 
@@ -183,6 +182,7 @@ namespace ClinicaFrba.Pedir_Turno
 
                 if (warning4.Visible == false && warning1.Visible == false && warning2.Visible == false)
                 {
+                    warning3.Visible = false;
 
                     comando = "EXECUTE NEXTGDD.crearTurno @nroAf='" + nroAfiliado + "', @nombreEsp='" + especialidad + "', @nomProf='" + profesional + "', @fecha='" + fecha + "'";
                     Clases.BaseDeDatosSQL.EjecutarStoredProcedure(comando);
@@ -209,14 +209,36 @@ namespace ClinicaFrba.Pedir_Turno
         private void verificarTurnoDisponible()
         {
             fecha = (string)dtpFecha.Value.ToString("yyyy-MM-dd") + " " + (string)cmbHorario.SelectedItem + ":00";
-            comando = "select NEXTGDD.validarTurnoDisponible('" + fecha + "','" + profesional + "')";
-            if (Clases.BaseDeDatosSQL.buscarCampo(comando)=="true")
+            warning2.Text = "Debe ingresar un afiliado.";
+            warning2.Visible = true;
+            if (txtNroAfiliado.Text != "")
             {
-                warning2.Visible = false;
-            }
-            else
-            {
-                warning2.Visible = true;
+                verificarTextbox();
+                if (warning4.Visible == false)
+                {
+                    warning2.Visible = false;
+                    warning2.Text = "No hay disponibilidad en ese horario. Seleccione otro.";
+                    //Se fija que el afiliado no tenga otro turno en ese horario
+                    comando = "select isnull(count(*),0) from NEXTGDD.Turno where fecha LIKE CONVERT(datetime,'" + fecha + "') and nro_afiliado=" + txtNroAfiliado.Text;
+                    if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "0")
+                    {
+                        comando = "select NEXTGDD.validarTurnoDisponible('" + fecha + "','" + profesional + "')";
+                        if (Clases.BaseDeDatosSQL.buscarCampo(comando) == "true")
+                        {
+                            warning2.Visible = false;
+                        }
+                        else
+                        {
+                            warning2.Text = "No hay disponibilidad en ese horario. Seleccione otro.";
+                            warning2.Visible = true;
+                        }
+                    }
+                    else
+                    {
+                        warning2.Text = "El afiliado ya tiene turno en ese horario.";
+                        warning2.Visible = true;
+                    }
+                }
             }
         }
 
