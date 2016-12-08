@@ -929,8 +929,18 @@ BEGIN
 											p.nombre+' '+p.apellido LIKE @nomProf and
 											p.id_persona=pr.id_persona and pr.matricula=ag.matricula and
 											t.cod_agenda=ag.cod_agenda)
+	DECLARE @nro_afiliado numeric(18,0)=(select nro_afiliado
+										 from NEXTGDD.Turno
+										 where nro_turno=@nro_turno)
+
 	INSERT NEXTGDD.Consulta (fecha_consulta,nro_bono,nro_turno) values
 			(@fechaLlegada,@nroBono,@nro_turno)
+	
+	UPDATE NEXTGDD.Bono_Consulta
+	SET nro_consulta=(select isnull(count(*),0)+1
+					  from NEXTGDD.Consulta c,NEXTGDD.Turno t 
+					  where t.nro_afiliado=@nro_afiliado and t.nro_turno=c.nro_turno)
+	WHERE nro_bono=@nroBono
 END;
 GO
 
