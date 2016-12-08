@@ -215,7 +215,6 @@ CREATE TABLE NEXTGDD.Afiliado (
 	nro_afiliado numeric (20,0) PRIMARY KEY , 
 	cant_familiares tinyint,
 	cod_plan numeric(18,0) REFERENCES NextGDD.Plan_Medico(cod_plan),
-    nro_consulta int,
 	activo bit DEFAULT 1,
 	fecha_baja_logica datetime DEFAULT NULL,
 	id_persona numeric (18,0) REFERENCES NEXTGDD.Persona(id_persona),
@@ -235,6 +234,7 @@ CREATE TABLE NEXTGDD.Bono_Consulta (
 
     nro_bono numeric (18,0) IDENTITY(1,1) PRIMARY KEY,
     fecha_impresion datetime,
+	nro_consulta int,
     cod_plan numeric (18,0) REFERENCES NextGDD.Plan_Medico(cod_plan), 
 	nro_afiliado numeric (20,0) REFERENCES NextGDD.Afiliado(nro_afiliado), 
 	id_compra int REFERENCES NextGDD.Compra_Bono(id_compra) 
@@ -1318,8 +1318,8 @@ SET @est_civ= (Select id FROM NEXTGDD.Estado_Civil WHERE nombre= @estado_civil )
 SET @pers = SCOPE_IDENTITY()
 SET @nro_afiliado =  cast (@pers as varchar)+ '01'
 
-		 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	                VALUES ( @nro_afiliado, @cant_familiares , @plan_medico, 0 , 1, null, @pers, @pers, 01 ) 
+		 INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan,  activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	                VALUES ( @nro_afiliado, @cant_familiares , @plan_medico,  1, null, @pers, @pers, 01 ) 
 	
      SET @usr = CONVERT(VARCHAR(255),@nro_afiliado)
 	 DECLARE @pass varchar (100)
@@ -1384,8 +1384,8 @@ SELECT  @cod_plan= cod_plan,@cant_fam_afilp= cant_familiares  FROM NEXTGDD.Afili
          BEGIN
 		   SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ '02'
 		
-		   INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	                VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, 02) 
+		   INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan,activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	                VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 1, null, @pers, @grupo_afiliado, 02) 
 	
        
           END  
@@ -1397,8 +1397,8 @@ SELECT  @cod_plan= cod_plan,@cant_fam_afilp= cant_familiares  FROM NEXTGDD.Afili
 	            
 		       SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ '03'
 		       
-			   INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	           VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, 03) 
+			   INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan,  activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	           VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 1, null, @pers, @grupo_afiliado, 03) 
 	         END
 	        
 	        	ELSE IF  ((@integrante_grupo >= 03)  AND ( @integrante_grupo < 9) ) BEGIN
@@ -1406,8 +1406,8 @@ SELECT  @cod_plan= cod_plan,@cant_fam_afilp= cant_familiares  FROM NEXTGDD.Afili
 		           SET @integrante_grupo = @integrante_grupo + 1 
 		           SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+'0' +cast (@integrante_grupo as varchar)
 
-		           INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	               VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
+		           INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	               VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
 			    END
 
 				   ELSE  BEGIN
@@ -1415,8 +1415,8 @@ SELECT  @cod_plan= cod_plan,@cant_fam_afilp= cant_familiares  FROM NEXTGDD.Afili
 		            SET @integrante_grupo = @integrante_grupo + 1
 		            SET @nro_afiliado =  cast (@grupo_afiliado as varchar)+ cast (@integrante_grupo as varchar)
 
-		            INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, nro_consulta, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
-	                VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 0 , 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
+		            INSERT INTO NEXTGDD.Afiliado (nro_afiliado, cant_familiares, cod_plan, activo, fecha_baja_logica, id_persona,grupo_afiliado,integrante_grupo )
+	                VALUES (@nro_afiliado, @cant_familiares , @cod_plan, 1, null, @pers, @grupo_afiliado, @integrante_grupo) 
 			       END
 
 		   END	
@@ -1705,8 +1705,8 @@ INSERT INTO NEXTGDD.Persona (id_persona, nombre, apellido, nro_documento, fecha_
 SET IDENTITY_INSERT NEXTGDD.Persona OFF
 
 
-INSERT INTO NEXTGDD.Afiliado (nro_afiliado, id_persona, cod_plan, nro_consulta, grupo_afiliado, integrante_grupo, cant_familiares)
-	SELECT cast(id_persona as varchar)  + '01',id_persona, Plan_Med_Codigo, count(distinct Bono_Consulta_Numero), id_persona, 01,0
+INSERT INTO NEXTGDD.Afiliado (nro_afiliado, id_persona, cod_plan,grupo_afiliado, integrante_grupo, cant_familiares)
+	SELECT cast(id_persona as varchar)  + '01',id_persona, Plan_Med_Codigo, id_persona, 01,0
 	FROM NEXTGDD.Persona , gd_esquema.Maestra
 	WHERE nro_documento = Paciente_Dni 
 	group by id_persona, Plan_Med_Codigo, Paciente_Dni
@@ -1896,6 +1896,16 @@ INSERT NEXTGDD.Consulta (cod_diagnostico, fecha_consulta, nro_bono ,nro_turno)
 	   (select Bono_Consulta_Numero,Turno_Fecha, Bono_Consulta_Numero, Turno_Numero
 		from gd_esquema.Maestra
 		where Compra_Bono_Fecha is null and Bono_Consulta_Numero is not null );
+GO
+
+UPDATE NEXTGDD.Bono_Consulta
+SET nro_consulta=(select isnull(count(distinct m.Bono_Consulta_Numero),0)
+				  from gd_esquema.Maestra m, NEXTGDD.Persona p,NEXTGDD.Afiliado a,NEXTGDD.Consulta c,NEXTGDD.Turno t,NEXTGDD.Bono_Consulta b
+				  where m.Paciente_Dni=p.nro_documento and p.tipo_doc like 'D.N.I.' and p.id_persona=a.id_persona
+						and b.nro_afiliado=a.nro_afiliado and isnull(m.Bono_Consulta_Numero,0)<>0 
+						and not(m.Turno_Fecha IS NULL)
+						and c.nro_bono=b.nro_bono and t.nro_turno=c.nro_turno and b.nro_bono=Bono_Consulta.nro_bono
+						and m.Turno_Fecha<=t.fecha)
 GO
 
 /*********CREO USUARIOS PARA AFILIADOS************************/
