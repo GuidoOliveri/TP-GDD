@@ -32,6 +32,7 @@ namespace ClinicaFrba.Abm_Afiliado
         
         private int nroafilint;
         private Int64 nroafiliado;
+        private bool operacion;
 
         public frmAsociarAfiliado(string nombre, string apellido, string tipoDoc, Int64 nroDoc, string direccion, Int64 telefono, string estadocivil, string mail,  DateTime fecha , char sexo, int cant_familiar)
         {
@@ -47,6 +48,7 @@ namespace ClinicaFrba.Abm_Afiliado
             email= mail ;
             fechanac = fecha ;
             cantfami = cant_familiar ;
+            operacion = false;
         }
 
         public frmAsociarAfiliado(Int64 nroGrupo ,string nombre, string apellido, string tipoDoc, Int64 nroDoc, string direccion, Int64 telefono, string estadocivil, string mail, DateTime fecha, char sexo, int cant_familiar)
@@ -65,14 +67,26 @@ namespace ClinicaFrba.Abm_Afiliado
             cantfami = cant_familiar;
             txtNroAfiliadoPrincipal.Text = nroGrupo.ToString();
             txtNroAfiliadoPrincipal.Enabled = false;
+            operacion = true;
         }
 
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            frmAltaAfiliado alta = new frmAltaAfiliado();
-            this.Hide();
-            alta.Show();
+            if (operacion == false)
+            {
+
+                frmAltaAfiliado alta = new frmAltaAfiliado( fname,lname, tipodocu,  nrodocu,direc , telef , estciv, email, fechanac , sexo, cantfami) ;
+                this.Hide();
+                alta.Show();
+
+            }
+            else
+            {
+                frmAltaAfiliado alta = new frmAltaAfiliado(Int64.Parse(txtNroAfiliadoPrincipal.Text), fname, lname, tipodocu, nrodocu, direc, telef, estciv, email, fechanac, sexo, cantfami);
+                this.Hide();
+                alta.Show();
+            }
         }
 
 

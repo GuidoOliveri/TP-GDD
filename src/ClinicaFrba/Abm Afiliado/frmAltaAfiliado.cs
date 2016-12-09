@@ -45,6 +45,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
 
+
             plan = (string)cmbPlanMedico.SelectedItem;
             cmbPlanMedico.Items.Add("(ninguno)") ;
             comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
@@ -56,9 +57,102 @@ namespace ClinicaFrba.Abm_Afiliado
             date = System.Configuration.ConfigurationManager.AppSettings["date"];
             dtpFecNac.MinDate = DateTime.Parse(date).AddYears(-100);
             dtpFecNac.MaxDate = DateTime.Parse(date);  //.AddDays(1);
-          
+            dtpFecNac.Value = DateTime.Parse(date);
            // btnRegistrar.Click += new EventHandler(btnRegistrar_Click);
             
+        }
+        
+        public frmAltaAfiliado (Int64 nroGrupo2 ,string nombre, string apellido, string tipoDoc, Int64 nroDoc, string direccion, Int64 telefono, string estadocivil, string mail, DateTime fecha, char sexo, int cant_familiar)
+        {
+            InitializeComponent();
+
+            date = System.Configuration.ConfigurationManager.AppSettings["date"];
+            dtpFecNac.MinDate = DateTime.Parse(date).AddYears(-100);
+            dtpFecNac.MaxDate = DateTime.Parse(date);
+
+            plan = (string)cmbPlanMedico.SelectedItem;
+            cmbPlanMedico.Items.Add("(ninguno)");
+            comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
+            btnRegistrar.Enabled = false;
+            btnVolver.Text = "Cancelar";
+            operacion = true;
+
+            cmbEstadoCivil.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPlanMedico.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTipoDoc.DropDownStyle = ComboBoxStyle.DropDownList;
+            optMasculino.Checked = false;
+            optFemenino.Checked = false;
+
+            txtNombre.Text= nombre;
+            txtApellido.Text= apellido;
+            txtCantFam.Text= cant_familiar.ToString();
+            txtMail.Text= mail;
+            txtNroDoc.Text= nroDoc.ToString();
+            txtTel.Text= telefono.ToString();
+            txtCalle.Text= direccion;
+
+            cmbEstadoCivil.SelectedItem = estadocivil;
+            cmbTipoDoc.SelectedItem = tipoDoc;
+            cmbPlanMedico.SelectedItem = "(ninguno)";
+
+            if (sexo== 'H')
+                {
+                optMasculino.Checked = true;
+                }
+                else
+                {
+                  optMasculino.Checked = false;
+                }
+
+            dtpFecNac.Value = fecha;
+            nroGrupo = nroGrupo2;
+
+        }
+
+
+        public frmAltaAfiliado( string nombre, string apellido, string tipoDoc, Int64 nroDoc, string direccion, Int64 telefono, string estadocivil, string mail, DateTime fecha, char sexo, int cant_familiar)
+        {
+            InitializeComponent();
+
+            date = System.Configuration.ConfigurationManager.AppSettings["date"];
+            dtpFecNac.MinDate = DateTime.Parse(date).AddYears(-100);
+            dtpFecNac.MaxDate = DateTime.Parse(date);
+
+            plan = (string)cmbPlanMedico.SelectedItem;
+            cmbPlanMedico.Items.Add("(ninguno)");
+            comando = "select distinct descripcion from NEXTGDD.Plan_Medico";
+            cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "descripcion"), cmbPlanMedico);
+
+            cmbEstadoCivil.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPlanMedico.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTipoDoc.DropDownStyle = ComboBoxStyle.DropDownList;
+            optMasculino.Checked = false;
+            optFemenino.Checked = false;
+
+            txtNombre.Text = nombre;
+            txtApellido.Text = apellido;
+            txtCantFam.Text = cant_familiar.ToString();
+            txtMail.Text = mail;
+            txtNroDoc.Text = nroDoc.ToString();
+            txtTel.Text = telefono.ToString();
+            txtCalle.Text = direccion;
+
+            cmbEstadoCivil.SelectedItem = estadocivil;
+            cmbTipoDoc.SelectedItem = tipoDoc;
+            cmbPlanMedico.SelectedItem = "(ninguno)";
+
+            if (sexo == 'H')
+            {
+                optMasculino.Checked = true;
+            }
+            else
+            {
+                optMasculino.Checked = false;
+            }
+
+            dtpFecNac.Value = fecha;
+
         }
 
         public frmAltaAfiliado(Int64 numGrupo)
@@ -76,6 +170,7 @@ namespace ClinicaFrba.Abm_Afiliado
             nroGrupo = numGrupo;
             btnRegistrar.Enabled = false;
             operacion = true;
+            cmbPlanMedico.SelectedItem = "(ninguno)";
             btnVolver.Text = "Cancelar";
             date = System.Configuration.ConfigurationManager.AppSettings["date"];
             dtpFecNac.MinDate = DateTime.Parse(date).AddYears(-100);
@@ -243,7 +338,7 @@ namespace ClinicaFrba.Abm_Afiliado
                             btnRegistrar.Enabled = false;
                              operacion = true;
                              nroGrupo = Int64.Parse(nroAfiliado.ToString().Substring(0,nroAfiliado.ToString().Length -2));
-
+                             cmbPlanMedico.SelectedItem = "(ninguno)";
                              btnVolver.Text = "Cancelar";
                         }
                         else
@@ -565,10 +660,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmAltaAfiliado_Load(object sender, EventArgs e)
         {
-          date = System.Configuration.ConfigurationManager.AppSettings["date"];
-          dtpFecNac.MaxDate = DateTime.Parse(date);//.AddDays(1);
-          dtpFecNac.Value= DateTime.Parse(date);
-          dtpFecNac.Text = DateTime.Parse(date).ToString();
+        //  date = System.Configuration.ConfigurationManager.AppSettings["date"];
+        //  dtpFecNac.MaxDate = DateTime.Parse(date);//.AddDays(1);
+        //  dtpFecNac.Value= DateTime.Parse(date);
+        //  dtpFecNac.Text = DateTime.Parse(date).ToString();
         }
 
         private void cmbTipoDoc_SelectedIndexChanged(object sender, EventArgs e)

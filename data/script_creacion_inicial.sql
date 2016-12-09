@@ -133,7 +133,7 @@ CREATE TABLE NEXTGDD.Persona (
 	tipo_doc varchar (50) NOT NULL DEFAULT 'D.N.I.',
 
 	CONSTRAINT check_s2 check (sexo IN ('H', 'M','X')),
-	CONSTRAINT tipodoc_2 check (tipo_doc IN ('L.E.', 'Pasaporte','D.N.I.','L.C','C.I.')),
+	CONSTRAINT tipodoc_2 check (tipo_doc IN ('L.E.', 'Pasaporte','D.N.I.','L.C.','C.I.')),
 	CONSTRAINT unique_tipo_nro_Doc unique (nro_documento,tipo_doc)
 	)
 
