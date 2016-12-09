@@ -22,6 +22,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
             DateTime fecha = DateTime.Parse(Clases.FechaSistema.fechaSistema).AddDays(1);
             pickerFecha.MinDate = fecha;
+            pickerFecha.SetDate(fecha);
 
             if (Clases.Usuario.id_rol == "Administrativo")
             {

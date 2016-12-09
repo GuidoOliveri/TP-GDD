@@ -34,7 +34,7 @@ namespace ClinicaFrba.Compra_Bono
 
         private String obtenerPrecioBono(string afiliado)
         {
-            String queryString = "SELECT precio_bono_consulta FROM NEXTGDD.Afiliado RIGHT JOIN NEXTGDD.Plan_Medico ON Afiliado.cod_plan = Plan_Medico.cod_plan WHERE Afiliado.nro_afiliado ='" + afiliado + "'";
+            String queryString = "SELECT precio_bono_consulta FROM NEXTGDD.Afiliado RIGHT JOIN NEXTGDD.Plan_Medico ON Afiliado.cod_plan = Plan_Medico.cod_plan WHERE Afiliado.nro_afiliado ='" + afiliado + "' and Afiliado.activo=1";
             return Clases.BaseDeDatosSQL.buscarCampo(queryString);
         }
 

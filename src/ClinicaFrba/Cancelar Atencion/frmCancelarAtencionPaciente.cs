@@ -32,10 +32,11 @@ namespace ClinicaFrba.Cancelar_Atencion
 
             if (rol.Equals("Afiliado"))
             {
-                lblNumeroAfiliado.Visible = false;
-                txtNumeroAfiliado.Visible = false;
+                txtNumeroAfiliado.Enabled = false; 
                 btnCargarAfiliado.Visible = false;
-                cargarDatosAfiliado(Clases.Usuario.obtenerNumeroAfiliado());
+                idAfiliado = Clases.Usuario.obtenerNumeroAfiliado();
+                cargarDatosAfiliado(idAfiliado);
+                txtNumeroAfiliado.Text = idAfiliado;
             }           
         }
 
@@ -79,8 +80,8 @@ namespace ClinicaFrba.Cancelar_Atencion
 
             // Cancelar el bono
 
-            string nroTurno = Clases.BaseDeDatosSQL.buscarCampo("select nro_turno from NEXTGDD.Turno where fecha = '"+ 
-                DateTime.Parse(cmbSeleccionTurno.SelectedItem.ToString()).ToString("yyyy-MM-dd HH:mm:ss") + "' and nro_afiliado = '" + idAfiliado + "'");
+            string nroTurno = Clases.BaseDeDatosSQL.buscarCampo("select nro_turno from NEXTGDD.Turno where fecha LIKE CONVERT(datetime,'"+ 
+                DateTime.Parse(cmbSeleccionTurno.SelectedItem.ToString()).ToString("yyyy-MM-dd HH:mm:ss") + "') and nro_afiliado = " + idAfiliado + "");
             string tipoCancelacion = Clases.BaseDeDatosSQL.buscarCampo("select tipo_cancelacion from NEXTGDD.Tipo_cancelacion where nombre = '"+
                 cmbMotivoCancelacion.SelectedItem.ToString()+"'");
 
@@ -150,8 +151,10 @@ namespace ClinicaFrba.Cancelar_Atencion
             {
                 // Consulta generica para comprobar si existe el afiliado
                 idAfiliado = txtNumeroAfiliado.Text;
-                String queryString = "SELECT precio_bono_consulta FROM NEXTGDD.Afiliado RIGHT JOIN NEXTGDD.Plan_Medico ON Afiliado.cod_plan = Plan_Medico.cod_plan WHERE Afiliado.nro_afiliado ='" + idAfiliado + "'";
+                String queryString = "SELECT precio_bono_consulta FROM NEXTGDD.Afiliado RIGHT JOIN NEXTGDD.Plan_Medico ON Afiliado.cod_plan = Plan_Medico.cod_plan WHERE Afiliado.nro_afiliado =" + idAfiliado + " and Afiliado.activo=1";
                 Clases.BaseDeDatosSQL.buscarCampo(queryString);
+                cmbSeleccionTurno.SelectedItem = null;
+                cmbSeleccionTurno.Items.Clear();
                 cargarDatosAfiliado(idAfiliado);
                 MessageBox.Show("Usuario Cargado con Exito", "Buscar Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

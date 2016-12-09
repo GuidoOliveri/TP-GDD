@@ -76,7 +76,6 @@ namespace ClinicaFrba.Login
            
             if (resu.Equals(0))
             {
-                MessageBox.Show("Logueo exitoso! Entrando al sistema...", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Usuario.Name = txtUsuario.Text;
                 // para que me de el nombre del rol, lo busco yo, no me lo devuelve en el stored procedure 
                 query = "SELECT  R.nombre as nom FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U WHERE R_U.id_rol = R.id_rol AND U.username = @user AND U.username = R_U.username ";
@@ -91,22 +90,26 @@ namespace ClinicaFrba.Login
 
                 List<String> nombreRoles = new List<string>();
                 while (dataReader.Read()) nombreRoles.Add(dataReader.GetString(0));
-                if (nombreRoles.Count > 1)
+                if (nombreRoles.Count >= 1)
                 {
-                    frmSeleccionarRol seleccion = new frmSeleccionarRol(nombreRoles);
-                    this.Hide();
-                    seleccion.Show();
-                }
-                else if (nombreRoles.Count == 1)
-                {
-                    Clases.Usuario.id_rol = nombreRoles.ElementAt(0);
-                    frmMenuDeAbms elegiaccion = new frmMenuDeAbms();
-                    this.Hide();
-                    elegiaccion.Show();
+                    MessageBox.Show("Logueo exitoso! Entrando al sistema...", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (nombreRoles.Count > 1)
+                    {
+                        frmSeleccionarRol seleccion = new frmSeleccionarRol(nombreRoles);
+                        this.Hide();
+                        seleccion.Show();
+                    }
+                    else
+                    {
+                        Clases.Usuario.id_rol = nombreRoles.ElementAt(0);
+                        frmMenuDeAbms elegiaccion = new frmMenuDeAbms();
+                        this.Hide();
+                        elegiaccion.Show();
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("No tienes ningun Rol asignado", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("El usuario fue dado de baja.", "Logueo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                
 

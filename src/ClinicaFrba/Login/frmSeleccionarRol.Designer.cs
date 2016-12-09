@@ -37,49 +37,57 @@
             // 
             // lblSelRol
             // 
-            this.lblSelRol.AutoSize = true;
-            this.lblSelRol.Font = new System.Drawing.Font("Tahoma", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSelRol.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblSelRol.Location = new System.Drawing.Point(39, 36);
+            this.lblSelRol.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.lblSelRol.Font = new System.Drawing.Font("Trebuchet MS", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSelRol.ForeColor = System.Drawing.Color.Snow;
+            this.lblSelRol.Location = new System.Drawing.Point(33, 30);
             this.lblSelRol.Name = "lblSelRol";
-            this.lblSelRol.Size = new System.Drawing.Size(507, 33);
+            this.lblSelRol.Size = new System.Drawing.Size(507, 72);
             this.lblSelRol.TabIndex = 0;
-            this.lblSelRol.Text = "Bienvenido, ¿con qué Rol desea ingresar?";
+            this.lblSelRol.Text = "SELECCIONE EL ROL CON EL QUE DESEA INGRESAR";
+            this.lblSelRol.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(335, 191);
+            this.btnAceptar.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.btnAceptar.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAceptar.ForeColor = System.Drawing.Color.White;
+            this.btnAceptar.Location = new System.Drawing.Point(304, 180);
             this.btnAceptar.Name = "btnAceptar";
-            this.btnAceptar.Size = new System.Drawing.Size(133, 41);
+            this.btnAceptar.Size = new System.Drawing.Size(144, 41);
             this.btnAceptar.TabIndex = 1;
-            this.btnAceptar.Text = "Aceptar";
-            this.btnAceptar.UseVisualStyleBackColor = true;
+            this.btnAceptar.Text = "ACEPTAR";
+            this.btnAceptar.UseVisualStyleBackColor = false;
             this.btnAceptar.Click += new System.EventHandler(this.btnAceptar_Click);
             // 
             // cboRoles
             // 
+            this.cboRoles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboRoles.FormattingEnabled = true;
-            this.cboRoles.Location = new System.Drawing.Point(123, 104);
+            this.cboRoles.Location = new System.Drawing.Point(120, 126);
             this.cboRoles.Name = "cboRoles";
-            this.cboRoles.Size = new System.Drawing.Size(295, 21);
+            this.cboRoles.Size = new System.Drawing.Size(328, 24);
             this.cboRoles.TabIndex = 2;
             this.cboRoles.SelectedIndexChanged += new System.EventHandler(this.cboRoles_SelectedIndexChanged);
             // 
             // btnVolverMenuPrincipal
             // 
-            this.btnVolverMenuPrincipal.Location = new System.Drawing.Point(70, 191);
+            this.btnVolverMenuPrincipal.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.btnVolverMenuPrincipal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnVolverMenuPrincipal.ForeColor = System.Drawing.Color.White;
+            this.btnVolverMenuPrincipal.Location = new System.Drawing.Point(120, 180);
             this.btnVolverMenuPrincipal.Name = "btnVolverMenuPrincipal";
-            this.btnVolverMenuPrincipal.Size = new System.Drawing.Size(149, 41);
+            this.btnVolverMenuPrincipal.Size = new System.Drawing.Size(144, 41);
             this.btnVolverMenuPrincipal.TabIndex = 3;
-            this.btnVolverMenuPrincipal.Text = "Volver al Menu Principal";
-            this.btnVolverMenuPrincipal.UseVisualStyleBackColor = true;
+            this.btnVolverMenuPrincipal.Text = "VOLVER AL MENU PRINCIPAL";
+            this.btnVolverMenuPrincipal.UseVisualStyleBackColor = false;
             this.btnVolverMenuPrincipal.Click += new System.EventHandler(this.btnVolverMenuPrincipal_Click);
             // 
             // warning
             // 
             this.warning.AutoSize = true;
             this.warning.ForeColor = System.Drawing.Color.Red;
-            this.warning.Location = new System.Drawing.Point(186, 141);
+            this.warning.Location = new System.Drawing.Point(35, 240);
             this.warning.Name = "warning";
             this.warning.Size = new System.Drawing.Size(160, 13);
             this.warning.TabIndex = 4;
@@ -89,6 +97,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Azure;
             this.ClientSize = new System.Drawing.Size(563, 262);
             this.Controls.Add(this.warning);
             this.Controls.Add(this.btnVolverMenuPrincipal);
