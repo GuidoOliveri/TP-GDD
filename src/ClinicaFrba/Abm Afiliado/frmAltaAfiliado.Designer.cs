@@ -241,13 +241,12 @@
             this.dtpFecNac.Cursor = System.Windows.Forms.Cursors.Default;
             this.dtpFecNac.CustomFormat = "dd-MM-yyyy 00:00:00";
             this.dtpFecNac.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFecNac.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.dtpFecNac.Location = new System.Drawing.Point(483, 61);
-            this.dtpFecNac.MaxDate = new System.DateTime(2016, 11, 26, 0, 0, 0, 0);
+            this.dtpFecNac.MaxDate = new System.DateTime(2016, 11, 5, 0, 0, 0, 0);
             this.dtpFecNac.Name = "dtpFecNac";
             this.dtpFecNac.Size = new System.Drawing.Size(152, 20);
             this.dtpFecNac.TabIndex = 14;
-            this.dtpFecNac.Value = new System.DateTime(2016, 11, 20, 0, 0, 0, 0);
+            this.dtpFecNac.Value = new System.DateTime(2016, 11, 3, 0, 0, 0, 0);
             // 
             // lblFecNac
             // 

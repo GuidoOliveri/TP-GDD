@@ -53,8 +53,12 @@ namespace ClinicaFrba.Abm_Afiliado
             cmbEstadoCivil.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbPlanMedico.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTipoDoc.DropDownStyle = ComboBoxStyle.DropDownList;
-
+            date = System.Configuration.ConfigurationManager.AppSettings["date"];
+            dtpFecNac.MinDate = DateTime.Parse(date).AddYears(-100);
+            dtpFecNac.MaxDate = DateTime.Parse(date);  //.AddDays(1);
+          
            // btnRegistrar.Click += new EventHandler(btnRegistrar_Click);
+            
         }
 
         public frmAltaAfiliado(Int64 numGrupo)
@@ -73,6 +77,11 @@ namespace ClinicaFrba.Abm_Afiliado
             btnRegistrar.Enabled = false;
             operacion = true;
             btnVolver.Text = "Cancelar";
+            date = System.Configuration.ConfigurationManager.AppSettings["date"];
+            dtpFecNac.MinDate = DateTime.Parse(date).AddYears(-100);
+            dtpFecNac.MaxDate = DateTime.Parse(date);  //.AddDays(1);
+            //dtpFecNac.dis = DateTime.Parse(date);
+            dtpFecNac.Value = DateTime.Parse(date);
             // btnRegistrar.Click += new EventHandler(btnRegistrar_Click);
         }
 
@@ -109,7 +118,7 @@ namespace ClinicaFrba.Abm_Afiliado
             //limpio radio button
             optMasculino.Checked = false;
             optFemenino.Checked = false;
-
+           // date = System.Configuration.ConfigurationManager.AppSettings["date"];
             dtpFecNac.Value  = DateTime.Parse(date);//  MaxDate = DateTime.Parse(date);
 
         }
@@ -224,7 +233,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     nroAfiliado = resu;
 
                     MessageBox.Show("Registrado exitosamente!\nTu nro de afiliado es:  " + nroAfiliado + "\nNombre de usuario:  " + nroAfiliado + "@NEXTGDD" + "\nContraseña:  " + nroAfiliado, "AltaAfiliado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                    cargarTodoLimpio();
                     if (estadoCivil == "Casado/a" || (cantFam > 0) || estadoCivil== "Concubinato")
                     {
 
@@ -556,9 +565,10 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void frmAltaAfiliado_Load(object sender, EventArgs e)
         {
-            date = System.Configuration.ConfigurationManager.AppSettings["date"];
-            dtpFecNac.MaxDate = DateTime.Parse(date);
-
+          date = System.Configuration.ConfigurationManager.AppSettings["date"];
+          dtpFecNac.MaxDate = DateTime.Parse(date);//.AddDays(1);
+          dtpFecNac.Value= DateTime.Parse(date);
+          dtpFecNac.Text = DateTime.Parse(date).ToString();
         }
 
         private void cmbTipoDoc_SelectedIndexChanged(object sender, EventArgs e)
