@@ -78,7 +78,7 @@ namespace ClinicaFrba.Login
             {
                 Usuario.Name = txtUsuario.Text;
                 // para que me de el nombre del rol, lo busco yo, no me lo devuelve en el stored procedure 
-                query = "SELECT  R.nombre as nom FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U WHERE R_U.id_rol = R.id_rol AND U.username = @user AND U.username = R_U.username ";
+                query = "SELECT  R.nombre as nom FROM NEXTGDD.Usuario_X_Rol R_U, NEXTGDD.Rol R, NEXTGDD.Usuario U WHERE R.habilitado=1 and R_U.id_rol = R.id_rol AND U.username = @user AND U.username = R_U.username ";
                
                 SqlCommand comandito = new SqlCommand(query, conn);
                
