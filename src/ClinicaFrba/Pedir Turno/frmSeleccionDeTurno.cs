@@ -74,14 +74,22 @@ namespace ClinicaFrba.Pedir_Turno
                 nroAfiliado = txtNroAfiliado.Text;
                 if (nroAfiliado != "")
                 {
-                    comando = "select isnull(count(*),0) from NEXTGDD.Afiliado where activo=1 and nro_afiliado LIKE " + nroAfiliado;
-                    if (Clases.BaseDeDatosSQL.validarCampo(comando))
+                    try
                     {
-                        warning4.Visible = false;
+                        int.Parse(nroAfiliado);
+                        comando = "select isnull(count(*),0) from NEXTGDD.Afiliado where activo=1 and nro_afiliado LIKE " + nroAfiliado;
+                        if (Clases.BaseDeDatosSQL.validarCampo(comando))
+                        {
+                            warning4.Visible = false;
+                        }
+                        else
+                        {
+                            warning4.Visible = true;
+                        }
                     }
-                    else
+                    catch
                     {
-                        warning4.Visible = true;
+                        MessageBox.Show("Solo puede ingresar números en Numero de Afiliado", "Ingreso Afiliado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else

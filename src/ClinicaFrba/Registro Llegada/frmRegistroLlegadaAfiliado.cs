@@ -220,6 +220,17 @@ namespace ClinicaFrba.Registro_Llegada
                     }
                 }
             }
+            //Se verifica que solo hayan numeros
+            try
+            {
+                int.Parse(fechaPartida[0]);
+                int.Parse(fechaPartida[1]);
+                int.Parse(fechaPartida[2]);
+            }
+            catch
+            {
+                b = true;
+            }
             l.Visible = b;
         }
 

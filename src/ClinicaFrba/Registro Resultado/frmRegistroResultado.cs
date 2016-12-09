@@ -151,6 +151,16 @@ namespace ClinicaFrba.Registro_Resultado
                     }
                 }
             }
+            try
+            {
+                int.Parse(fechaPartida[0]);
+                int.Parse(fechaPartida[1]);
+                int.Parse(fechaPartida[2]);
+            }
+            catch
+            {
+                b = true;
+            }
             l.Visible = b;
         }
 
