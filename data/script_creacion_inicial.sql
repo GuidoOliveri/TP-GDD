@@ -990,7 +990,7 @@ AS
 			from NEXTGDD.Afiliado a,NEXTGDD.Afiliado a2,NEXTGDD.Bono_Consulta b
 			where a.nro_afiliado=@nroAfiliado
 				  --puede usar el de un familiar que pertenezca al mismo plan--
-				  and b.nro_afiliado=a2.nro_afiliado and a2.grupo_afiliado=a.grupo_afiliado and a.cod_plan=a2.cod_plan 
+				  and b.nro_afiliado=a2.nro_afiliado and b.cod_plan=a2.cod_plan and a2.grupo_afiliado=a.grupo_afiliado and a.cod_plan=a2.cod_plan 
 				  --se verfica que no se haya usado, a menos que el turno figure cancelado--
 				  and (select isnull(count(*),0) from NEXTGDD.Consulta c,NEXTGDD.Turno t2 where c.nro_bono=b.nro_bono and
 				  t2.nro_turno=c.nro_turno and isnull(t2.cod_cancelacion,0)=0)=0
