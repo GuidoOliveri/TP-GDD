@@ -86,7 +86,7 @@
             // warning
             // 
             this.warning.AutoSize = true;
-            this.warning.ForeColor = System.Drawing.Color.Red;
+            this.warning.ForeColor = System.Drawing.Color.White;
             this.warning.Location = new System.Drawing.Point(35, 240);
             this.warning.Name = "warning";
             this.warning.Size = new System.Drawing.Size(160, 13);
@@ -97,7 +97,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.BackColor = System.Drawing.Color.SlateGray;
             this.ClientSize = new System.Drawing.Size(563, 262);
             this.Controls.Add(this.warning);
             this.Controls.Add(this.btnVolverMenuPrincipal);
