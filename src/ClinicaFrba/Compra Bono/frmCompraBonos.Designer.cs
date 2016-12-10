@@ -168,6 +168,7 @@
             this.cantBonosUpDown.Size = new System.Drawing.Size(64, 20);
             this.cantBonosUpDown.TabIndex = 14;
             this.cantBonosUpDown.ValueChanged += new System.EventHandler(this.cantBonos_ValueChanged);
+            this.cantBonosUpDown.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cantBonosUpDown_KeyPress);
             // 
             // warningCompraNula
             // 
