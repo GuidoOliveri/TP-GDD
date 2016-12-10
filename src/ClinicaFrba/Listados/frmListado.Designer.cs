@@ -32,9 +32,11 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.pnlFiltroBusqueda = new System.Windows.Forms.Panel();
+            this.rbMes = new System.Windows.Forms.RadioButton();
+            this.cmbMes = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.cmbFiltro = new System.Windows.Forms.ComboBox();
             this.warning = new System.Windows.Forms.Label();
+            this.cmbFiltro = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cmbSemestre = new System.Windows.Forms.ComboBox();
             this.btnSeleccionar = new System.Windows.Forms.Button();
@@ -48,8 +50,6 @@
             this.listaDeAfiliadosBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.listaDeAfiliados = new ClinicaFrba.ListaDeAfiliados();
             this.cmdVolver = new System.Windows.Forms.Button();
-            this.cmbMes = new System.Windows.Forms.ComboBox();
-            this.rbMes = new System.Windows.Forms.RadioButton();
             this.pnlFiltroBusqueda.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maestraBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gD2C2016DataSet)).BeginInit();
@@ -100,6 +100,26 @@
             this.pnlFiltroBusqueda.TabIndex = 2;
             this.pnlFiltroBusqueda.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // rbMes
+            // 
+            this.rbMes.AutoSize = true;
+            this.rbMes.Location = new System.Drawing.Point(85, 71);
+            this.rbMes.Name = "rbMes";
+            this.rbMes.Size = new System.Drawing.Size(93, 17);
+            this.rbMes.TabIndex = 14;
+            this.rbMes.TabStop = true;
+            this.rbMes.Text = "Filtrar por mes:";
+            this.rbMes.UseVisualStyleBackColor = true;
+            // 
+            // cmbMes
+            // 
+            this.cmbMes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbMes.FormattingEnabled = true;
+            this.cmbMes.Location = new System.Drawing.Point(85, 89);
+            this.cmbMes.Name = "cmbMes";
+            this.cmbMes.Size = new System.Drawing.Size(168, 21);
+            this.cmbMes.TabIndex = 13;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -108,15 +128,6 @@
             this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 12;
             this.label2.Text = "Filtrar por:";
-            // 
-            // cmbFiltro
-            // 
-            this.cmbFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFiltro.FormattingEnabled = true;
-            this.cmbFiltro.Location = new System.Drawing.Point(359, 48);
-            this.cmbFiltro.Name = "cmbFiltro";
-            this.cmbFiltro.Size = new System.Drawing.Size(168, 21);
-            this.cmbFiltro.TabIndex = 11;
             // 
             // warning
             // 
@@ -127,6 +138,15 @@
             this.warning.Size = new System.Drawing.Size(133, 13);
             this.warning.TabIndex = 6;
             this.warning.Text = "Faltan seleccionar campos";
+            // 
+            // cmbFiltro
+            // 
+            this.cmbFiltro.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFiltro.FormattingEnabled = true;
+            this.cmbFiltro.Location = new System.Drawing.Point(359, 48);
+            this.cmbFiltro.Name = "cmbFiltro";
+            this.cmbFiltro.Size = new System.Drawing.Size(168, 21);
+            this.cmbFiltro.TabIndex = 11;
             // 
             // label1
             // 
@@ -237,26 +257,6 @@
             this.cmdVolver.Text = "Volver";
             this.cmdVolver.UseVisualStyleBackColor = true;
             this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
-            // 
-            // cmbMes
-            // 
-            this.cmbMes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbMes.FormattingEnabled = true;
-            this.cmbMes.Location = new System.Drawing.Point(85, 89);
-            this.cmbMes.Name = "cmbMes";
-            this.cmbMes.Size = new System.Drawing.Size(168, 21);
-            this.cmbMes.TabIndex = 13;
-            // 
-            // rbMes
-            // 
-            this.rbMes.AutoSize = true;
-            this.rbMes.Location = new System.Drawing.Point(85, 71);
-            this.rbMes.Name = "rbMes";
-            this.rbMes.Size = new System.Drawing.Size(95, 17);
-            this.rbMes.TabIndex = 14;
-            this.rbMes.TabStop = true;
-            this.rbMes.Text = "Filltrar por mes:";
-            this.rbMes.UseVisualStyleBackColor = true;
             // 
             // frmListado
             // 
