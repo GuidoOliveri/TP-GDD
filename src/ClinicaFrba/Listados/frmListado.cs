@@ -16,6 +16,7 @@ namespace ClinicaFrba.Listados
         private string semestre = "";
         private string listado = "";
         private string filtro = "";
+        private string mes = "";
         private List<String> años = new List<string>();
 
         public frmListado()
@@ -24,14 +25,43 @@ namespace ClinicaFrba.Listados
 
             warning.Visible = false;
             cmbFiltro.Enabled = false;
+            cmbMes.Enabled = false;
 
             comando = "select distinct year(fecha) as anio from NEXTGDD.Turno;";
             cargarSemestres(Clases.BaseDeDatosSQL.ObtenerLista(comando, "anio"), cmbSemestre);
 
             cmbListado.SelectedIndexChanged += OnSelectedIndexChanged;
+            cmbSemestre.SelectedIndexChanged += OnSelectedIndexChanged;
             btnSeleccionar.Click += new EventHandler(btnSeleccionar_OnClick);
             btnLimpiar.Click += new EventHandler(btnLimpiar_OnClick);
+            rbMes.Click += new EventHandler(rbMes_OnClick);
             btnBorrar.Click += new EventHandler(btnBorrar_OnClick);
+        }
+
+        private void rbMes_OnClick(object sender, EventArgs e)
+        {
+            if (cmbMes.Enabled == true)
+            {
+                rbMes.Checked = false;
+                cmbMes.Enabled = false;
+                cmbMes.Items.Clear();
+                cmbMes.SelectedItem = null;
+            }
+            else
+            {
+                if (cmbSemestre.SelectedItem != null)
+                {
+                    cmbMes.Enabled = true;
+                    semestre = cmbSemestre.SelectedItem.ToString();
+                    cmbMes.Items.Clear();
+                    cargarMeses();
+                }
+                else
+                {
+                    rbMes.Checked = false;
+                    MessageBox.Show("Debe ingresar un semestre.", "Filtro Mes", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void cargarSemestres(List<string> lista, ComboBox cmb)
@@ -40,6 +70,26 @@ namespace ClinicaFrba.Listados
             {
                 cmb.Items.Add("1er Semestre " + elemento);
                 cmb.Items.Add("2ndo Semestre " + elemento);
+            }
+        }
+
+        private void cargarMeses()
+        {
+            int inicial = 0;
+            int final = 0;
+            if (semestre.Contains("1er"))
+            {
+                inicial = 1;
+                final = 6;
+            }
+            else
+            {
+                inicial = 7;
+                final = 12;
+            }
+            for (int i = inicial; i <= final; i++)
+            {
+                cmbMes.Items.Add(i);
             }
         }
 
@@ -67,6 +117,13 @@ namespace ClinicaFrba.Listados
                 comando = "select descripcion as 'especialidad' from NEXTGDD.Especialidad order by descripcion ASC";
                 cargar(Clases.BaseDeDatosSQL.ObtenerLista(comando, "especialidad"), cmbFiltro);
             }
+            if (cmbMes.Enabled == true && cmbSemestre.SelectedItem != null && cmbSemestre.SelectedItem.ToString() != semestre)
+            {
+                semestre = cmbSemestre.SelectedItem.ToString();
+                cmbMes.Items.Clear();
+                cmbMes.SelectedItem = null;
+                cargarMeses();
+            }
         }
 
         private void cargar(List<string> lista, ComboBox cmb)
@@ -84,11 +141,16 @@ namespace ClinicaFrba.Listados
             semestre = (string)cmbSemestre.SelectedItem;
             listado = (string)cmbListado.SelectedItem;
             filtro = "";
+            mes = "";
             if (cmbFiltro.Enabled == true)
             {
                 filtro = (string)cmbFiltro.SelectedItem;
             }
-            if (semestre != null && listado != null && filtro!=null)
+            if (cmbMes.Enabled == true && cmbMes.SelectedItem!=null)
+            {
+                mes = (string)cmbMes.SelectedItem.ToString();
+            }
+            if (semestre != null && listado != null && filtro!=null && (cmbMes.Enabled==false || (cmbMes.Enabled==true && cmbMes.SelectedItem!=null)))
             {
                 string[] parametros = semestre.Split(' ');
                 List<string> campos = new List<string>();
@@ -127,6 +189,7 @@ namespace ClinicaFrba.Listados
                     campos.Add("Especialidad");
                     campos.Add("Cantidad de Bonos");
                 }
+                Console.Write(comando);
                 dt = Clases.BaseDeDatosSQL.ObtenerTabla(comando, campos);
                 dgListado.AutoGenerateColumns = true;
                 dgListado.DataSource = dt;
@@ -156,13 +219,20 @@ namespace ClinicaFrba.Listados
 
         private string parsearSemestre(string[] parametros)
         {
-            if (parametros[0] == "1er")
+            if (cmbMes.Enabled == false)
             {
-                return "1,6";
+                if (parametros[0] == "1er")
+                {
+                    return "1,6";
+                }
+                else
+                {
+                    return "7,12";
+                }
             }
             else
             {
-                return "6,12";
+                return mes + "," + mes;
             }
         }
 
