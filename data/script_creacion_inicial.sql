@@ -1545,13 +1545,13 @@ GO
 
 /***************LISTADOS******************/
 
-CREATE FUNCTION NEXTGDD.listado1Afiliado(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0),@tipoCanc varchar(255))
+CREATE FUNCTION NEXTGDD.listado1Afiliado(@anio numeric(18,0),@mesInicio numeric(18,0),@mesFin numeric(18,0))
 RETURNS TABLE
 AS
 	RETURN
 		select top 5 e.descripcion as 'Especialidad', count(*) 'Cantidad cancelaciones'
 		from NEXTGDD.Especialidad e,NEXTGDD.Turno t,NEXTGDD.Agenda a,NEXTGDD.Cancelacion c
-		where c.persona_cancelacion LIKE @tipoCanc and t.cod_cancelacion=c.cod_cancelacion 
+		where c.persona_cancelacion LIKE 'Afiliado' and t.cod_cancelacion=c.cod_cancelacion 
 			  and t.cod_agenda=a.cod_agenda and a.cod_especialidad=e.cod_especialidad
 			  and year(t.fecha)=@anio and MONTH(t.fecha)>=@mesInicio and MONTH(t.fecha)<=@mesFin
 		group by e.descripcion
@@ -1565,7 +1565,9 @@ AS
 		select top 5 e.descripcion as 'Especialidad', count(*) 'Cantidad cancelaciones'
 		from NEXTGDD.Especialidad e,NEXTGDD.Agenda a,NEXTGDD.Cancelacion_Por_Fecha cf
 		where a.cod_especialidad=e.cod_especialidad and cf.cod_agenda=a.cod_agenda
-			  and (select NEXTGDD.verSuperposicionDeRangos(str(@anio)+'-'+str(@mesInicio)+'-01 00:00:00',str(@anio)+'-'+str(@mesFin)+'-01 00:00:00',cf.fecha_desde,cf.fecha_hasta))=0
+			  and (select NEXTGDD.verSuperposicionDeRangos(str(@anio)+'-'+str(@mesInicio)+'-01 00:00:00',
+				   convert(varchar(255),(EOMONTH(CONVERT(datetime,str(@anio)+'-'+str(@mesFin)+'-01 00:00:00'))))+' 00:00:00',
+				   cf.fecha_desde,cf.fecha_hasta))=0
 		group by e.descripcion
 		order by count(*) DESC
 GO
@@ -1575,7 +1577,7 @@ RETURNS TABLE
 AS
 	RETURN
 		select top 5 tabla.Especialidad as 'Especialidad',sum(tabla.[Cantidad cancelaciones]) as 'Cantidad cancelaciones'
-		from (select * from NEXTGDD.listado1Profesional(2016,6,12) UNION All select * from NEXTGDD.listado1Afiliado(2016,6,12,'Afiliado')) as tabla
+		from (select * from NEXTGDD.listado1Profesional(@anio,@mesInicio,@mesFin) UNION All select * from NEXTGDD.listado1Afiliado(@anio,@mesInicio,@mesFin)) as tabla
 		group by tabla.Especialidad
 		order by sum(tabla.[Cantidad cancelaciones]) DESC
 GO

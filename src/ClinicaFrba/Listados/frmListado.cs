@@ -209,7 +209,7 @@ namespace ClinicaFrba.Listados
             }
             if (filtro == "Afiliado")
             {
-                return "select * from NEXTGDD.listado1Afiliado(" + parametros[2] + "," + parsearSemestre(parametros) + ",'" + filtro + "')";
+                return "select * from NEXTGDD.listado1Afiliado(" + parametros[2] + "," + parsearSemestre(parametros) + ")";
             }
             else
             {
