@@ -30,6 +30,8 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtNroAfiliado = new System.Windows.Forms.TextBox();
             this.warning1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -48,8 +50,6 @@
             this.btnIngresar = new System.Windows.Forms.Button();
             this.warning2 = new System.Windows.Forms.Label();
             this.cmdVolver = new System.Windows.Forms.Button();
-            this.txtNroAfiliado = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -91,6 +91,23 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Turno";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(25, 58);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(99, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Número de Afiliado:";
+            // 
+            // txtNroAfiliado
+            // 
+            this.txtNroAfiliado.Enabled = false;
+            this.txtNroAfiliado.Location = new System.Drawing.Point(204, 55);
+            this.txtNroAfiliado.Name = "txtNroAfiliado";
+            this.txtNroAfiliado.Size = new System.Drawing.Size(189, 20);
+            this.txtNroAfiliado.TabIndex = 9;
+            // 
             // warning1
             // 
             this.warning1.AutoSize = true;
@@ -115,9 +132,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(25, 21);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(150, 13);
+            this.label2.Size = new System.Drawing.Size(146, 13);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Eliga el turno correspondiente:";
+            this.label2.Text = "Elija el turno correspondiente:";
             // 
             // cmbBono
             // 
@@ -260,23 +277,6 @@
             this.cmdVolver.Text = "Volver";
             this.cmdVolver.UseVisualStyleBackColor = true;
             this.cmdVolver.Click += new System.EventHandler(this.cmdVolver_Click);
-            // 
-            // txtNroAfiliado
-            // 
-            this.txtNroAfiliado.Enabled = false;
-            this.txtNroAfiliado.Location = new System.Drawing.Point(204, 55);
-            this.txtNroAfiliado.Name = "txtNroAfiliado";
-            this.txtNroAfiliado.Size = new System.Drawing.Size(189, 20);
-            this.txtNroAfiliado.TabIndex = 9;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(25, 58);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(99, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Número de Afiliado:";
             // 
             // frmRegistroLlegadaAfiliado
             // 
